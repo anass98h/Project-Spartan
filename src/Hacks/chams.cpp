@@ -17,6 +17,11 @@ IMaterial* materialChams;
 IMaterial* materialChamsIgnorez;
 IMaterial* materialChamsFlat;
 IMaterial* materialChamsFlatIgnorez;
+IMaterial* materialChamsGlass;
+IMaterial* materialChamsCrystal;
+IMaterial* materialChamsBlueCrystal;
+IMaterial* materialChamsGold;
+IMaterial* materialChamsVelvet;
 IMaterial* materialChamsArms;
 IMaterial* materialChamsWeapons;
 
@@ -59,6 +64,26 @@ static void DrawPlayer(void* thisptr, void* context, void *state, const ModelRen
 			visible_material = materialChamsFlat;
 			hidden_material = materialChamsFlatIgnorez;
 			break;
+			case ChamsType::CHAMS_GLASS:
+				visible_material = materialChamsGlass;
+				hidden_material = materialChamsGlass;
+		break;
+		case ChamsType::CHAMS_CRYSTAL:
+			visible_material = materialChamsCrystal;
+			hidden_material = materialChamsCrystal;
+			break;
+	    	case ChamsType::CHAMS_CRYSTALBLUE:
+			visible_material = materialChamsBlueCrystal;
+			hidden_material = materialChamsBlueCrystal;
+			break;
+			case ChamsType::CHAMS_GOLD:
+			visible_material = materialChamsGold;
+			hidden_material = materialChamsGold;
+			break;
+			case ChamsType::CHAMS_VELVET:
+			visible_material = materialChamsVelvet;
+			hidden_material = materialChamsVelvet;
+			break;			
 	}
 
 	visible_material->AlphaModulate(1.0f);
@@ -146,6 +171,31 @@ static void DrawArms(const ModelRenderInfo_t& pInfo)
 			mat->AlphaModulate(1.0f);
 			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
 			break;
+			case ArmsType::GLASS:
+			mat = material->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER);
+			mat->AlphaModulate(1.0f);
+			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+			break;
+		case ArmsType::CRYSTAL:
+			mat = material->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER);
+			mat->AlphaModulate(1.0f);
+			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+			break;
+			case ArmsType::CRYSTALBLUE:
+			mat = material->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER);
+			mat->AlphaModulate(1.0f);
+			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+			break;
+			case ArmsType::GOLD:
+			mat = material->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER);
+			mat->AlphaModulate(1.0f);
+			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+			break;
+			case ArmsType::VELVET:
+			mat = material->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER);
+			mat->AlphaModulate(1.0f);
+			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+			break;			
 	}
 
 	mat->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME);
@@ -173,6 +223,13 @@ void Chams::DrawModelExecute(void* thisptr, void* context, void *state, const Mo
 		materialChamsFlatIgnorez = Util::CreateMaterial(XORSTR("UnlitGeneric"), XORSTR("VGUI/white_additive"), true, true, true, true, true);
 		materialChamsArms = Util::CreateMaterial(XORSTR("VertexLitGeneric"), XORSTR("VGUI/white_additive"), false, true, true, true, true);
 		materialChamsWeapons = Util::CreateMaterial(XORSTR("VertexLitGeneric"), XORSTR("VGUI/white_additive"), false, true, true, true, true);
+		materialChamsGlass = material->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER);
+		materialChamsCrystal = material->FindMaterial("models/inventory_items/trophy_majors/crystal_clear",TEXTURE_GROUP_OTHER);
+		materialChamsBlueCrystal = material->FindMaterial("models/inventory_items/trophy_majors/crystal_blue",TEXTURE_GROUP_OTHER);
+		materialChamsGold = material->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail",TEXTURE_GROUP_OTHER);
+		materialChamsVelvet = material->FindMaterial("models/inventory_items/trophy_majors/velvet",TEXTURE_GROUP_OTHER);
+
+		
 		materialsCreated = true;
 	}
 

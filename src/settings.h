@@ -118,6 +118,11 @@ enum class ChamsType : int
 	CHAMS_XQZ,
 	CHAMS_FLAT,
 	CHAMS_FLAT_XQZ,
+	CHAMS_GLASS,
+	CHAMS_CRYSTAL,
+	CHAMS_CRYSTALBLUE,
+	CHAMS_GOLD,
+	CHAMS_VELVET,
 };
 
 enum class BoxType : int
@@ -152,6 +157,11 @@ enum class TeamColorType : int
 enum class ArmsType : int
 {
 	DEFAULT,
+	GLASS,
+	CRYSTAL,
+	CRYSTALBLUE,
+	GOLD,
+	VELVET,
 	WIREFRAME,
 	NONE,
 };
