@@ -89,7 +89,12 @@ enum class AntiAimType_Y : int
 	LUA_UNCLAMPED2
 };
 
-
+enum class AntiAimType_Z : int
+{
+	REVERSE,
+	AUTISMFLIP,
+	TEST,
+};
 
 enum class AntiAimType_X : int
 {
@@ -532,7 +537,11 @@ namespace Settings
 			extern bool antiResolver;
 			
 		}
-
+		namespace Roll
+		{
+			extern bool enabled;
+			extern AntiAimType_Z type;
+		}
 		namespace Pitch
 		{
 			extern bool enabled;

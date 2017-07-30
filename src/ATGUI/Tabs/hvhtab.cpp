@@ -8,6 +8,9 @@ void HvH::RenderTab()
 			"LISP", "TEST LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "Lowerbody Jitter", "LOWERBODY TEST", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
 	};
+		const char* zTypes[] = {
+	"Reverse","Autismflip","TEST",
+		};
 	const char* xTypes[] = {
 			"UP", "FLIP", "DOWN", "DANCE", "FRONT", "LUA", // safe
 			"FAKE UP", "FAKE DOWN", "LISP DOWN", "ANGEL DOWN", "ANGEL UP", "LUA UNCLAMPED" // untrusted
@@ -63,6 +66,34 @@ void HvH::RenderTab()
 						if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
 						{
 							Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN_SLOW;
+							ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
+						}
+					}
+					ImGui::PopItemWidth();
+				}
+					ImGui::Columns(1);
+				ImGui::Separator();
+				ImGui::Columns(2, NULL, true);
+				ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
+				ImGui::Separator();
+				ImGui::Columns(2, NULL, true);
+				{
+					
+					ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+					ImGui::Text(XORSTR("Roll Actual"));
+		
+					
+					
+				}
+				ImGui::NextColumn();
+				{
+					ImGui::PushItemWidth(-1);
+					if (ImGui::Combo(XORSTR("##ZTYPE"), (int*)& Settings::AntiAim::Roll::type, zTypes, IM_ARRAYSIZE(zTypes)))
+					{
+						if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Roll::type >= AntiAimType_Z::REVERSE)
+						{
+
+						
 							ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
 						}
 					}
