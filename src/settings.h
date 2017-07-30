@@ -872,7 +872,12 @@ namespace Settings
 		extern bool enabled;
 		extern ButtonCode_t key;
 	}
-
+		namespace Fakewalk
+	{
+		extern bool enabled;
+		extern ButtonCode_t key;
+	}
+	
 
 	namespace Autoblock
 	{

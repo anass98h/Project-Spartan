@@ -2,7 +2,7 @@
 
 bool Settings::Resolver::resolveAll = false;
 std::vector<int64_t> Resolver::Players = { };
-
+static float slby ;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 
 void Resolver::FrameStageNotify(ClientFrameStage_t stage)
@@ -35,9 +35,86 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage)
 				continue;
 
 			player_data.push_back(std::pair<C_BasePlayer*, QAngle>(player, *player->GetEyeAngles()));
+			
+			
+				static bool bFlip = true;
+				static float flYaw = *player->GetLowerBodyYawTarget();
 
-			player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
-		}
+								if (player->isMoving()) {
+									float flCurTime = globalVars->curtime;
+									static float flTimeUpdate = 0.5f;
+									static float flNextTimeUpdate = flCurTime + flTimeUpdate;
+
+									if (flCurTime >= flNextTimeUpdate) {
+										bFlip = !bFlip;
+									}
+
+									if (flNextTimeUpdate < flCurTime || flNextTimeUpdate - flCurTime > 10.f)
+										flNextTimeUpdate = flCurTime + flTimeUpdate;
+								
+									if (bFlip) {
+										flYaw += 35.f;
+									}
+									else {
+										flYaw -= 35.f;
+									}
+										if(slby != *player->GetLowerBodyYawTarget() ){ player->GetEyeAngles()->y = flYaw;
+																													  slby = flYaw ;
+									}
+								
+									
+									else {
+									
+										player->GetEyeAngles()->y = ( *player->GetLowerBodyYawTarget()  );}
+										
+								}
+			else{
+			
+				// Add some more  awesome Bruteforce stuff and LbyBreaker prevention here x)
+												float flCurTime = globalVars->curtime;
+							   static float Lbyupdi = 0.22f;
+							   static float nxtLbyup = flCurTime + Lbyupdi;
+								      bool hasUpdated;
+			if(nxtLbyup < flCurTime)
+								{ nxtLbyup = flCurTime + Lbyupdi;}
+								
+								
+								if(    ( flCurTime >= nxtLbyup && slby == *player->GetLowerBodyYawTarget() ) ) 
+									  {
+									  	hasUpdated = false ;
+									  }
+								else {hasUpdated = true;} 
+								
+								
+								
+								
+									if(hasUpdated == false){
+																				
+									int num = localplayer->GetShotsFired()%6;
+								switch (num) {
+								case 0: player->GetEyeAngles()->y -=0.0f; break;
+								case 1: player->GetEyeAngles()->y += 35.0f; break;
+								case 2: player->GetEyeAngles()->y -=70.0f; break;
+								case 3: player->GetEyeAngles()->y +=55.0f; break;
+								case 4: player->GetEyeAngles()->y -=180.0f; break;
+                                case 5: player->GetEyeAngles()->y +=270.0f; break; 
+                            
+                                
+                                
+                             
+                                }  
+									
+                                    }	
+									
+									
+								else {
+											
+												player->GetEyeAngles()->y =*player->GetLowerBodyYawTarget() ;
+												 slby = *player->GetLowerBodyYawTarget() ; 
+
+										}
+			}
+		}	
 	}
 	else if (stage == ClientFrameStage_t::FRAME_RENDER_END)
 	{

@@ -407,6 +407,8 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
 	settings[XORSTR("Airstuck")][XORSTR("enabled")] = Settings::Airstuck::enabled;
 	settings[XORSTR("Airstuck")][XORSTR("key")] = Util::GetButtonName(Settings::Airstuck::key);
+	settings[XORSTR("Fakewalk")][XORSTR("enabled")] = Settings::Fakewalk::enabled;
+	settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
 	//settings[XORSTR("anglechange")][XORSTR("enabled")] = Settings::anglechange::enabled;
 	//settings[XORSTR("anglechange")][XORSTR("key")] = Util::GetButtonName(Settings::anglechange::key);
 
@@ -825,6 +827,8 @@ void Settings::LoadConfig(std::string path)
 
 	GetVal(settings[XORSTR("Airstuck")][XORSTR("enabled")], &Settings::Airstuck::enabled);
 	GetButtonCode(settings[XORSTR("Airstuck")][XORSTR("key")], &Settings::Airstuck::key);
+	GetVal(settings[XORSTR("Fakewalk")][XORSTR("enabled")], &Settings::Fakewalk::enabled);
+	settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
 	
 
 	Settings::Skinchanger::Skins::enabled = false;

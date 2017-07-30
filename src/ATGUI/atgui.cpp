@@ -21,7 +21,7 @@ std::string contents;
 static void timerstart()
 {
    
-   // DO shit @Raspbian 
+   // DO shit @Raspbian x)
 }
 
 static void ccc()
@@ -50,7 +50,7 @@ static void ccc()
  		 
             
 		std::string str1(Pass);
-                if(str1.length()>=16 || str1 == "uff"     ){
+                if(str1.length()>=16 || str1 == "falschkopf"     ){
 				  std::size_t found = result.find(str1); 
 			if (found!=std::string::npos)
 			{
@@ -277,8 +277,8 @@ void UI::SwapWindow()
 	
 	
 	if (UI::isVisible)
-    {Draw::ImDrawText(ImVec2(39.f, 48.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-    Draw::ImDrawText(ImVec2(174.f, 48.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    {Draw::ImDrawText(ImVec2(39.f, 10.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    Draw::ImDrawText(ImVec2(174.f, 10.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
     }
     if (engine->IsInGame())
 		return;
@@ -287,8 +287,8 @@ void UI::SwapWindow()
     
     
     if (!engine->IsInGame())
-    {Draw::ImDrawText(ImVec2(39.f, 48.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-	Draw::ImDrawText(ImVec2(174.f, 48.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    {Draw::ImDrawText(ImVec2(39.f, 10.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+	Draw::ImDrawText(ImVec2(174.f, 10.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
     }
 	
 	
