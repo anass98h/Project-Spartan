@@ -1,0 +1,3 @@
+/home/raspbian/Project Spartan/CMakeFiles/edit_cache.dir
+/home/raspbian/Project Spartan/CMakeFiles/rebuild_cache.dir
+/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir
