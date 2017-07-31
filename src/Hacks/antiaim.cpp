@@ -621,10 +621,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 		case AntiAimType_Y::FAKESIDEWAYS:
 
 			
-			angle.y = 90.0f;
-			CreateMove::sendPacket = false;
+			angle.y = -90.0f;
+			bSendPacket = false;
 			
-			angle.y = 180.0f;
+			angle.y = +180.0f;
 			
 			break;
 		
@@ -842,7 +842,7 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp)
 			angle.z = -50.0f  ;
 			break;
 					case AntiAimType_Z::AUTISMFLIP:
-			angle.z =  bSendPacket ? -50.0f : 45.0f  ;
+			angle.z =  bSendPacket ? -50.0f : 45.0f;
 			break;
 					case AntiAimType_Z::TEST:
 			
@@ -851,7 +851,7 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp)
 	}
 }
 
-static void DoAAatTarget(QAngle& angle, int command_number, bool& clamp)
+static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& clamp)
 
 {
 
@@ -879,16 +879,22 @@ static void DoAAatTarget(QAngle& angle, int command_number, bool& clamp)
     
     			float tempDist = eye_pos.DistTo(target_pos);
     		
-    			while(bestDist < tempDist) 
+    			if(bestDist > tempDist) 
     			{
     				bestDist = tempDist;
-    				angle.y = Math::CalcAngle(eye_pos, target_pos).y + 90;
-    				//cmd->viewangles.y = angle.y;
+		    		if(CreateMove::sendPacket)
+		    		{            
+		           angle.y = Math::CalcAngle(eye_pos, target_pos).y + 90.0f;
+		            CreateMove::sendPacket = false;
+		            }
+		            else
+		            {
+		            angle.y = Math::CalcAngle(eye_pos, target_pos).y + 180.0f;
+		            CreateMove::sendPacket=true; }
+    			
     			}
     		}
     	}
-
-		
 		
 	}
 }
@@ -975,7 +981,8 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 
 	if (Settings::AntiAim::Yaw::dynamicAA)
 	{
-		DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
+		
+		DoAAatTarget(angle, cmd->command_number, bFlip, should_clamp);
 		Math::NormalizeAngles(angle);
 		if (!Settings::FakeLag::enabled)
 			CreateMove::sendPacket = bFlip;
