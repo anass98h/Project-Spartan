@@ -33,7 +33,7 @@
 #include "Tabs/otherstab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
-//#include "../protection.h"
+
 
 
 namespace UI

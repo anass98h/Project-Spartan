@@ -15,64 +15,19 @@ bool LoggedIn = false;
 static char Pass[256] = "";
 std::string data;
 std::string contents;
-std::string master = "Spartan";
 
 
-static void timerstart()
-{
-   bool started = true;
-   // DO shit @Raspbian x)
-}
+
 
 static void ccc()
 {
 		ImGui::CloseCurrentPopup();
 		ImGui::OpenPopup(XORSTR("project-spartan.net"));
 }
-
-		void match ()
-	{
-
-            char line[128];
-            std::string result;
-
-
-			
-			FILE *fp=popen("wget --quiet -O - chrey.xyz/nqr","r"); //pipe wget output to a file handle    
-              while (fgets(line, 128, fp))
-                result += line;
-
-            pclose(fp); //close pipe
-			
-			
-			
-			
- 		 
-            
-		std::string str1(Pass);
-                if(str1.length()>=16 || str1 ==master){
-				  std::size_t found = result.find(str1); 
-			if (found!=std::string::npos || str1 ==master)
-			{
-                               
-                                
-				LoggedIn = true;
-				ImGui::CloseCurrentPopup();
-                miss = 0;
-                timerstart();     
-                                }  
-                                   
-                               
-			
-			else{
-					miss += 1;
-			ImGui::CloseCurrentPopup();
-					
-			if (ImGui::BeginPopup("oops"))
+static void ppp(){			if (ImGui::BeginPopup("oops"))
 				{
 					ImGui::Text(XORSTR("Oops the ID you entered is wrong please retry"));
-								ImGui::Spacing();
-							ImGui::Spacing();
+                            ImGui::Spacing();
 							ImGui::Spacing();
 					if (ImGui::Button(XORSTR("OK"))){
 						if(!LoggedIn)
@@ -82,18 +37,11 @@ static void ccc()
 
 					ImGui::EndPopup();
 				}
-						ImGui::PopStyleVar();
-				ImGui::OpenPopup("oops");
-			}
-                }
-	
-		}
-
+                ImGui::PopStyleVar();}
 void SetupMainMenuBar()
 {			
-					
-				
 
+                
 	
 	    if (ImGui::Begin("Different Menus", &ShowMainWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoResize)){
 				
@@ -110,28 +58,43 @@ void SetupMainMenuBar()
 
 					ImGui::Columns(1);
 					ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 135));
-			if (ImGui::BeginPopupModal(XORSTR("project-spartan.net")))
+	
+                
+                        if (ImGui::BeginPopupModal(XORSTR("project-spartan.net")))
 				{
 					ImGui::Text(XORSTR("You successfully launched project-spartan Private Build please enter your ID to continue "));
 					ImGui::Spacing();
 						ImGui::BulletText (" Verification-ID ");
-					
+                        
 							ImGui::PushItemWidth(188);
 					ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass), ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password | ImGuiInputTextFlags_AutoSelectAll);
 					ImGui::PopItemWidth();
 
-					if (ImGui::Button(XORSTR("Login")))
-							match();
-                            
-				
-
-					ImGui::EndPopup();
-				}
+					if (ImGui::Button(XORSTR("Login"))){
+							if(protection::pwmatch(Pass)== true){
+							
+									LoggedIn = true;
+									ImGui::CloseCurrentPopup();
+                					miss = 0;
+                				protection::timerstart();     
+							}
+			
+                        else{
+									miss += 1;
+			ImGui::CloseCurrentPopup();
+					
+			
+				ImGui::OpenPopup("oops");
+			}
+                
+					}
+                    	ImGui::EndPopup();
+                }
 				ImGui::PopStyleVar();
-			
-			
-
-			
+    
+						
+	
+                
 			
 					if( ImGui::Button(XORSTR("Logout  "), ImVec2(ImGui::CalcTextSize(XORSTR("Logout  "), NULL, true).x, 0.0f)) )
 		{	

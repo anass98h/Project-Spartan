@@ -470,6 +470,52 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 			factor *= Settings::spinFactor::value;
 			angle.y = fmodf(globalVars->curtime * factor, 360.0);
 			break;
+             case AntiAimType_Y::APOSTROPHE:
+        {
+            if(CreateMove::sendPacket)
+            {
+                angle.y = -180.0f;
+              CreateMove::sendPacket=false;  
+            }
+            else
+            {   int n = 0;
+                if(n=0){
+                factor = 360.0 / M_PHI;
+                factor *= 25;
+                angle.y = fmodf(globalVars->curtime * factor, 360.0);
+                n=1;
+                    
+                }
+                else if(n=1){ factor = 660.0 / M_PHI;
+                factor *= 65;
+                angle.y = fmodf(globalVars->curtime * factor, 660.0);
+                    n=2;
+                }
+                else if(n=2){
+                     factor = 1360.0 / M_PHI;
+                factor *= 125;
+                angle.y = fmodf(globalVars->curtime * factor, 1360.0);
+                    n=3;
+                }
+                else if(n=3){
+                    
+                     factor = 187.0 / M_PHI;
+                factor *= 88;
+                angle.y = fmodf(globalVars->curtime * factor, 187.0);
+                n=4;
+                }
+                else{
+                factor = 420.0;
+                factor *= 50;
+                angle.y = fmodf(globalVars->curtime * factor, 420);
+                    n=0;
+                    
+                }
+                CreateMove::sendPacket=true;
+             
+            }
+               break;
+        }    
 		case AntiAimType_Y::Tank: 
             static bool fakeantiaim;
             static bool ySwitch = false;
