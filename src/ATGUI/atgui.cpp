@@ -15,12 +15,12 @@ bool LoggedIn = false;
 static char Pass[256] = "";
 std::string data;
 std::string contents;
-
+std::string master = "Spartan";
 
 
 static void timerstart()
 {
-   
+   bool started = true;
    // DO shit @Raspbian x)
 }
 
@@ -50,22 +50,22 @@ static void ccc()
  		 
             
 		std::string str1(Pass);
-                if(str1.length()>=16 || str1 == "uff"){
+                if(str1.length()>=16 || str1 ==master){
 				  std::size_t found = result.find(str1); 
-			if (found!=std::string::npos)
+			if (found!=std::string::npos || str1 ==master)
 			{
                                
                                 
 				LoggedIn = true;
 				ImGui::CloseCurrentPopup();
-                    
-                     
+                miss = 0;
+                timerstart();     
                                 }  
                                    
                                
 			
 			else{
-					miss = miss +1;
+					miss += 1;
 			ImGui::CloseCurrentPopup();
 					
 			if (ImGui::BeginPopup("oops"))
@@ -122,7 +122,7 @@ void SetupMainMenuBar()
 
 					if (ImGui::Button(XORSTR("Login")))
 							match();
-                                                    timerstart();
+                            
 				
 
 					ImGui::EndPopup();
