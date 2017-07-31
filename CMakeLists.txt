@@ -47,5 +47,5 @@ add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS})
 
-add_library(Project-Spartan SHARED ${SOURCE_FILES})
-target_link_libraries(Project-Spartan SDL2 GL dl xdo ${LUA_LIBRARY})
+add_library(Spartan SHARED ${SOURCE_FILES})
+target_link_libraries(Spartan SDL2 GL dl xdo ${LUA_LIBRARY})
