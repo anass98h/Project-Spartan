@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../atgui.h"
+#include "../Spartangui.h"
 
-namespace Colors
+namespace PlayerList
 {
 	extern bool showWindow;
 

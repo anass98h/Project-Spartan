@@ -1,4 +1,4 @@
-#include "atgui.h"
+#include "Spartangui.h"
 static int miss = 0;
 bool UI::isVisible = false;
 bool ShowMainWindow = false;

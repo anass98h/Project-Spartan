@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../atgui.h"
+#include "../Spartangui.h"
 
-namespace Configs
+namespace Login
 {
 	extern bool showWindow;
-
+        extern bool LoggedIn;
 	extern void RenderWindow();
 }

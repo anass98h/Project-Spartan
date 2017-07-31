@@ -16,7 +16,7 @@
 #include "Utils/util_items.h"
 #include "Utils/util_sdk.h"
 #include "config.h"
-#include "ATGUI/atgui.h"
+#include "SpartanGUI/Spartangui.h"
 #include "Hacks/esp.h"
 
 enum class SmoothType : int

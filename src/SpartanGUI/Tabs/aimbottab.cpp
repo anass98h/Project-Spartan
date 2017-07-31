@@ -1,4 +1,4 @@
-#include "../atgui.h"
+#include "../Spartangui.h"
 
 static ItemDefinitionIndex currentWeapon = ItemDefinitionIndex::INVALID;
 static bool enabled = false;

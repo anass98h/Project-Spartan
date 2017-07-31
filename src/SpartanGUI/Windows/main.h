@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../atgui.h"
+#include "../Spartangui.h"
 
-namespace PlayerList
+namespace Main
 {
 	extern bool showWindow;
 
 	extern void RenderWindow();
+
 }

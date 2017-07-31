@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../atgui.h"
+#include "../Spartangui.h"
 
 namespace Aimbot
 {

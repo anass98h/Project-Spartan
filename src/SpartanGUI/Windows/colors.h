@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../atgui.h"
+#include "../Spartangui.h"
 
-namespace SkinModelChanger
+namespace Colors
 {
 	extern bool showWindow;
 
