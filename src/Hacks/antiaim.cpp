@@ -474,7 +474,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         {
             if(CreateMove::sendPacket)
             {
-                angle.y = -180.0f;
+                angle.y -= 180.0f;
               CreateMove::sendPacket=false;  
             }
             else
@@ -503,6 +503,23 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 factor *= 88;
                 angle.y = fmodf(globalVars->curtime * factor, 187.0);
                 n=4;
+                }
+                else if(n=4){
+                    
+                                     
+                     factor = 107.0 / M_PHI;
+                factor *= 108;
+                angle.y = fmodf(globalVars->curtime * factor, 107.0);
+                n=5;   
+                    
+                }
+                else if(n=5){
+                    
+                                        
+                     factor = 687.0 / M_PHI;
+                factor *= 188;
+                angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                n=6;
                 }
                 else{
                 factor = 420.0;
