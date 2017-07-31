@@ -40,7 +40,7 @@ git clone --recursive https://github.com/anass98h/Project-Spartan
 ```
 
 ```bash
-cd  Project\ Spartan/
+cd  Project-Spartan
 ```
 
 ===================
