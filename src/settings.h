@@ -183,13 +183,13 @@ enum class SpammerType : int
 struct AimbotWeapon_t
 {
 	bool enabled, silent, pSilent, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
-	int engageLockTTR;
+	int engageLockTTR, hitChanceRays;
 	Bone bone;
 	SmoothType smoothType;
 	ButtonCode_t aimkey;
 	bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
-	float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit;
-	bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse;
+	float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
+	bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled;
 
 	AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
 		   bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled, float smoothSaltMultiplier,
@@ -200,7 +200,7 @@ struct AimbotWeapon_t
 		   bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
 		   bool spreadLimitEnabled, float spreadLimit,
 		   bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-		   bool predEnabled, bool moveMouse)
+		   bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue)
 	{
 		this->enabled = enabled;
 		this->silent = silent;
@@ -243,6 +243,7 @@ struct AimbotWeapon_t
 		this->autoSlow = autoSlow;
 		this->predEnabled = predEnabled;
 		this->moveMouse = moveMouse;
+		this->hitChanceEnabled = hitChanceEnabled;
 
 		for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
 			this->desiredBones[bone] = (desiredBones != nullptr ) ? desiredBones[bone] : false;
@@ -490,6 +491,13 @@ namespace Settings
 		namespace SpreadLimit
 		{
 			extern bool enabled;
+			extern float value;
+		}
+
+		namespace HitChance
+		{
+			extern bool enabled;
+			extern int hitRays;
 			extern float value;
 		}
 
