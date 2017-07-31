@@ -6,6 +6,10 @@ int Settings::ClanTagChanger::animationSpeed = 650;
 bool Settings::ClanTagChanger::enabled = false; // TODO find a way to go back to the "official" clan tag for the player? -- Save the current clan tag, before editing, then restore it later
 ClanTagType Settings::ClanTagChanger::type = ClanTagType::STATIC;
 
+  
+
+
+
 static std::vector<std::wstring> splitWords(std::wstring text)
 {
 	std::wistringstream stream(text);
@@ -16,6 +20,7 @@ static std::vector<std::wstring> splitWords(std::wstring text)
 
 	return words;
 }
+
 static ClanTagChanger::Animation Letters(std::string name, std::wstring text)
 {
 	// Outputs a letter incrementing animation
@@ -52,6 +57,7 @@ static ClanTagChanger::Animation Words(std::string name, std::wstring text)
 }
 
 std::vector<ClanTagChanger::Animation> ClanTagChanger::animations = {
+        
 		Marquee("--", L"--"),
 		Words("--", L"--"),
 		Letters("--", L"--")
@@ -64,7 +70,8 @@ void ClanTagChanger::UpdateClanTagCallback()
 		std::wstring wc = Util::StringToWstring(Settings::ClanTagChanger::value);
 
 		switch (Settings::ClanTagChanger::type)
-		{
+		{    
+       
 			case ClanTagType::MARQUEE:
 				*ClanTagChanger::animation = Marquee("------", wc);
 				break;
@@ -113,6 +120,20 @@ void ClanTagChanger::BeginFrame(float frameTime)
 
 	if (Settings::ClanTagChanger::type == ClanTagType::STATIC)
 		SendClanTag(ctWithEscapesProcessed.c_str(), "");
-	else
+    else if(ctWithEscapesProcessed == "time" || Settings::ClanTagChanger::type == ClanTagType::CURTIME) {
+        time_t rawtime;
+        struct tm * timeinfo;
+        char buffer[80];
+
+        time (&rawtime);
+        timeinfo = localtime(&rawtime);
+
+        strftime(buffer,sizeof(buffer),"%T %Z",timeinfo);
+        std::string str(buffer);
+
+        SendClanTag(str.c_str(), "");
+        return;
+            }
+    else
 		SendClanTag(Util::WstringToString(ClanTagChanger::animation->GetCurrentFrame().text).c_str(), "");
 }

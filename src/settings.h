@@ -35,6 +35,7 @@ enum class  TracerType : int
 enum class ClanTagType : int
 {
 	STATIC,
+	CURTIME,
 	MARQUEE,
 	WORDS,
 	LETTERS,
