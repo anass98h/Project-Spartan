@@ -11,7 +11,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd)
 	{
 		*bSendPacket = CreateMove::sendPacket;
 		CreateMove::sendPacket = true;
-
+              
 		BHop::CreateMove(cmd);
 		AutoStrafe::CreateMove(cmd);
 		ShowRanks::CreateMove(cmd);
@@ -26,6 +26,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd)
 		Triggerbot::CreateMove(cmd);
 		AntiAim::CreateMove(cmd);
 		Airstuck::CreateMove(cmd);
+       		 Fakewalk::CreateMove(cmd);
 		FakeLag::CreateMove(cmd);
 		ESP::CreateMove(cmd);
 		Walkbot::CreateMove(cmd);
