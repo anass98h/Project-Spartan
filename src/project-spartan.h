@@ -7,7 +7,7 @@
 #include "hooker.h"
 #include "interfaces.h"
 #include "Utils/util.h"
-
+#include "protection.h"
 
 namespace projectspartan
 {
