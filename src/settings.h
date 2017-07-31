@@ -58,6 +58,7 @@ enum class AntiAimType_Y : int
 	SPIN,
 	Tank,
 	TANK2,
+	TANK3,
 	LBYSPIN,
 	RANDOMBACKJITTER,
 	CASUALJITTER,

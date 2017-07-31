@@ -474,7 +474,6 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             static bool fakeantiaim;
             static bool ySwitch = false;
             static int velo = pLocal->GetVelocity().Length2D();
-            bool bSendPacket;
            
                 if(pLocal->GetVelocity().Length2D() > 0.1f)  //u could move slower than 1 unit per sec 
                 {
@@ -485,12 +484,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 {
                     if (fakeantiaim)
                     {
-                        bSendPacket = false;
+                        CreateMove::sendPacket = false;
                         angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
                     }
                     else
                     {
-                        bSendPacket = true;
+                        CreateMove::sendPacket = true;
                         angle.y -= *pLocal->GetLowerBodyYawTarget() * 18.f;
                     }
                 }
@@ -522,7 +521,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 			 { 
 			 	if (masturbation)
 			 	{
-			 		bSendPacket = true;
+			 		CreateMove::sendPacket = true;
 						if (CreateMove::sendPacket)
 						{
 							if (jitterticks > 0)
@@ -544,12 +543,94 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 				
 				else
 				{
-					bSendPacket = false;
+					CreateMove::sendPacket = false;
 					angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 180 + 90;
 				}
 			
 			}
             break;
+           case AntiAimType_Y::TANK3:
+           	static bool uff = false;
+           	static bool uff2 = false;
+           	static bool uff3 = false;
+           	static int uff4 = 0;
+           	if (pLocal->GetVelocity().Length2D() > 1.0f)
+           	{ 
+           	
+           		yFlip ? angle.y -= 180 : angle.y += 170; 
+           		if(!CreateMove::sendPacket)
+           			angle.y = 0.0f;
+           	}
+           	if (CreateMove::sendPacket)
+           	{
+
+           		if(uff) 
+           		{
+
+           			angle.y = *pLocal->GetLowerBodyYawTarget() + 90.0f;
+           			uff = false;
+
+           		}
+           		else 
+           		{ 
+           			angle.y = *pLocal->GetLowerBodyYawTarget() + rand() / 1000;
+           			uff = true;
+           		}
+
+           		if (uff2)
+           		{
+
+           			if (uff4 > 0)
+         				{
+
+         					uff4 = 1000;
+         					angle.y += 199 + uff4 / rand();
+         					uff4 = -1000;
+         				}
+         				else
+         				{ 
+         					angle.y = *pLocal->GetLowerBodyYawTarget() + uff4;
+         					uff4 = rand(); 
+         				}
+
+        		uff = false;
+        		}
+
+        		else
+        		{
+
+        			angle.y = rand() * rand();
+        			uff = true;
+
+        		}	
+
+
+           	if (uff3)
+           	{
+           		if (CreateMove::sendPacket)
+           			angle.y += 90.0f;
+           		else 
+           			angle.y -= 90.0f;
+           		uff3 = false;
+           	}
+           	else
+           	{
+           		angle.y = *pLocal->GetLowerBodyYawTarget() + 1337;
+           		uff3 = true;
+
+
+           	}
+           }
+           	else
+           	{
+
+           		angle.y = *pLocal->GetLowerBodyYawTarget() + rand() / 1337;
+
+
+           	}
+
+           	CreateMove::sendPacket = !CreateMove::sendPacket;
+           	break;
 		case AntiAimType_Y::LBYSPIN:
 			factor =  360.0 / M_PHI;
 			angle.y = *pLocal->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
@@ -617,16 +698,19 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 		case AntiAimType_Y::SIDEWAYSLEFT:
 			angle.y -= 90.0f;
 			break;
+ 		case AntiAimType_Y::FAKESIDEWAYS:
 
-		case AntiAimType_Y::FAKESIDEWAYS:
+            if(CreateMove::sendPacket){            
+            angle.y = 90.0f;
+            CreateMove::sendPacket = false;
+            }
+            else
+            {
+            angle.y = 180.0f;
+            CreateMove::sendPacket=true; 
+        	}
 
-			
-			angle.y = -90.0f;
-			bSendPacket = false;
-			
-			angle.y = +180.0f;
-			
-			break;
+            break;
 		
 		case AntiAimType_Y::BACKWARDS:
 			angle.y -= 180.0f;
