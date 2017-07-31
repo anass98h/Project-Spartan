@@ -119,6 +119,24 @@ public:
 	virtual bool EnumEntity(IHandleEntity* pHandleEntity) = 0;
 };
 
+class CTraceFilterEntitiesOnly : public ITraceFilter
+{
+public:
+  bool ShouldHitEntity(C_BaseEntity* pEntityHandle, int contentsMask)
+	{
+		return !(pEntityHandle == pSkip);
+	}
+
+
+	virtual TraceType_t GetTraceType() const
+	{
+		return TRACE_ENTITIES_ONLY;
+	}
+
+	void* pSkip;
+};
+
+
 class IEngineTrace
 {
 public:

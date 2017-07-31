@@ -53,6 +53,9 @@ bool Settings::Aimbot::AutoSlow::enabled = false;
 bool Settings::Aimbot::AutoSlow::goingToSlow = false;
 bool Settings::Aimbot::Prediction::enabled = false;
 bool Settings::Aimbot::moveMouse = false;
+bool Settings::Aimbot::HitChance::enabled = false;
+int Settings::Aimbot::HitChance::hitRays = 100;
+float Settings::Aimbot::HitChance::value = 0.5f;
 
 bool Aimbot::aimStepInProgress = false;
 std::vector<int64_t> Aimbot::friends = { };
@@ -70,7 +73,7 @@ static xdo_t *xdo = xdo_new(NULL);
 std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons = {
 		{ ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
 												SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-												false, false, false, false, false, false, false, false, 0.1f ,false, 10.0f, false, false, 5.0f, false } },
+												false, false, false, false, false, false, false, false, 0.1f ,false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f } },
 };
 
 static QAngle ApplyErrorToAngle(QAngle* angles, float margin)
@@ -90,6 +93,54 @@ void Aimbot::XDOCleanup()
 {
 	xdo_free(xdo);
 }
+
+bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localplayer)
+{
+	if (!Settings::Aimbot::HitChance::enabled)
+		return true;
+	
+	int hitCount = 0;
+	for (int i = 0; i < Settings::Aimbot::HitChance::hitRays; i++) {
+		Vector dst = point;
+	
+		C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
+		if (!activeWeapon)
+			return false;
+
+		float a = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f);
+		float b = activeWeapon->GetSpread() * ((float)(rand() % 1000)/1000.0f) * 90.0f;
+		float c = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f);
+		float d = activeWeapon->GetInaccuracy() * ((float)(rand() % 1000)/1000.0f) * 90.0f;
+
+		Vector dir, src, dest;
+    trace_t tr;
+    Ray_t ray;
+    CTraceFilterEntitiesOnly filter;
+
+    src = localplayer->GetEyePosition();
+    QAngle angles = Math::CalcAngle(src, dst);
+    angles.x += (cos(a) * b) + (cos(c) * d);
+  	angles.y += (sin(a) * b) + (sin(c) * d);
+    Math::AngleVectors(angles, dir);
+    dest = src + (dir * 8192);
+		
+		ray.Init(src, dest);
+    filter.pSkip = localplayer;
+		trace->TraceRay(ray, MASK_SHOT, &filter, &tr);
+	
+		C_BasePlayer* player = (C_BasePlayer*) tr.m_pEntityHit;
+    if (player && player->GetClientClass()->m_ClassID == EClassIds::CCSPlayer && player != localplayer && !player->GetDormant() && player->GetAlive() && !player->GetImmune() && (player->GetTeam() != localplayer->GetTeam() || Settings::Aimbot::friendly))	
+			hitCount++;
+	}
+
+	//cvar->ConsoleDPrintf("HitCount: %d/%d - %f\n", hitCount, Settings::Aimbot::HitChance::hitRays, Settings::Aimbot::HitChance::value);
+
+
+	return ((float)hitCount/(float)Settings::Aimbot::HitChance::hitRays > Settings::Aimbot::HitChance::value);
+}
+
+
+
 /* Fills points Vector. True if successful. False if not.  Credits for Original method - ReactiioN */
 static bool HeadMultiPoint(C_BasePlayer *player, Vector points[])
 {
@@ -957,6 +1008,9 @@ void Aimbot::UpdateValues()
 	Settings::Aimbot::AutoWall::enabled = currentWeaponSetting.autoWallEnabled;
 	Settings::Aimbot::AutoWall::value = currentWeaponSetting.autoWallValue;
 	Settings::Aimbot::AutoSlow::enabled = currentWeaponSetting.autoSlow;
+	Settings::Aimbot::HitChance::value = currentWeaponSetting.hitChanceValue;
+	Settings::Aimbot::HitChance::hitRays = currentWeaponSetting.hitChanceRays;
+	Settings::Aimbot::HitChance::enabled = currentWeaponSetting.hitChanceEnabled;
 
 	for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
 		Settings::Aimbot::AutoAim::desiredBones[bone] = currentWeaponSetting.desiredBones[bone];

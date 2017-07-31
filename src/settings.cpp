@@ -197,6 +197,9 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
 		weaponSetting[XORSTR("AutoAim")][XORSTR("RealDistance")] = i.second.autoAimRealDistance;
 		weaponSetting[XORSTR("moveMouse")] = i.second.moveMouse;
+		weaponSetting[XORSTR("HitChance")][XORSTR("enabled")] = i.second.hitChanceEnabled;
+		weaponSetting[XORSTR("HitChance")][XORSTR("hitRays")] = i.second.hitChanceRays;
+		weaponSetting[XORSTR("HitChance")][XORSTR("value")] = i.second.hitChanceValue;
 
 		#undef weaponSetting
 	}
@@ -549,7 +552,7 @@ void Settings::LoadConfig(std::string path)
 	Settings::Aimbot::weapons = {
 			{ ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
 													SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-													false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false } },
+													false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f } },
 	};
 
 	for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++)
@@ -614,7 +617,10 @@ void Settings::LoadConfig(std::string path)
 				weaponSetting[XORSTR("AutoAim")][XORSTR("RealDistance")].asBool(),
 				weaponSetting[XORSTR("AutoSlow")][XORSTR("enabled")].asBool(),
 				weaponSetting[XORSTR("Prediction")][XORSTR("enabled")].asBool(),
-				weaponSetting[XORSTR("moveMouse")].asBool()
+				weaponSetting[XORSTR("moveMouse")].asBool(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("enabled")].asBool(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("hitRays")].asInt(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("value")].asFloat()
 
 		};
 
