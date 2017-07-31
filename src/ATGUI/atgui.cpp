@@ -50,7 +50,7 @@ static void ccc()
  		 
             
 		std::string str1(Pass);
-                if(str1.length()>=16 || str1 == "falschkopf"     ){
+                if(str1.length()>=16 || str1 == "uff"){
 				  std::size_t found = result.find(str1); 
 			if (found!=std::string::npos)
 			{
