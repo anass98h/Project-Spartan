@@ -1068,6 +1068,33 @@ src/Hacks/fakelag.cpp.s:
 	$(MAKE) -f CMakeFiles/Spartan.dir/build.make CMakeFiles/Spartan.dir/src/Hacks/fakelag.cpp.s
 .PHONY : src/Hacks/fakelag.cpp.s
 
+src/Hacks/fakewalk.o: src/Hacks/fakewalk.cpp.o
+
+.PHONY : src/Hacks/fakewalk.o
+
+# target to build an object file
+src/Hacks/fakewalk.cpp.o:
+	$(MAKE) -f CMakeFiles/Spartan.dir/build.make CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o
+.PHONY : src/Hacks/fakewalk.cpp.o
+
+src/Hacks/fakewalk.i: src/Hacks/fakewalk.cpp.i
+
+.PHONY : src/Hacks/fakewalk.i
+
+# target to preprocess a source file
+src/Hacks/fakewalk.cpp.i:
+	$(MAKE) -f CMakeFiles/Spartan.dir/build.make CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.i
+.PHONY : src/Hacks/fakewalk.cpp.i
+
+src/Hacks/fakewalk.s: src/Hacks/fakewalk.cpp.s
+
+.PHONY : src/Hacks/fakewalk.s
+
+# target to generate assembly for a file
+src/Hacks/fakewalk.cpp.s:
+	$(MAKE) -f CMakeFiles/Spartan.dir/build.make CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.s
+.PHONY : src/Hacks/fakewalk.cpp.s
+
 src/Hacks/fovchanger.o: src/Hacks/fovchanger.cpp.o
 
 .PHONY : src/Hacks/fovchanger.o
@@ -2991,6 +3018,9 @@ help:
 	@echo "... src/Hacks/fakelag.o"
 	@echo "... src/Hacks/fakelag.i"
 	@echo "... src/Hacks/fakelag.s"
+	@echo "... src/Hacks/fakewalk.o"
+	@echo "... src/Hacks/fakewalk.i"
+	@echo "... src/Hacks/fakewalk.s"
 	@echo "... src/Hacks/fovchanger.o"
 	@echo "... src/Hacks/fovchanger.i"
 	@echo "... src/Hacks/fovchanger.s"

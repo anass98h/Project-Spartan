@@ -1,11 +1,15 @@
 #include "hvhtab.h"
 
+
+int Settings::spinFactor::value = 1;
+
+
 void HvH::RenderTab()
 {
 	const char* yTypes[] = {
 
-			"Legit Trolling", "Legit Trolling 2", "No AA", "SLOW SPIN", "Tank", "Even Slower Spin", "FAST SPIN", "FAKE FAST SPIN", "Random Spin", "LBYSPIN", "FAKE LBYSPIN", "RANDOM BACKJITTER", "TURBO JITTER", "TURBO SPIN", "FAKE BACKWARDS", "CASUAL JITTER", "LBY JITTER", "Fake Head", "JITTER", "BACKJITTER", "SIDE JITTER", "SIDEWAYS RIGHT", "SIDEWAYS LEFT", "STATIC SIDEWAYS RIGHT", "STATIC SIDEWAYS LEFT", "FAKE SIDEWAYS", "BACKWARDS", "STATIC BACKWARDS", "FORWARDS", "STATIC FORWARDS", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", "LUA", "LUA2", "CASUALAA",// safe
-			"LISP", "TEST LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "Lowerbody Jitter", "LOWERBODY TEST", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
+			"Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Tank", "Tank 2", "LBYSPIN", "RANDOM BACKJITTER", "CASUAL JITTER", "LBY JITTER", "JITTER", "BACKJITTER", "SIDEWAYS RIGHT", "SIDEWAYS LEFT", "FAKE SIDEWAYS", "BACKWARDS", "FORWARDS", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", "LUA", "LUA2", "CASUALAA",// safe
+			"LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
 	};
 		const char* zTypes[] = {
@@ -32,6 +36,7 @@ void HvH::RenderTab()
 					ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
 					ImGui::Text(XORSTR("Yaw Actual"));
 					ImGui::Checkbox(XORSTR("Anti Resolver"), &Settings::AntiAim::Yaw::antiResolver);
+					ImGui::Checkbox(XORSTR("Dynamic AA"), &Settings::AntiAim::Yaw::dynamicAA);
 					
 				
 				}
@@ -44,7 +49,7 @@ void HvH::RenderTab()
 						
 						if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP)
 						{
-							Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN_SLOW;
+							Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
 							ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
 
 						}
@@ -65,7 +70,7 @@ void HvH::RenderTab()
 
 						if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
 						{
-							Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN_SLOW;
+							Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
 							ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
 						}
 					}
@@ -232,11 +237,35 @@ void HvH::RenderTab()
 			}
 
 
+				if(Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN)
+	{
+					ImGui::NextColumn();
+	
+
+	{
+		ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
+		{
+			ImGui::Text(XORSTR("Spin Factor"));
+			ImGui::NextColumn();
+			{
+				ImGui::PushItemWidth(-1);
+				ImGui::SliderInt(XORSTR("##spinFactor"), &Settings::spinFactor::value, 0, 100, XORSTR("Amount: %1.f"));
+				ImGui::PopItemWidth();
 				
-	
+			}
+
+
 		}
-	
+					
+			{
+				
+				
+			}
+		}
+	}
 			ImGui::EndChild();
-		
+		}
+
 }
 }
+				

@@ -55,14 +55,11 @@ enum class AntiAimType_Y : int
 	LEGITTROLLING,
 	LEGITTROLLING2,
 	NOAA,
-	SPIN_SLOW,
+	SPIN,
 	Tank,
-	SPIN_FAST,
-	SPIN_RANDOM,
+	TANK2,
 	LBYSPIN,
 	RANDOMBACKJITTER,
-	TURBOJITTER,
-	SPIN_TURBO,
 	CASUALJITTER,
 	LBYJITTER,
 	JITTER,
@@ -546,7 +543,7 @@ namespace Settings
 			extern AntiAimType_Y type;
 			extern AntiAimType_Y typeFake;
 			extern bool antiResolver;
-			
+			extern bool dynamicAA;
 		}
 		namespace Roll
 		{
@@ -940,6 +937,11 @@ namespace Settings
 		extern bool enabled;
 		extern int value;
 		extern bool adaptive;
+	}
+
+	namespace spinFactor
+	{
+		extern int value;
 	}
 
 	namespace AutoAccept

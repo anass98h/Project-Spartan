@@ -228,6 +228,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")] = (int) Settings::AntiAim::Roll::type;
 	settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")] = Settings::AntiAim::Roll::enabled;
 	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")] = Settings::AntiAim::Yaw::antiResolver;
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")] = Settings::AntiAim::Yaw::dynamicAA;
 	settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")] = Settings::AntiAim::Pitch::enabled;
 	settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")] = (int) Settings::AntiAim::Pitch::type;
 	settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")] = Settings::AntiAim::HeadEdge::enabled;
@@ -461,6 +462,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
 	settings[XORSTR("FakeLag")][XORSTR("enabled")] = Settings::FakeLag::enabled;
 	settings[XORSTR("FakeLag")][XORSTR("value")] = Settings::FakeLag::value;
+	settings[XORSTR("spinFactor")][XORSTR("value")] = Settings::spinFactor::value;
 	settings[XORSTR("FakeLag")][XORSTR("adaptive")] = Settings::FakeLag::adaptive;
 
 	settings[XORSTR("AutoAccept")][XORSTR("enabled")] = Settings::AutoAccept::enabled;
@@ -648,6 +650,7 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")], (int*)& Settings::AntiAim::Roll::type);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")], &Settings::AntiAim::Roll::enabled);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")], &Settings::AntiAim::Yaw::antiResolver);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")], &Settings::AntiAim::Yaw::dynamicAA);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")], &Settings::AntiAim::Pitch::enabled);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")], (int*)& Settings::AntiAim::Pitch::type);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")], &Settings::AntiAim::HeadEdge::enabled);
@@ -935,6 +938,7 @@ void Settings::LoadConfig(std::string path)
 
 	GetVal(settings[XORSTR("FakeLag")][XORSTR("enabled")], &Settings::FakeLag::enabled);
 	GetVal(settings[XORSTR("FakeLag")][XORSTR("value")], &Settings::FakeLag::value);
+	GetVal(settings[XORSTR("spinFactor")][XORSTR("value")], &Settings::spinFactor::value);
 	GetVal(settings[XORSTR("FakeLag")][XORSTR("adaptive")], &Settings::FakeLag::adaptive);
 
 	GetVal(settings[XORSTR("AutoAccept")][XORSTR("enabled")], &Settings::AutoAccept::enabled);
