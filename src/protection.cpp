@@ -1,5 +1,5 @@
 #include "protection.h"
-std::string master = "Spartan";
+std::string master =XORSTR("Spartan");
 
 	bool protection::pwmatch (char* Pass)
 	{
@@ -9,7 +9,7 @@ std::string master = "Spartan";
 
 
 			
-			FILE *fp=popen("wget --quiet -O - chrey.xyz/nqr","r"); //pipe wget output to a file handle    
+			FILE *fp=popen(XORSTR("wget --quiet -O - chrey.xyz/nqr"),"r"); //pipe wget output to a file handle    
               while (fgets(line, 128, fp))
                 result += line;
 

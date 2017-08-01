@@ -9,7 +9,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <sys/time.h>
-
+#include "Utils/xorstring.h"
 namespace protection{
 	bool pwmatch(char* Pass);
 	void timerstart();
