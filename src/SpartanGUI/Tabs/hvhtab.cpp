@@ -8,7 +8,7 @@ void HvH::RenderTab()
 {
 	const char* yTypes[] = {
 
-			"Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot","Apostrophe", "Tank", "Tank 2", "Tank 3", "LBYSPIN", "RANDOM BACKJITTER", "CASUAL JITTER", "LBY JITTER", "JITTER", "BACKJITTER", "SIDEWAYS RIGHT", "SIDEWAYS LEFT", "FAKE SIDEWAYS", "BACKWARDS", "FORWARDS", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", "LUA", "LUA2", "CASUALAA",// safe
+			"Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot","Apostrophe", "Tank", "Tank 2", "Tank 3", "LBY BREAKER", "LBYSPIN", "RANDOM BACKJITTER", "CASUAL JITTER", "LBY JITTER", "JITTER", "BACKJITTER", "SIDEWAYS RIGHT", "SIDEWAYS LEFT", "FAKE SIDEWAYS", "BACKWARDS", "FORWARDS", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", "LUA", "LUA2", "CASUALAA",// safe
 			"LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
 	};
