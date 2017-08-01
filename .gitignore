@@ -3,4 +3,4 @@ CMakeFiles/
 ID/
 Spartan.so
 CMakeCache.txt
-build
+cmake_install.cmake
