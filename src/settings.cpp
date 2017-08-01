@@ -415,6 +415,8 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings[XORSTR("Airstuck")][XORSTR("key")] = Util::GetButtonName(Settings::Airstuck::key);
 	settings[XORSTR("Fakewalk")][XORSTR("enabled")] = Settings::Fakewalk::enabled;
 	settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
+	//settings[XORSTR("CircleStrafe")][XORSTR("enabled")] = Settings::CircleStrafe::enabled;
+	//settings[XORSTR("CircleStrafe")][XORSTR("key")] = Util::GetButtonName(Settings::CircleStrafe::key);
 	//settings[XORSTR("anglechange")][XORSTR("enabled")] = Settings::anglechange::enabled;
 	//settings[XORSTR("anglechange")][XORSTR("key")] = Util::GetButtonName(Settings::anglechange::key);
 
@@ -842,7 +844,8 @@ void Settings::LoadConfig(std::string path)
 	GetButtonCode(settings[XORSTR("Airstuck")][XORSTR("key")], &Settings::Airstuck::key);
 	GetVal(settings[XORSTR("Fakewalk")][XORSTR("enabled")], &Settings::Fakewalk::enabled);
 	settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
-	
+	//GetVal(settings[XORSTR("CircleStrafe")][XORSTR("enabled")], &Settings::CircleStrafe::enabled);
+	//settings[XORSTR("CircleStrafe")][XORSTR("key")] = Util::GetButtonName(Settings::CircleStrafe::key);
 
 	Settings::Skinchanger::Skins::enabled = false;
 	Settings::Skinchanger::skinsCT.clear();

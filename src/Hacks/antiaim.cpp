@@ -617,15 +617,18 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            	static bool uff2 = false;
            	static bool uff3 = false;
            	static int uff4 = 0;
-           	if (pLocal->GetVelocity().Length2D() > 1.0f)
-           	{ 
+
            	
+           		if(CreateMove::sendPacket)
+           		{
+
            		yFlip ? angle.y -= 180 : angle.y += 170; 
-           		if(!CreateMove::sendPacket)
-           			angle.y = 0.0f;
-           	}
-           	if (CreateMove::sendPacket)
-           	{
+           		CreateMove::sendPacket = false;
+           		}
+           		else
+           		{
+
+           			{
 
            		if(uff) 
            		{
@@ -648,7 +651,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
          					uff4 = 1000;
          					angle.y += 199 + uff4 / rand();
-         					uff4 = -1000;
+         					uff4 = 901000;
          				}
          				else
          				{ 
@@ -670,11 +673,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
            	if (uff3)
            	{
-           		if (CreateMove::sendPacket)
-           			angle.y += 90.0f;
-           		else 
-           			angle.y -= 90.0f;
-           		uff3 = false;
+           		angle.y = 90;
            	}
            	else
            	{
@@ -684,15 +683,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
            	}
            }
-           	else
-           	{
 
-           		angle.y = *pLocal->GetLowerBodyYawTarget() + rand() / 1337;
+           CreateMove::sendPacket = true;
 
-
-           	}
-
-           	CreateMove::sendPacket = !CreateMove::sendPacket;
+         }
            	break;
 		case AntiAimType_Y::LBYSPIN:
 			factor =  360.0 / M_PHI;

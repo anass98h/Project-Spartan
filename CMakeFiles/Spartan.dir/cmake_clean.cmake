@@ -48,6 +48,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Spartan.dir/src/Hacks/noflash.cpp.o"
   "CMakeFiles/Spartan.dir/src/Hacks/skybox.cpp.o"
   "CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o"
+  "CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o"
   "CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o"
   "CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o"
   "CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o"

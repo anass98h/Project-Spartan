@@ -1233,9 +1233,33 @@ CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o.provides: CMakeFiles/Spar
 CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o.provides.build: CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o
 
 
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o: CMakeFiles/Spartan.dir/flags.make
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o: src/Hacks/circlestrafe.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp"
+
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp" > CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.i
+
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp" -o CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.s
+
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.requires:
+
+.PHONY : CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.requires
+
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.provides: CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.requires
+	$(MAKE) -f CMakeFiles/Spartan.dir/build.make CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.provides.build
+.PHONY : CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.provides
+
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.provides.build: CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o
+
+
 CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o: src/Hacks/dlights.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/dlights.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.i: cmake_force
@@ -1259,7 +1283,7 @@ CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o.provides.build: CMakeFiles/Sparta
 
 CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o: src/Hacks/airstuck.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/airstuck.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.i: cmake_force
@@ -1283,7 +1307,7 @@ CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o.provides.build: CMakeFiles/Spart
 
 CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o: src/Hacks/autowall.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/autowall.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.i: cmake_force
@@ -1307,7 +1331,7 @@ CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o.provides.build: CMakeFiles/Spart
 
 CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o: src/Hacks/edgejump.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/edgejump.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.i: cmake_force
@@ -1331,7 +1355,7 @@ CMakeFiles/Spartan.dir/src/Hacks/edgejump.cpp.o.provides.build: CMakeFiles/Spart
 
 CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o: src/Hacks/walkbot.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/walkbot.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.i: cmake_force
@@ -1355,7 +1379,7 @@ CMakeFiles/Spartan.dir/src/Hacks/walkbot.cpp.o.provides.build: CMakeFiles/Sparta
 
 CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o: src/Hacks/showranks.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/showranks.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.i: cmake_force
@@ -1379,7 +1403,7 @@ CMakeFiles/Spartan.dir/src/Hacks/showranks.cpp.o.provides.build: CMakeFiles/Spar
 
 CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o: src/Hacks/showspectators.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/showspectators.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.i: cmake_force
@@ -1403,7 +1427,7 @@ CMakeFiles/Spartan.dir/src/Hacks/showspectators.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o: src/Hacks/autoaccept.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/autoaccept.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.i: cmake_force
@@ -1427,7 +1451,7 @@ CMakeFiles/Spartan.dir/src/Hacks/autoaccept.cpp.o.provides.build: CMakeFiles/Spa
 
 CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o: src/Hacks/fakewalk.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/fakewalk.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.i: cmake_force
@@ -1451,7 +1475,7 @@ CMakeFiles/Spartan.dir/src/Hacks/fakewalk.cpp.o.provides.build: CMakeFiles/Spart
 
 CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o: src/Hacks/predictionsystem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/predictionsystem.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.i: cmake_force
@@ -1475,7 +1499,7 @@ CMakeFiles/Spartan.dir/src/Hacks/predictionsystem.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o: src/Hacks/fovchanger.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/fovchanger.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.i: cmake_force
@@ -1499,7 +1523,7 @@ CMakeFiles/Spartan.dir/src/Hacks/fovchanger.cpp.o.provides.build: CMakeFiles/Spa
 
 CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o: src/Hacks/valvedscheck.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/valvedscheck.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.i: cmake_force
@@ -1523,7 +1547,7 @@ CMakeFiles/Spartan.dir/src/Hacks/valvedscheck.cpp.o.provides.build: CMakeFiles/S
 
 CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o: src/Hacks/skinchanger.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/skinchanger.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.i: cmake_force
@@ -1547,7 +1571,7 @@ CMakeFiles/Spartan.dir/src/Hacks/skinchanger.cpp.o.provides.build: CMakeFiles/Sp
 
 CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o: src/Hacks/chams.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_64) "Building CXX object CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o -c "/home/raspbian/Project Spartan/src/Hacks/chams.cpp"
 
 CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.i: cmake_force
@@ -1571,7 +1595,7 @@ CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o.provides.build: CMakeFiles/Spartan.
 
 CMakeFiles/Spartan.dir/src/offsets.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/offsets.cpp.o: src/offsets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_64) "Building CXX object CMakeFiles/Spartan.dir/src/offsets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_65) "Building CXX object CMakeFiles/Spartan.dir/src/offsets.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/offsets.cpp.o -c "/home/raspbian/Project Spartan/src/offsets.cpp"
 
 CMakeFiles/Spartan.dir/src/offsets.cpp.i: cmake_force
@@ -1595,7 +1619,7 @@ CMakeFiles/Spartan.dir/src/offsets.cpp.o.provides.build: CMakeFiles/Spartan.dir/
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o: src/SpartanGUI/Spartangui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_65) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_66) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Spartangui.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.i: cmake_force
@@ -1619,7 +1643,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Spartangui.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o: src/SpartanGUI/Windows/colors.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_66) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_67) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/colors.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.i: cmake_force
@@ -1643,7 +1667,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/colors.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o: src/SpartanGUI/Windows/skinmodelchanger.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_67) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_68) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/skinmodelchanger.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.i: cmake_force
@@ -1667,7 +1691,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/skinmodelchanger.cpp.o.provides.bu
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o: src/SpartanGUI/Windows/login.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_68) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_69) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/login.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.i: cmake_force
@@ -1691,7 +1715,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/login.cpp.o.provides.build: CMakeF
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o: src/SpartanGUI/Windows/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_69) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_70) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/main.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.i: cmake_force
@@ -1715,7 +1739,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/main.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o: src/SpartanGUI/Windows/walk.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_70) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_71) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/walk.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.i: cmake_force
@@ -1739,7 +1763,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/walk.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o: src/SpartanGUI/Windows/configs.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_71) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_72) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/configs.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.i: cmake_force
@@ -1763,7 +1787,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/configs.cpp.o.provides.build: CMak
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o: src/SpartanGUI/Windows/playerlist.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_72) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_73) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Windows/playerlist.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.i: cmake_force
@@ -1787,7 +1811,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Windows/playerlist.cpp.o.provides.build: C
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o: src/SpartanGUI/Spartanguielements.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_73) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_74) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Spartanguielements.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.i: cmake_force
@@ -1811,7 +1835,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Spartanguielements.cpp.o.provides.build: C
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o: src/SpartanGUI/Tabs/aimbottab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_74) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_75) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/aimbottab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.i: cmake_force
@@ -1835,7 +1859,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/aimbottab.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o: src/SpartanGUI/Tabs/misctab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_75) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_76) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/misctab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.i: cmake_force
@@ -1859,7 +1883,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/misctab.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o: src/SpartanGUI/Tabs/triggerbottab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_76) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/triggerbottab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.i: cmake_force
@@ -1883,7 +1907,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/triggerbottab.cpp.o.provides.build: C
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o: src/SpartanGUI/Tabs/visualstab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/visualstab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.i: cmake_force
@@ -1907,7 +1931,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/visualstab.cpp.o.provides.build: CMak
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o: src/SpartanGUI/Tabs/otherstab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/otherstab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.i: cmake_force
@@ -1931,7 +1955,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/otherstab.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o: src/SpartanGUI/Tabs/modelstab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/modelstab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.i: cmake_force
@@ -1955,7 +1979,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/modelstab.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o: src/SpartanGUI/Tabs/hvhtab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/hvhtab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.i: cmake_force
@@ -1979,7 +2003,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/hvhtab.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o: src/SpartanGUI/Tabs/skinstab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o -c "/home/raspbian/Project Spartan/src/SpartanGUI/Tabs/skinstab.cpp"
 
 CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.i: cmake_force
@@ -2003,7 +2027,7 @@ CMakeFiles/Spartan.dir/src/SpartanGUI/Tabs/skinstab.cpp.o.provides.build: CMakeF
 
 CMakeFiles/Spartan.dir/src/shortcuts.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/shortcuts.cpp.o: src/shortcuts.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object CMakeFiles/Spartan.dir/src/shortcuts.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object CMakeFiles/Spartan.dir/src/shortcuts.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/shortcuts.cpp.o -c "/home/raspbian/Project Spartan/src/shortcuts.cpp"
 
 CMakeFiles/Spartan.dir/src/shortcuts.cpp.i: cmake_force
@@ -2027,7 +2051,7 @@ CMakeFiles/Spartan.dir/src/shortcuts.cpp.o.provides.build: CMakeFiles/Spartan.di
 
 CMakeFiles/Spartan.dir/src/fonts.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/fonts.cpp.o: src/fonts.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object CMakeFiles/Spartan.dir/src/fonts.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object CMakeFiles/Spartan.dir/src/fonts.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/fonts.cpp.o -c "/home/raspbian/Project Spartan/src/fonts.cpp"
 
 CMakeFiles/Spartan.dir/src/fonts.cpp.i: cmake_force
@@ -2051,7 +2075,7 @@ CMakeFiles/Spartan.dir/src/fonts.cpp.o.provides.build: CMakeFiles/Spartan.dir/sr
 
 CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o: src/Hooks/RenderView.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/RenderView.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.i: cmake_force
@@ -2075,7 +2099,7 @@ CMakeFiles/Spartan.dir/src/Hooks/RenderView.cpp.o.provides.build: CMakeFiles/Spa
 
 CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o: src/Hooks/SetMouseCodeState.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/SetMouseCodeState.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.i: cmake_force
@@ -2099,7 +2123,7 @@ CMakeFiles/Spartan.dir/src/Hooks/SetMouseCodeState.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o: src/Hooks/RenderSmokePostViewmodel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/RenderSmokePostViewmodel.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.i: cmake_force
@@ -2123,7 +2147,7 @@ CMakeFiles/Spartan.dir/src/Hooks/RenderSmokePostViewmodel.cpp.o.provides.build: 
 
 CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o: src/Hooks/GetViewModelFOV.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/GetViewModelFOV.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.i: cmake_force
@@ -2147,7 +2171,7 @@ CMakeFiles/Spartan.dir/src/Hooks/GetViewModelFOV.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o: src/Hooks/FrameStageNotify.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/FrameStageNotify.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.i: cmake_force
@@ -2171,7 +2195,7 @@ CMakeFiles/Spartan.dir/src/Hooks/FrameStageNotify.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o: src/Hooks/DrawModelExecute.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/DrawModelExecute.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.i: cmake_force
@@ -2195,7 +2219,7 @@ CMakeFiles/Spartan.dir/src/Hooks/DrawModelExecute.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o: src/Hooks/PlaySound.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/PlaySound.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.i: cmake_force
@@ -2219,7 +2243,7 @@ CMakeFiles/Spartan.dir/src/Hooks/PlaySound.cpp.o.provides.build: CMakeFiles/Spar
 
 CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o: src/Hooks/OverrideView.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_92) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/OverrideView.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.i: cmake_force
@@ -2243,7 +2267,7 @@ CMakeFiles/Spartan.dir/src/Hooks/OverrideView.cpp.o.provides.build: CMakeFiles/S
 
 CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o: src/Hooks/OnScreenSizeChanged.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_92) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_93) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/OnScreenSizeChanged.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.i: cmake_force
@@ -2267,7 +2291,7 @@ CMakeFiles/Spartan.dir/src/Hooks/OnScreenSizeChanged.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o: src/Hooks/CreateMove.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_93) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_94) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/CreateMove.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.i: cmake_force
@@ -2291,7 +2315,7 @@ CMakeFiles/Spartan.dir/src/Hooks/CreateMove.cpp.o.provides.build: CMakeFiles/Spa
 
 CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o: src/Hooks/FireEvent.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_94) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_95) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/FireEvent.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.i: cmake_force
@@ -2315,7 +2339,7 @@ CMakeFiles/Spartan.dir/src/Hooks/FireEvent.cpp.o.provides.build: CMakeFiles/Spar
 
 CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o: src/Hooks/BeginFrame.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_95) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_96) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/BeginFrame.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.i: cmake_force
@@ -2339,7 +2363,7 @@ CMakeFiles/Spartan.dir/src/Hooks/BeginFrame.cpp.o.provides.build: CMakeFiles/Spa
 
 CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o: src/Hooks/Paint.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_96) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_97) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/Paint.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.i: cmake_force
@@ -2363,7 +2387,7 @@ CMakeFiles/Spartan.dir/src/Hooks/Paint.cpp.o.provides.build: CMakeFiles/Spartan.
 
 CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o: src/Hooks/PaintTraverse.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_97) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_98) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/PaintTraverse.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.i: cmake_force
@@ -2387,7 +2411,7 @@ CMakeFiles/Spartan.dir/src/Hooks/PaintTraverse.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o: src/Hooks/EmitSound.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_98) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_99) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/EmitSound.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.i: cmake_force
@@ -2411,7 +2435,7 @@ CMakeFiles/Spartan.dir/src/Hooks/EmitSound.cpp.o.provides.build: CMakeFiles/Spar
 
 CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o: src/Hooks/IN_KeyEvent.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_99) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_100) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/IN_KeyEvent.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.i: cmake_force
@@ -2435,7 +2459,7 @@ CMakeFiles/Spartan.dir/src/Hooks/IN_KeyEvent.cpp.o.provides.build: CMakeFiles/Sp
 
 CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o: src/Hooks/SetKeyCodeState.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_100) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_101) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/SetKeyCodeState.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.i: cmake_force
@@ -2459,7 +2483,7 @@ CMakeFiles/Spartan.dir/src/Hooks/SetKeyCodeState.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o: src/Hooks/FireEventClientSide.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_101) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_102) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/FireEventClientSide.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.i: cmake_force
@@ -2483,7 +2507,7 @@ CMakeFiles/Spartan.dir/src/Hooks/FireEventClientSide.cpp.o.provides.build: CMake
 
 CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o: src/Hooks/PumpWindowsMessageLoop.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_102) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_103) "Building CXX object CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o -c "/home/raspbian/Project Spartan/src/Hooks/PumpWindowsMessageLoop.cpp"
 
 CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.i: cmake_force
@@ -2507,7 +2531,7 @@ CMakeFiles/Spartan.dir/src/Hooks/PumpWindowsMessageLoop.cpp.o.provides.build: CM
 
 CMakeFiles/Spartan.dir/src/settings.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/settings.cpp.o: src/settings.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_103) "Building CXX object CMakeFiles/Spartan.dir/src/settings.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_104) "Building CXX object CMakeFiles/Spartan.dir/src/settings.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/settings.cpp.o -c "/home/raspbian/Project Spartan/src/settings.cpp"
 
 CMakeFiles/Spartan.dir/src/settings.cpp.i: cmake_force
@@ -2531,7 +2555,7 @@ CMakeFiles/Spartan.dir/src/settings.cpp.o.provides.build: CMakeFiles/Spartan.dir
 
 CMakeFiles/Spartan.dir/src/hooker.cpp.o: CMakeFiles/Spartan.dir/flags.make
 CMakeFiles/Spartan.dir/src/hooker.cpp.o: src/hooker.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_104) "Building CXX object CMakeFiles/Spartan.dir/src/hooker.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_105) "Building CXX object CMakeFiles/Spartan.dir/src/hooker.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Spartan.dir/src/hooker.cpp.o -c "/home/raspbian/Project Spartan/src/hooker.cpp"
 
 CMakeFiles/Spartan.dir/src/hooker.cpp.i: cmake_force
@@ -2604,6 +2628,7 @@ Spartan_OBJECTS = \
 "CMakeFiles/Spartan.dir/src/Hacks/noflash.cpp.o" \
 "CMakeFiles/Spartan.dir/src/Hacks/skybox.cpp.o" \
 "CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o" \
+"CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o" \
 "CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o" \
 "CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o" \
 "CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o" \
@@ -2712,6 +2737,7 @@ libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/clantagchanger.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/noflash.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/skybox.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o
+libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o
@@ -2770,7 +2796,7 @@ libSpartan.so: CMakeFiles/Spartan.dir/src/hooker.cpp.o
 libSpartan.so: CMakeFiles/Spartan.dir/build.make
 libSpartan.so: /usr/lib/x86_64-linux-gnu/liblua5.3.so
 libSpartan.so: CMakeFiles/Spartan.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_105) "Linking CXX shared library libSpartan.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/raspbian/Project Spartan/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_106) "Linking CXX shared library libSpartan.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Spartan.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -2827,6 +2853,7 @@ CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/clantagchanger
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/noflash.cpp.o.requires
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/skybox.cpp.o.requires
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/snipercrosshair.cpp.o.requires
+CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o.requires
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/dlights.cpp.o.requires
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/airstuck.cpp.o.requires
 CMakeFiles/Spartan.dir/requires: CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o.requires

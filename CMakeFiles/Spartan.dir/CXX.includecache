@@ -142,6 +142,8 @@ chams.h
 ../settings.h
 /home/raspbian/Project Spartan/src/settings.h
 
+/home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp
+
 /home/raspbian/Project Spartan/src/Hacks/clantagchanger.cpp
 clantagchanger.h
 /home/raspbian/Project Spartan/src/Hacks/clantagchanger.h

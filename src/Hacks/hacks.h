@@ -39,3 +39,4 @@
 #include "view.h"
 #include "walkbot.h"
 #include "fakewalk.h"
+//#include "circlestrafe.h"

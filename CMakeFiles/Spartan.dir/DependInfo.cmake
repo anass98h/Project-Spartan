@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/raspbian/Project Spartan/src/Hacks/autowall.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/autowall.cpp.o"
   "/home/raspbian/Project Spartan/src/Hacks/bhop.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/bhop.cpp.o"
   "/home/raspbian/Project Spartan/src/Hacks/chams.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o"
+  "/home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o"
   "/home/raspbian/Project Spartan/src/Hacks/clantagchanger.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/clantagchanger.cpp.o"
   "/home/raspbian/Project Spartan/src/Hacks/customglow.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/customglow.cpp.o"
   "/home/raspbian/Project Spartan/src/Hacks/disablepostprocessing.cpp" "/home/raspbian/Project Spartan/CMakeFiles/Spartan.dir/src/Hacks/disablepostprocessing.cpp.o"

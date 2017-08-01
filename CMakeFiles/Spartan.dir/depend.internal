@@ -1598,6 +1598,8 @@ CMakeFiles/Spartan.dir/src/Hacks/chams.cpp.o
  /usr/include/lua5.3/lua.hpp
  /usr/include/lua5.3/luaconf.h
  /usr/include/lua5.3/lualib.h
+CMakeFiles/Spartan.dir/src/Hacks/circlestrafe.cpp.o
+ /home/raspbian/Project Spartan/src/Hacks/circlestrafe.cpp
 CMakeFiles/Spartan.dir/src/Hacks/clantagchanger.cpp.o
  /home/raspbian/Project Spartan/src/Hacks/aimbot.h
  /home/raspbian/Project Spartan/src/Hacks/airstuck.h
