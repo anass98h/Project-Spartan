@@ -622,7 +622,28 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            		if(CreateMove::sendPacket)
            		{
 
-           		yFlip ? angle.y -= 180 : angle.y += 170; 
+           		if (pLocal->GetFlags() & FL_ONGROUND)
+				angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+				else
+				{
+				random = rand() % 4;
+				switch (random)
+				{
+					case 1:
+						yFlip ? angle.y += 90.f : angle.y -= 90.0f;
+						break;
+					case 2:
+						yFlip ? angle.y -= 120.0f : angle.y -= 210.0f;
+						break;
+					case 3:
+						factor =  360.0 / M_PHI;
+						factor *= 25;
+						angle.y = fmodf(globalVars->curtime * factor, 360.0);
+						break;
+					default:
+						angle.y -= 180.0f;
+				}
+			}
            		CreateMove::sendPacket = false;
            		}
            		else
@@ -639,7 +660,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            		}
            		else 
            		{ 
-           			angle.y = *pLocal->GetLowerBodyYawTarget() + rand() / 1000;
+           			angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 1000;
            			uff = true;
            		}
 
@@ -659,14 +680,14 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
          					uff4 = rand(); 
          				}
 
-        		uff = false;
+        		uff2 = false;
         		}
 
         		else
         		{
 
         			angle.y = rand() * rand();
-        			uff = true;
+        			uff2 = true;
 
         		}	
 
@@ -674,6 +695,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            	if (uff3)
            	{
            		angle.y = 90;
+           		uff3 = false;
            	}
            	else
            	{
@@ -941,10 +963,27 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp)
 			angle.x = 0.0f;
 			break;
 		case AntiAimType_X::STATIC_UP_FAKE:
-			angle.x = bFlip ? 89.0f : -89.0f;
+			if(CreateMove::sendPacket){            
+            angle.x = 89.0f;
+            CreateMove::sendPacket = false;
+            }
+            else
+            {
+            angle.x = -89.0f;
+            CreateMove::sendPacket=true; 
+        	}
 			break;
 		case AntiAimType_X::STATIC_DOWN_FAKE:
-			angle.x = 36000088.000000f;
+			if(CreateMove::sendPacket){            
+            angle.x = -89.0f;
+            CreateMove::sendPacket = false;
+            }
+            else
+            {
+            angle.x = 89.0f;
+            CreateMove::sendPacket=true; 
+        	}
+
 			break;
 		case AntiAimType_X::LUA1:
 			angle.x = LuaScriptX( lastAngleX, angle.x );
@@ -1130,12 +1169,10 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 		if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
 			angle.y = edge_angle.y;
 	}
-
-
+	if (Settings::AntiAim::Roll::enabled)
+		DoAntiAimZ(angle, cmd->command_number, should_clamp);
 	if (Settings::AntiAim::Pitch::enabled)
 		DoAntiAimX(angle, bFlip, should_clamp);
-	   if (Settings::AntiAim::Roll::enabled)
-        DoAntiAimZ(angle, cmd->command_number, should_clamp);
 	if (should_clamp)
 	{
 		Math::NormalizeAngles(angle);
@@ -1147,19 +1184,18 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 	if (Settings::AntiAim::Yaw::antiResolver)
 	{
 		static bool antiResolverFlip = false;
-		if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
+		if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() + 35)
 		{
-			if (antiResolverFlip){
-				cmd->viewangles.y += 60.f;
-				
-			}
-			else{
-				cmd->viewangles.y -= 60.f;
 
-				
-			}
+			cmd->viewangles.y += 40;
 
-			antiResolverFlip = !antiResolverFlip;
+		}
+		else if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() - 35)
+		{
+
+			cmd->viewangles.y -= 40;
+
+		}
 
 			if (should_clamp)
 			{
@@ -1167,7 +1203,7 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 				Math::ClampAngles(cmd->viewangles);
 			}
 		}
-	}
+	
 
 
 	Math::CorrectMovement(oldAngle, cmd, oldForward, oldSideMove);
