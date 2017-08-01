@@ -206,7 +206,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
 	settings[XORSTR("Aimbot")][XORSTR("AutoCrouch")][XORSTR("enabled")] = Settings::Aimbot::AutoCrouch::enabled;
 	//settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
-
+    settings[XORSTR("lbyindicator")][XORSTR("enabled")] = Settings::lbyindicator::enabled;
 	settings[XORSTR("Resolver")][XORSTR("resolve_all")] = Settings::Resolver::resolveAll;
 
 	settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
@@ -345,7 +345,8 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimit")] = Settings::ESP::Spread::spreadLimit;
 	LoadColor(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("color")], Settings::ESP::Spread::color);
 	LoadColor(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimitColor")], Settings::ESP::Spread::spreadLimitColor);
-
+    
+    
 	settings[XORSTR("Dlights")][XORSTR("enabled")] = Settings::Dlights::enabled;
 	settings[XORSTR("Dlights")][XORSTR("radius")] = Settings::Dlights::radius;
 
@@ -773,8 +774,10 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimit")], &Settings::ESP::Spread::spreadLimit);
 	GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("color")], &Settings::ESP::Spread::color);
 	GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimitColor")], &Settings::ESP::Spread::spreadLimitColor);
-
-	GetVal(settings[XORSTR("Dlights")][XORSTR("enabled")], &Settings::Dlights::enabled);
+    
+    GetVal(settings[XORSTR("lbyindicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
+	
+    GetVal(settings[XORSTR("Dlights")][XORSTR("enabled")], &Settings::Dlights::enabled);
 	GetVal(settings[XORSTR("Dlights")][XORSTR("radius")], &Settings::Dlights::radius);
 
 	GetVal(settings[XORSTR("Spammer")][XORSTR("spammer_type")], (int*)& Settings::Spammer::type);

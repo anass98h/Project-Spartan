@@ -176,6 +176,9 @@ void HvH::RenderTab()
 			ImGui::Separator();
 			ImGui::Checkbox(XORSTR("Resolve All"), &Settings::Resolver::resolveAll);
 			ImGui::Separator();
+            ImGui::Text("Misc");
+            ImGui::Checkbox("LBY Indicator", &Settings::lbyindicator::enabled);
+            ImGui::Separator();
 			ImGui::Text(XORSTR("Movement"));
 			ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
 

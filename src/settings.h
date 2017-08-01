@@ -18,6 +18,7 @@
 #include "config.h"
 #include "SpartanGUI/Spartangui.h"
 #include "Hacks/esp.h"
+#include "Hacks/lbyindicator.h"
 
 enum class SmoothType : int
 {
@@ -585,7 +586,10 @@ namespace Settings
 	{
 		extern bool resolveAll;
 	}
-
+      namespace lbyindicator
+		{
+			extern bool enabled;
+        }
 	namespace ESP
 	{
 		extern bool enabled;
@@ -738,7 +742,7 @@ namespace Settings
 			extern bool enabled;
 			extern int time;
 		}
-
+      
 		namespace Hitmarker
 		{
 			extern bool enabled;

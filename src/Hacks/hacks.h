@@ -40,3 +40,4 @@
 #include "walkbot.h"
 #include "fakewalk.h"
 //#include "circlestrafe.h"
+#include "lbyindicator.h"

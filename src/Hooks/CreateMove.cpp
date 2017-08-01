@@ -11,7 +11,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd)
 	{
 		*bSendPacket = CreateMove::sendPacket;
 		CreateMove::sendPacket = true;
-              
+        lbyindicator::CreateMove(cmd);      
 		BHop::CreateMove(cmd);
 		AutoStrafe::CreateMove(cmd);
 		ShowRanks::CreateMove(cmd);
@@ -19,7 +19,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd)
 		JumpThrow::CreateMove(cmd);
 		GrenadeHelper::CreateMove(cmd);
 		EdgeJump::PrePredictionCreateMove(cmd);
-
+        
 		PredictionSystem::StartPrediction(cmd);
 		Autoblock::CreateMove(cmd);
 		Aimbot::CreateMove(cmd);
@@ -32,7 +32,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd)
 		ESP::CreateMove(cmd);
 		Walkbot::CreateMove(cmd);
 		PredictionSystem::EndPrediction();
-
+        
 		EdgeJump::PostPredictionCreateMove(cmd);
 
 		if (CreateMove::sendPacket)
