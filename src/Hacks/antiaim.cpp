@@ -618,7 +618,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            	static bool uff3 = false;
            	static int uff4 = 0;
 
-           	
+           		if (pLocal->GetVelocity().Length2D() < 0.1f)
+           { 
            		if(CreateMove::sendPacket)
            		{
 
@@ -709,7 +710,35 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
            CreateMove::sendPacket = true;
 
          }
+     }
+     		else
+     		{
+
+     			yFlip ? angle.y -= 160 : angle.y += 160;
+
+     		}
            	break;
+        case AntiAimType_Y::LBYBREAK:
+
+     
+		   static float prevLBY = *pLocal->GetLowerBodyYawTarget();
+			  static bool flip = false;
+
+			  if (pLocal->GetVelocity().Length2D() < 0.1f)
+			  {
+			    if (prevLBY != *pLocal->GetLowerBodyYawTarget())
+			      flip = !flip;
+			    
+			    if (flip)
+			      angle.y += 110.f;
+			    else
+			      angle.y -= 110.f;
+
+			    prevLBY = *pLocal->GetLowerBodyYawTarget();
+			  }
+			  else
+			    angle.y -= 180.0f;
+        	break;
 		case AntiAimType_Y::LBYSPIN:
 			factor =  360.0 / M_PHI;
 			angle.y = *pLocal->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
@@ -1187,13 +1216,13 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 		if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() + 35)
 		{
 
-			cmd->viewangles.y += 40;
+			cmd->viewangles.y = 110;
 
 		}
 		else if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() - 35)
 		{
 
-			cmd->viewangles.y -= 40;
+			cmd->viewangles.y = -110;
 
 		}
 
