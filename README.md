@@ -81,7 +81,7 @@ $ git push origin username/reason:username/reason
 ## License
 
 Project Spartan is closed source and is licensed under the
-Project Spartan Private License. Visit the `LICENSE.txt.txt` file for more
+Project Spartan Private License. Visit the `LICENSE.txt` file for more
 informations.
 
 [0]: https://github.com/anass98h/Project-Spartan
