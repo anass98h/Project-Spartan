@@ -9910,7 +9910,7 @@ int PiePopupSelectMenu(const ImVec2& center, const char* popup_id, const char** 
             ImVec2 text_pos = ImVec2(
                 center.x + cosf((item_ang_min + item_ang_max) * 0.5f) * (RADIUS_MIN + RADIUS_MAX) * 0.5f - text_size.x * 0.5f,
                 center.y + sinf((item_ang_min + item_ang_max) * 0.5f) * (RADIUS_MIN + RADIUS_MAX) * 0.5f - text_size.y * 0.5f);
-            draw_list->AddText(text_pos, ImColor(255,255,255), item_label);
+            draw_list->AddText(text_pos, ImColor(244, 66, 83), item_label);
 
             if (hovered)
                 item_hovered = item_n;
