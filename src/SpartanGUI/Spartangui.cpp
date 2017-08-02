@@ -200,9 +200,6 @@ void SetupMainMenuBar()
 		ImGui::Selectable(XORSTR("Player List Window"), &PlayerList::showWindow, 0, ImVec2(ImGui::CalcTextSize(XORSTR("Player List Window"), NULL, true).x, 0.0f));
 		ImGui::SameLine();
 
-		ImGui::Selectable(XORSTR("Walk Bot Window"), &Walk::showWindow, 0, ImVec2(ImGui::CalcTextSize(XORSTR("Walk Bot Window"), NULL, true).x, 0.0f));
-			ImGui::SameLine();
-
 
 		ImGui::SameLine(ImGui::GetWindowContentRegionMax().x-ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true)).x);
 
@@ -232,7 +229,6 @@ else if (Settings::UI::otherMenu) {
 		ImGui::Checkbox("Spectator Window", &Settings::ShowSpectators::enabled);
 		ImGui::Checkbox("PlayerList Window", &PlayerList::showWindow);
 		ImGui::Checkbox("Skinchanger Window", &SkinModelChanger::showWindow);
-		ImGui::Checkbox("Walkbot Window", &Walk::showWindow);
 		ImGui::Separator();
 		ImGui::Checkbox("Colors Window", &Colors::showWindow);
 		ImGui::Checkbox("Config Window", &Configs::showWindow);
@@ -324,7 +320,6 @@ void UI::SetupWindows()
 		Configs::RenderWindow();
 		Colors::RenderWindow();
 		PlayerList::RenderWindow();
-		Walk::RenderWindow();
 	}
 
 	ShowSpectators::RenderWindow();
@@ -340,7 +335,6 @@ else {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1080, 700));
         Main::RenderWindow();
 		ImGui::PopStyleVar();
-		Walk::RenderWindow();
 
 		if (ModSupport::current_mod != ModType::CSCO)
 		{

@@ -92,14 +92,6 @@ void Others2::RenderTab()
     
     ImGui::NextColumn();
 	{
-        ImGui::Text(ICON_WALKBOT);
-		ImGui::Checkbox("Walkbot", &Walk::showWindow);
-    }
-    
-    ImGui::SameLine();
-    
-    ImGui::NextColumn();
-	{
         ImGui::Text(ICON_SPECTATORS);
         ImGui::Checkbox("Spectator", &Settings::ShowSpectators::enabled);
     }

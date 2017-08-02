@@ -106,7 +106,6 @@ if (Settings::UI::combinedMenu){
             ImGui::MenuItem("Spectator Window",NULL, &Settings::ShowSpectators::enabled);
 			ImGui::MenuItem("PlayerList Window",NULL, &PlayerList::showWindow);
 			ImGui::MenuItem("Skinchanger Window",NULL, &SkinModelChanger::showWindow);
-		ImGui::MenuItem("Walkbot Window",NULL, &Walk::showWindow);
 		ImGui::MenuItem("Colors Window",NULL, &Colors::showWindow);
 		ImGui::MenuItem("Config Window",NULL, &Configs::showWindow);
 
