@@ -1389,7 +1389,7 @@ struct ImFont
     IMGUI_API void              GrowIndex(int new_size);
     IMGUI_API void              AddRemapChar(ImWchar dst, ImWchar src, bool overwrite_dst = true); // Makes 'dst' character/glyph points to 'src' character/glyph. Currently needs to be called AFTER fonts have been built.
 };
-
+int PiePopupSelectMenu(const ImVec2& center, const char* popup_id, const char** items, int items_count);
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif

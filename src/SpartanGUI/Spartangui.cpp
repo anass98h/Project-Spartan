@@ -65,11 +65,11 @@ void SetupMainMenuBar()
 					ImGui::Text(XORSTR("You successfully launched project-spartan Private Build please enter your ID to continue "));
 					ImGui::Spacing();
 						ImGui::BulletText (" Verification-ID ");
-                        
+                        ImGui::Separator();
 							ImGui::PushItemWidth(188);
 					ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass), ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password | ImGuiInputTextFlags_AutoSelectAll);
 					ImGui::PopItemWidth();
-
+                    ImGui::Separator();
 					if (ImGui::Button(XORSTR("Login"))){
 							if(protection::pwmatch(Pass)== true){
 							
@@ -128,7 +128,41 @@ void SetupMainMenuBar()
 		ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu);
 					ImGui::Separator();
 			ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu);
-        ImGui::End();
+        ImGui::Separator();
+            
+               static const char* test_data = "Menu";
+        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs" };
+        int items_count = sizeof(items)/sizeof(*items);
+
+        static int selected = -1;
+
+        ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150,30));
+        if (ImGui::IsItemActive())          // Don't wait for button release to activate the pie menu
+        ImGui::OpenPopup("##piepopup");
+
+        ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
+       int n = PiePopupSelectMenu(pie_menu_center, "##piepopup", items, items_count);
+            if(n==1){ if(!Configs::showWindow)Configs::showWindow = true;
+                else Configs::showWindow=false;
+            }
+            else if(n==0){ if(!Main::showWindow)Main::showWindow = true;
+                else Main::showWindow=false;
+            }
+            else if(n==2){if(!Colors::showWindow) Colors::showWindow=true;
+                else Colors::showWindow=false;
+            }
+            else if(n==3){if(!SkinModelChanger::showWindow)SkinModelChanger::showWindow = true;
+                else SkinModelChanger::showWindow=false;
+            }
+            else if(n==4){if(!PlayerList::showWindow)PlayerList::showWindow = true;
+                else PlayerList::showWindow=false;
+            }
+            else if(n==5){if(!Settings::ShowSpectators::enabled )Settings::ShowSpectators::enabled= true;
+                else Settings::ShowSpectators::enabled=false;
+            }
+         
+            
+            ImGui::End();
     }
 	
 	
@@ -231,7 +265,7 @@ void UI::SwapWindow()
 
 	// We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
 	// I have enabled the drawing of the watermark even when In-Game
-	// If you don't want that, add || engine->IsInGame() after the UI::isVisible statement
+	// If you don't want that, add || engine->IsInGame() after the UI::isVisible statement // ty marc x)
 
 	time_t rawtime;
 	struct tm *timeinfo;
@@ -239,10 +273,10 @@ void UI::SwapWindow()
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	strftime(buffer, sizeof(buffer), "%A %D %T %Z", timeinfo);
+	strftime(buffer, sizeof(buffer), "%A %D %T %Z", timeinfo); // thats still bullshit %T %Z best
 	std::string time(buffer);
 
-	std::string watermark(XORSTR("Project-Spartan.net | "));
+	std::string watermark(XORSTR("Project-Spartan.net | ")); // we need website
 	watermark.append(time);
 
 	Draw::ImDrawText(ImVec2(4.f, 4.f), ImColor(224, 133, 53), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
