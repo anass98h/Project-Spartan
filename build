@@ -1,6 +1,5 @@
 #!/bin/bash
-#TODO: check distro and packages
 
-cmake . && make -j$(grep "^processor" /proc/cpuinfo | wc -l) "$@" && strip -s Spartan.so
+cmake . && make -j$(grep "^processor" /proc/cpuinfo | wc -l) "$@" && strip -s libSpartan.so
  strip -s libSpartan.so
 mv libSpartan.so Spartan.so
