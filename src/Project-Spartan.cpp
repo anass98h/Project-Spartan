@@ -20,6 +20,9 @@ void MainThread()
 			client = GetInterface<IBaseClientDLL>(XORSTR("./csgo/bin/linux64/client_client.so"), XORSTR( "VClient"));
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		}
+
+		cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected "
+																		   "using the LD_PRELOAD environment variable. \n"));
 	}
 
 	Interfaces::FindInterfaces();
@@ -116,6 +119,33 @@ void MainThread()
 
 	AntiAim::LuaInit();
 
+	 /*
+
+(
+ )\ )                      )
+(()/(           )  (    ( /(    )
+ /(_))`  )   ( /(  )(   )\())( /(   (
+(_))  /(/(   )(_))(()\ (_))/ )(_))  )\ )
+/ __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
+\__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
+|___/| .__/ \__,_||_|   \__|\__,_||_||_|
+     |_|
+
+	  */
+
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
+	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
 	
 }
 /* Entrypoint to the Library. Called when loading */
@@ -186,7 +216,19 @@ void __attribute__((destructor)) Shutdown()
 	for (ptrdiff_t off = 0; off < 0x2; off++)
 		Util::ProtectAddr(CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC);
 
-	cvar->ConsoleColorPrintf(ColorRGBA(255, 0, 0), XORSTR("project-spartan Unloaded successfully.\n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully unloaded. \n"));
+	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
 }
 void projectspartan::SelfShutdown()
 {
