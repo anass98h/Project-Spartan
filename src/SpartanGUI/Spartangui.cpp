@@ -265,7 +265,7 @@ void UI::SwapWindow()
 
 	// We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
 	// I have enabled the drawing of the watermark even when In-Game
-	// If you don't want that, add || engine->IsInGame() after the UI::isVisible statement // ty marc x)
+	// If you don't want that, add || engine->IsInGame() after the UI::isVisible statement
 
 	time_t rawtime;
 	struct tm *timeinfo;
@@ -273,13 +273,28 @@ void UI::SwapWindow()
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	strftime(buffer, sizeof(buffer), "%A %D %T %Z", timeinfo); // thats still bullshit %T %Z best
+	strftime(buffer, sizeof(buffer), "%T %Z", timeinfo);
 	std::string time(buffer);
 
-	std::string watermark(XORSTR("Project-Spartan.net | ")); // we need website
+	std::string watermark(XORSTR("Project Spartan | "));
 	watermark.append(time);
 
-	Draw::ImDrawText(ImVec2(4.f, 4.f), ImColor(224, 133, 53), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+	Draw::ImDrawText(ImVec2(4.f, 4.f), ImColor(244, 66, 83), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+}
+
+// This may come in handy if we want to display some good shit in the watermark
+std::string OrdinalNumberPrefix(int day) {
+	switch(day) {
+		case 1:
+			return std::string(XORSTR("1st"));
+		case 2:
+			return std::string(XORSTR("2nd"));
+		case 3:
+			return std::string(XORSTR("3rd"));
+		default:
+			std::string format(std::to_string(day));
+			return format.append(XORSTR("th"));
+	}
 }
 
 void UI::SetVisible(bool visible)
