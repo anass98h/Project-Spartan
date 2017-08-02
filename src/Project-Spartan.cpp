@@ -5,7 +5,7 @@
 
 static EventListener* eventListener = nullptr;
 // The Below Line is Set by the Build script. Keep this on Line 8.
-char buildID[] = "p-U5HzDSUxJEzWtsRsfkFZ07CZnYtu3fgespartan"; // Line Set by build script
+char buildID[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // Line Set by build script
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 bool preload;
