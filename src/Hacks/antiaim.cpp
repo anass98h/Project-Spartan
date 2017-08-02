@@ -721,12 +721,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         case AntiAimType_Y::LBYBREAK:
 
      
-
-			  static bool flip = false;
+        	 static bool flip = false;	
+        	 static float prevLBY = *pLocal->GetLowerBodyYawTarget();
 
 			  if (pLocal->GetVelocity().Length2D() < 0.1f)
 			  {
-			  	static float prevLBY = *pLocal->GetLowerBodyYawTarget();
+			  	
 	
 			    if (prevLBY != *pLocal->GetLowerBodyYawTarget())
 			      flip = !flip;
@@ -739,7 +739,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 			    prevLBY = *pLocal->GetLowerBodyYawTarget();
 			  }
 			  else
-			    angle.y -= 180.0f;
+			angle.y -= 180.0f;
         	break;
 		case AntiAimType_Y::LBYSPIN:
 			factor =  360.0 / M_PHI;
