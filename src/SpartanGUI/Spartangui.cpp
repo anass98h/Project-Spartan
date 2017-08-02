@@ -226,38 +226,26 @@ else if (Settings::UI::otherMenu) {
 
 void UI::SwapWindow()
 {
-	
-	
-		time_t  rawtime;
-        struct tm * timeinfo;
-        char buffer[40];
-
-        time (&rawtime);
-        timeinfo = localtime(&rawtime);
-	  strftime(buffer,sizeof(buffer),"%A %D %T %Z",timeinfo);
-        std::string str(buffer);
-
-	
-	
-	if (UI::isVisible)
-    {Draw::ImDrawText(ImVec2(39.f, 10.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-    Draw::ImDrawText(ImVec2(174.f, 10.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-    }
-    if (engine->IsInGame())
+	if(UI::isVisible)
 		return;
-   
-    
-    
-    
-    if (!engine->IsInGame())
-    {Draw::ImDrawText(ImVec2(39.f, 10.f), ImColor(255, 122, 55, 255), ("project-spartan.net |"), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-	Draw::ImDrawText(ImVec2(174.f, 10.f), ImColor(255, 122, 55, 255), (str.c_str() ), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-    }
-	
-	
 
+	// We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
+	// I have enabled the drawing of the watermark even when In-Game
+	// If you don't want that, add || engine->IsInGame() after the UI::isVisible statement
 
+	time_t rawtime;
+	struct tm *timeinfo;
+	char buffer[40];
 
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof(buffer), "%A %D %T %Z", timeinfo);
+	std::string time(buffer);
+
+	std::string watermark(XORSTR("Project-Spartan.net | "));
+	watermark.append(time);
+
+	Draw::ImDrawText(ImVec2(4.f, 4.f), ImColor(224, 133, 53), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }
 
 void UI::SetVisible(bool visible)
