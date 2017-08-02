@@ -77,14 +77,14 @@ void lbyindicator::CreateMove(CUserCmd* cmd){
 	engine->GetScreenSize(width, height);
     
     int w = width - 150;
-    int h = height - (height -(height*85/100));
+    int h = height - (height -(height*55/100));
      int w2 = width - 150;
-    int h2 = height - (height -(height*81/100));
+    int h2 = height - (height -(height*51/100));
      int w3 = width - 150;
-    int h3 = height - (height -(height*83/100));
+    int h3 = height - (height -(height*53/100));
 
     
-             Draw::Text(w,  h, "LBY updated",esp_font,col);
+             Draw::Text(w,  h, "LBY updated",lby_font,col);
         float Lobby = (*pLocal->GetLowerBodyYawTarget());
 		
         std::ostringstream ss;

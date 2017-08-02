@@ -5,6 +5,7 @@
 #include "../Utils/draw.h"
 #include "../interfaces.h"
 #include "../Utils/entity.h"
+#include "antiaim.h"
 
 namespace lbyindicator
 {

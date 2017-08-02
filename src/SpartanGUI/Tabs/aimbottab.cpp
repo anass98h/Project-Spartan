@@ -379,17 +379,10 @@ void Aimbot::RenderTab()
 			ImGui::Checkbox(XORSTR("Velocity Check"), &Settings::Aimbot::velocityCheck::enabled);
 			if( ImGui::Checkbox(XORSTR("Spread Limit"), &spreadLimitEnabled) )
 				UI::UpdateWeaponSettings();
-			if( ImGui::Checkbox("Hit Chance", &hitChanceEnabled) )
-				UI::UpdateWeaponSettings();
 				SetTooltip("Spread limit, but by simulating spread of the weapon");
-			if( ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1) )
+            	if( ImGui::SliderFloat(XORSTR("##SPREADLIMIT"), &spreadLimit, 0, 0.1) )
 				UI::UpdateWeaponSettings();
 				SetTooltip("Below this value, autoshoot does not shoot");
-			if( ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250) )
-				UI::UpdateWeaponSettings();
-				SetTooltip("Amount of rays to be shot");
-			if( ImGui::SliderFloat(XORSTR("##SPREADLIMIT"), &spreadLimit, 0, 0.1) )
-				UI::UpdateWeaponSettings();
 			ImGui::EndChild();
 		}
 	}
@@ -430,6 +423,18 @@ void Aimbot::RenderTab()
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
+            ImGui::Text(XORSTR("Hitchance"));
+            ImGui::Separator();
+            ImGui::Columns(1);{
+            if( ImGui::Checkbox("Hit Chance", &hitChanceEnabled) )
+				UI::UpdateWeaponSettings();
+            if( ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1) )
+				UI::UpdateWeaponSettings();
+			if( ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250) )
+				UI::UpdateWeaponSettings();
+				SetTooltip("Amount of rays to be shot");
+            }
+            ImGui::Separator();
 			ImGui::Text(XORSTR("Other"));
 			ImGui::Separator();
 			ImGui::Columns(2, NULL, true);

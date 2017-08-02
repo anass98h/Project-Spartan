@@ -72,7 +72,7 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage)
 			
 				// Add some more  awesome Bruteforce stuff and LbyBreaker prevention here x)
 												float flCurTime = globalVars->curtime;
-							   static float Lbyupdi = 0.22f;
+							   static float Lbyupdi = 1.1f;
 							   static float nxtLbyup = flCurTime + Lbyupdi;
 								      bool hasUpdated;
 			if(nxtLbyup < flCurTime)
@@ -93,11 +93,11 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage)
 									int num = localplayer->GetShotsFired()%6;
 								switch (num) {
 								case 0: player->GetEyeAngles()->y -=0.0f; break;
-								case 1: player->GetEyeAngles()->y += 35.0f; break;
-								case 2: player->GetEyeAngles()->y -=70.0f; break;
-								case 3: player->GetEyeAngles()->y +=55.0f; break;
-								case 4: player->GetEyeAngles()->y -=180.0f; break;
-                                case 5: player->GetEyeAngles()->y +=270.0f; break; 
+								case 1: player->GetEyeAngles()->y = 35.0f; break;
+								case 2: player->GetEyeAngles()->y = -70.0f; break;
+								case 3: player->GetEyeAngles()->y = 55.0f; break;
+								case 4: player->GetEyeAngles()->y = -180.0f; break;
+                                case 5: player->GetEyeAngles()->y = -30.0f; break; 
                             
                                 
                                 
