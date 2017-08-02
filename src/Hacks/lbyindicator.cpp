@@ -34,7 +34,7 @@ void lbyindicator::CreateMove(CUserCmd* cmd){
         if(std::abs(cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget()) >= -35 && std::abs(cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget()) <= 35)  {
           
             cLowerBodyIsUpdated =true;
-           col = Color(255, 0, 0);
+           col = Color(244, 66, 83);
            storedYaw = pLocal->GetLowerBodyYawTarget();
         }
     
@@ -90,12 +90,12 @@ void lbyindicator::CreateMove(CUserCmd* cmd){
         std::ostringstream ss;
         ss <<"LBYValue = " <<Lobby;
         std::string s(ss.str());
-		Draw::Text(w2,h2, s.c_str(), lby_font, Color(225,205,0));
+		Draw::Text(w2,h2, s.c_str(), esp_font, Color(244, 66, 83));
        
-        std::ostringstream ss2;
+        std::ostringstream ss2;		// Lol @Marc3842h this was supposed to be in esp_font :feelsbad:
         ss2 <<"RealAngle = " <<Weeb;
         std::string s2(ss2.str());
-		Draw::Text(w3,h3, s2.c_str(), lby_font, Color(225,205,0));
+		Draw::Text(w3,h3, s2.c_str(), esp_font, Color(244, 66, 83));
  
  
  
