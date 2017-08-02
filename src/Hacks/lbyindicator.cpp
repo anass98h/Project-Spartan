@@ -95,7 +95,7 @@ void lbyindicator::CreateMove(CUserCmd* cmd){
         std::ostringstream ss2;
         ss2 <<"RealAngle = " <<Weeb;
         std::string s2(ss2.str());
-		Draw::Text(w3,h3, s2.c_str(), esp_font, Color(225,205,0));
+		Draw::Text(w3,h3, s2.c_str(), lby_font, Color(225,205,0));
  
  
  
