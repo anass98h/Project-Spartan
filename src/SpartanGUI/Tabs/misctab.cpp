@@ -190,12 +190,14 @@ void Misc::RenderTab()
 			ImGui::Columns(2, NULL, true);
 			{
 				ImGui::Checkbox(XORSTR("Enabled"), &Settings::ThirdPerson::enabled);
+				ImGui::Text(XORSTR("Key"));
 			}
 			ImGui::NextColumn();
 			{
 				ImGui::PushItemWidth(-1);
 				ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.f, 500.f, XORSTR("Camera Offset: %0.f"));
 				ImGui::PopItemWidth();
+				UI::KeyBindButton(&Settings::ThirdPerson::key);
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();

@@ -1028,6 +1028,7 @@ namespace Settings
 	{
 		extern bool enabled;
 		extern float distance;
+		extern ButtonCode_t key;
 	}
 
 	namespace JumpThrow
