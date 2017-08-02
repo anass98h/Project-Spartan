@@ -1,119 +1,89 @@
+<p align="center"><img width=15% src="https://pbs.twimg.com/profile_images/672198632733548544/FCDxjRu1.png"></p>
+<p align="center"><img width=40% src="https://i.imgur.com/42q4drh.png"></p>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+[![State of Life](https://img.shields.io/badge/state-beta-orange.svg)][0]
+[![Contributors](https://img.shields.io/badge/collaborators-3-green.svg)][1]
+[![Join the Discord](https://img.shields.io/discord/336453128033533963.svg?label=discord)][2]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-## What is Spartan?
+Project Spartan `/ˈspɑrtən/` (or just **Spartan**) is an advanced Counter-Strike:
+Global Offensive internal multihack. It is based around a invite-only principle
+which requires you to receive a invite and pay to receive access to Spartan.
+Spartan is a HvH orientated cheat, mainly focused on Spread.
 
-pHake
+## Features
 
+* Base features of Hitlerhook, a fork of Fuzion - which is a fork of AimTux
+* LBY-Breaker
+* Improved Anti-Aims
+* Better Resolver
+* Circle Strafer
+* Fakewalk
+* ...and much more
 
+## Installation
 
-If you're having problems compiling make sure you've got the latest version of `g++`.
+Download the required dependencies:
 
-[How to update g++](https://github.com/AimTuxOfficial/AimTux/wiki/Updating-your-compiler)
+* **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
+* **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf`
+* **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
+* **Gentoo**: `cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf`
 
-==================
-
-#### required depencies!
-
-__Ubuntu-Based / Debian:__
-```bash
-sudo apt-get install cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf
-```
-__Arch:__
-```bash
-sudo pacman -S base-devel cmake gdb git sdl2 lua xdotool patchelf
-```
-__Fedora:__
-```bash
-sudo dnf install cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf
-```
-
-__Gentoo:__
-```bash
-sudo emerge cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf
-```
-===================
-
-#### Download Spartan:
-
-```bash
-git clone --recursive https://github.com/anass98h/Project-Spartan
-```
-
-```bash
-cd  Project-Spartan
-```
-
-===================
-
-
-#### Compile with build script
-
-You can build easily with the included build script.
-```bash
-./build
-```
-You can later update with 
-```bash
-./update
-```
-
-## Injecting
-
-First of all, make sure CSGO is open, it doesn't matter whether you're in game or not. However, it is not recommended to inject while CSGO is loading into a map. 
-
-Navigate to the directory where spartan was built if you haven't ready.
+Then execute the following:
 
 ```bash
-cd  Project\ Spartan/
+$ git clone https://github.com/anass98h/Project-Spartan
+$ ./build
+# Open CS:GO
+$ ./load
 ```
 
-Now, you can inject the hack with the `load` script
+## Usage
 
-```bash
-./load
-```
-
-
-
-
-## Using the hack
-
-insert for menu :)
-
-## Unloading the hack
-
-If you wish to unload the hack from the game, you can do so by entering the command:
-
-```bash
-./uload
-```
+Press <kbd>Insert</kbd> to open the UI. You will be prompted to enter
+your unique ID that has been assigned by the person that gave you the
+invite.
 
 ## Configs
 
-Configs are stored in a hidden directory in your home folder. Specifically 
+All configuration files are stored in `~/.config/Project Spartan`.
+The folders are named after your config file name and contain a `config.json`
+file containing your settings. Share that file with others if you want.
 
+## Contributing
+
+The development on this repository is not standardized. The most people are commiting
+their changes onto a branch named `<username>/<reason>` and are opening a
+Pull Request to merge it into the `master` branch. This allows for easy
+reverting of changes from the GitHub Web UI.
+
+Tutorial for @Apostropheqq and other:
+
+```bash
+$ git checkout -b username/reason
+$ git add .
+$ git commit -m "I made changes that I'll push into a seperate branch"
+$ git push origin username/reason:username/reason
 ```
-~/.config/project spartan/
-```
 
-Each `config.json` is stored in a seperately named folder (The name you see in-game, in the config window). 
+## License
 
-To add a config, create a folder inside of the `~/.config/Hitlerhook` folder with a name of your choice, and paste the `config.json` inside of that folder.
+Project Spartan is closed source and is licensed under the
+Project Spartan Private License. Visit the `LICENSE.txt.txt` file for more
+informations.
 
-To see hidden folders inside your home folder, press <kbd>CTRL</kbd>+<kbd>H</kbd> when using a file manager.
-
-On your Command line, You can also add the -a flag on ls     `ex: ls -la ~/` 
-
-## Grenade Configs
-
-```
-
-```
-useless shit
-
-
-## Screenshots
-
-
-# Project-Spartan
-# Project-Spartan
+[0]: https://github.com/anass98h/Project-Spartan
+[1]: https://github.com/anass98h/Project-Spartan
+[2]: https://discord.gg/exTBFWz
