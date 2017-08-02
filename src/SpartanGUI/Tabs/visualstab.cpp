@@ -7,8 +7,8 @@ void Visuals::RenderTab()
 	const char* BarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above", "Interwebz" };
 	const char* BarColorTypes[] = { "Static", "Health Based" };
 	const char* TeamColorTypes[] = { "Absolute", "Relative" };
-	const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass","Crystal","BlueCrystal","Gold","Velvet" };
-	const char* ArmsTypes[] = { "Default","Glass","Crystal","BlueCrystal","Gold","Velvet", "Wireframe", "None" };
+	const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass","Crystal","BlueCrystal","Gold","Velvet","Tree","SpeechInfo","FishNet","Letters","Gloss" };
+	const char* ArmsTypes[] = { "Default","Glass","Crystal","BlueCrystal","Gold","Velvet","Tree","SpeechInfo","FishNet","Letters","Gloss", "Wireframe", "None" };
 
 	const char* SkyBoxes[] = {
 			"cs_baggage_skybox_", // 0

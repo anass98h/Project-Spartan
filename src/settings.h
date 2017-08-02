@@ -125,6 +125,11 @@ enum class ChamsType : int
 	CHAMS_CRYSTALBLUE,
 	CHAMS_GOLD,
 	CHAMS_VELVET,
+    CHAMS_TREE,
+    CHAMS_SPEECHINFO,
+    CHAMS_FISHNET,
+    CHAMS_LETTERS,
+    CHAMS_GLOSS,
 };
 
 enum class BoxType : int
@@ -164,6 +169,11 @@ enum class ArmsType : int
 	CRYSTALBLUE,
 	GOLD,
 	VELVET,
+    TREE,
+    SPEECHINFO,
+    FISHNET,
+    LETTERS,
+    GLOSS,
 	WIREFRAME,
 	NONE,
 };
