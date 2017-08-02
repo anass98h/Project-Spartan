@@ -521,6 +521,77 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 angle.y = fmodf(globalVars->curtime * factor, 687.0);
                 n=6;
                 }
+                 else if(n == 6){
+                    
+                                        
+                     factor = 387.0 / M_PHI;
+                factor *= 288;
+                angle.y = fmodf(globalVars->curtime * factor, 387.0);
+                n=7;
+                } else if(n == 7){
+                    
+                                        
+                     factor = 487.0 / M_PHI;
+                factor *= 198;
+                angle.y = fmodf(globalVars->curtime * factor, 487.0);
+                n=8;
+                } else if(n == 8){
+                    
+                                        
+                     factor = 287.0 / M_PHI;
+                factor *= 388;
+                angle.y = fmodf(globalVars->curtime * factor, 287.0);
+                n=9;
+                } else if(n == 9){
+                    
+                                        
+                     factor = 1187.0 / M_PHI;
+                factor *= 588;
+                angle.y = fmodf(globalVars->curtime * factor, 1187.0);
+                n=10;
+                } else if(n == 10){
+                    
+                                        
+                     factor = 1687.0 / M_PHI;
+                factor *= 888;
+                angle.y = fmodf(globalVars->curtime * factor, 1687.0);
+                n=11;
+                } else if(n == 11){
+                    
+                                        
+                     factor = 987.0 / M_PHI;
+                factor *= 248;
+                angle.y = fmodf(globalVars->curtime * factor, 987.0);
+                n=12;
+                } else if(n == 12){
+                    
+                                        
+                     factor = 687.0 / M_PHI;
+                factor *= 188;
+                angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                n=13;
+                } else if(n == 13){
+                    
+                                        
+                     factor = 487.0 / M_PHI;
+                factor *= 168;
+                angle.y = fmodf(globalVars->curtime * factor, 487.0);
+                n=14;
+                } else if(n == 14){
+                    
+                                        
+                     factor = 687.0 / M_PHI;
+                factor *= 188;
+                angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                n=15;
+                } else if(n == 15){
+                    
+                                        
+                     factor = 687.0 / M_PHI;
+                factor *= 1868;
+                angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                n=16;
+                }
                 else{
                 factor = 420.0;
                 factor *= 50;
