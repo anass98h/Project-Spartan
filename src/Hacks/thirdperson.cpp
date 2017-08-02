@@ -2,6 +2,8 @@
 
 bool Settings::ThirdPerson::enabled = false;
 float Settings::ThirdPerson::distance = 30.f;
+ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_N;
+long millisSinceLastPress = 0;
 
 void ThirdPerson::BeginFrame()
 {
@@ -11,6 +13,15 @@ void ThirdPerson::BeginFrame()
 	C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer || !localplayer->GetAlive())
 		return;
+
+	long millis = Util::GetEpochTime();
+
+	if(millis - millisSinceLastPress >= 1000) {
+		if(inputSystem->IsButtonDown(Settings::ThirdPerson::key)) {
+			Settings::ThirdPerson::enabled = !Settings::ThirdPerson::enabled;
+			millisSinceLastPress = Util::GetEpochTime();
+		}
+	}
 
 	if (Settings::ThirdPerson::enabled)
 	{
