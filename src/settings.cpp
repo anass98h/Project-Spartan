@@ -512,8 +512,8 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings[XORSTR("DisablePostProcessing")][XORSTR("enabled")] = Settings::DisablePostProcessing::enabled;
 
 	// settings[XORSTR("WalkBot")][XORSTR("enabled")] = Settings::WalkBot::enabled;
-	settings[XORSTR("WalkBot")][XORSTR("autobuy")] = Settings::WalkBot::autobuy;
-	settings[XORSTR("WalkBot")][XORSTR("autobuyAt")] = Settings::WalkBot::autobuyAt;
+	//settings[XORSTR("WalkBot")][XORSTR("autobuy")] = Settings::WalkBot::autobuy;
+	//settings[XORSTR("WalkBot")][XORSTR("autobuyAt")] = Settings::WalkBot::autobuyAt;
 
 	settings[XORSTR("GrenadeHelper")][XORSTR("enabled")] = Settings::GrenadeHelper::enabled;
 	settings[XORSTR("GrenadeHelper")][XORSTR("aimAssist")] = Settings::GrenadeHelper::aimAssist;
@@ -1009,8 +1009,8 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings[XORSTR("GrenadeHelper")][XORSTR("infoMolotov")], &Settings::GrenadeHelper::infoMolotov);
 
 	// GetVal(settings[XORSTR("WalkBot")][XORSTR("enabled")], &Settings::WalkBot::enabled);
-	GetVal(settings[XORSTR("WalkBot")][XORSTR("autobuy")], &Settings::WalkBot::autobuy);
-	GetVal(settings[XORSTR("WalkBot")][XORSTR("autobuyAt")], &Settings::WalkBot::autobuyAt);
+	//GetVal(settings[XORSTR("WalkBot")][XORSTR("autobuy")], &Settings::WalkBot::autobuy);
+	//GetVal(settings[XORSTR("WalkBot")][XORSTR("autobuyAt")], &Settings::WalkBot::autobuyAt);
 
 
 }

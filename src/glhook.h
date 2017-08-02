@@ -97,7 +97,6 @@ namespace SDL2
 #define ICON_DEFUSER u8"\ue066"
 //Other icons
 #define ICON_SPECTATORS u8"\ue04B"
-#define ICON_WALKBOT u8"\ue04C"
 #define ICON_SKINCHANGER u8"\ue04D"
 #define ICON_PLAYERLIST u8"\ue04E"
 #define ICON_RAGE u8"\ue04F"

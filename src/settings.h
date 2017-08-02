@@ -1060,14 +1060,6 @@ namespace Settings
 		extern pstring actMapName;
 	}
 
-	namespace WalkBot
-	{
-		extern bool enabled;
-		extern bool forceReset;
-		extern bool autobuy;
-		extern int autobuyAt;
-	}
-
 	void LoadDefaultsOrSave(std::string path);
 	void LoadConfig(std::string path);
 	void LoadSettings();

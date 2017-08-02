@@ -37,7 +37,6 @@
 #include "triggerbot.h"
 #include "valvedscheck.h"
 #include "view.h"
-#include "walkbot.h"
 #include "fakewalk.h"
 //#include "circlestrafe.h"
 #include "lbyindicator.h"
