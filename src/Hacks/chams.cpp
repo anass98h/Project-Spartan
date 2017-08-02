@@ -22,6 +22,11 @@ IMaterial* materialChamsCrystal;
 IMaterial* materialChamsBlueCrystal;
 IMaterial* materialChamsGold;
 IMaterial* materialChamsVelvet;
+IMaterial* materialChamsTree;
+IMaterial* materialChamsSpeechInfo;
+IMaterial* materialChamsFishNet;
+IMaterial* materialChamsLetters;
+IMaterial* materialChamsGloss;
 IMaterial* materialChamsArms;
 IMaterial* materialChamsWeapons;
 
@@ -83,7 +88,27 @@ static void DrawPlayer(void* thisptr, void* context, void *state, const ModelRen
 			case ChamsType::CHAMS_VELVET:
 			visible_material = materialChamsVelvet;
 			hidden_material = materialChamsVelvet;
-			break;			
+			break;	
+            case ChamsType::CHAMS_TREE:
+			visible_material = materialChamsTree;
+			hidden_material = materialChamsTree;
+			break;	
+            case ChamsType::CHAMS_SPEECHINFO:
+			visible_material = materialChamsSpeechInfo;
+			hidden_material = materialChamsSpeechInfo;
+			break;	
+            case ChamsType::CHAMS_FISHNET:
+			visible_material = materialChamsFishNet;
+			hidden_material = materialChamsFishNet;
+			break;                
+            case ChamsType::CHAMS_LETTERS:
+			visible_material = materialChamsLetters;
+			hidden_material = materialChamsLetters;
+			break;            
+            case ChamsType::CHAMS_GLOSS:
+			visible_material = materialChamsGloss;
+			hidden_material = materialChamsGloss;
+			break;  
 	}
 
 	visible_material->AlphaModulate(1.0f);
@@ -195,8 +220,34 @@ static void DrawArms(const ModelRenderInfo_t& pInfo)
 			mat = material->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER);
 			mat->AlphaModulate(1.0f);
 			mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
-			break;			
-	}
+			break;	
+            case ArmsType::TREE:
+                mat = material->FindMaterial("models/props_foliage/urban_tree03_branches",TEXTURE_GROUP_OTHER);
+                mat->AlphaModulate(1.0f);
+                mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+                break;
+            case ArmsType::SPEECHINFO:
+                mat = material->FindMaterial("models/extras/speech_info",TEXTURE_GROUP_OTHER);
+                mat->AlphaModulate(1.0f);
+                mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+                break;
+                case ArmsType::FISHNET:
+                mat = material->FindMaterial("models/props_shacks/fishing_net01",TEXTURE_GROUP_OTHER);
+                mat->AlphaModulate(1.0f);
+                mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+                break;
+                case ArmsType::LETTERS:
+                mat = material->FindMaterial("models/inventory_items/contributor_map_tokens/contributor_charset_color",TEXTURE_GROUP_OTHER);
+                mat->AlphaModulate(1.0f);
+                mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+                break;
+                case ArmsType::GLOSS:
+                mat =  material->FindMaterial("models/inventory_items/trophy_majors/gloss",TEXTURE_GROUP_OTHER);
+                mat->AlphaModulate(1.0f);
+                mat->ColorModulate(Settings::ESP::Chams::Arms::color.Color());
+                break;
+        
+    }
 
 	mat->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME);
 	mat->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, Settings::ESP::Chams::Arms::type == ArmsType::NONE);
@@ -228,9 +279,13 @@ void Chams::DrawModelExecute(void* thisptr, void* context, void *state, const Mo
 		materialChamsBlueCrystal = material->FindMaterial("models/inventory_items/trophy_majors/crystal_blue",TEXTURE_GROUP_OTHER);
 		materialChamsGold = material->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail",TEXTURE_GROUP_OTHER);
 		materialChamsVelvet = material->FindMaterial("models/inventory_items/trophy_majors/velvet",TEXTURE_GROUP_OTHER);
-
-		
-		materialsCreated = true;
+        materialChamsTree = material->FindMaterial("models/props_foliage/urban_tree03_branches",TEXTURE_GROUP_OTHER);
+		materialChamsSpeechInfo = material->FindMaterial("models/extras/speech_info",TEXTURE_GROUP_OTHER);
+		materialChamsFishNet = material->FindMaterial("models/props_shacks/fishing_net01",TEXTURE_GROUP_OTHER);
+        materialChamsLetters = material->FindMaterial("models/inventory_items/contributor_map_tokens/contributor_charset_color",TEXTURE_GROUP_OTHER);
+        materialChamsGloss = material->FindMaterial("models/inventory_items/trophy_majors/gloss",TEXTURE_GROUP_OTHER);
+        
+        materialsCreated = true;
 	}
 
 	std::string modelName = modelInfo->GetModelName(pInfo.pModel);
