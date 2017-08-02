@@ -33,7 +33,7 @@ IEngineSound* sound = nullptr;
 ILocalize* localize = nullptr;
 ICommandLine* commandline = nullptr;
 CInput* input = nullptr;
-
+IMDLCache* MDLCache = nullptr;
 void Interfaces::FindInterfaces()
 {
 	client = GetInterface<IBaseClientDLL>(XORSTR("./csgo/bin/linux64/client_client.so"), XORSTR( "VClient"));
@@ -57,6 +57,7 @@ void Interfaces::FindInterfaces()
 	engineVGui = GetInterface<IEngineVGui>(XORSTR("./bin/linux64/engine_client.so"), XORSTR( "VEngineVGui"));
 	sound = GetInterface<IEngineSound>(XORSTR("./bin/linux64/engine_client.so"), XORSTR( "IEngineSoundClient"));
 	localize = GetInterface<ILocalize>(XORSTR("./bin/linux64/localize_client.so"), XORSTR( "Localize_"));
+    MDLCache = GetInterface<IMDLCache>(XORSTR("./bin/linux64/datacache_client.so"), XORSTR("MDLCache004"));
 	commandline = GetSymbolAddress<CommandLineFn>(XORSTR("./bin/linux64/libtier0_client.so"), XORSTR("CommandLine"))();
 }
 /*
@@ -114,5 +115,4 @@ void Interfaces::DumpInterfaces()
 	std::string interfacesPath = std::string(cwd) + XORSTR("/interfaces.txt");
 
 	std::ofstream(interfacesPath) << ss.str();
-}
-*/
+}*/

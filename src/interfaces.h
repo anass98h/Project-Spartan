@@ -38,6 +38,7 @@ extern C_CSGameRules** csGameRules;
 extern IEngineVGui* engineVGui;
 extern IEngineSound* sound;
 extern ILocalize* localize;
+extern IMDLCache* MDLCache;
 extern ICommandLine* commandline;
 extern CInput* input;
 
