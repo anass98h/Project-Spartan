@@ -1166,14 +1166,11 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
 	{   
        
 		case AntiAimType_LBY::ONE:
-			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-     
         	 static bool flip1 = false;	
         	 static float prevLBY1 = *pLocal->GetLowerBodyYawTarget();
 
 			  if (pLocal->GetVelocity().Length() < 0.1f)
 			  {
-			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
 	
 			    if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
 			      flip1 = !flip1;
@@ -1186,56 +1183,23 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
 			    prevLBY1 = *pLocal->GetLowerBodyYawTarget();
 			  }
 			  else
-			angle.y -= 180.0f;
-		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+			angle.y -= 0.0f;
 			break;
             case AntiAimType_LBY::TWO:
-			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-     
-        	 static bool flip2 = false;	
-        	 static float prevLBY2 = *pLocal->GetLowerBodyYawTarget();
-
-			  if (pLocal->GetVelocity().Length() < 0.1f)
-			  {
-			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-	
-			    if (prevLBY2 != *pLocal->GetLowerBodyYawTarget())
-			      flip2 = !flip2;
-			    
-			    if (flip2)
-			      angle.y += 110.f;
-			    else
-			      angle.y -= 110.f;
-
-			    prevLBY2 = *pLocal->GetLowerBodyYawTarget();
-			  }
-			  else
-			angle.y -= 180.0f;
-		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+			static int flip2 = (int)(floorf(globalVars->curtime) / 1.1) % 2;
+	        
+			if (pLocal->GetVelocity().Length() < 0.1f)
+			{  
+	        angle.y += -90.0f + flip2 * 90.0f;
+	    	}	
+	        else
+	        angle.y += 180.f;
 			break;
 			 case AntiAimType_LBY::THREE:
-			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-     
-        	 static bool flip3 = false;	
-        	 static float prevLBY3 = *pLocal->GetLowerBodyYawTarget();
-
-			  if (pLocal->GetVelocity().Length() < 0.1f)
-			  {
-			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-	
-			    if (prevLBY3 != *pLocal->GetLowerBodyYawTarget())
-			      flip3 = !flip3;
-			    
-			    if (flip3)
-			      angle.y += 110.f;
-			    else
-			      angle.y -= 110.f;
-
-			    prevLBY3 = *pLocal->GetLowerBodyYawTarget();
-			  }
-			  else
-			angle.y -= 180.0f;
-		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+		     static int flip3 = (int)(floorf(globalVars->curtime) / 1.1) % 2;
+      		 angle.y += 225.f + flip3 * 145.0f;
+        	// Look backwards
+        	 angle.y += 90.f;
 			break;
              case AntiAimType_LBY::NONE:
             Settings::AntiAim::Lby::enabled = false;
