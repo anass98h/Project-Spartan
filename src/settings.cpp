@@ -243,7 +243,9 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")] = Settings::AntiAim::Lua::scriptX;
 	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")] = Settings::AntiAim::Lua::scriptY;
 	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")] = Settings::AntiAim::Lua::scriptY2;
-
+    settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")] = Settings::AntiAim::Lby::enabled;
+	settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")] = (int) Settings::AntiAim::Lby::type;
+    
 	settings[XORSTR("ESP")][XORSTR("enabled")] = Settings::ESP::enabled;
 	settings[XORSTR("ESP")][XORSTR("key")] = Util::GetButtonName(Settings::ESP::key);
 	LoadColor(settings[XORSTR("ESP")][XORSTR("enemy_color")], Settings::ESP::enemyColor);
@@ -672,7 +674,8 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")], Settings::AntiAim::Lua::scriptX);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")], Settings::AntiAim::Lua::scriptY);
 	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")], Settings::AntiAim::Lua::scriptY2);
-
+    GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")], &Settings::AntiAim::Lby::enabled);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")], (int*)& Settings::AntiAim::Lby::type);
 
 	GetVal(settings[XORSTR("ESP")][XORSTR("enabled")], &Settings::ESP::enabled);
 	GetButtonCode(settings[XORSTR("ESP")][XORSTR("key")], &Settings::ESP::key);

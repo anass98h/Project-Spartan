@@ -1,18 +1,15 @@
-#include "hvhtab.h"
+#include "lbytab.h"
 
-
- int Settings::spinFactor::value = 1;
-
-
-void HvH::RenderTab()
+void LBY::RenderTab()
 {
 	const char* yTypes[] = {
 
-			"Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot","Apostrophe", "Tank", "Tank 2", "Tank 3", "Lby Breaker", "Lby Spin", "Backjitter Random", "CasualJitter", "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards", "Forwards", "Static", "Static Jitter", "Static small Jitter", "LUA", "LUA2", "CasualAA",// safe
+			"Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot","Apostrophe", "Tank", "Tank 2", "Tank 3", "LBY BREAKER", "LBYSPIN", "RANDOM BACKJITTER", "CASUAL JITTER", "LBY JITTER", "JITTER", "BACKJITTER", "SIDEWAYS RIGHT", "SIDEWAYS LEFT", "FAKE SIDEWAYS", "BACKWARDS", "FORWARDS", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", "LUA", "LUA2", "CASUALAA",// safe
 			"LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
 	};
-    	const char* lbyTypes[] = {
+    
+		const char* lbyTypes[] = {
 	"MarcTheWeeb","Circlebian","Kuku Bra","NONE", //TODO add actual stuff here
 		};
 		const char* zTypes[] = {
@@ -25,19 +22,19 @@ void HvH::RenderTab()
 
 	ImGui::Columns(2, NULL, true);
 	{
-		ImGui::BeginChild(XORSTR("HVH1"), ImVec2(0, 0), true);
+		ImGui::BeginChild(XORSTR("LBY1"), ImVec2(0, 0), true);
 		{
 			ImGui::Text(XORSTR("AntiAim"));
 			ImGui::BeginChild(XORSTR("##ANTIAIM"), ImVec2(0, 0), true);
 			{
-				ImGui::Checkbox(XORSTR("Yaw"), &Settings::AntiAim::Yaw::enabled);
+				ImGui::Spacing();
 				ImGui::Separator();
 				ImGui::Columns(2, NULL, true);
 				{
 					ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
 					ImGui::Text(XORSTR("Yaw Fake"));
 					ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
-					ImGui::Text(XORSTR("Yaw Actual"));
+					ImGui::Text(XORSTR("LBY Breaker type "));
 					ImGui::Checkbox(XORSTR("Anti Resolver"), &Settings::AntiAim::Yaw::antiResolver);
 					ImGui::Checkbox(XORSTR("Dynamic AA"), &Settings::AntiAim::Yaw::dynamicAA);
 					
@@ -61,23 +58,15 @@ void HvH::RenderTab()
 					
 					
 
-					if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int*)& Settings::AntiAim::Yaw::type, yTypes, IM_ARRAYSIZE(yTypes)))
+					if (ImGui::Combo(XORSTR("##LBYTYPE"), (int*)& Settings::AntiAim::Lby::type, lbyTypes, IM_ARRAYSIZE(lbyTypes)))
 					{
-                        if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYBREAK)
-						{
-                            Settings::AntiAim::Lby::type =AntiAimType_LBY::ONE ;
-                           
-							Settings::AntiAim::Lby::enabled = true;
-                           
-						}
-
-						if (Settings::AntiAim::Yaw::type <= AntiAimType_Y::LEGITTROLLING2)
-						{
-
-							Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
-
-						}
-
+                        
+						if(Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE)
+                        {   
+                            Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
+                            Settings::AntiAim::Lby::enabled = false;
+                            
+                        }
 						if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
 						{
 							Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
@@ -249,7 +238,6 @@ void HvH::RenderTab()
 				}
 			}
 
-
 				if(Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN)
 	{
 					ImGui::NextColumn();
@@ -270,9 +258,10 @@ void HvH::RenderTab()
         ImGui::EndChild();
 		}
 					
-			
+		
 		}
 	}
+
 			ImGui::EndChild();
 		}
 

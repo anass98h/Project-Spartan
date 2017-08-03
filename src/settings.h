@@ -90,7 +90,13 @@ enum class AntiAimType_Y : int
 	LUA_UNCLAMPED,
 	LUA_UNCLAMPED2
 };
-
+enum class AntiAimType_LBY : int
+{
+    ONE,
+	TWO,
+	THREE,
+    NONE,
+};
 enum class AntiAimType_Z : int
 {
 	REVERSE,
@@ -577,7 +583,11 @@ namespace Settings
 			extern bool enabled;
 			extern AntiAimType_X type;
 		}
-
+        namespace Lby
+        {
+           extern bool enabled; 
+           extern AntiAimType_LBY type; 
+        }
 		namespace HeadEdge
 		{
 			extern bool enabled;
