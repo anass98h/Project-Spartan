@@ -10,7 +10,7 @@ void LBY::RenderTab()
 	};
     
 		const char* lbyTypes[] = {
-	"MarcTheWeeb","Circlebian","Kuku Bra","NONE", //TODO add actual stuff here
+	"Breaker 1","Breaker 2","Breaker 3","NONE", //TODO add actual stuff here
 		};
 		const char* zTypes[] = {
 	"Reverse","Autismflip","TEST",

@@ -12,12 +12,9 @@ void HvH::RenderTab()
 			"LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
 	};
-    	const char* lbyTypes[] = {
-	"MarcTheWeeb","Circlebian","Kuku Bra","NONE", //TODO add actual stuff here
-		};
-		const char* zTypes[] = {
-	"Reverse","Autismflip","TEST",
-		};
+	const char* zTypes[] = {
+			"Reverse","Autismflip","TEST",
+	};
 	const char* xTypes[] = {
 			"UP", "FLIP", "DOWN", "DANCE", "FRONT", "LUA", // safe
 			"FAKE UP", "FAKE DOWN", "LISP DOWN", "ANGEL DOWN", "ANGEL UP", "LUA UNCLAMPED" // untrusted
