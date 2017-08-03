@@ -752,6 +752,18 @@ static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CU
 		else
 			cmd->buttons |= IN_ATTACK;
 	}
+
+	if(Settings::SmartAim::enabled) {
+		if (sentShotToTarget) {
+			missedShots++;
+			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "WE MISSED A SHOT! Missed Shots: " + missedShots);
+			sentShotToTarget = false;
+		} else {
+			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Hitted Shots. Missed Shots: " + missedShots);
+		}
+
+		sentShotToTarget = true;
+	}
 }
 
 static void ShootCheck(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
@@ -946,17 +958,7 @@ void Aimbot::CreateMove(CUserCmd* cmd)
 	if (!Settings::Aimbot::silent)
 		engine->SetViewAngles(cmd->viewangles);
 
-	if(Settings::SmartAim::enabled) {
-		if (sentShotToTarget) {
-			missedShots++;
-			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "WE MISSED A SHOT! Missed Shots: " + missedShots);
-			sentShotToTarget = false;
-		} else {
-			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Hitted Shots. Missed Shots: " + missedShots);
-		}
 
-		sentShotToTarget = true;
-	}
 }
 void Aimbot::FireGameEvent(IGameEvent* event)
 {
