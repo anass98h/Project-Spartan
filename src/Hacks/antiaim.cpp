@@ -593,7 +593,29 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 factor *= 1868;
                 angle.y = fmodf(globalVars->curtime * factor, 687.0);
                 n=16;
+                }else if(n == 16){
+                    
+                                        
+                     factor = 6287.0 / M_PHI;
+                factor *= 188;
+                angle.y = fmodf(globalVars->curtime * factor, 6287.0);
+                n=17;
+                }else if(n == 17){
+                    
+                                        
+                     factor = 587.0 / M_PHI;
+                factor *= 168;
+                angle.y = fmodf(globalVars->curtime * factor, 587.0);
+                n=18;
+                }else if(n == 18){
+                    
+                                        
+                     factor = 687.0 / M_PHI;
+                factor *= 1868;
+                angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                n=19;
                 }
+                
                 else{
                 factor = 420.0;
                 factor *= 50;
