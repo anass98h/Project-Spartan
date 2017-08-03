@@ -82,7 +82,15 @@ if (Settings::UI::combinedMenu){
 				Visuals::RenderTab();
 				break;
 			case 3:
-				HvH::RenderTab();
+		 if (!Settings::AntiAim::Lby::enabled )
+                        {
+                           HvH::RenderTab();
+                        }
+                        else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
+                        {
+                            LBY::RenderTab(); 
+                        }
+				
 				break;
 			case 4:
 				Misc::RenderTab();
@@ -189,7 +197,15 @@ else{
 				Visuals::RenderTab();
 				break;
 			case 3:
-				HvH::RenderTab();
+		 if (!Settings::AntiAim::Lby::enabled )
+                        {
+                           HvH::RenderTab();
+                        }
+                        else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
+                        {
+                            LBY::RenderTab(); 
+                        }
+				
 				break;
 			case 4:
 				Misc::RenderTab();
@@ -264,7 +280,15 @@ else{
 				Visuals::RenderTab();
 				break;
 			case 3:
-				HvH::RenderTab();
+		 if (!Settings::AntiAim::Lby::enabled )
+                        {
+                           HvH::RenderTab();
+                        }
+                        else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
+                        {
+                            LBY::RenderTab(); 
+                        }
+				
 				break;
 			case 4:
 				Misc::RenderTab();

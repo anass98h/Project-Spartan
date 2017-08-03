@@ -32,6 +32,7 @@
 #include "Tabs/otherstab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
+#include "Tabs/lbytab.h"
 
 
 

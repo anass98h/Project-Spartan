@@ -13,7 +13,7 @@
 #include "ImGUI/IconsFontAmazing/IconsFontAwesome.h"
 #include "ImGUI/fonts/Tux.h"
 #include "ImGUI/fonts/Tux2.h"
-#include "SpartanGUI/SegoeUI.h"
+#include "SpartanGUI/Spartan.h"
 
 
 

@@ -26,7 +26,7 @@ void SDL2::SwapWindow(SDL_Window* window)
 		};
 		*/
 
-		ImWchar SegoeUI_ranges[] = {
+		ImWchar Spartan_ranges[] = {
 				0x0020, 0x007E, // Basic Latin
 				0x00A0, 0x00FF, // Latin-1 Supplement
 				0x0100, 0x017F, // Latin Extended-A
@@ -56,7 +56,7 @@ void SDL2::SwapWindow(SDL_Window* window)
 		ImFontConfig config;
 
 		// Add SegoeUI as default font
-		io.Fonts->AddFontFromMemoryCompressedTTF(SegoeUI_compressed_data, SegoeUI_compressed_size, 20.0f, &config, SegoeUI_ranges);
+		io.Fonts->AddFontFromMemoryCompressedTTF(Spartan_compressed_data, Spartan_compressed_size, 21.0f, &config, Spartan_ranges);
         
         //not sure if I set this after or before the merge mode 
         
@@ -69,10 +69,7 @@ void SDL2::SwapWindow(SDL_Window* window)
         io.Fonts->AddFontFromMemoryCompressedBase85TTF(Tux_compressed_data_base85,  88.0f, &config, icons_ranges);
         io.Fonts->AddFontFromMemoryCompressedBase85TTF(Tux2_compressed_data_base85,  28.0f, &config, icons_ranges2);
         
-        config.MergeMode = true;
-        config.PixelSnapH = true;
-        //io.Fonts->AddFontFromFileTTF("ImGUI/extra_fonts/NR.ttf", 18.0f, &config, icons_ranges);
-          io.Fonts->AddFontFromFileTTF("ImGUI/fonts/OsmiumMenu.ttf",22.0f, &config, icons_ranges);
+    
         
 		io.Fonts->Build();
 		

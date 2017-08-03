@@ -72,9 +72,9 @@ import yaml
 # Fonts
 
 class Font:
-	font_tff = '[ ERROR - missing tff file info ]'
+	font_tff = OsmiumMenu.ttf
 	font_url = '[ ERROR - missing font data url ]'
-	font_name = '[ ERROR - missing font name ]'
+	font_name = OsmiumMenu
 	font_abbr = '[ ERROR - missing font abbreviation ]'
 
 	@classmethod

@@ -4,8 +4,10 @@ bool Settings::AntiAim::Roll::enabled = false;
 AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE;  // Dank Roll 
 bool Settings::AntiAim::Yaw::enabled = false;
 bool Settings::AntiAim::Pitch::enabled = false;
-AntiAimType_Y Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
-AntiAimType_Y Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
+bool Settings::AntiAim::Lby::enabled = false;
+AntiAimType_LBY Settings::AntiAim::Lby::type = AntiAimType_LBY::ONE;
+AntiAimType_Y Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
+AntiAimType_Y Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
 bool Settings::AntiAim::Yaw::antiResolver = false;
 AntiAimType_X Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
 bool Settings::AntiAim::HeadEdge::enabled = false;
@@ -1133,6 +1135,91 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp)
 			break;
 	}
 }
+static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& clamp)
+{
+	static float pDance = 0.0f;
+	AntiAimType_LBY aa_type = Settings::AntiAim::Lby::type;
+    static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+	switch (aa_type)
+	{   
+       
+		case AntiAimType_LBY::ONE:
+			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+     
+        	 static bool flip1 = false;	
+        	 static float prevLBY1 = *pLocal->GetLowerBodyYawTarget();
+
+			  if (pLocal->GetVelocity().Length() < 0.1f)
+			  {
+			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+	
+			    if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
+			      flip1 = !flip1;
+			    
+			    if (flip1)
+			      angle.y += 110.f;
+			    else
+			      angle.y -= 110.f;
+
+			    prevLBY1 = *pLocal->GetLowerBodyYawTarget();
+			  }
+			  else
+			angle.y -= 180.0f;
+		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+			break;
+            case AntiAimType_LBY::TWO:
+			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+     
+        	 static bool flip2 = false;	
+        	 static float prevLBY2 = *pLocal->GetLowerBodyYawTarget();
+
+			  if (pLocal->GetVelocity().Length() < 0.1f)
+			  {
+			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+	
+			    if (prevLBY2 != *pLocal->GetLowerBodyYawTarget())
+			      flip2 = !flip2;
+			    
+			    if (flip2)
+			      angle.y += 110.f;
+			    else
+			      angle.y -= 110.f;
+
+			    prevLBY2 = *pLocal->GetLowerBodyYawTarget();
+			  }
+			  else
+			angle.y -= 180.0f;
+		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+			break;
+			 case AntiAimType_LBY::THREE:
+			 //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+     
+        	 static bool flip3 = false;	
+        	 static float prevLBY3 = *pLocal->GetLowerBodyYawTarget();
+
+			  if (pLocal->GetVelocity().Length() < 0.1f)
+			  {
+			 // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+	
+			    if (prevLBY3 != *pLocal->GetLowerBodyYawTarget())
+			      flip3 = !flip3;
+			    
+			    if (flip3)
+			      angle.y += 110.f;
+			    else
+			      angle.y -= 110.f;
+
+			    prevLBY3 = *pLocal->GetLowerBodyYawTarget();
+			  }
+			  else
+			angle.y -= 180.0f;
+		//cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+			break;
+             case AntiAimType_LBY::NONE:
+            Settings::AntiAim::Lby::enabled = false;
+            break;
+	}
+}
 
 static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& clamp)
 
@@ -1243,10 +1330,10 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 	if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS())
 	{
 		if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
-			Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
+			Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
 
 		if (Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP)
-			Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
+			Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
 
 		if (Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE)
 			Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
@@ -1261,7 +1348,15 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 		if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
 			angle.y = edge_angle.y;
 	}
-
+    if (Settings::AntiAim::Lby::enabled)
+	{
+		DoAntiAimLBY(angle, cmd->command_number, bFlip, should_clamp);
+		Math::NormalizeAngles(angle);
+		if (!Settings::FakeLag::enabled)
+			CreateMove::sendPacket = bFlip;
+		if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
+			angle.y = edge_angle.y;
+	}
 	if (Settings::AntiAim::Yaw::dynamicAA)
 	{
 		
