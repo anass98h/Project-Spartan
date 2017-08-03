@@ -35,7 +35,8 @@ Spartan is a HvH orientated cheat, mainly focused on Spread.
 ## Installation
 
 Download the required dependencies:
-
+* **All** http://smc.org.in/downloads/fonts/dyuthi/Dyuthi.ttf &&
+  ftp://195.220.108.108/linux/fedora-secondary/releases/26/Everything/s390x/os/Packages/s/sarai-fonts-1.0-19.fc26.noarch.rpm
 * **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
 * **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf`
 * **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
