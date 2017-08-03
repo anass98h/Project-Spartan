@@ -20,7 +20,7 @@ if (Settings::UI::combinedMenu){
 		
 			static int page = 0;
 	ImGui::SetNextWindowSize(ImVec2(1080, 700), ImGuiSetCond_FirstUseEver);
-	if (ImGui::Begin(("Project Spartan"), &Main::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_MenuBar))
+	if (ImGui::Begin(("project-spartan"), &Main::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_MenuBar))
   		
 	{ 
 	
@@ -127,7 +127,7 @@ if (Settings::UI::combinedMenu){
 else{	
 	static int page = 0;
 	ImGui::SetNextWindowSize(ImVec2(1080, 700), ImGuiSetCond_FirstUseEver);
-	if (ImGui::Begin(("Project Spartan"), &Main::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders))
+	if (ImGui::Begin(("project-spartan"), &Main::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders))
   		
 	{ 
 		if(Settings::UI::oldMenu || Settings::UI::otherMenu){

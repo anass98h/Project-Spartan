@@ -44,6 +44,7 @@ namespace Hooker
 	//void FindVstdlibFunctions();
 	void FindOverridePostProcessingDisable();
 	void FindCrosshairWeaponTypeCheck();
+	void FindCamThinkSvCheatsCheck();
 	void HookSwapWindow();
 	void HookPollEvent();
 	void FindSDLInput();

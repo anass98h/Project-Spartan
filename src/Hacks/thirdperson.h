@@ -6,5 +6,6 @@
 namespace ThirdPerson
 {
 	//Hooks
-	void OverrideView(CViewSetup* pSetup);
+	void BeginFrame();
+	void FrameStageNotify(ClientFrameStage_t stage);
 }
