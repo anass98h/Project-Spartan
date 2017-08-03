@@ -939,6 +939,11 @@ namespace Settings
 		extern std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefinitionIndex>> skinsT;
 	}
 
+	namespace SmartAim
+	{
+		extern bool enabled;
+	}
+
 	namespace ShowRanks
 	{
 		extern bool enabled;
