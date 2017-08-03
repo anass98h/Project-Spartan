@@ -391,6 +391,7 @@ void Misc::RenderTab()
 				//UI::KeyBindButton(&Settings::CircleStrafe::key);
 				UI::KeyBindButton(&Settings::Autoblock::key);
 				UI::KeyBindButton(&Settings::JumpThrow::key);
+				ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);
 				ImGui::Checkbox(XORSTR("Silent Defuse"), &Settings::AutoDefuse::silent);
 			}
 			ImGui::Columns(1);

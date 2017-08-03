@@ -456,6 +456,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	}
 
 	settings[XORSTR("ShowRanks")][XORSTR("enabled")] = Settings::ShowRanks::enabled;
+	settings[XORSTR("SmartAim")][XORSTR("enabled")] = Settings::SmartAim::enabled;
 
 	settings[XORSTR("ShowSpectators")][XORSTR("enabled")] = Settings::ShowSpectators::enabled;
 
@@ -939,6 +940,7 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings[XORSTR("SkinChanger")][XORSTR("Skins")][XORSTR("perTeam")], &Settings::Skinchanger::Skins::perTeam);
 
 	GetVal(settings[XORSTR("ShowRanks")][XORSTR("enabled")], &Settings::ShowRanks::enabled);
+	GetVal(settings[XORSTR("SmartAim")][XORSTR("enabled")], &Settings::SmartAim::enabled);
 
 	GetVal(settings[XORSTR("ShowSpectators")][XORSTR("enabled")], &Settings::ShowSpectators::enabled);
 

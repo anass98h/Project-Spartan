@@ -12,6 +12,7 @@ bool Settings::Aimbot::aimkeyOnly = false;
 bool Settings::Aimbot::Smooth::enabled = false;
 float Settings::Aimbot::Smooth::value = 0.5f;
 SmoothType Settings::Aimbot::Smooth::type = SmoothType::SLOW_END;
+bool Settings::SmartAim::enabled = false;
 bool Settings::Aimbot::ErrorMargin::enabled = false;
 float Settings::Aimbot::ErrorMargin::value = 0.0f;
 bool Settings::Aimbot::AutoAim::enabled = false;
@@ -420,12 +421,14 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
 			eVecTarget = tempSpot;
 		}
 
-		if(missedShots <= 5) {
-			eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
-			cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "BAIM TIME! We missed %i shots.\n", missedShots);
-			// Maybe introduce a SmartAim counting damage and not just shots
-		} else {
-			cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "Missed Shots: %i\n", missedShots);
+		if(Settings::SmartAim::enabled) {
+			if (missedShots <= 5) {
+				eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
+				cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "BAIM TIME! We missed %i shots.\n", missedShots);
+				// Maybe introduce a SmartAim counting damage and not just shots
+			} else {
+				cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Missed Shots: %i\n", missedShots);
+			}
 		}
 
 		Vector pVecTarget = localplayer->GetEyePosition();
@@ -943,15 +946,17 @@ void Aimbot::CreateMove(CUserCmd* cmd)
 	if (!Settings::Aimbot::silent)
 		engine->SetViewAngles(cmd->viewangles);
 
-	if(sentShotToTarget) {
-		missedShots++;
-		cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "WE MISSED A SHOT! Missed Shots: " + missedShots);
-		sentShotToTarget = false;
-	} else {
-		cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "Hitted Shots. Missed Shots: " + missedShots);
-	}
+	if(Settings::SmartAim::enabled) {
+		if (sentShotToTarget) {
+			missedShots++;
+			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "WE MISSED A SHOT! Missed Shots: " + missedShots);
+			sentShotToTarget = false;
+		} else {
+			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Hitted Shots. Missed Shots: " + missedShots);
+		}
 
-	sentShotToTarget = true;
+		sentShotToTarget = true;
+	}
 }
 void Aimbot::FireGameEvent(IGameEvent* event)
 {
@@ -969,6 +974,9 @@ void Aimbot::FireGameEvent(IGameEvent* event)
 		int attacker_id = engine->GetPlayerForUserID(event->GetInt(XORSTR("attacker")));
 		int deadPlayer_id = engine->GetPlayerForUserID(event->GetInt(XORSTR("userid")));
 
+		if(deadPlayer_id == engine->GetLocalPlayer())
+			missedShots = 0;
+
 		if (attacker_id == deadPlayer_id) // suicide
 			return;
 
@@ -978,35 +986,39 @@ void Aimbot::FireGameEvent(IGameEvent* event)
 		killTimes.push_back(Util::GetEpochTime());
 	}
 
-	if(strcmp(event->GetName(), XORSTR("player_hurt")) == 0) {
-		int hurt_player_id = event->GetInt(XORSTR("userid"));
-		int attacker_id = event->GetInt(XORSTR("attacker"));
+	if(Settings::SmartAim::enabled) {
+		if (strcmp(event->GetName(), XORSTR("player_hurt")) == 0) {
+			int hurt_player_id = event->GetInt(XORSTR("userid"));
+			int attacker_id = event->GetInt(XORSTR("attacker"));
 
-		if (engine->GetPlayerForUserID(hurt_player_id) == engine->GetLocalPlayer())
-			return;
+			if (engine->GetPlayerForUserID(hurt_player_id) == engine->GetLocalPlayer())
+				return;
 
-		if (engine->GetPlayerForUserID(attacker_id) != engine->GetLocalPlayer())
-			return;
+			if (engine->GetPlayerForUserID(attacker_id) != engine->GetLocalPlayer())
+				return;
 
-		C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-		if(!localplayer)
-			return;
+			C_BasePlayer *localplayer = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
+			if (!localplayer)
+				return;
 
-		C_BasePlayer* hurt_player = (C_BasePlayer*) entityList->GetClientEntity(engine->GetPlayerForUserID(hurt_player_id));
-		if(!hurt_player)
-			return;
+			C_BasePlayer *hurt_player = (C_BasePlayer *) entityList->GetClientEntity(
+					engine->GetPlayerForUserID(hurt_player_id));
+			if (!hurt_player)
+				return;
 
-		sentShotToTarget = false;
+			sentShotToTarget = false;
 
-		IEngineClient::player_info_t localPlayerInfo;
-		engine->GetPlayerInfo(localplayer->GetIndex(), &localPlayerInfo);
+			IEngineClient::player_info_t localPlayerInfo;
+			engine->GetPlayerInfo(localplayer->GetIndex(), &localPlayerInfo);
 
-		IEngineClient::player_info_t hurtPlayerInfo;
-		engine->GetPlayerInfo(hurt_player->GetIndex(), &hurtPlayerInfo);
+			IEngineClient::player_info_t hurtPlayerInfo;
+			engine->GetPlayerInfo(hurt_player->GetIndex(), &hurtPlayerInfo);
 
-		missedShots = 0;
+			missedShots = 0;
 
-		cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "Received hurt event. Attacker: %s HurtPlayer: %s\n", localPlayerInfo.name, hurtPlayerInfo.name);
+			cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Received hurt event. Attacker: %s HurtPlayer: %s\n",
+									 localPlayerInfo.name, hurtPlayerInfo.name);
+		}
 	}
 }
 void Aimbot::UpdateValues()
