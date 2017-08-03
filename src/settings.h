@@ -198,7 +198,15 @@ enum class SpammerType : int
 	SPAMMER_NORMAL,
 	SPAMMER_POSITIONS,
 };
-
+enum class ResolverHugtype : int
+{
+	OFF,
+	AIMTUX,
+	PLUSDELTA,
+	APOSTROPHE,
+    BRUTE1,
+	AUTISM,
+};
 struct AimbotWeapon_t
 {
 	bool enabled, silent, pSilent, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
@@ -604,8 +612,13 @@ namespace Settings
 	}
 
 	namespace Resolver
-	{
+	{	
+		
 		extern bool resolveAll;
+		extern float ticks;
+		extern float modulo;
+		extern ResolverHugtype Hugtype;
+		extern bool pitch;
 	}
       namespace lbyindicator
 		{
