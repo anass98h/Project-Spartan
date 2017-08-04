@@ -2,9 +2,10 @@
 
 #include "../Spartangui.h"
 
-namespace Main {
-    extern bool showWindow;
+namespace Main
+{
+	extern bool showWindow;
 
-    extern void RenderWindow();
+	extern void RenderWindow();
 
 }

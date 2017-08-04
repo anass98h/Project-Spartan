@@ -2,6 +2,7 @@
 
 #include "../Spartangui.h"
 
-namespace Visuals {
-    void RenderTab();
+namespace Visuals
+{
+	void RenderTab();
 }
