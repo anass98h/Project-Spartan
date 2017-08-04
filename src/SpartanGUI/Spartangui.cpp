@@ -18,6 +18,7 @@ std::string data;
 std::string contents;
 
 // We should enforce better method naming.
+
 static void ccc() {
     ImGui::CloseCurrentPopup();
     ImGui::OpenPopup(XORSTR("Project Spartan"));
@@ -43,8 +44,8 @@ void SetupMainMenuBar() {
 
 
     if (ImGui::Begin("Menu Selector", &ShowMainWindow,
-                     ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
-                     ImGuiWindowFlags_NoResize)) {
+            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
+            ImGuiWindowFlags_NoResize)) {
 
         if (!LoggedIn)
             ImGui::OpenPopup(XORSTR("Project Spartan"));
@@ -63,14 +64,14 @@ void SetupMainMenuBar() {
         if (ImGui::BeginPopupModal(XORSTR("Project Spartan"))) {
             ImGui::Text(
                     XORSTR(" Welcome to Project Spartan. Please enter your Verification ID: ")
-            );
+                    );
             ImGui::Spacing();
             ImGui::BulletText(" Verification-ID ");
             ImGui::Separator();
             ImGui::PushItemWidth(188);
             ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass),
-                             ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
-                             ImGuiInputTextFlags_AutoSelectAll);
+                    ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
+                    ImGuiInputTextFlags_AutoSelectAll);
             ImGui::PopItemWidth();
             ImGui::Separator();
             if (ImGui::Button(XORSTR("Login"))) {
@@ -103,7 +104,7 @@ void SetupMainMenuBar() {
         ImGui::Separator();
 
         if (ImGui::Button(XORSTR("Normal Menu  "),
-                          ImVec2(ImGui::CalcTextSize(XORSTR("Normal Menu  "), NULL, true).x, 0.0f))) {
+                ImVec2(ImGui::CalcTextSize(XORSTR("Normal Menu  "), NULL, true).x, 0.0f))) {
             if (!LoggedIn)
                 ImGui::OpenPopup(XORSTR("Project Spartan"));
             if (!toggled && LoggedIn) {
@@ -128,12 +129,12 @@ void SetupMainMenuBar() {
 
         static const char *test_data = "Menu";
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
-        int items_count = sizeof(items) / sizeof(*items);
+        int items_count = sizeof (items) / sizeof (*items);
 
         static int selected = -1;
 
         ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
-        if (ImGui::IsItemActive())          // Don't wait for button release to activate the pie menu
+        if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
             ImGui::OpenPopup("##piepopup");
 
         ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
@@ -168,38 +169,38 @@ void SetupMainMenuBar() {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8 * 2.0f, 4 * 2.0f));
 
                 ImGui::Selectable(XORSTR("Main Window"), &Main::showWindow, 0,
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Main Window"), NULL, true).x, 0.0f));
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Main Window"), NULL, true).x, 0.0f));
                 ImGui::SameLine();
 
                 if (ModSupport::current_mod != ModType::CSCO) {
                     ImGui::Selectable(XORSTR("Skin & Model Changer Window"), &SkinModelChanger::showWindow, 0,
-                                      ImVec2(ImGui::CalcTextSize(XORSTR("Skin & Model Changer Window"), NULL, true).x,
-                                             0.0f));
+                            ImVec2(ImGui::CalcTextSize(XORSTR("Skin & Model Changer Window"), NULL, true).x,
+                            0.0f));
                     ImGui::SameLine();
                 }
 
                 ImGui::Selectable(XORSTR("Config Window"), &Configs::showWindow, 0,
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Config Window"), NULL, true).x, 0.0f));
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Config Window"), NULL, true).x, 0.0f));
                 ImGui::SameLine();
 
                 ImGui::Selectable(XORSTR("Spectators Window"), &Settings::ShowSpectators::enabled, 0,
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Spectators Window"), NULL, true).x, 0.0f));
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Spectators Window"), NULL, true).x, 0.0f));
                 ImGui::SameLine();
 
                 ImGui::Selectable(XORSTR("Colors Window"), &Colors::showWindow, 0,
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Colors Window"), NULL, true).x, 0.0f));
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Colors Window"), NULL, true).x, 0.0f));
                 ImGui::SameLine();
 
                 ImGui::Selectable(XORSTR("Player List Window"), &PlayerList::showWindow, 0,
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Player List Window"), NULL, true).x, 0.0f));
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Player List Window"), NULL, true).x, 0.0f));
                 ImGui::SameLine();
 
 
                 ImGui::SameLine(ImGui::GetWindowContentRegionMax().x -
-                                ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true)).x);
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true)).x);
 
                 if (ImGui::Button(XORSTR("Unload   "),
-                                  ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true).x, 0.0f))) {
+                        ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true).x, 0.0f))) {
                     projectspartan::SelfShutdown();
                 }
 
@@ -217,8 +218,8 @@ void SetupMainMenuBar() {
 
             ImGui::SetNextWindowSize(ImVec2(150, 200), ImGuiSetCond_FirstUseEver);
             if (ImGui::Begin("OPTIONS", &ShowMainWindow,
-                             ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
-                             ImGuiWindowFlags_NoResize)) {
+                    ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
+                    ImGuiWindowFlags_NoResize)) {
 
                 ImGui::Checkbox("Main Window", &Main::showWindow);
                 ImGui::Separator();
@@ -247,7 +248,6 @@ void SetupMainMenuBar() {
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-
 void UI::SwapWindow() {
     if (UI::isVisible)
         return;
@@ -262,7 +262,7 @@ void UI::SwapWindow() {
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, sizeof(buffer), "%T %Z", timeinfo);
+    strftime(buffer, sizeof (buffer), "%T %Z", timeinfo);
     std::string time(buffer);
 
     std::string watermark(XORSTR("Project Spartan | "));
@@ -272,6 +272,7 @@ void UI::SwapWindow() {
 }
 
 // This may come in handy if we want to display some good shit in the watermark
+
 std::string OrdinalNumberPrefix(int day) {
     switch (day) {
         case 1:
@@ -337,4 +338,4 @@ void UI::SetupWindows() {
 
 
     }
-}	
+}

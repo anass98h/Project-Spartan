@@ -16,7 +16,10 @@ struct CValidTick {
 };
 
 struct CTickRecord {
-    CTickRecord() {}
+
+    CTickRecord() {
+    }
+
     CTickRecord(C_BasePlayer* Circlebian) {
         m_flLowerBodyYawTarget = *Circlebian->GetLowerBodyYawTarget();
         m_angEyeAngles = *Circlebian->GetEyeAngles();
@@ -31,15 +34,19 @@ struct CTickRecord {
     bool operator>(const CTickRecord& others) {
         return (m_flSimulationTime > others.m_flSimulationTime);
     }
+
     bool operator>=(const CTickRecord& others) {
         return (m_flSimulationTime >= others.m_flSimulationTime);
     }
+
     bool operator<(const CTickRecord& others) {
         return (m_flSimulationTime < others.m_flSimulationTime);
     }
+
     bool operator<=(const CTickRecord& others) {
         return (m_flSimulationTime <= others.m_flSimulationTime);
     }
+
     bool operator==(const CTickRecord& others) {
         return (m_flSimulationTime == others.m_flSimulationTime);
     }
@@ -51,11 +58,11 @@ struct CTickRecord {
     int tickcount = 0;
 };
 
-inline CValidTick::operator CTickRecord() const{
+inline CValidTick::operator CTickRecord() const {
     CTickRecord rec(m_pEntity);
     rec.m_angEyeAngles.x = this->m_flPitch;
     rec.m_angEyeAngles.y = this->m_flYaw;
     rec.m_flSimulationTime = this->m_flSimulationTime;
     return rec;
 }
- 
+
