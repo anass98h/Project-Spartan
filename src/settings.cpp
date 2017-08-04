@@ -192,42 +192,46 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Aimbot")][XORSTR("AutoCrouch")][XORSTR("enabled")] = Settings::Aimbot::AutoCrouch::enabled;
     //settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
     settings[XORSTR("lbyindicator")][XORSTR("enabled")] = Settings::lbyindicator::enabled;
-    settings[XORSTR("Resolver")][XORSTR("resolve_all")] = Settings::Resolver::resolveAll;
 
-    settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
-    settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")] = Settings::Triggerbot::Filters::enemies;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("allies")] = Settings::Triggerbot::Filters::allies;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("walls")] = Settings::Triggerbot::Filters::walls;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("smoke_check")] = Settings::Triggerbot::Filters::smokeCheck;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("flash_check")] = Settings::Triggerbot::Filters::flashCheck;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("head")] = Settings::Triggerbot::Filters::head;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("chest")] = Settings::Triggerbot::Filters::chest;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("stomach")] = Settings::Triggerbot::Filters::stomach;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("arms")] = Settings::Triggerbot::Filters::arms;
-    settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("legs")] = Settings::Triggerbot::Filters::legs;
-    settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("enabled")] = Settings::Triggerbot::RandomDelay::enabled;
-    settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")] = Settings::Triggerbot::RandomDelay::lowBound;
-    settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")] = Settings::Triggerbot::RandomDelay::highBound;
+    settings[XORSTR("Resolver")][XORSTR("ticks")] = Settings::Resolver::ticks;
+	settings[XORSTR("Resolver")][XORSTR("modulo")] = Settings::Resolver::modulo;
+	settings[XORSTR("Resolver")][XORSTR("Hugtype")] = (int) Settings::Resolver::Hugtype;
 
-    settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")] = Settings::AntiAim::Yaw::enabled;
-    settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")] = (int) Settings::AntiAim::Yaw::type;
-    settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")] = (int) Settings::AntiAim::Yaw::typeFake;
-    settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")] = (int) Settings::AntiAim::Roll::type;
-    settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")] = Settings::AntiAim::Roll::enabled;
-    settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")] = Settings::AntiAim::Yaw::antiResolver;
-    settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")] = Settings::AntiAim::Yaw::dynamicAA;
-    settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")] = Settings::AntiAim::Pitch::enabled;
-    settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")] = (int) Settings::AntiAim::Pitch::type;
-    settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")] = Settings::AntiAim::HeadEdge::enabled;
-    settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("distance")] = Settings::AntiAim::HeadEdge::distance;
-    settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("no_enemy")] = Settings::AntiAim::AutoDisable::noEnemy;
-    settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("knife_held")] = Settings::AntiAim::AutoDisable::knifeHeld;
-    settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("bomb_held")] = Settings::AntiAim::AutoDisable::bombHeld;
-    settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("debugMode")] = Settings::AntiAim::Lua::debugMode;
-    settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")] = Settings::AntiAim::Lua::scriptX;
-    settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")] = Settings::AntiAim::Lua::scriptY;
-    settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")] = Settings::AntiAim::Lua::scriptY2;
+	settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
+	settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")] = Settings::Triggerbot::Filters::enemies;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("allies")] = Settings::Triggerbot::Filters::allies;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("walls")] = Settings::Triggerbot::Filters::walls;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("smoke_check")] = Settings::Triggerbot::Filters::smokeCheck;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("flash_check")] = Settings::Triggerbot::Filters::flashCheck;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("head")] = Settings::Triggerbot::Filters::head;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("chest")] = Settings::Triggerbot::Filters::chest;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("stomach")] = Settings::Triggerbot::Filters::stomach;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("arms")] = Settings::Triggerbot::Filters::arms;
+	settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("legs")] = Settings::Triggerbot::Filters::legs;
+	settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("enabled")] = Settings::Triggerbot::RandomDelay::enabled;
+	settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")] = Settings::Triggerbot::RandomDelay::lowBound;
+	settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")] = Settings::Triggerbot::RandomDelay::highBound;
+
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")] = Settings::AntiAim::Yaw::enabled;
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")] = (int) Settings::AntiAim::Yaw::type;
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")] = (int) Settings::AntiAim::Yaw::typeFake;
+	settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")] = (int) Settings::AntiAim::Roll::type;
+	settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")] = Settings::AntiAim::Roll::enabled;
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")] = Settings::AntiAim::Yaw::antiResolver;
+	settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")] = Settings::AntiAim::Yaw::dynamicAA;
+	settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")] = Settings::AntiAim::Pitch::enabled;
+	settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")] = (int) Settings::AntiAim::Pitch::type;
+	settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")] = Settings::AntiAim::HeadEdge::enabled;
+	settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("distance")] = Settings::AntiAim::HeadEdge::distance;
+	settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("no_enemy")] = Settings::AntiAim::AutoDisable::noEnemy;
+	settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("knife_held")] = Settings::AntiAim::AutoDisable::knifeHeld;
+	settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("bomb_held")] = Settings::AntiAim::AutoDisable::bombHeld;
+	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("debugMode")] = Settings::AntiAim::Lua::debugMode;
+	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")] = Settings::AntiAim::Lua::scriptX;
+	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")] = Settings::AntiAim::Lua::scriptY;
+	settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")] = Settings::AntiAim::Lua::scriptY2;
+
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")] = Settings::AntiAim::Lby::enabled;
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")] = (int) Settings::AntiAim::Lby::type;
 
@@ -517,142 +521,151 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     std::ofstream(path) << styledWriter.write(settings);
 }
 
-void Settings::LoadConfig(std::string path) {
-    if (!std::ifstream(path).good()) {
-        Settings::LoadDefaultsOrSave(path);
-        return;
-    }
 
-    Json::Value settings;
-    std::ifstream configDoc(path, std::ifstream::binary);
-    configDoc >> settings;
+void Settings::LoadConfig(std::string path)
+{
+	if (!std::ifstream(path).good())
+	{
+		Settings::LoadDefaultsOrSave(path);
+		return;
+	}
 
-    GetVal(settings[XORSTR("UI")][XORSTR("mainColor")], &Settings::UI::mainColor);
-    GetVal(settings[XORSTR("UI")][XORSTR("bodyColor")], &Settings::UI::bodyColor);
-    GetVal(settings[XORSTR("UI")][XORSTR("fontColor")], &Settings::UI::fontColor);
-    GetVal(settings[XORSTR("UI")][XORSTR("accentColor")], &Settings::UI::accentColor);
-    GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("family")], &Settings::UI::Fonts::ESP::family);
-    GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("size")], &Settings::UI::Fonts::ESP::size);
-    GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("flags")], &Settings::UI::Fonts::ESP::flags);
+	Json::Value settings;
+	std::ifstream configDoc(path, std::ifstream::binary);
+	configDoc >> settings;
 
-    Fonts::SetupFonts();
+	GetVal(settings[XORSTR("UI")][XORSTR("mainColor")], &Settings::UI::mainColor);
+	GetVal(settings[XORSTR("UI")][XORSTR("bodyColor")], &Settings::UI::bodyColor);
+	GetVal(settings[XORSTR("UI")][XORSTR("fontColor")], &Settings::UI::fontColor);
+	GetVal(settings[XORSTR("UI")][XORSTR("accentColor")], &Settings::UI::accentColor);
+	GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("family")], &Settings::UI::Fonts::ESP::family);
+	GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("size")], &Settings::UI::Fonts::ESP::size);
+	GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("flags")], &Settings::UI::Fonts::ESP::flags);
 
-    Settings::Aimbot::weapons = {
-        { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f}},
-    };
+	Fonts::SetupFonts();
 
-    for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++) {
-        std::string weaponDataKey = itr.key().asString();
-        auto weaponSetting = settings[XORSTR("Aimbot")][XORSTR("weapons")][weaponDataKey];
+	Settings::Aimbot::weapons = {
+			{ ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
+													SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
+													false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f } },
+	};
 
-        // XXX Using exception handling to deal with this is stupid, but I don't care to find a better solution
-        // XXX We can't use GetOrdinal() since the key type is a string...
-        ItemDefinitionIndex weaponID;
-        try {
-            weaponID = (ItemDefinitionIndex) std::stoi(weaponDataKey);
-        } catch (std::invalid_argument) // Not a number
-        {
-            weaponID = Util::Items::GetItemIndex(weaponDataKey);
-        }
+	for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++)
+	{
+		std::string weaponDataKey = itr.key().asString();
+		auto weaponSetting = settings[XORSTR("Aimbot")][XORSTR("weapons")][weaponDataKey];
 
-        if (Settings::Aimbot::weapons.find(weaponID) == Settings::Aimbot::weapons.end())
-            Settings::Aimbot::weapons[weaponID] = AimbotWeapon_t();
+		// XXX Using exception handling to deal with this is stupid, but I don't care to find a better solution
+		// XXX We can't use GetOrdinal() since the key type is a string...
+		ItemDefinitionIndex weaponID;
+		try
+		{
+			weaponID = (ItemDefinitionIndex) std::stoi(weaponDataKey);
+		}
+		catch (std::invalid_argument) // Not a number
+		{
+			weaponID = Util::Items::GetItemIndex(weaponDataKey);
+		}
 
-        AimbotWeapon_t weapon = {
-            weaponSetting[XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("Silent")].asBool(),
-            weaponSetting[XORSTR("pSilent")].asBool(),
-            weaponSetting[XORSTR("Friendly")].asBool(),
-            weaponSetting[XORSTR("ClosestBone")].asBool(),
-            weaponSetting[XORSTR("engageLock")].asBool(),
-            weaponSetting[XORSTR("engageLockTR")].asBool(),
-            weaponSetting[XORSTR("engageLockTTR")].asInt(),
-            (Bone) weaponSetting[XORSTR("TargetBone")].asInt(),
-            Util::GetButtonCode(weaponSetting[XORSTR("AimKey")].asCString()),
-            weaponSetting[XORSTR("AimKeyOnly")].asBool(),
-            weaponSetting[XORSTR("Smooth")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("Smooth")][XORSTR("Amount")].asFloat(),
-            (SmoothType) weaponSetting[XORSTR("Smooth")][XORSTR("Type")].asInt(),
-            weaponSetting[XORSTR("Smooth")][XORSTR("Salting")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("Smooth")][XORSTR("Salting")][XORSTR("Multiplier")].asFloat(),
-            weaponSetting[XORSTR("ErrorMargin")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("ErrorMargin")][XORSTR("Value")].asFloat(),
-            weaponSetting[XORSTR("AutoAim")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("AutoAim")][XORSTR("FOV")].asFloat(),
-            weaponSetting[XORSTR("AimStep")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("AimStep")][XORSTR("min")].asFloat(),
-            weaponSetting[XORSTR("AimStep")][XORSTR("max")].asFloat(),
-            weaponSetting[XORSTR("RCS")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("RCS")][XORSTR("AlwaysOn")].asBool(),
-            weaponSetting[XORSTR("RCS")][XORSTR("AmountX")].asFloat(),
-            weaponSetting[XORSTR("RCS")][XORSTR("AmountY")].asFloat(),
-            weaponSetting[XORSTR("AutoPistol")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("AutoShoot")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("AutoScope")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("NoShoot")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("IgnoreJump")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("SmokeCheck")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("FlashCheck")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("SpreadLimit")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("SpreadLimit")][XORSTR("Value")].asFloat(),
-            weaponSetting[XORSTR("AutoWall")][XORSTR("Enabled")].asBool(),
-            weaponSetting[XORSTR("AutoWall")][XORSTR("Value")].asFloat(),
-            weaponSetting[XORSTR("AutoAim")][XORSTR("RealDistance")].asBool(),
-            weaponSetting[XORSTR("AutoSlow")][XORSTR("enabled")].asBool(),
-            weaponSetting[XORSTR("Prediction")][XORSTR("enabled")].asBool(),
-            weaponSetting[XORSTR("moveMouse")].asBool(),
-            weaponSetting[XORSTR("HitChance")][XORSTR("enabled")].asBool(),
-            weaponSetting[XORSTR("HitChance")][XORSTR("hitRays")].asInt(),
-            weaponSetting[XORSTR("HitChance")][XORSTR("value")].asFloat()
+		if (Settings::Aimbot::weapons.find(weaponID) == Settings::Aimbot::weapons.end())
+			Settings::Aimbot::weapons[weaponID] = AimbotWeapon_t();
 
-        };
+		AimbotWeapon_t weapon = {
+				weaponSetting[XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("Silent")].asBool(),
+				weaponSetting[XORSTR("pSilent")].asBool(),
+				weaponSetting[XORSTR("Friendly")].asBool(),
+				weaponSetting[XORSTR("ClosestBone")].asBool(),
+				weaponSetting[XORSTR("engageLock")].asBool(),
+				weaponSetting[XORSTR("engageLockTR")].asBool(),
+				weaponSetting[XORSTR("engageLockTTR")].asInt(),
+				(Bone) weaponSetting[XORSTR("TargetBone")].asInt(),
+				Util::GetButtonCode(weaponSetting[XORSTR("AimKey")].asCString()),
+				weaponSetting[XORSTR("AimKeyOnly")].asBool(),
+				weaponSetting[XORSTR("Smooth")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("Smooth")][XORSTR("Amount")].asFloat(),
+				(SmoothType) weaponSetting[XORSTR("Smooth")][XORSTR("Type")].asInt(),
+				weaponSetting[XORSTR("Smooth")][XORSTR("Salting")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("Smooth")][XORSTR("Salting")][XORSTR("Multiplier")].asFloat(),
+				weaponSetting[XORSTR("ErrorMargin")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("ErrorMargin")][XORSTR("Value")].asFloat(),
+				weaponSetting[XORSTR("AutoAim")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("AutoAim")][XORSTR("FOV")].asFloat(),
+				weaponSetting[XORSTR("AimStep")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("AimStep")][XORSTR("min")].asFloat(),
+				weaponSetting[XORSTR("AimStep")][XORSTR("max")].asFloat(),
+				weaponSetting[XORSTR("RCS")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("RCS")][XORSTR("AlwaysOn")].asBool(),
+				weaponSetting[XORSTR("RCS")][XORSTR("AmountX")].asFloat(),
+				weaponSetting[XORSTR("RCS")][XORSTR("AmountY")].asFloat(),
+				weaponSetting[XORSTR("AutoPistol")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("AutoShoot")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("AutoScope")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("NoShoot")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("IgnoreJump")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("SmokeCheck")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("FlashCheck")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("SpreadLimit")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("SpreadLimit")][XORSTR("Value")].asFloat(),
+				weaponSetting[XORSTR("AutoWall")][XORSTR("Enabled")].asBool(),
+				weaponSetting[XORSTR("AutoWall")][XORSTR("Value")].asFloat(),
+				weaponSetting[XORSTR("AutoAim")][XORSTR("RealDistance")].asBool(),
+				weaponSetting[XORSTR("AutoSlow")][XORSTR("enabled")].asBool(),
+				weaponSetting[XORSTR("Prediction")][XORSTR("enabled")].asBool(),
+				weaponSetting[XORSTR("moveMouse")].asBool(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("enabled")].asBool(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("hitRays")].asInt(),
+				weaponSetting[XORSTR("HitChance")][XORSTR("value")].asFloat()
 
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
-            weapon.desiredBones[bone] = weaponSetting[XORSTR("DesiredBones")][XORSTR("Bones")][bone].asBool();
-        Settings::Aimbot::weapons.at(weaponID) = weapon;
-    }
+		};
 
-    GetVal(settings[XORSTR("Aimbot")][XORSTR("AutoCrouch")][XORSTR("enabled")], &Settings::Aimbot::AutoCrouch::enabled);
-    GetVal(settings[XORSTR("Aimbot")][XORSTR("velocityCheck")], &Settings::Aimbot::velocityCheck::enabled);
+		for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
+			weapon.desiredBones[bone] = weaponSetting[XORSTR("DesiredBones")][XORSTR("Bones")][bone].asBool();
+		Settings::Aimbot::weapons.at(weaponID) = weapon;
+	}
 
-    GetVal(settings[XORSTR("Resolver")][XORSTR("resolve_all")], &Settings::Resolver::resolveAll);
+	GetVal(settings[XORSTR("Aimbot")][XORSTR("AutoCrouch")][XORSTR("enabled")], &Settings::Aimbot::AutoCrouch::enabled);
+	GetVal(settings[XORSTR("Aimbot")][XORSTR("velocityCheck")], &Settings::Aimbot::velocityCheck::enabled);
 
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
-    GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")], &Settings::Triggerbot::Filters::enemies);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("allies")], &Settings::Triggerbot::Filters::allies);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("walls")], &Settings::Triggerbot::Filters::walls);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("smoke_check")], &Settings::Triggerbot::Filters::smokeCheck);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("flash_check")], &Settings::Triggerbot::Filters::flashCheck);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("head")], &Settings::Triggerbot::Filters::head);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("chest")], &Settings::Triggerbot::Filters::chest);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("stomach")], &Settings::Triggerbot::Filters::stomach);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("arms")], &Settings::Triggerbot::Filters::arms);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("legs")], &Settings::Triggerbot::Filters::legs);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("enabled")], &Settings::Triggerbot::RandomDelay::enabled);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")], &Settings::Triggerbot::RandomDelay::lowBound);
-    GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")], &Settings::Triggerbot::RandomDelay::highBound);
+	GetVal(settings[XORSTR("Resolver")][XORSTR("ticks")], &Settings::Resolver::ticks);
+	GetVal(settings[XORSTR("Resolver")][XORSTR("modulo")], &Settings::Resolver::modulo);
+	GetVal(settings[XORSTR("Resolver")][XORSTR("Hugtype")], (int*) &Settings::Resolver::Hugtype);
 
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")], &Settings::AntiAim::Yaw::enabled);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")], (int*) & Settings::AntiAim::Yaw::type);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")], (int*) & Settings::AntiAim::Yaw::typeFake);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")], (int*) & Settings::AntiAim::Roll::type);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")], &Settings::AntiAim::Roll::enabled);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")], &Settings::AntiAim::Yaw::antiResolver);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")], &Settings::AntiAim::Yaw::dynamicAA);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")], &Settings::AntiAim::Pitch::enabled);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")], (int*) & Settings::AntiAim::Pitch::type);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")], &Settings::AntiAim::HeadEdge::enabled);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("distance")], &Settings::AntiAim::HeadEdge::distance);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("knife_held")], &Settings::AntiAim::AutoDisable::knifeHeld);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("bomb_held")], &Settings::AntiAim::AutoDisable::bombHeld);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("no_enemy")], &Settings::AntiAim::AutoDisable::noEnemy);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("debugMode")], &Settings::AntiAim::Lua::debugMode);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")], Settings::AntiAim::Lua::scriptX);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")], Settings::AntiAim::Lua::scriptY);
-    GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")], Settings::AntiAim::Lua::scriptY2);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
+	GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")], &Settings::Triggerbot::Filters::enemies);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("allies")], &Settings::Triggerbot::Filters::allies);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("walls")], &Settings::Triggerbot::Filters::walls);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("smoke_check")], &Settings::Triggerbot::Filters::smokeCheck);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("flash_check")], &Settings::Triggerbot::Filters::flashCheck);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("head")], &Settings::Triggerbot::Filters::head);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("chest")], &Settings::Triggerbot::Filters::chest);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("stomach")], &Settings::Triggerbot::Filters::stomach);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("arms")], &Settings::Triggerbot::Filters::arms);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("legs")], &Settings::Triggerbot::Filters::legs);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("enabled")], &Settings::Triggerbot::RandomDelay::enabled);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")], &Settings::Triggerbot::RandomDelay::lowBound);
+	GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")], &Settings::Triggerbot::RandomDelay::highBound);
+
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")], &Settings::AntiAim::Yaw::enabled);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")], (int*)& Settings::AntiAim::Yaw::type);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")], (int*)& Settings::AntiAim::Yaw::typeFake);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("type")], (int*)& Settings::AntiAim::Roll::type);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Roll")][XORSTR("enabled")], &Settings::AntiAim::Roll::enabled);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("antiResolver")], &Settings::AntiAim::Yaw::antiResolver);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("dynamicAA")], &Settings::AntiAim::Yaw::dynamicAA);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("enabled")], &Settings::AntiAim::Pitch::enabled);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Pitch")][XORSTR("type")], (int*)& Settings::AntiAim::Pitch::type);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("enabled")], &Settings::AntiAim::HeadEdge::enabled);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("HeadEdge")][XORSTR("distance")], &Settings::AntiAim::HeadEdge::distance);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("knife_held")], &Settings::AntiAim::AutoDisable::knifeHeld);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("bomb_held")], &Settings::AntiAim::AutoDisable::bombHeld);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("AutoDisable")][XORSTR("no_enemy")], &Settings::AntiAim::AutoDisable::noEnemy);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("debugMode")], &Settings::AntiAim::Lua::debugMode);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptX")], Settings::AntiAim::Lua::scriptX);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY")], Settings::AntiAim::Lua::scriptY);
+	GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")], Settings::AntiAim::Lua::scriptY2);
+
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")], &Settings::AntiAim::Lby::enabled);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")], (int*) & Settings::AntiAim::Lby::type);
 

@@ -9,7 +9,7 @@ void inline Math::SinCos(float radians, float *sine, float *cosine)
 	*cosine = __cosr;
 }
 
-float float_rand( float min, float max ) // thanks foo - https://stackoverflow.com/questions/13408990/how-to-generate-random-float-number-in-c :^)
+float Math::float_rand( float min, float max ) // thanks foo - https://stackoverflow.com/questions/13408990/how-to-generate-random-float-number-in-c :^)
 {
 	float scale = rand() / (float) RAND_MAX; /* [0, 1.0] */
 	return min + scale * ( max - min );      /* [min, max] */
@@ -85,6 +85,8 @@ void Math::CorrectMovement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward,
 	deltaView = 360.0f - deltaView;
 
 	pCmd->forwardmove = cos(DEG2RAD(deltaView)) * fOldForward + cos(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+	if ((pCmd->viewangles.x > 90 && pCmd->viewangles.x < 270) || (pCmd->viewangles.x < -90 && pCmd->viewangles.x > -270))
+	    pCmd->forwardmove *= -1;
 	pCmd->sidemove = sin(DEG2RAD(deltaView)) * fOldForward + sin(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
 }
 
@@ -141,4 +143,40 @@ QAngle Math::CalcAngle(Vector src, Vector dst)
 
 	return angles;
 }
+float Math::ClampYaw (float val)
+{
+	while (val < 0) val += 360.0f;
+	while (val > 360.0f) val -= 360.0f;
+	return val;
+}
+void Math::CalcAngleYawOnly(Vector src, Vector dst, Vector &angles)
+{
+	Vector delta = src - dst;
+	double hyp = delta.Length2D();
+	angles.y = (atan(delta.y / delta.x) * 57.295779513082f);
+	//	angles.x = (atan(delta.z / hyp) * 57.295779513082f);
+	angles[2] = 0.00;
 
+	if (delta.x >= 0.0)
+		angles.y += 180.0f;
+}
+void Math::Normalize(Vector &vIn, Vector &vOut)
+{
+	float flLen = vIn.Length();
+	if (flLen == 0){
+		vOut.Init(0, 0, 1);
+		return;
+	}
+	flLen = 1 / flLen;
+	vOut.Init(vIn.x * flLen, vIn.y * flLen, vIn.z * flLen);
+}
+void Math::NormalizeVector(Vector& vec) {
+	for (int i = 0; i < 3; ++i) {
+		while (vec[i] > 180.f)
+			vec[i] -= 360.f;
+
+		while (vec[i] < -180.f)
+			vec[i] += 360.f;
+	}
+	vec[2] = 0.f;
+}

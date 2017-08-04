@@ -185,127 +185,140 @@ enum class SpammerType : int {
     SPAMMER_POSITIONS,
 };
 
-struct AimbotWeapon_t {
-    bool enabled, silent, pSilent, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
-    int engageLockTTR, hitChanceRays;
-    Bone bone;
-    SmoothType smoothType;
-    ButtonCode_t aimkey;
-    bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
-    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled;
+enum class ResolverHugtype : int
+{
+	OFF,
+	AIMTUX,
+	PLUSDELTA,
+	APOSTROPHE,
+    BRUTE1,
+	AUTISM,
+};
+struct AimbotWeapon_t
+{
+	bool enabled, silent, pSilent, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
+	int engageLockTTR, hitChanceRays;
+	Bone bone;
+	SmoothType smoothType;
+	ButtonCode_t aimkey;
+	bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
+	float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
+	bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled;
 
-    AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
-            bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled, float smoothSaltMultiplier,
-            bool errorMarginEnabled, float errorMarginValue,
-            bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
-            bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
-            bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-            bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
-            bool spreadLimitEnabled, float spreadLimit,
-            bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-            bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue) {
-        this->enabled = enabled;
-        this->silent = silent;
-        this->pSilent = pSilent;
-        this->friendly = friendly;
-        this->closestBone = closestBone;
-        this->engageLock = engageLock;
-        this->engageLockTR = engageLockTR;
-        this->engageLockTTR = engageLockTTR;
-        this->bone = bone;
-        this->aimkey = aimkey;
-        this->aimkeyOnly = aimkeyOnly;
-        this->smoothEnabled = smoothEnabled;
-        this->smoothAmount = smoothValue;
-        this->smoothType = smoothType;
-        this->smoothSaltEnabled = smoothSaltEnabled;
-        this->smoothSaltMultiplier = smoothSaltMultiplier;
-        this->errorMarginEnabled = errorMarginEnabled;
-        this->errorMarginValue = errorMarginValue;
-        this->autoAimEnabled = autoAimEnabled;
-        this->autoAimFov = autoAimValue;
-        this->aimStepEnabled = aimStepEnabled;
-        this->aimStepMin = aimStepMin;
-        this->aimStepMax = aimStepMax;
-        this->rcsEnabled = rcsEnabled;
-        this->rcsAlwaysOn = rcsAlwaysOn;
-        this->rcsAmountX = rcsAmountX;
-        this->rcsAmountY = rcsAmountY;
-        this->autoPistolEnabled = autoPistolEnabled;
-        this->autoShootEnabled = autoShootEnabled;
-        this->autoScopeEnabled = autoScopeEnabled;
-        this->noShootEnabled = noShootEnabled;
-        this->ignoreJumpEnabled = ignoreJumpEnabled;
-        this->smokeCheck = smokeCheck;
-        this->flashCheck = flashCheck;
-        this->spreadLimitEnabled = spreadLimitEnabled;
-        this->spreadLimit = spreadLimit;
-        this->autoWallEnabled = autoWallEnabled;
-        this->autoWallValue = autoWallValue;
-        this->autoSlow = autoSlow;
-        this->predEnabled = predEnabled;
-        this->moveMouse = moveMouse;
-        this->hitChanceEnabled = hitChanceEnabled;
+	AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
+		   bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled, float smoothSaltMultiplier,
+		   bool errorMarginEnabled, float errorMarginValue,
+		   bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
+		   bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
+		   bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
+		   bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
+		   bool spreadLimitEnabled, float spreadLimit,
+		   bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
+		   bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue)
+	{
+		this->enabled = enabled;
+		this->silent = silent;
+		this->pSilent = pSilent;
+		this->friendly = friendly;
+		this->closestBone = closestBone;
+		this->engageLock = engageLock;
+		this->engageLockTR = engageLockTR;
+		this->engageLockTTR = engageLockTTR;
+		this->bone = bone;
+		this->aimkey = aimkey;
+		this->aimkeyOnly = aimkeyOnly;
+		this->smoothEnabled = smoothEnabled;
+		this->smoothAmount = smoothValue;
+		this->smoothType = smoothType;
+		this->smoothSaltEnabled = smoothSaltEnabled;
+		this->smoothSaltMultiplier = smoothSaltMultiplier;
+		this->errorMarginEnabled = errorMarginEnabled;
+		this->errorMarginValue = errorMarginValue;
+		this->autoAimEnabled = autoAimEnabled;
+		this->autoAimFov = autoAimValue;
+		this->aimStepEnabled = aimStepEnabled;
+		this->aimStepMin = aimStepMin;
+		this->aimStepMax = aimStepMax;
+		this->rcsEnabled = rcsEnabled;
+		this->rcsAlwaysOn = rcsAlwaysOn;
+		this->rcsAmountX = rcsAmountX;
+		this->rcsAmountY = rcsAmountY;
+		this->autoPistolEnabled = autoPistolEnabled;
+		this->autoShootEnabled = autoShootEnabled;
+		this->autoScopeEnabled = autoScopeEnabled;
+		this->noShootEnabled = noShootEnabled;
+		this->ignoreJumpEnabled = ignoreJumpEnabled;
+		this->smokeCheck = smokeCheck;
+		this->flashCheck = flashCheck;
+		this->spreadLimitEnabled = spreadLimitEnabled;
+		this->spreadLimit = spreadLimit;
+		this->autoWallEnabled = autoWallEnabled;
+		this->autoWallValue = autoWallValue;
+		this->autoSlow = autoSlow;
+		this->predEnabled = predEnabled;
+		this->moveMouse = moveMouse;
+		this->hitChanceEnabled = hitChanceEnabled;
 
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
-            this->desiredBones[bone] = (desiredBones != nullptr) ? desiredBones[bone] : false;
+		for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
+			this->desiredBones[bone] = (desiredBones != nullptr ) ? desiredBones[bone] : false;
 
-        this->autoAimRealDistance = autoAimRealDistance;
-    }
+		this->autoAimRealDistance = autoAimRealDistance;
+	}
 
-    AimbotWeapon_t() {
-    };
+	AimbotWeapon_t() {};
 
-    bool operator==(const AimbotWeapon_t& another) const {
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++) {
-            if (this->desiredBones[bone] != another.desiredBones[bone])
-                return false;
-        }
+	bool operator == (const AimbotWeapon_t& another) const
+	{
+		for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
+		{
+			if( this->desiredBones[bone] != another.desiredBones[bone] )
+				return false;
+		}
 
-        return this->enabled == another.enabled &&
-                this->silent == another.silent &&
-                this->pSilent == another.pSilent &&
-                this->friendly == another.friendly &&
-                this->closestBone == another.closestBone &&
-                this->engageLock == another.engageLock &&
-                this->engageLockTR == another.engageLockTR &&
-                this->engageLockTTR == another.engageLockTTR &&
-                this->bone == another.bone &&
-                this->aimkey == another.aimkey &&
-                this->aimkeyOnly == another.aimkeyOnly &&
-                this->smoothEnabled == another.smoothEnabled &&
-                this->smoothAmount == another.smoothAmount &&
-                this->smoothType == another.smoothType &&
-                this->smoothSaltEnabled == another.smoothSaltEnabled &&
-                this->smoothSaltMultiplier == another.smoothSaltMultiplier &&
-                this->errorMarginEnabled == another.errorMarginEnabled &&
-                this->errorMarginValue == another.errorMarginValue &&
-                this->autoAimEnabled == another.autoAimEnabled &&
-                this->autoAimFov == another.autoAimFov &&
-                this->aimStepEnabled == another.aimStepEnabled &&
-                this->aimStepMin == another.aimStepMin &&
-                this->aimStepMax == another.aimStepMax &&
-                this->rcsEnabled == another.rcsEnabled &&
-                this->rcsAlwaysOn == another.rcsAlwaysOn &&
-                this->rcsAmountX == another.rcsAmountX &&
-                this->rcsAmountY == another.rcsAmountY &&
-                this->autoPistolEnabled == another.autoPistolEnabled &&
-                this->autoShootEnabled == another.autoShootEnabled &&
-                this->autoScopeEnabled == another.autoScopeEnabled &&
-                this->noShootEnabled == another.noShootEnabled &&
-                this->ignoreJumpEnabled == another.ignoreJumpEnabled &&
-                this->smokeCheck == another.smokeCheck &&
-                this->flashCheck == another.flashCheck &&
-                this->spreadLimitEnabled == another.spreadLimitEnabled &&
-                this->spreadLimit == another.spreadLimit &&
-                this->autoWallEnabled == another.autoWallEnabled &&
-                this->autoWallValue == another.autoWallValue &&
-                this->autoSlow == another.autoSlow &&
-                this->predEnabled == another.predEnabled &&
-                this->autoAimRealDistance == another.autoAimRealDistance &&
-                this->moveMouse == another.moveMouse;
-    }
+		return this->enabled == another.enabled &&
+			this->silent == another.silent &&
+			this->pSilent == another.pSilent &&
+			this->friendly == another.friendly &&
+			this->closestBone == another.closestBone &&
+			this->engageLock == another.engageLock &&
+			this->engageLockTR == another.engageLockTR &&
+			this->engageLockTTR == another.engageLockTTR &&
+			this->bone == another.bone &&
+			this->aimkey == another.aimkey &&
+			this->aimkeyOnly == another.aimkeyOnly &&
+			this->smoothEnabled == another.smoothEnabled &&
+			this->smoothAmount == another.smoothAmount &&
+			this->smoothType == another.smoothType &&
+			this->smoothSaltEnabled == another.smoothSaltEnabled &&
+			this->smoothSaltMultiplier == another.smoothSaltMultiplier &&
+			this->errorMarginEnabled == another.errorMarginEnabled &&
+			this->errorMarginValue == another.errorMarginValue &&
+			this->autoAimEnabled == another.autoAimEnabled &&
+			this->autoAimFov == another.autoAimFov &&
+			this->aimStepEnabled == another.aimStepEnabled &&
+			this->aimStepMin == another.aimStepMin &&
+			this->aimStepMax == another.aimStepMax &&
+			this->rcsEnabled == another.rcsEnabled &&
+			this->rcsAlwaysOn == another.rcsAlwaysOn &&
+			this->rcsAmountX == another.rcsAmountX &&
+			this->rcsAmountY == another.rcsAmountY &&
+			this->autoPistolEnabled == another.autoPistolEnabled &&
+			this->autoShootEnabled == another.autoShootEnabled &&
+			this->autoScopeEnabled == another.autoScopeEnabled &&
+			this->noShootEnabled == another.noShootEnabled &&
+			this->ignoreJumpEnabled == another.ignoreJumpEnabled &&
+			this->smokeCheck == another.smokeCheck &&
+			this->flashCheck == another.flashCheck &&
+			this->spreadLimitEnabled == another.spreadLimitEnabled &&
+			this->spreadLimit == another.spreadLimit &&
+			this->autoWallEnabled == another.autoWallEnabled &&
+			this->autoWallValue == another.autoWallValue &&
+			this->autoSlow == another.autoSlow &&
+			this->predEnabled == another.predEnabled &&
+			this->autoAimRealDistance == another.autoAimRealDistance &&
+			this->moveMouse == another.moveMouse;
+	}
+
 };
 
 class ColorVar {
@@ -521,353 +534,35 @@ namespace Settings {
             extern bool antiResolver;
             extern bool dynamicAA;
         }
-        namespace Roll {
-            extern bool enabled;
-            extern AntiAimType_Z type;
-        }
-        namespace Pitch {
-            extern bool enabled;
-            extern AntiAimType_X type;
-        }
-        namespace Lby {
-            extern bool enabled;
-            extern AntiAimType_LBY type;
-        }
-        namespace HeadEdge {
-            extern bool enabled;
-            extern float distance;
-        }
 
-        namespace Lua {
-            extern bool debugMode; // turns on/off error checking. Can be turned off after your script is working for speed.
-            extern char scriptX[512];
-            extern char scriptY[512];
-            extern char scriptY2[512];
-        }
-    }
+		namespace HeadEdge
+		{
+			extern bool enabled;
+			extern float distance;
+		}
 
-    namespace Resolver {
-        extern bool resolveAll;
-    }
-    namespace lbyindicator {
-        extern bool enabled;
-    }
-    namespace ESP {
-        extern bool enabled;
-        extern ButtonCode_t key;
-        extern TeamColorType teamColorType;
-        extern HealthColorVar enemyColor;
-        extern HealthColorVar allyColor;
-        extern HealthColorVar enemyVisibleColor;
-        extern HealthColorVar allyVisibleColor;
-        extern HealthColorVar ctColor;
-        extern HealthColorVar tColor;
-        extern HealthColorVar ctVisibleColor;
-        extern HealthColorVar tVisibleColor;
-        extern ColorVar bombColor;
-        extern ColorVar bombDefusingColor;
-        extern ColorVar hostageColor;
-        extern ColorVar defuserColor;
-        extern ColorVar weaponColor;
-        extern ColorVar chickenColor;
-        extern ColorVar fishColor;
-        extern ColorVar smokeColor;
-        extern ColorVar decoyColor;
-        extern ColorVar flashbangColor;
-        extern ColorVar grenadeColor;
-        extern ColorVar molotovColor;
-        extern HealthColorVar localplayerColor;
+		namespace Lua
+		{
+			extern bool debugMode; // turns on/off error checking. Can be turned off after your script is working for speed.
+			extern char scriptX[512];
+			extern char scriptY[512];
+			extern char scriptY2[512];
+		}
+	}
 
-        namespace AutoWall {
-            extern bool debugView;
-        }
-        namespace Glow {
-            extern bool enabled;
-            extern HealthColorVar allyColor;
-            extern HealthColorVar enemyColor;
-            extern HealthColorVar enemyVisibleColor;
-            extern ColorVar weaponColor;
-            extern ColorVar grenadeColor;
-            extern ColorVar defuserColor;
-            extern ColorVar chickenColor;
-            extern HealthColorVar localplayerColor;
-        }
+	namespace Resolver
+	{	
+		
+		extern bool resolveAll;
+		extern float ticks;
+		extern float modulo;
+		extern ResolverHugtype Hugtype;
+		extern bool pitch;
+	}
+      namespace lbyindicator
+		{
+			extern bool enabled;
 
-        namespace Filters {
-            extern bool legit;
-            extern bool visibilityCheck;
-            extern bool smokeCheck;
-            extern bool flashCheck;
-            extern bool enemies;
-            extern bool allies;
-            extern bool bomb;
-            extern bool hostages;
-            extern bool defusers;
-            extern bool weapons;
-            extern bool chickens;
-            extern bool fishes;
-            extern bool throwables;
-            extern bool localplayer;
-        }
-
-        namespace Info {
-            extern bool name;
-            extern bool clan;
-            extern bool steamId;
-            extern bool rank;
-            extern bool health;
-            extern bool weapon;
-            extern bool scoped;
-            extern bool reloading;
-            extern bool flashed;
-            extern bool planting;
-            extern bool hasDefuser;
-            extern bool defusing;
-            extern bool grabbingHostage;
-            extern bool rescuing;
-            extern bool location;
-        }
-
-        namespace Skeleton {
-            extern bool enabled;
-            extern ColorVar color;
-        }
-
-        namespace Boxes {
-            extern bool enabled;
-            extern BoxType type;
-        }
-
-        namespace Bars {
-            extern bool enabled;
-            extern BarType type;
-            extern BarColorType colorType;
-        }
-
-        namespace Tracers {
-            extern bool enabled;
-            extern TracerType type;
-        }
-
-        namespace BulletTracers {
-            extern bool enabled;
-        }
-
-        namespace Bomb {
-            extern bool enabled;
-        }
-
-        namespace FOVCrosshair {
-            extern bool enabled;
-            extern bool filled;
-            extern ColorVar color;
-        }
-
-        namespace Chams {
-            extern bool enabled;
-            extern HealthColorVar allyColor;
-            extern HealthColorVar allyVisibleColor;
-            extern HealthColorVar enemyColor;
-            extern HealthColorVar enemyVisibleColor;
-            extern HealthColorVar localplayerColor;
-            extern ChamsType type;
-
-            namespace Arms {
-                extern bool enabled;
-                extern ColorVar color;
-                extern ArmsType type;
-            }
-
-            namespace Weapon {
-                extern bool enabled;
-                extern ColorVar color;
-            }
-        }
-
-        namespace Sounds {
-            extern bool enabled;
-            extern int time;
-        }
-
-        namespace Hitmarker {
-            extern bool enabled;
-            extern bool enemies;
-            extern bool allies;
-            extern ColorVar color;
-            extern int duration;
-            extern int size;
-            extern int innerGap;
-
-            namespace Damage {
-                extern bool enabled;
-            }
-        }
-
-        namespace HeadDot {
-            extern bool enabled;
-            extern float size;
-        }
-
-        namespace Spread {
-            extern bool enabled; // show current spread
-            extern bool spreadLimit; // show spreadLimit value
-            extern ColorVar color;
-            extern ColorVar spreadLimitColor;
-        }
-    }
-
-    namespace Dlights {
-        extern bool enabled;
-        extern float radius;
-    }
-
-    namespace Spammer {
-        extern SpammerType type;
-        extern bool say_team;
-
-        namespace KillSpammer {
-            extern bool enabled;
-            extern bool sayTeam;
-            extern std::vector<std::string> messages;
-        }
-
-        namespace RadioSpammer {
-            extern bool enabled;
-        }
-
-        namespace NormalSpammer {
-            extern std::vector<std::string> messages;
-        }
-
-        namespace PositionSpammer {
-            extern int team;
-            extern bool showName;
-            extern bool showWeapon;
-            extern bool showRank;
-            extern bool showWins;
-            extern bool showHealth;
-            extern bool showMoney;
-            extern bool showLastplace;
-        }
-    }
-
-    namespace BHop {
-        extern bool enabled;
-    }
-
-    namespace AutoStrafe {
-        extern bool enabled;
-        extern AutostrafeType type;
-        extern bool silent;
-    }
-
-    namespace Noflash {
-        extern bool enabled;
-        extern float value;
-    }
-
-    namespace FOVChanger {
-        extern bool enabled;
-        extern bool viewmodelEnabled;
-        extern float value;
-        extern float viewmodelValue;
-        extern bool ignoreScope;
-    }
-
-    namespace Radar {
-        extern bool enabled;
-        extern float zoom;
-        extern bool enemies;
-        extern bool allies;
-        extern bool bomb;
-        extern bool defuser;
-        extern bool legit;
-        extern bool visibilityCheck;
-        extern bool smokeCheck;
-        extern TeamColorType teamColorType;
-        extern HealthColorVar enemyColor;
-        extern HealthColorVar enemyVisibleColor;
-        extern HealthColorVar allyColor;
-        extern HealthColorVar allyVisibleColor;
-        extern HealthColorVar tColor;
-        extern HealthColorVar tVisibleColor;
-        extern HealthColorVar ctColor;
-        extern HealthColorVar ctVisibleColor;
-        extern ColorVar bombColor;
-        extern ColorVar bombDefusingColor;
-        extern ColorVar defuserColor;
-        extern float iconsScale;
-
-        namespace InGame {
-            extern bool enabled;
-        }
-    }
-
-    namespace Recoilcrosshair {
-        extern bool enabled;
-        extern bool showOnlyWhenShooting;
-    }
-
-    namespace Airstuck {
-        extern bool enabled;
-        extern ButtonCode_t key;
-    }
-    namespace Fakewalk {
-        extern bool enabled;
-        extern ButtonCode_t key;
-    }
-    /*namespace CircleStrafe
-    {
-            extern bool enabled;
-            extern ButtonCode_t key;
-    }
-     */
-    namespace Autoblock {
-        extern bool enabled;
-        extern ButtonCode_t key;
-    }
-
-    namespace Skinchanger {
-        namespace Skins {
-            extern bool enabled;
-            extern bool perTeam;
-        }
-
-        namespace Models {
-            extern bool enabled;
-        }
-
-        extern std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefinitionIndex>> skinsCT;
-        extern std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefinitionIndex>> skinsT;
-    }
-
-    namespace SmartAim {
-        extern bool enabled;
-    }
-
-    namespace ShowRanks {
-        extern bool enabled;
-    }
-
-    namespace ShowSpectators {
-        extern bool enabled;
-    }
-
-    namespace ClanTagChanger {
-        extern char value[30];
-        extern bool animation;
-        extern int animationSpeed;
-        extern bool enabled;
-        extern ClanTagType type;
-    }
-
-    namespace View {
-        namespace NoAimPunch {
-            extern bool enabled;
-        }
-
-        namespace NoViewPunch {
-            extern bool enabled;
         }
     }
 
