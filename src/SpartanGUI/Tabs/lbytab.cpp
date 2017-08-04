@@ -18,7 +18,9 @@ void LBY::RenderTab() {
         "UP", "FLIP", "DOWN", "DANCE", "FRONT", "LUA", // safe
         "FAKE UP", "FAKE DOWN", "LISP DOWN", "ANGEL DOWN", "ANGEL UP", "LUA UNCLAMPED" // untrusted
     };
-
+        const char* Hugtypes[] = {
+        "OFF", "Tux", "PlusDelta", "Apostrophe", "Brute1", "Awoootism"
+    };
     ImGui::Columns(2, NULL, true);
     {
         ImGui::BeginChild(XORSTR("LBY1"), ImVec2(0, 0), true);
@@ -162,7 +164,9 @@ void LBY::RenderTab() {
         {
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
-            ImGui::Checkbox(XORSTR("Resolve All"), &Settings::Resolver::resolveAll);
+            ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
+            ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 16, "Ticks: %0.f");
+            ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 16, "Modulo: %0.f");
             ImGui::Separator();
             ImGui::Text("Misc");
             ImGui::Checkbox("LBY Indicator", &Settings::lbyindicator::enabled);
