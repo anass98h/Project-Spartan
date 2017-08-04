@@ -1,7 +1,6 @@
 #include "hvhtab.h"
 
 
-
  int Settings::spinFactor::value = 1;
 
 
@@ -189,83 +188,96 @@ void HvH::RenderTab()
 			ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 16, "Ticks: %0.f");
 			ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 16, "Modulo: %0.f");
 			ImGui::Separator();
-
             ImGui::Text("Misc");
             ImGui::Checkbox("LBY Indicator", &Settings::lbyindicator::enabled);
             ImGui::Separator();
-            ImGui::Text(XORSTR("Movement"));
-            ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
+			ImGui::Text(XORSTR("Movement"));
+			ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
 
-            ImGui::Separator();
-            ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
-            if (Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 || Settings::AntiAim::Pitch::type == AntiAimType_X::LUA_UNCLAMPED) {
-                ImGui::Text(XORSTR("Lua AntiAim Editor -- X Axis"));
-                ImGui::InputTextMultiline(XORSTR("##LUAX"), Settings::AntiAim::Lua::scriptX, sizeof (Settings::AntiAim::Lua::scriptX));
-            }
-            //	ImGui::Separator();
+			ImGui::Separator();
+			ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
+			if( Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 || Settings::AntiAim::Pitch::type == AntiAimType_X ::LUA_UNCLAMPED )
+			{
+				ImGui::Text(XORSTR("Lua AntiAim Editor -- X Axis"));
+				ImGui::InputTextMultiline(XORSTR("##LUAX"), Settings::AntiAim::Lua::scriptX, sizeof(Settings::AntiAim::Lua::scriptX));
+			}
+		//	ImGui::Separator();
 
-            if (((Settings::AntiAim::Yaw::type == Settings::AntiAim::Yaw::typeFake) && // if they are equal to each other and a LUA type
-                    (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 ||
-                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 ||
-                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED ||
-                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2))
-                    || // OR
-                    ((Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED)// Any LUA types that use the same underlying script.
-                    || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2)
-                    || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1)
-                    || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2)
-                    )
-                    ) {
-                ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(BOTH)"));
-                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED) {
-                    ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof (Settings::AntiAim::Lua::scriptY));
-                } else {
-                    ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof (Settings::AntiAim::Lua::scriptY2));
-                }
-            } else {
-                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED) {
-                    ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(ACTUAL)"));
-                    ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof (Settings::AntiAim::Lua::scriptY));
-                } else if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2) {
-                    ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis(ACTUAL)"));
-                    ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof (Settings::AntiAim::Lua::scriptY2));
-                }
-                ImGui::Separator();
-                if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED) {
-                    ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(FAKE)"));
-                    ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof (Settings::AntiAim::Lua::scriptY));
-                } else if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2) {
-                    ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis (FAKE)"));
-                    ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof (Settings::AntiAim::Lua::scriptY2));
-                }
-            }
-
-
-            if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN) {
-                ImGui::NextColumn();
-
-
-                {
-                    ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
-                    {
-                        ImGui::Text(XORSTR("Spin Factor"));
-
-                        {
-                            ImGui::PushItemWidth(-1);
-                            ImGui::SliderInt(XORSTR("##spinFactor"), &Settings::spinFactor::value, 0, 100, XORSTR("Amount: %1.f"));
-                            ImGui::PopItemWidth();
-
-                        }
-
-                        ImGui::EndChild();
-                    }
+			if( ((Settings::AntiAim::Yaw::type == Settings::AntiAim::Yaw::typeFake) && // if they are equal to each other and a LUA type
+						(Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 ||
+						Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2  ||
+						Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED ||
+						Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2))
+				|| // OR
+					( (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED)// Any LUA types that use the same underlying script.
+					 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2)
+					 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1)
+					 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2 && Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2)
+					)
+				)
+		    {
+				ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(BOTH)"));
+				if( Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED )
+				{
+					ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof(Settings::AntiAim::Lua::scriptY));
+				}
+				else
+				{
+					ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof(Settings::AntiAim::Lua::scriptY2));
+				}
+			}
+			else
+			{
+				if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED )
+				{
+					ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(ACTUAL)"));
+					ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof(Settings::AntiAim::Lua::scriptY));
+				}
+				else if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 || Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2 )
+				{
+					ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis(ACTUAL)"));
+					ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof(Settings::AntiAim::Lua::scriptY2));
+				}
+				ImGui::Separator();
+				if( Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED )
+				{
+					ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(FAKE)"));
+					ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY, sizeof(Settings::AntiAim::Lua::scriptY));
+				}
+				else if( Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2 )
+				{
+					ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis (FAKE)"));
+					ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2, sizeof(Settings::AntiAim::Lua::scriptY2));
+				}
+			}
 
 
-                }
-            }
-            ImGui::EndChild();
-        }
+				if(Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN)
+	{
+					ImGui::NextColumn();
+	
 
-    }
+	{
+		ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
+		{
+			ImGui::Text(XORSTR("Spin Factor"));
+			
+			{
+				ImGui::PushItemWidth(-1);
+				ImGui::SliderInt(XORSTR("##spinFactor"), &Settings::spinFactor::value, 0, 100, XORSTR("Amount: %1.f"));
+				ImGui::PopItemWidth();
+				
+			}
+
+        ImGui::EndChild();
+		}
+					
+			
+		}
+	}
+			ImGui::EndChild();
+		}
+
 }
-
+}
+				

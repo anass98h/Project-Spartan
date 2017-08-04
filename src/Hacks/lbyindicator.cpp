@@ -7,6 +7,7 @@ static float *storedYaw;
 static Color col;
 static float Weeb; // Great variable naming @Apostropheqq
 
+
 void lbyindicator::CreateMove(CUserCmd *cmd) {
     if (!Settings::lbyindicator::enabled)
         return;
@@ -25,7 +26,7 @@ void lbyindicator::CreateMove(CUserCmd *cmd) {
     Weeb = (cmd->viewangles.y);
 
     if (std::abs(cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget()) >= -35 &&
-            std::abs(cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget()) <= 35) {
+        std::abs(cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget()) <= 35) {
 
         cLowerBodyIsUpdated = true;
         col = Color(244, 66, 83);
@@ -36,6 +37,7 @@ void lbyindicator::CreateMove(CUserCmd *cmd) {
         storedYaw = pLocal->GetLowerBodyYawTarget();
     }
 }
+
 
 void lbyindicator::Paint() {
     if (!Settings::lbyindicator::enabled)
@@ -71,13 +73,13 @@ void lbyindicator::Paint() {
     std::string s(ss.str());
     Draw::Text(w2, h2, s.c_str(), esp_font, Color(244, 66, 83));
 
-    std::ostringstream ss2; // Lol @Marc3842h this was supposed to be in esp_font :feelsbad:
+    std::ostringstream ss2;        // Lol @Marc3842h this was supposed to be in esp_font :feelsbad:
     ss2 << "RealAngle = " << Weeb;
     std::string s2(ss2.str());
     Draw::Text(w3, h3, s2.c_str(), esp_font, Color(244, 66, 83));
 
 }
 
-
+    
 
 
