@@ -22,32 +22,31 @@ typedef void (*SDL_GL_SwapWindow_t) (SDL_Window*);
 typedef int (*SDL_PollEvent_t) (SDL_Event*);
 
 
-namespace SDL2
-{
-	void SwapWindow(SDL_Window*);
-	void UnhookWindow();
-	int PollEvent(SDL_Event*);
-	void UnhookPollEvent();
+namespace SDL2 {
+    void SwapWindow(SDL_Window*);
+    void UnhookWindow();
+    int PollEvent(SDL_Event*);
+    void UnhookPollEvent();
 
-//Menu Icons
+    //Menu Icons
 #define ICON_1 u8"\uFFDE"
 #define ICON_2 u8"\uFFDF"
 #define ICON_3 u8"\uFFE0"
 #define ICON_4 u8"\uFFE1"
 #define ICON_5 u8"\uFFE2"
 #define ICON_6 u8"\uFFE3"
-    
+
 #define ICON_7 u8"\uFFE5"
 #define ICON_8 u8"\uFFE6"
 #define ICON_9 u8"\uFFE7"
 #define ICON_10 u8"\uFFE8"
 #define ICON_11 u8"\uFFE9"
 #define ICON_12 u8"\uFFEA"
-    
+
 #define ICON_MIN 0xe000
 #define ICON_MAX 0xe066
 
-//Weapon icons
+    //Weapon icons
 #define ICON_BEANER u8"\ue000"
 #define ICON_DEAG u8"\ue001"
 #define ICON_DUALIES u8"\ue002"
@@ -95,7 +94,7 @@ namespace SDL2
 #define ICON_KELVAR u8"\ue064"
 #define ICON_KELVARHLMET u8"\ue065"
 #define ICON_DEFUSER u8"\ue066"
-//Other icons
+    //Other icons
 #define ICON_SPECTATORS u8"\ue04B"
 #define ICON_SKINCHANGER u8"\ue04D"
 #define ICON_PLAYERLIST u8"\ue04E"

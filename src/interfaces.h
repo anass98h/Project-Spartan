@@ -80,8 +80,7 @@ extern uintptr_t* swapWindowJumpAddress;
 extern uintptr_t oPollEvent;
 extern uintptr_t* polleventJumpAddress;
 
-namespace Interfaces
-{
-	void FindInterfaces();
-	void DumpInterfaces();
+namespace Interfaces {
+    void FindInterfaces();
+    void DumpInterfaces();
 }
