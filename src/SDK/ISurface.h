@@ -127,6 +127,12 @@ public:
 		return getvfunc<oGetTextSize>(this, 79)(this, font, text, wide, tall);
 	}
 
+	void DrawOutlinedCircle(int x0, int y0, int x1, int y1)
+	{
+		typedef void(* oDrawOutlinedCircle)(void*, int, int, int, int);
+		return getvfunc<oDrawOutlinedCircle>(this, 103)(this, x0, y0, x1, y1);
+	}
+
 	void DrawTexturedPolygon(int vtxCount, FontVertex_t *vtx, bool bClipVertices = true)
 	{
 		typedef void (* oDrawTexturedPolygon)(void*, int, FontVertex_t*, bool);

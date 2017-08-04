@@ -33,16 +33,30 @@ void Math::AngleVectors(const QAngle &angles, Vector& forward)
 void Math::NormalizeAngles(QAngle& angle)
 {
 	while (angle.x > 89.0f)
-		angle.x -= 180.f;
+		angle.x -= 180.0f;
 
 	while (angle.x < -89.0f)
-		angle.x += 180.f;
+		angle.x += 180.0f;
 
-	while (angle.y > 180.f)
-		angle.y -= 360.f;
+	while (angle.y > 180.0f)
+		angle.y -= 360.0f;
 
-	while (angle.y < -180.f)
-		angle.y += 360.f;
+	while (angle.y < -180.0f)
+		angle.y += 360.0f;
+}
+void Math::NormalizePitch(float &pitch)
+{
+	while(pitch > 89.0f)
+		pitch -= 180.0f;
+	while(pitch < -89.0f)
+		pitch += 180.0f;
+}
+void Math::NormalizeYaw(float &yaw)
+{
+	while(yaw > 180.0f)
+		yaw -= 360.0f;
+	while(yaw < -180.0f)
+		yaw += 360.0f;
 }
 
 void Math::ClampAngles(QAngle& angle)

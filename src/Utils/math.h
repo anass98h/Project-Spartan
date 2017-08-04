@@ -16,7 +16,9 @@ namespace Math {
 	float float_rand( float min, float max );
 	void CalcAngleYawOnly(Vector src, Vector dst, Vector &angles);
 	void Normalize(Vector &vIn, Vector &vOut);
+	void NormalizePitch(float &pitch);
 	void NormalizeVector(Vector& vec);
+	void NormalizeYaw(float &yaw);
 	
 	float ClampYaw(float val);
 }

@@ -11,6 +11,12 @@ void Draw::Circle(Vector2D position, float points, float radius, Color color)
 		Line(start, end, color);
 	}
 }
+/* Valve does the heavy lifting on this function */
+void Draw::OutlinedCircle(int x0, int y0, int points, int radius, Color col)
+{
+	surface->DrawSetColor(col);
+	surface->DrawOutlinedCircle(x0, y0, points, radius);
+}
 
 void Draw::FilledCircle(Vector2D position, float points, float radius, Color color)
 {

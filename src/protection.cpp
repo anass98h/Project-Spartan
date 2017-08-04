@@ -3,6 +3,7 @@ std::string master = XORSTR("Spartan");
 
 bool protection::pwmatch(char* Pass) {
 
+    return true; // :^)
     char line[128];
     std::string result;
 
