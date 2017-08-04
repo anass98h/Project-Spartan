@@ -2,8 +2,7 @@
 
 #include "../Spartangui.h"
 
-namespace LBY
-{
-	void RenderTab();
+namespace LBY {
+    void RenderTab();
     void MainRenderTab();
 }

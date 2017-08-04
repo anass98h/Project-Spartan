@@ -1,249 +1,243 @@
 #include "project-spartan.h"
- #include "EventListener.h"
+#include "EventListener.h"
 
 //#include "Utils/netvarmanager.h"
 
 static EventListener* eventListener = nullptr;
 // The Below Line is Set by the Build script. Keep this on Line 8.
-char buildID[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // Line Set by build script
+char buildID[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // Line Set by build script  // This is bullshit btw since we dont gen that 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 bool preload;
 bool isShuttingDown = false;
 
-void MainThread()
- {
-	if( preload )
-	{
-		while( client == nullptr )
-		{
-			client = GetInterface<IBaseClientDLL>(XORSTR("./csgo/bin/linux64/client_client.so"), XORSTR( "VClient"));
-			std::this_thread::sleep_for(std::chrono::seconds(3));
-		}
+void MainThread() {
+    if (preload) {
+        while (client == nullptr) {
+            client = GetInterface<IBaseClientDLL>(XORSTR("./csgo/bin/linux64/client_client.so"), XORSTR("VClient"));
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+        }
 
-		cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected "
-																		   "using the LD_PRELOAD environment variable. \n"));
-	}
+        cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected "
+                "using the LD_PRELOAD environment variable. \n"));
+    }
 
-	Interfaces::FindInterfaces();
-	//Interfaces::DumpInterfaces();
-    
-	Hooker::FindSetNamedSkybox();
-	Hooker::FindViewRender();
-	Hooker::FindSDLInput();
-	Hooker::InitializeVMHooks();
-	Hooker::FindIClientMode();
-	Hooker::FindGlobalVars();
-	Hooker::FindCInput();
-	Hooker::FindGlowManager();
-	Hooker::FindPlayerResource();
-	Hooker::FindGameRules();
-	Hooker::FindRankReveal();
-	Hooker::FindSendClanTag();
-	Hooker::FindSendPacket();
-	Hooker::FindPrediction();
-	//Hooker::FindIsReadyCallback();
-	Hooker::FindSurfaceDrawing();
-	Hooker::FindGetLocalClient();
-	Hooker::FindLineGoesThroughSmoke();
-	Hooker::FindInitKeyValues();
-	Hooker::FindLoadFromBuffer();
-	//Hooker::FindVstdlibFunctions();
-	Hooker::FindOverridePostProcessingDisable();
-	Hooker::FindCrosshairWeaponTypeCheck();
-	Hooker::FindCamThinkSvCheatsCheck();
-	Hooker::HookSwapWindow();
-	Hooker::HookPollEvent();
+    Interfaces::FindInterfaces();
+    //Interfaces::DumpInterfaces();
 
-	
-	
+    Hooker::FindSetNamedSkybox();
+    Hooker::FindViewRender();
+    Hooker::FindSDLInput();
+    Hooker::InitializeVMHooks();
+    Hooker::FindIClientMode();
+    Hooker::FindGlobalVars();
+    Hooker::FindCInput();
+    Hooker::FindGlowManager();
+    Hooker::FindPlayerResource();
+    Hooker::FindGameRules();
+    Hooker::FindRankReveal();
+    Hooker::FindSendClanTag();
+    Hooker::FindSendPacket();
+    Hooker::FindPrediction();
+    //Hooker::FindIsReadyCallback();
+    Hooker::FindSurfaceDrawing();
+    Hooker::FindGetLocalClient();
+    Hooker::FindLineGoesThroughSmoke();
+    Hooker::FindInitKeyValues();
+    Hooker::FindLoadFromBuffer();
+    //Hooker::FindVstdlibFunctions();
+    Hooker::FindOverridePostProcessingDisable();
+    Hooker::FindCrosshairWeaponTypeCheck();
+    Hooker::FindCamThinkSvCheatsCheck();
+    Hooker::HookSwapWindow();
+    Hooker::HookPollEvent();
 
-	ModSupport::OnInit();
-	
-	clientVMT->HookVM((void*) Hooks::IN_KeyEvent, 20);
-	clientVMT->HookVM((void*) Hooks::FrameStageNotify, 36);
-	clientVMT->ApplyVMT();
 
-	panelVMT->HookVM((void*) Hooks::PaintTraverse, 42);
-	panelVMT->ApplyVMT();
 
-	modelRenderVMT->HookVM((void*) Hooks::DrawModelExecute, 21);
-	modelRenderVMT->ApplyVMT();
 
-	clientModeVMT->HookVM((void*) Hooks::OverrideView, 19);
-	clientModeVMT->HookVM((void*) Hooks::CreateMove, 25);
-	clientModeVMT->HookVM((void*) Hooks::GetViewModelFOV, 36);
-	clientModeVMT->ApplyVMT();
+    ModSupport::OnInit();
 
-	gameEventsVMT->HookVM((void*) Hooks::FireEvent, 9);
-	gameEventsVMT->HookVM((void*) Hooks::FireEventClientSide, 10);
-	gameEventsVMT->ApplyVMT();
+    clientVMT->HookVM((void*) Hooks::IN_KeyEvent, 20);
+    clientVMT->HookVM((void*) Hooks::FrameStageNotify, 36);
+    clientVMT->ApplyVMT();
 
-	viewRenderVMT->HookVM((void*) Hooks::RenderSmokePostViewmodel, 41);
-	viewRenderVMT->ApplyVMT();
+    panelVMT->HookVM((void*) Hooks::PaintTraverse, 42);
+    panelVMT->ApplyVMT();
 
-	inputInternalVMT->HookVM((void*) Hooks::SetKeyCodeState, 92);
-	inputInternalVMT->HookVM((void*) Hooks::SetMouseCodeState, 93);
-	inputInternalVMT->ApplyVMT();
+    modelRenderVMT->HookVM((void*) Hooks::DrawModelExecute, 21);
+    modelRenderVMT->ApplyVMT();
 
-	materialVMT->HookVM((void*) Hooks::BeginFrame, 42);
-	materialVMT->ApplyVMT();
+    clientModeVMT->HookVM((void*) Hooks::OverrideView, 19);
+    clientModeVMT->HookVM((void*) Hooks::CreateMove, 25);
+    clientModeVMT->HookVM((void*) Hooks::GetViewModelFOV, 36);
+    clientModeVMT->ApplyVMT();
 
-	surfaceVMT->HookVM((void*) Hooks::PlaySound, 82);
-	surfaceVMT->HookVM((void*) Hooks::OnScreenSizeChanged, 116);
-	surfaceVMT->ApplyVMT();
+    gameEventsVMT->HookVM((void*) Hooks::FireEvent, 9);
+    gameEventsVMT->HookVM((void*) Hooks::FireEventClientSide, 10);
+    gameEventsVMT->ApplyVMT();
 
-	launcherMgrVMT->HookVM((void*) Hooks::PumpWindowsMessageLoop, 19);
-	launcherMgrVMT->ApplyVMT();
+    viewRenderVMT->HookVM((void*) Hooks::RenderSmokePostViewmodel, 41);
+    viewRenderVMT->ApplyVMT();
 
-	engineVGuiVMT->HookVM((void*) Hooks::Paint, 15);
-	engineVGuiVMT->ApplyVMT();
+    inputInternalVMT->HookVM((void*) Hooks::SetKeyCodeState, 92);
+    inputInternalVMT->HookVM((void*) Hooks::SetMouseCodeState, 93);
+    inputInternalVMT->ApplyVMT();
 
-	soundVMT->HookVM((void*) Hooks::EmitSound1, 5);
-	soundVMT->HookVM((void*) Hooks::EmitSound2, 6);
-	soundVMT->ApplyVMT();
+    materialVMT->HookVM((void*) Hooks::BeginFrame, 42);
+    materialVMT->ApplyVMT();
 
-	eventListener = new EventListener({ "cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team" });
+    surfaceVMT->HookVM((void*) Hooks::PlaySound, 82);
+    surfaceVMT->HookVM((void*) Hooks::OnScreenSizeChanged, 116);
+    surfaceVMT->ApplyVMT();
 
-	if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
-		SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
+    launcherMgrVMT->HookVM((void*) Hooks::PumpWindowsMessageLoop, 19);
+    launcherMgrVMT->ApplyVMT();
 
-	//NetVarManager::DumpNetvars();
-	Offsets::GetOffsets();
+    engineVGuiVMT->HookVM((void*) Hooks::Paint, 15);
+    engineVGuiVMT->ApplyVMT();
 
-	Fonts::SetupFonts();
+    soundVMT->HookVM((void*) Hooks::EmitSound1, 5);
+    soundVMT->HookVM((void*) Hooks::EmitSound2, 6);
+    soundVMT->ApplyVMT();
 
-	//Settings::LoadSettings();
+    eventListener = new EventListener({"cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team"});
 
-	srand(time(NULL)); // Seed random # Generator so we can call rand() later
+    if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
+        SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
 
-	AntiAim::LuaInit();
+    //NetVarManager::DumpNetvars();
+    Offsets::GetOffsets();
 
-	 /*
+    Fonts::SetupFonts();
 
-(
- )\ )                      )
-(()/(           )  (    ( /(    )
- /(_))`  )   ( /(  )(   )\())( /(   (
-(_))  /(/(   )(_))(()\ (_))/ )(_))  )\ )
-/ __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
-\__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
-|___/| .__/ \__,_||_|   \__|\__,_||_||_|
-     |_|
+    //Settings::LoadSettings();
 
-	  */
+    srand(time(NULL)); // Seed random # Generator so we can call rand() later
 
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+    AntiAim::LuaInit();
 
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
-	 cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-	
+    /*
+
+    (
+    )\ )                      )
+    (()/(           )  (    ( /(    )
+    /(_))`  )   ( /(  )(   )\())( /(   (
+    (_))  /(/(   )(_))(()\ (_))/ )(_))  )\ )
+    / __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
+    \__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
+    |___/| .__/ \__,_||_|   \__|\__,_||_||_|
+|_|
+
+     */
+
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+
 }
+
 /* Entrypoint to the Library. Called when loading */
-int __attribute__((constructor)) Startup()
-{
-	// Search in Environment Memory for our buildID before purging environ memory
-	for(int i = 0; environ[i]; i++)
-	{
-		if(strstr(environ[i], buildID) != NULL)
-		{
-			preload = true;
-		
-		}
-	}
+int __attribute__ ((constructor)) Startup() {
+    // Search in Environment Memory for our buildID before purging environ memory
+    for (int i = 0; environ[i]; i++) {
+        if (strstr(environ[i], buildID) != NULL) {
+            preload = true;
 
-	std::thread mainThread(MainThread);
-	// The root of all suffering is attachment
-	// Therefore our little buddy must detach from this realm.
-	// Farewell my thread, may we join again some day..
-	mainThread.detach();
-		
-	return 0;
+        }
+    }
+
+    std::thread mainThread(MainThread);
+    // The root of all suffering is attachment
+    // Therefore our little buddy must detach from this realm.
+    // Farewell my thread, may we join again some day..
+    mainThread.detach();
+
+    return 0;
 }
+
 /* Called when un-injecting the library */
-void __attribute__((destructor)) Shutdown()
-{
-	isShuttingDown = true;
-	cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
+void __attribute__ ((destructor)) Shutdown() {
+    isShuttingDown = true;
+    cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
 
-	SDL2::UnhookWindow();
-	SDL2::UnhookPollEvent();
-	if( !preload )
-	{
-		ImGui::Shutdown();
-	}
+    SDL2::UnhookWindow();
+    SDL2::UnhookPollEvent();
+    if (!preload) {
+        ImGui::Shutdown();
+    }
 
-	AntiAim::LuaCleanup();
-	Aimbot::XDOCleanup();
-	NoSmoke::Cleanup();
+    AntiAim::LuaCleanup();
+    Aimbot::XDOCleanup();
+    NoSmoke::Cleanup();
 
-	clientVMT->ReleaseVMT();
-	panelVMT->ReleaseVMT();
-	modelRenderVMT->ReleaseVMT();
-	clientModeVMT->ReleaseVMT();
-	gameEventsVMT->ReleaseVMT();
-	viewRenderVMT->ReleaseVMT();
-	inputInternalVMT->ReleaseVMT();
-	materialVMT->ReleaseVMT();
-	surfaceVMT->ReleaseVMT();
-	launcherMgrVMT->ReleaseVMT();
-	engineVGuiVMT->ReleaseVMT();
-	soundVMT->ReleaseVMT();
+    clientVMT->ReleaseVMT();
+    panelVMT->ReleaseVMT();
+    modelRenderVMT->ReleaseVMT();
+    clientModeVMT->ReleaseVMT();
+    gameEventsVMT->ReleaseVMT();
+    viewRenderVMT->ReleaseVMT();
+    inputInternalVMT->ReleaseVMT();
+    materialVMT->ReleaseVMT();
+    surfaceVMT->ReleaseVMT();
+    launcherMgrVMT->ReleaseVMT();
+    engineVGuiVMT->ReleaseVMT();
+    soundVMT->ReleaseVMT();
 
-	input->m_fCameraInThirdPerson = false;
-	input->m_vecCameraOffset.z = 150.f;
-	GetLocalClient(-1)->m_nDeltaTick = -1;
+    input->m_fCameraInThirdPerson = false;
+    input->m_vecCameraOffset.z = 150.f;
+    GetLocalClient(-1)->m_nDeltaTick = -1;
 
-	delete eventListener;
+    delete eventListener;
 
-	*bSendPacket = true;
-	*s_bOverridePostProcessingDisable = false;
-	*CrosshairWeaponTypeCheck = 5;
-	*CamThinkSvCheatsCheck = 0x74;
-	*(CamThinkSvCheatsCheck + 0x1) = 0x64;
+    *bSendPacket = true;
+    *s_bOverridePostProcessingDisable = false;
+    *CrosshairWeaponTypeCheck = 5;
+    *CamThinkSvCheatsCheck = 0x74;
+    *(CamThinkSvCheatsCheck + 0x1) = 0x64;
 
-	Util::ProtectAddr(bSendPacket, PROT_READ | PROT_EXEC);
-	Util::ProtectAddr(CrosshairWeaponTypeCheck, PROT_READ | PROT_EXEC);
-	for (ptrdiff_t off = 0; off < 0x2; off++)
-		Util::ProtectAddr(CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC);
+    Util::ProtectAddr(bSendPacket, PROT_READ | PROT_EXEC);
+    Util::ProtectAddr(CrosshairWeaponTypeCheck, PROT_READ | PROT_EXEC);
+    for (ptrdiff_t off = 0; off < 0x2; off++)
+        Util::ProtectAddr(CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC);
 
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
 
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully unloaded. \n"));
-	cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully unloaded. \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
 }
-void projectspartan::SelfShutdown()
-{
-	// Beta Feature.
-	// Does not Correctly/Fully Unload yet.
-	/*
-	void *self = dlopen(NULL, RTLD_NOW | RTLD_NOLOAD);
-	if (self == NULL) {
-		cvar->ConsoleDPrintf("Error Unloading: %s\nself Addr: %p\n", dlerror(), self);
-		return;
-	}
-	*/
-	Shutdown();
-	/*
-	dlclose(self);
-	dlclose(self);
-	*/
+
+void projectspartan::SelfShutdown() {
+    // Beta Feature.
+    // Does not Correctly/Fully Unload yet.
+    /*
+    void *self = dlopen(NULL, RTLD_NOW | RTLD_NOLOAD);
+    if (self == NULL) {
+            cvar->ConsoleDPrintf("Error Unloading: %s\nself Addr: %p\n", dlerror(), self);
+            return;
+    }
+     */
+    Shutdown();
+    /*
+    dlclose(self);
+    dlclose(self);
+     */
 }
