@@ -7,6 +7,8 @@
 
 namespace FakeLag
 {
+	extern bool pSilent;
+	extern bool bFlipping;
 	//Hooks
 	void CreateMove(CUserCmd* cmd);
 };

@@ -854,7 +854,7 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     Math::ClampAngles(angle);
 
     if (angle != cmd->viewangles) {
-        if (Settings::Aimbot::moveMouse && !Settings::Aimbot::silent) // not a good idea to use mouse-based aimbot and silent aim at the same time
+        if (Settings::Aimbot::moveMouse && !Settings::Aimbot::silent && !Settings::Aimbot::pSilent) // not a good idea to use mouse-based aimbot and silent aim at the same time
         {
             float sensitivity = cvar->FindVar(XORSTR("sensitivity"))->GetFloat();
             float m_pitch = cvar->FindVar(XORSTR("m_pitch"))->GetFloat();
@@ -875,8 +875,20 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     if (activeWeapon->GetNextPrimaryAttack() > globalVars->curtime)
         bulletTime = false;
 
-    if (Settings::Aimbot::pSilent && (cmd->buttons & IN_ATTACK) && bulletTime)
-        CreateMove::sendPacket = false;
+    FakeLag::pSilent = false;
+
+    if (Settings::Aimbot::pSilent)
+    {
+        if (cmd->buttons & IN_ATTACK && bulletTime)
+        {
+            FakeLag::pSilent = true;
+            CreateMove::sendPacket = false;
+        }
+        else
+        {
+            cmd->buttons &= ~IN_ATTACK; // hands up, don't shoot.
+        }
+    }
 
     if (!Settings::Aimbot::silent)
         engine->SetViewAngles(cmd->viewangles);

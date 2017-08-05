@@ -1241,6 +1241,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     static bool bFlip;
 
     bFlip = !bFlip;
+    FakeLag::bFlipping = bFlip;
 
     bool should_clamp = true;
 

@@ -3,9 +3,11 @@
 bool Settings::FakeLag::enabled = false;
 int Settings::FakeLag::value = 9;
 bool Settings::FakeLag::adaptive = false;
+bool FakeLag::pSilent = false;
+bool FakeLag::bFlipping = false;
 
 static int ticks = 0;
-int ticksMax = 16;
+static const int ticksMax = 16;
 
 void FakeLag::CreateMove(CUserCmd* cmd)
 {
@@ -19,20 +21,26 @@ void FakeLag::CreateMove(CUserCmd* cmd)
 	if (localplayer->GetFlags() & FL_ONGROUND && Settings::FakeLag::adaptive)
 		return;
 
-	if (cmd->buttons & IN_ATTACK)
+	if (cmd->buttons & IN_ATTACK && !Settings::Aimbot::pSilent)
 	{
 		CreateMove::sendPacket = true;
 		return;
 	}
 
-	if (ticks >= ticksMax)
+	if (FakeLag::pSilent)
+	{
+		CreateMove::sendPacket = false;
+		ticks++;
+		return;
+	}
+	if (ticks >= ticksMax && FakeLag::bFlipping)
 	{
 		CreateMove::sendPacket = true;
 		ticks = 0;
 	}
 	else
 	{
-		if (Settings::FakeLag::adaptive)
+		if (Settings::FakeLag::adaptive) // Adaptive lag is a piece of garbage. Was gonna rip it out, but perhaps something else will go here.
 		{
 			int packetsToChoke;
 			if (localplayer->GetVelocity().Length() > 0.f)
@@ -49,8 +57,22 @@ void FakeLag::CreateMove(CUserCmd* cmd)
 			CreateMove::sendPacket = ticks < 16 - packetsToChoke;
 		}
 		else
-			CreateMove::sendPacket = ticks < 16 - Settings::FakeLag::value;
+		{
+			if (ticks < 16 - Settings::FakeLag::value)
+			{
+				if (!FakeLag::bFlipping)
+				{
+					CreateMove::sendPacket = false;
+					ticks++;
+					return;
+				}
+				CreateMove::sendPacket = true;
+			}
+			else
+			{
+				CreateMove::sendPacket = false;
+			}
+		}
 	}
-
 	ticks++;
 }
