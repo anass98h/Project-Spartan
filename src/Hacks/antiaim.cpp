@@ -1192,7 +1192,12 @@ static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& cl
 
 void AntiAim::CreateMove(CUserCmd* cmd) {
     if (!Settings::AntiAim::Yaw::enabled && !Settings::AntiAim::Pitch::enabled)
-        return;
+	{
+		if(Settings::FakeLag::enabled)
+			FakeLag::bFlipping = true;
+		return;
+	}
+
 
     if (Settings::Aimbot::AimStep::enabled && Aimbot::aimStepInProgress)
         return;
