@@ -162,6 +162,7 @@ void LBY::RenderTab() {
     {
         ImGui::BeginChild(XORSTR("HVH2"), ImVec2(0, 0), true);
         {
+
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
             ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
