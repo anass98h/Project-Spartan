@@ -15,7 +15,7 @@ void lbyindicator::CreateMove(CUserCmd *cmd)
     if (!pLocal || !pLocal->GetAlive())
         return;
 
-    float yawDiff = cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget();
+    float yawDiff = *pLocal->GetLowerBodyYawTarget() - cmd->viewangles.y;
     Math::NormalizeYaw(yawDiff);
     normalYawDiff = yawDiff;
 }
