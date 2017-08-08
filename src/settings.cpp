@@ -196,7 +196,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Resolver")][XORSTR("ticks")] = Settings::Resolver::ticks;
     settings[XORSTR("Resolver")][XORSTR("modulo")] = Settings::Resolver::modulo;
     settings[XORSTR("Resolver")][XORSTR("Hugtype")] = (int) Settings::Resolver::Hugtype;
-
+    settings[XORSTR("Resolver")][XORSTR("resolveAll")] = (int) Settings::Resolver::resolveAll;
     settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
     settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")] = Settings::Triggerbot::Filters::enemies;
@@ -623,6 +623,8 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("ticks")], &Settings::Resolver::ticks);
     GetVal(settings[XORSTR("Resolver")][XORSTR("modulo")], &Settings::Resolver::modulo);
     GetVal(settings[XORSTR("Resolver")][XORSTR("Hugtype")], (int*) &Settings::Resolver::Hugtype);
+    GetVal(settings[XORSTR("Resolver")][XORSTR("resolveAll")], (int*) &Settings::Resolver::resolveAll);
+
 
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
     GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
@@ -832,7 +834,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Airstuck")][XORSTR("enabled")], &Settings::Airstuck::enabled);
     GetButtonCode(settings[XORSTR("Airstuck")][XORSTR("key")], &Settings::Airstuck::key);
     GetVal(settings[XORSTR("Fakewalk")][XORSTR("enabled")], &Settings::Fakewalk::enabled);
-    settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
+    GetButtonCode(settings[XORSTR("Fakewalk")][XORSTR("key")], &Settings::Fakewalk::key);
     //GetVal(settings[XORSTR("CircleStrafe")][XORSTR("enabled")], &Settings::CircleStrafe::enabled);
     //settings[XORSTR("CircleStrafe")][XORSTR("key")] = Util::GetButtonName(Settings::CircleStrafe::key);
 
