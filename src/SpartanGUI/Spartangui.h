@@ -32,13 +32,13 @@
 #include "Tabs/otherstab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
-#include "Tabs/lbytab.h"
+
 
 
 
 namespace UI {
     extern bool isVisible;
-
+    void WeebsterMarc();
     void SetVisible(bool visible);
     void SwapWindow();
     void SetupColors();

@@ -7,6 +7,7 @@ bool Settings::ScreenshotCleaner::enabled = false;
 bool Settings::UI::oldMenu = false;
 bool Settings::UI::otherMenu = false;
 bool Settings::UI::combinedMenu = false;
+bool Settings::UI::Pie = false;
 bool toggled = false;
 ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 255);
 ColorVar Settings::UI::bodyColor = ImColor(0, 0, 0, 255);
@@ -17,7 +18,8 @@ static char Pass[256] = "";
 std::string data;
 std::string contents;
 
-// We should enforce better method naming.
+// denied
+
 
 static void ccc() {
     ImGui::CloseCurrentPopup();
@@ -90,8 +92,9 @@ void SetupMainMenuBar() {
             }
             ImGui::EndPopup();
         }
+       
         ImGui::PopStyleVar();
-
+        
         if (ImGui::Button(XORSTR("Logout  "), ImVec2(ImGui::CalcTextSize(XORSTR("Logout  "), NULL, true).x, 0.0f))) {
             LoggedIn = false;
             Main::showWindow = false;
@@ -120,24 +123,38 @@ void SetupMainMenuBar() {
         }
 
         ImGui::Separator();
-        ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu);
+        if(ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu))
+        { Settings::UI::otherMenu = false;
+        Settings::UI::combinedMenu = false;}
         ImGui::Separator();
-        ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu);
+       if(ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu))
+        {Settings::UI::oldMenu = false;
+        Settings::UI::combinedMenu = false;}
         ImGui::Separator();
-        ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu);
+        if(ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu))
+        {Settings::UI::oldMenu = false;
+        Settings::UI::otherMenu = false;}
         ImGui::Separator();
-
-        static const char *test_data = "Menu";
+       
+       
+            
+          
+            
+	 static const char *test_data = "Menu";
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
         int items_count = sizeof (items) / sizeof (*items);
 
         static int selected = -1;
 
-        ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
-        if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
-            ImGui::OpenPopup("##piepopup");
+        
+      
+         ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
+       if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
+         ImGui::OpenPopup("##piepopup");
+           
 
-        ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
+      
+        ImVec2 pie_menu_center =ImGui::GetIO().MousePos;
         int n = PiePopupSelectMenu(pie_menu_center, "##piepopup", items, items_count);
         if (n == 1) {
             Configs::showWindow = !Configs::showWindow;
@@ -153,13 +170,13 @@ void SetupMainMenuBar() {
             Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
         }
 
-        ImGui::End();
+        ImGui::End(); 
+           
+    
+    
     }
-
-
     if (Settings::UI::oldMenu) {
-        Settings::UI::otherMenu = false;
-        Settings::UI::combinedMenu = false;
+       
         if (!LoggedIn) {
             ImGui::OpenPopup(XORSTR("Project Spartan"));
         } else {
@@ -210,8 +227,7 @@ void SetupMainMenuBar() {
         }
     } else if (Settings::UI::otherMenu) {
 
-        Settings::UI::oldMenu = false;
-        Settings::UI::combinedMenu = false;
+        
         if (!LoggedIn) {
             ImGui::OpenPopup(XORSTR("Project Spartan"));
         } else {

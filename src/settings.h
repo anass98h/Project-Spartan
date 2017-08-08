@@ -366,6 +366,8 @@ namespace Settings {
         extern bool oldMenu;
         extern bool otherMenu;
         extern bool combinedMenu;
+        extern bool Pie;
+        
         namespace Fonts {
             namespace ESP {
                 extern char* family;

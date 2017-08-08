@@ -59,32 +59,28 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
             if (LowerBodyYawChanged(Circlebian)) {
 
-                Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+                Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
 
-            } else {
+            } 
+            
+            else {
 
 
-                int num = Shotsmissed % 6;
+                int num = Shotsmissed % 4;
                 switch (num) {
                     case 0:
                         Circlebian->GetEyeAngles()->y -= 0.0f;
                         break;
                     case 1:
-                        Circlebian->GetEyeAngles()->y = 35.0f;
+                        Circlebian->GetEyeAngles()->y += 90.0f;
                         break;
                     case 2:
-                        Circlebian->GetEyeAngles()->y = -70.0f;
+                        Circlebian->GetEyeAngles()->y -= 90.0f;
                         break;
                     case 3:
-                        Circlebian->GetEyeAngles()->y = 55.0f;
+                        Circlebian->GetEyeAngles()->y -= 180.0f;
                         break;
-                    case 4:
-                        Circlebian->GetEyeAngles()->y = -180.0f;
-                        break;
-                    case 5:
-                        Circlebian->GetEyeAngles()->y = -30.0f;
-                        break;
-
+     
 
                 }
 

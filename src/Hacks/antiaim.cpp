@@ -764,26 +764,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             }
             break;
         case AntiAimType_Y::LBYBREAK:
-            //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-
-            static bool flip = false;
-            static float prevLBY = *pLocal->GetLowerBodyYawTarget();
-
-            if (pLocal->GetVelocity().Length() < 0.1f) {
-                // 	cvar->CASUALJITTERonsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
-
-                if (prevLBY != *pLocal->GetLowerBodyYawTarget())
-                    flip = !flip;
-
-                if (flip)
-                    angle.y += 110.f;
-                else
-                    angle.y -= 110.f;
-
-                prevLBY = *pLocal->GetLowerBodyYawTarget();
-            } else
-                angle.y -= 180.0f;
-            //cvar->ConsoleColorPrintf(ColorRGBA(255,255,255), "%f\n", pLocal->GetVelocity().Length());
+           //Placeholder :/
+            // Someone should fix this probably  ._. 
             break;
         case AntiAimType_Y::LBYSPIN:
             factor = 360.0 / M_PHI;

@@ -10,8 +10,7 @@ void Main::RenderWindow() {
 
 
     if (Settings::UI::combinedMenu) {
-        Settings::UI::oldMenu = false;
-        Settings::UI::otherMenu = false;
+        
 
         static int page = 0;
         ImGui::SetNextWindowSize(ImVec2(1080, 700), ImGuiSetCond_FirstUseEver);
@@ -74,12 +73,9 @@ void Main::RenderWindow() {
                         Visuals::RenderTab();
                         break;
                     case 3:
-                        if (!Settings::AntiAim::Lby::enabled) {
+                       
                             HvH::RenderTab();
-                        } else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
-                        {
-                            LBY::RenderTab();
-                        }
+                       
 
                         break;
                     case 4:
@@ -181,13 +177,9 @@ void Main::RenderWindow() {
                             Visuals::RenderTab();
                             break;
                         case 3:
-                            if (!Settings::AntiAim::Lby::enabled) {
+                          
                                 HvH::RenderTab();
-                            } else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
-                            {
-                                LBY::RenderTab();
-                            }
-
+                           
                             break;
                         case 4:
                             Misc::RenderTab();
@@ -259,12 +251,9 @@ void Main::RenderWindow() {
                             Visuals::RenderTab();
                             break;
                         case 3:
-                            if (!Settings::AntiAim::Lby::enabled) {
+                           
                                 HvH::RenderTab();
-                            } else //if (!Settings::AntiAim::Lby::enabled || Settings::AntiAim::Lby::type==AntiAimType_LBY::NONE )
-                            {
-                                LBY::RenderTab();
-                            }
+                           
 
                             break;
                         case 4:
