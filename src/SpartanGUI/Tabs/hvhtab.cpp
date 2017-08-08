@@ -191,8 +191,8 @@ void HvH::RenderTab() {
             if (Settings::Resolver::resolveAll)
             { 
             ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
-            ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 16, "Ticks: %0.f");
-            ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 16, "Modulo: %0.f");
+            ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 50, "Ticks: %0.f");
+            ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 50, "Modulo: %0.f");
            
             } 
              ImGui::Separator();
