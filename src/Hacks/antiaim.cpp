@@ -19,6 +19,9 @@ bool Settings::AntiAim::Lua::debugMode = true;
 char Settings::AntiAim::Lua::scriptX[512];
 char Settings::AntiAim::Lua::scriptY[512];
 char Settings::AntiAim::Lua::scriptY2[512];
+float AntiAim::lastRealYaw = 0.0f;
+float AntiAim::lastFakeYaw = 0.0f;
+bool AntiAim::isAntiAiming = false;
 // if the script is the same, we can skip some initialization.
 char luaLastX[sizeof (Settings::AntiAim::Lua::scriptX)];
 char luaLastY[sizeof (Settings::AntiAim::Lua::scriptY)];
@@ -827,10 +830,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
 
         case AntiAimType_Y::SIDEWAYSRIGHT:
-            angle.y += 90.0f;
+            angle.y -= 90.0f;
             break;
         case AntiAimType_Y::SIDEWAYSLEFT:
-            angle.y -= 90.0f;
+            angle.y += 90.0f;
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
@@ -1173,6 +1176,7 @@ static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& cl
 }
 
 void AntiAim::CreateMove(CUserCmd* cmd) {
+	isAntiAiming = false;
     if (!Settings::AntiAim::Yaw::enabled && !Settings::AntiAim::Pitch::enabled)
 	{
 		if(Settings::FakeLag::enabled)
@@ -1222,6 +1226,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     if (Settings::AntiAim::AutoDisable::noEnemy && localplayer->GetAlive() && !HasViableEnemy())
         return;
 
+	isAntiAiming = true;
     QAngle edge_angle = angle;
     bool edging_head = Settings::AntiAim::HeadEdge::enabled && GetBestHeadAngle(edge_angle);
 
@@ -1297,7 +1302,14 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         }
     }
 
-
+	if (bFlip)
+	{
+		AntiAim::lastFakeYaw = cmd->viewangles.y;
+	}
+	else
+	{
+		AntiAim::lastRealYaw = cmd->viewangles.y;
+	}
 
     Math::CorrectMovement(oldAngle, cmd, oldForward, oldSideMove);
 

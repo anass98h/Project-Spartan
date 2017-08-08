@@ -170,4 +170,7 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 
+# Project files 
+*.cbp
+
 # End of https://www.gitignore.io/api/c++,linux,cmake,netbeans,jetbrains,sublimetext,visualstudiocode

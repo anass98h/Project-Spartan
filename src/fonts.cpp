@@ -9,5 +9,5 @@ int Settings::UI::Fonts::ESP::flags = (int) FontFlags::FONTFLAG_OUTLINE;
 void Fonts::SetupFonts()
 {
 	esp_font = Draw::CreateFont(Settings::UI::Fonts::ESP::family, Settings::UI::Fonts::ESP::size, Settings::UI::Fonts::ESP::flags);
-    lby_font = Draw::CreateFont("Dyuthi", 34,(int)FontFlags::FONTFLAG_DROPSHADOW);
+    lby_font = Draw::CreateFont("Dyuthi", 11,(int)FontFlags::FONTFLAG_DROPSHADOW);
 }

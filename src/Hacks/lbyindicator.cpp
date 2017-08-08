@@ -2,9 +2,7 @@
 
 
 bool Settings::lbyindicator::enabled = false;
-//static bool cLowerBodyIsUpdated;
-//static float *storedYaw;
-static float storedYawDiff;
+static float normalYawDiff;
 static Color col;
 
 void lbyindicator::CreateMove(CUserCmd *cmd)
@@ -19,19 +17,7 @@ void lbyindicator::CreateMove(CUserCmd *cmd)
 
     float yawDiff = cmd->viewangles.y - *pLocal->GetLowerBodyYawTarget();
     Math::NormalizeYaw(yawDiff);
-
-    if(std::abs(yawDiff) >= 35.0f)
-    {
-        //cLowerBodyIsUpdated = true;
-        col = Color(0, 235, 0);
-    }
-    else
-    {
-        //cLowerBodyIsUpdated = false;
-        col = Color(196, 5, 5);
-    }
-    //storedYaw = pLocal->GetLowerBodyYawTarget();
-    storedYawDiff = yawDiff;
+    normalYawDiff = yawDiff;
 }
 
 void lbyindicator::Paint()
@@ -75,12 +61,35 @@ void lbyindicator::Paint()
         indicatorVertexes[5].Init(Vector2D(width * .257f, height * .463f));
     }
 
-    Draw::OutlinedCircle(radarCenterX, radarCenterY, 55, 16, Color(0,0,0)); // Radar Outline
-    Draw::TexturedPolygon(6, indicatorVertexes, col); // Lby indicator light
-    Draw::Line(radarCenterX, radarCenterY, radarCenterX, radarNorthEndY, Color(0,0,0)); // Const Line facing North
-    Draw::Line(radarCenterX, radarCenterY, radar125EndX, radar125EndY, Color(0,0,0)); // Const Line Left-of N-Line
-    Draw::Line(radarCenterX, radarCenterY, radar55EndX, radar55EndY, Color(0,0,0)); // Const Line Right-of
-    Draw::Line(radarCenterX, radarCenterY, 55 * cos(DEG2RAD(90+storedYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90+storedYawDiff))), col); // Yaw Line
+	float realYawDiff = normalYawDiff;
+
+	if( AntiAim::isAntiAiming )
+	{
+		realYawDiff = *pLocal->GetLowerBodyYawTarget() - AntiAim::lastRealYaw;
+		float fakeYawDiff = (*pLocal->GetLowerBodyYawTarget()) - AntiAim::lastFakeYaw;
+		Math::NormalizeYaw(realYawDiff);
+		Math::NormalizeYaw(fakeYawDiff);
+		Draw::Line(radarCenterX, radarCenterY, 55 * cos(DEG2RAD(90-fakeYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90-fakeYawDiff))), Color(10, 10, 200)); // Fake Yaw Line
+	}
+	if(std::abs(realYawDiff) >= 35.0f)
+	{
+		col = Color(0, 235, 0);
+	}
+	else
+	{
+		col = Color(196, 5, 5);
+	}
+
+	Draw::OutlinedCircle(radarCenterX, radarCenterY, 55, 16, Color(0,0,0)); // Radar Outline
+	Draw::TexturedPolygon(6, indicatorVertexes, col); // Lby indicator light
+	Draw::Line(radarCenterX, radarCenterY, radarCenterX, radarNorthEndY, Color(0,0,0)); // Const Line facing North
+	Draw::Line(radarCenterX, radarCenterY, radar125EndX, radar125EndY, Color(0,0,0)); // Const Line Left-of N-Line
+	Draw::Line(radarCenterX, radarCenterY, radar55EndX, radar55EndY, Color(0,0,0)); // Const Line Right-of
+	Draw::Line(radarCenterX, radarCenterY, 55 * cos(DEG2RAD(90-realYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90-realYawDiff))), col); // Real Yaw Line
+
+	char lbyText[5]; // 3 digits, sign, and null terminator
+	snprintf(lbyText, 5, "%.0f", (*pLocal->GetLowerBodyYawTarget()));
+	Draw::Text(radarCenterX, radarNorthEndY - 20, lbyText, lby_font, Color(0, 0, 0)); // LBY On top
 }
 
 
