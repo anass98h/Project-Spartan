@@ -169,14 +169,14 @@ void HvH::RenderTab() {
     {
         ImGui::BeginChild(XORSTR("HVH2"), ImVec2(0, 0), true);
         {
-            ImGui::Checkbox("Resolve All", &Settings::Resolver::resolveAll::enabled);
+            ImGui::Checkbox("Resolve All", &Settings::Resolver::resolveAll);
             if (Settings::Resolver::resolveAll)
             { 
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
             ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
-            ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 16, "Ticks: %0.f");
-            ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 16, "Modulo: %0.f");
+            ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 50, "Ticks: %0.f");
+            ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 50, "Modulo: %0.f");
             ImGui::Separator();
             } 
             ImGui::Text("Misc");
