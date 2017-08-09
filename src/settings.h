@@ -202,7 +202,7 @@ struct AimbotWeapon_t {
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled;
+    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
 
     AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
             bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled, float smoothSaltMultiplier,
@@ -213,7 +213,7 @@ struct AimbotWeapon_t {
             bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
             bool spreadLimitEnabled, float spreadLimit,
             bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-            bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue) {
+            bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue, bool autoCockRevolver, bool velocityCheck) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -256,6 +256,9 @@ struct AimbotWeapon_t {
         this->predEnabled = predEnabled;
         this->moveMouse = moveMouse;
         this->hitChanceEnabled = hitChanceEnabled;
+        this->autoCockRevolver = autoCockRevolver;
+        this->velocityCheck = velocityCheck;
+
 
         for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
             this->desiredBones[bone] = (desiredBones != nullptr) ? desiredBones[bone] : false;
@@ -313,7 +316,8 @@ struct AimbotWeapon_t {
                 this->autoSlow == another.autoSlow &&
                 this->predEnabled == another.predEnabled &&
                 this->autoAimRealDistance == another.autoAimRealDistance &&
-                this->moveMouse == another.moveMouse;
+                this->moveMouse == another.moveMouse && 
+                this->autoCockRevolver == another.autoCockRevolver;
     }
 };
 
@@ -484,6 +488,11 @@ namespace Settings {
             extern bool enabled;
             extern int hitRays;
             extern float value;
+        }
+
+        namespace AutoCockRevolver
+        {
+            extern bool enabled;
         }
 
         namespace Prediction {

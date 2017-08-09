@@ -1,4 +1,4 @@
-#include "aimbot.h"
+    #include "aimbot.h"
 #include "autowall.h"
 
 // Default aimbot settings
@@ -35,7 +35,6 @@ float Settings::Aimbot::AimStep::min = 25.0f;
 float Settings::Aimbot::AimStep::max = 35.0f;
 bool Settings::Aimbot::AutoPistol::enabled = false;
 bool Settings::Aimbot::AutoShoot::enabled = false;
-bool Settings::Aimbot::velocityCheck::enabled = false;
 bool Settings::Aimbot::AutoShoot::autoscope = false;
 bool Settings::Aimbot::RCS::enabled = false;
 bool Settings::Aimbot::RCS::always_on = false;
@@ -57,11 +56,14 @@ bool Settings::Aimbot::moveMouse = false;
 bool Settings::Aimbot::HitChance::enabled = false;
 int Settings::Aimbot::HitChance::hitRays = 100;
 float Settings::Aimbot::HitChance::value = 0.5f;
+bool Settings::Aimbot::AutoCockRevolver::enabled = false;
+bool Settings::Aimbot::velocityCheck::enabled = false;
+
 
 bool Aimbot::aimStepInProgress = false;
 std::vector<int64_t> Aimbot::friends = {};
 std::vector<long> killTimes = {0}; // the Epoch time from when we kill someone
-
+float autoCockDifference = 0.0f;
 int missedShots = 0;
 bool sentShotToTarget;
 
@@ -77,7 +79,7 @@ static xdo_t *xdo = xdo_new(NULL);
 std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons = {
     { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
             SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-            false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f}},
+            false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false}},
 };
 
 static QAngle ApplyErrorToAngle(QAngle* angles, float margin) {
@@ -487,6 +489,28 @@ static void RCS(QAngle& angle, C_BasePlayer* player, CUserCmd* cmd) {
     RCSLastPunch = CurrentPunch;
 }
 
+void Aimbot::AutoCockRevolver(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* localplayer, CUserCmd* cmd)
+{
+    if (!Settings::Aimbot::AutoCockRevolver::enabled)
+        return;
+
+    if (cmd->buttons & IN_RELOAD)
+        return;
+    
+    if (*activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER)
+        return;
+    
+    cmd->buttons |= IN_ATTACK;
+    float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
+    if (cmd->buttons & IN_ATTACK2)
+        cmd->buttons |= IN_ATTACK;
+    else if (postponeFireReady > 0 && postponeFireReady < globalVars->curtime)
+    {
+        cmd->buttons &= ~IN_ATTACK;
+    }
+}
+
+
 static void AimStep(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd) {
     if (!Settings::Aimbot::AimStep::enabled)
         return;
@@ -849,6 +873,7 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     Smooth(player, angle, cmd);
     ShootCheck(activeWeapon, cmd);
     NoShoot(activeWeapon, player, cmd);
+    Aimbot::AutoCockRevolver(activeWeapon, player, cmd);
 
     Math::NormalizeAngles(angle);
     Math::ClampAngles(angle);
@@ -1011,7 +1036,8 @@ void Aimbot::UpdateValues() {
     Settings::Aimbot::HitChance::value = currentWeaponSetting.hitChanceValue;
     Settings::Aimbot::HitChance::hitRays = currentWeaponSetting.hitChanceRays;
     Settings::Aimbot::HitChance::enabled = currentWeaponSetting.hitChanceEnabled;
-
+    Settings::Aimbot::AutoCockRevolver::enabled = currentWeaponSetting.autoCockRevolver;
+    Settings::Aimbot::velocityCheck::enabled = currentWeaponSetting.velocityCheck;
     for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
         Settings::Aimbot::AutoAim::desiredBones[bone] = currentWeaponSetting.desiredBones[bone];
 
