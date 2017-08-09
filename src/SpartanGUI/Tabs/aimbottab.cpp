@@ -52,6 +52,9 @@ static bool predEnabled = false;
 static bool hitChanceEnabled = false;
 static int hitChanceRays = 100;
 static float hitChanceValue = 0.5f;
+static bool autoCockRevolver = false;
+static bool velocityCheck = false;
+
 
 void UI::ReloadWeaponSettings() {
     ItemDefinitionIndex index = ItemDefinitionIndex::INVALID;
@@ -103,6 +106,8 @@ void UI::ReloadWeaponSettings() {
     hitChanceEnabled = Settings::Aimbot::weapons.at(index).hitChanceEnabled;
     hitChanceRays = Settings::Aimbot::weapons.at(index).hitChanceRays;
     hitChanceValue = Settings::Aimbot::weapons.at(index).hitChanceValue;
+    autoCockRevolver = Settings::Aimbot::weapons.at(index).autoCockRevolver;
+    velocityCheck = Settings::Aimbot::weapons.at(index).velocityCheck;
 
     for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
         desiredBones[bone] = Settings::Aimbot::weapons.at(index).desiredBones[bone];
@@ -119,7 +124,7 @@ void UI::UpdateWeaponSettings() {
         autoAimEnabled, autoAimValue, aimStepEnabled, aimStepMin, aimStepMax,
         rcsEnabled, rcsAlwaysOn, rcsAmountX, rcsAmountY,
         autoPistolEnabled, autoShootEnabled, autoScopeEnabled,
-        noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled, spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue
+        noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled, spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue, autoCockRevolver, velocityCheck
     };
 
     for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
@@ -364,7 +369,8 @@ void Aimbot::RenderTab() {
             ImGui::Separator();
             if (ImGui::Checkbox(XORSTR("Auto Shoot"), &autoShootEnabled))
                 UI::UpdateWeaponSettings();
-            ImGui::Checkbox(XORSTR("Velocity Check"), &Settings::Aimbot::velocityCheck::enabled);
+            if(ImGui::Checkbox(XORSTR("Velocity Check"), &Settings::Aimbot::velocityCheck::enabled))
+                UI::UpdateWeaponSettings();
             if (ImGui::Checkbox(XORSTR("Spread Limit"), &spreadLimitEnabled))
                 UI::UpdateWeaponSettings();
             SetTooltip("Spread limit, but by simulating spread of the weapon");
@@ -445,6 +451,8 @@ void Aimbot::RenderTab() {
                     case ItemDefinitionIndex::WEAPON_P250:
                     case ItemDefinitionIndex::WEAPON_CZ75A:
                     case ItemDefinitionIndex::WEAPON_REVOLVER:
+                        if (ImGui::Checkbox("Auto Cock Revolver", &autoCockRevolver))
+                            UI::UpdateWeaponSettings();
                         if (ImGui::Checkbox(XORSTR("Auto Pistol"), &autoPistolEnabled))
                             UI::UpdateWeaponSettings();
                         break;

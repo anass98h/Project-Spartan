@@ -1088,7 +1088,7 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
             static bool flip1 = false;
             static float prevLBY1 = *pLocal->GetLowerBodyYawTarget();
 
-            if (pLocal->GetVelocity().Length() < 0.1f) {
+            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
                 if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
                     flip1 = !flip1;
@@ -1106,7 +1106,7 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
             static bool flip2 = false;
             static float prevLBY2 = *pLocal->GetLowerBodyYawTarget();
 
-            if (pLocal->GetVelocity().Length() < 0.1f) {
+            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
                 if (prevLBY2 != *pLocal->GetLowerBodyYawTarget())
                     flip2 = !flip2;
@@ -1123,7 +1123,7 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
         case AntiAimType_LBY::THREE:
             static int flip3 = (int) (floorf(globalVars->curtime) / 1.1) % 2;
 
-            if (pLocal->GetVelocity().Length() < 0.1f)
+            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)
                 angle.y += 225.f + flip3 * 145.0f;
             else
                 angle.y += 0.f;
