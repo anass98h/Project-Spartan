@@ -75,13 +75,6 @@ void SDL2::SwapWindow(SDL_Window* window) {
                         config.MergeMode = true;
                         io.Fonts->AddFontFromMemoryCompressedBase85TTF(KaiGenGothicCNRegular_compressed_data_base85, 14.0f, &config, KaiGenGothicCNRegular_ranges);
                         io.Fonts->Build();  */
-
-
-
-
-
-
-
     }
 
     SDL_GL_MakeCurrent(window, context);
@@ -105,6 +98,7 @@ void SDL2::SwapWindow(SDL_Window* window) {
 
     Draw::ImStart();
     UI::SwapWindow();
+    Hooks::PaintImGui(); // Process ImGui Draw Commands
     Draw::ImEnd();
 
     UI::SetupColors();

@@ -184,7 +184,8 @@ void Draw::ImStart()
 				 ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
 }
 
-void Draw::ImDrawText(ImVec2 pos, ImColor color, const char* text_begin, const char* text_end, float wrap_width, const ImVec4* cpu_fine_clip_rect, ImFontFlags flags)
+void Draw::ImText(ImVec2 pos, ImColor color, const char *text_begin, const char *text_end, float wrap_width,
+				  const ImVec4 *cpu_fine_clip_rect, ImFontFlags flags)
 {
 	if (flags & ImFontFlags_Outline)
 	{
@@ -200,14 +201,24 @@ void Draw::ImDrawText(ImVec2 pos, ImColor color, const char* text_begin, const c
 	ImGui::GetWindowDrawList()->AddText(ImGui::GetWindowFont(), ImGui::GetWindowFontSize(), pos, color, text_begin, text_end, wrap_width, cpu_fine_clip_rect);
 }
 
-void Draw::ImDrawCircle(ImVec2 point, ImColor color, float radius, int num_segments, float thickness)
+void Draw::ImCircle(ImVec2 point, ImColor color, float radius, int num_segments, float thickness)
 {
 	ImGui::GetWindowDrawList()->AddCircle(point, radius, color, num_segments, thickness);
 }
 
-void Draw::ImDrawRect(ImVec2 a, ImVec2 b, ImColor color, float rounding, int rounding_corners_flags, float thickness)
+void Draw::ImCircleFilled(ImVec2 point, ImColor color, float radius, int num_segments)
+{
+	ImGui::GetWindowDrawList()->AddCircleFilled(point, radius, color, num_segments);
+}
+
+void Draw::ImRect(ImVec2 a, ImVec2 b, ImColor color, float rounding, int rounding_corners_flags, float thickness)
 {
 	ImGui::GetWindowDrawList()->AddRect(a, b, color, rounding, rounding_corners_flags, thickness);
+}
+
+void Draw::ImLine(ImVec2 a, ImVec2 b, ImColor color, float thickness)
+{
+	ImGui::GetWindowDrawList()->AddLine(a, b, color, thickness);
 }
 
 void Draw::ImEnd()

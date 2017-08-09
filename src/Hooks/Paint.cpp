@@ -19,8 +19,14 @@ void Hooks::Paint(void* thisptr, PaintMode_t mode)
 		GrenadeHelper::Paint();
 		Recoilcrosshair::Paint();
 		Hitmarkers::Paint();
-        lbyindicator::Paint();
 
 		FinishDrawing(surface);
 	}
+}
+
+
+
+void Hooks::PaintImGui()
+{
+	lbyindicator::PaintImGui();
 }

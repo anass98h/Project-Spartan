@@ -20,46 +20,38 @@ void lbyindicator::CreateMove(CUserCmd *cmd)
     normalYawDiff = yawDiff;
 }
 
-void lbyindicator::Paint()
+void lbyindicator::PaintImGui()
 {
-    if (!Settings::lbyindicator::enabled || !engine->IsInGame())
-        return;
+	if (!Settings::lbyindicator::enabled || !engine->IsInGame())
+		return;
 
-    C_BasePlayer *pLocal = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer *pLocal = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
 
-    if (!pLocal || !pLocal->GetAlive())
-        return;
+	if (!pLocal || !pLocal->GetAlive())
+		return;
 
-    static int width = 0;
-    static int height = 0;
-    static int radarCenterX = 0;
-    static int radarCenterY = 0;
-    static int radarNorthEndY = 0;
-    static int radar125EndX = 0; // 90 + 35
-    static int radar125EndY = 0;
-    static int radar55EndX = 0; // 90 - 35
-    static int radar55EndY = 0;
-    static Vertex_t indicatorVertexes[6];
+	static int width = 0;
+	static int height = 0;
+	static int radarCenterX = 0;
+	static int radarCenterY = 0;
+	static int radarNorthEndY = 0;
+	static int radar125EndX = 0; // 90 + 35
+	static int radar125EndY = 0;
+	static int radar55EndX = 0; // 90 - 35
+	static int radar55EndY = 0;
 
-    // Seemed a bit slow, so did some autistic tweaks
-    if( width == 0 )
-    {
-        engine->GetScreenSize(width, height);
-        radarCenterX = width * .23;
-        radarCenterY = height* .42;
-        radarNorthEndY = radarCenterY - 55;
-        radar125EndX = 55 * cos(DEG2RAD(90+35)) + radarCenterX;
-        radar125EndY = height*.42 - (55 * sin(DEG2RAD(90+35)));
-        radar55EndX = 55 * cos(DEG2RAD(90-35)) + radarCenterX;
-        radar55EndY = height*.42 - (55 * sin(DEG2RAD(90-35)));
-
-        indicatorVertexes[0].Init(Vector2D(width * .259f, height * .470f));
-        indicatorVertexes[1].Init(Vector2D(width * .257f, height * .475f));
-        indicatorVertexes[2].Init(Vector2D(width * .253f, height * .475f));
-        indicatorVertexes[3].Init(Vector2D(width * .251f, height * .470f));
-        indicatorVertexes[4].Init(Vector2D(width * .253f, height * .463f));
-        indicatorVertexes[5].Init(Vector2D(width * .257f, height * .463f));
-    }
+	// Seemed a bit slow, so did some autistic tweaks
+	if( width == 0 )
+	{
+		engine->GetScreenSize(width, height);
+		radarCenterX = width * .23;
+		radarCenterY = height* .42;
+		radarNorthEndY = radarCenterY - 55;
+		radar125EndX = 55 * cos(DEG2RAD(90+35)) + radarCenterX;
+		radar125EndY = height*.42 - (55 * sin(DEG2RAD(90+35)));
+		radar55EndX = 55 * cos(DEG2RAD(90-35)) + radarCenterX;
+		radar55EndY = height*.42 - (55 * sin(DEG2RAD(90-35)));
+	}
 
 	float realYawDiff = normalYawDiff;
 
@@ -69,7 +61,7 @@ void lbyindicator::Paint()
 		float fakeYawDiff = (*pLocal->GetLowerBodyYawTarget()) - AntiAim::lastFakeYaw;
 		Math::NormalizeYaw(realYawDiff);
 		Math::NormalizeYaw(fakeYawDiff);
-		Draw::Line(radarCenterX, radarCenterY, 55 * cos(DEG2RAD(90-fakeYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90-fakeYawDiff))), Color(10, 10, 200)); // Fake Yaw Line
+		Draw::ImLine(ImVec2(radarCenterX, radarCenterY), ImVec2(55 * cos(DEG2RAD(90-fakeYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90-fakeYawDiff)))), ImColor(10,10,200));
 	}
 	if(std::abs(realYawDiff) >= 35.0f)
 	{
@@ -80,18 +72,17 @@ void lbyindicator::Paint()
 		col = Color(196, 5, 5);
 	}
 
-	Draw::OutlinedCircle(radarCenterX, radarCenterY, 55, 16, Color(0,0,0)); // Radar Outline
-	Draw::TexturedPolygon(6, indicatorVertexes, col); // Lby indicator light
-	Draw::Line(radarCenterX, radarCenterY, radarCenterX, radarNorthEndY, Color(0,0,0)); // Const Line facing North
-	Draw::Line(radarCenterX, radarCenterY, radar125EndX, radar125EndY, Color(0,0,0)); // Const Line Left-of N-Line
-	Draw::Line(radarCenterX, radarCenterY, radar55EndX, radar55EndY, Color(0,0,0)); // Const Line Right-of
-	Draw::Line(radarCenterX, radarCenterY, 55 * cos(DEG2RAD(90-realYawDiff)) + radarCenterX, radarCenterY - (55 * sin(DEG2RAD(90-realYawDiff))), col); // Real Yaw Line
+	Draw::ImCircle(ImVec2(radarCenterX, radarCenterY), ImColor(0,0,0), 55, 32); // Radar Outline
+	Draw::ImCircleFilled(ImVec2(radarCenterX + 55, radarCenterY + 55), ImColor(col.r, col.g, col.b), 5, 16);  // LBY indicator Light
+	Draw::ImLine(ImVec2(radarCenterX, radarCenterY), ImVec2(radarCenterX, radarNorthEndY), ImColor(0,0,0)); // Const Line facing North
+	Draw::ImLine(ImVec2(radarCenterX, radarCenterY), ImVec2(radar125EndX, radar125EndY), ImColor(0,0,0)); // Const Line Left-of N-Line
+	Draw::ImLine(ImVec2(radarCenterX, radarCenterY), ImVec2(radar55EndX, radar55EndY), ImColor(0,0,0)); // Const Line Right-of N-Line
+	Draw::ImLine(ImVec2(radarCenterX, radarCenterY), ImVec2(55 * cos(DEG2RAD(90-realYawDiff)) + radarCenterX,radarCenterY - (55 * sin(DEG2RAD(90-realYawDiff)))), ImColor(col.r, col.g, col.b)); // Real Yaw Line
 
 	char lbyText[5]; // 3 digits, sign, and null terminator
 	snprintf(lbyText, 5, "%.0f", (*pLocal->GetLowerBodyYawTarget()));
-	Draw::Text(radarCenterX, radarNorthEndY - 20, lbyText, lby_font, Color(0, 0, 0)); // LBY On top
+	Draw::ImText(ImVec2(radarCenterX, radarNorthEndY - 20), ImColor(0,0,0), lbyText); // LBY On top
 }
-
 
 
 

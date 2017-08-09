@@ -10,7 +10,7 @@
 namespace lbyindicator
 {
 	//Hooks
-    void Paint();
+	void PaintImGui();
     void CreateMove(CUserCmd* cmd);
     
 }
