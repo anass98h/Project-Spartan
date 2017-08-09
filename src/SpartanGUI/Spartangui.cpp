@@ -154,7 +154,7 @@ void SetupMainMenuBar() {
            
 
       
-        ImVec2 pie_menu_center =ImGui::GetIO().MousePos;
+         ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
         int n = PiePopupSelectMenu(pie_menu_center, "##piepopup", items, items_count);
         if (n == 1) {
             Configs::showWindow = !Configs::showWindow;
