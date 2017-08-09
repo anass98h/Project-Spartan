@@ -197,7 +197,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Resolver")][XORSTR("ticks")] = Settings::Resolver::ticks;
     settings[XORSTR("Resolver")][XORSTR("modulo")] = Settings::Resolver::modulo;
     settings[XORSTR("Resolver")][XORSTR("Hugtype")] = (int) Settings::Resolver::Hugtype;
-    settings[XORSTR("Resolver")][XORSTR("resolveAll")] = (int) Settings::Resolver::resolveAll;
+    settings[XORSTR("Resolver")][XORSTR("enabled")] = (int) Settings::Resolver::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
     settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")] = Settings::Triggerbot::Filters::enemies;
@@ -626,7 +626,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("ticks")], &Settings::Resolver::ticks);
     GetVal(settings[XORSTR("Resolver")][XORSTR("modulo")], &Settings::Resolver::modulo);
     GetVal(settings[XORSTR("Resolver")][XORSTR("Hugtype")], (int*) &Settings::Resolver::Hugtype);
-    GetVal(settings[XORSTR("Resolver")][XORSTR("resolveAll")], (int*) &Settings::Resolver::resolveAll);
+    GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")], (int*) &Settings::Resolver::enabled);
 
 
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);

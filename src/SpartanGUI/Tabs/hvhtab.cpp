@@ -21,7 +21,7 @@ void HvH::RenderTab() {
         "FAKE UP", "FAKE DOWN", "LISP DOWN", "ANGEL DOWN", "ANGEL UP", "LUA UNCLAMPED" // untrusted
     };
     const char* Hugtypes[] = {
-        "OFF", "Tux", "PlusDelta", "Apostrophe", "Brute1", "Awoootism"
+        "OFF", "Tux", "PlusDelta", "Apostrophe", "Brute1", "Awoootism", "I'm feeling Lucky"
     };
 
     ImGui::Columns(2, NULL, true);
@@ -42,54 +42,42 @@ void HvH::RenderTab() {
                     ImGui::Checkbox(XORSTR("Lby Breaker"), &Settings::AntiAim::Lby::enabled);
                     ImGui::Checkbox(XORSTR("Anti Resolver"), &Settings::AntiAim::Yaw::antiResolver);
                     ImGui::Checkbox(XORSTR("Dynamic AA"), &Settings::AntiAim::Yaw::dynamicAA);
-
-
                 }
                 ImGui::NextColumn();
                 {
                     ImGui::PushItemWidth(-3);
-                    if (ImGui::Combo(XORSTR("##YFAKETYPE"), (int*) & Settings::AntiAim::Yaw::typeFake, yTypes, IM_ARRAYSIZE(yTypes))) {
-
-
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP) {
+                    if (ImGui::Combo(XORSTR("##YFAKETYPE"), (int*) & Settings::AntiAim::Yaw::typeFake, yTypes, IM_ARRAYSIZE(yTypes)))
+                    {
+                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP)
+                        {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
-
                         }
-
                     }
-
-
-
-                    if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int*) & Settings::AntiAim::Yaw::type, yTypes, IM_ARRAYSIZE(yTypes))) {
-                        
-
-                        if (Settings::AntiAim::Yaw::type <= AntiAimType_Y::LEGITTROLLING2) {
-
+                    if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int*) & Settings::AntiAim::Yaw::type, yTypes, IM_ARRAYSIZE(yTypes)))
+                    {
+                        if (Settings::AntiAim::Yaw::type <= AntiAimType_Y::LEGITTROLLING2)
+                        {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
-
                         }
-
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP) {
+                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
+                        {
                             Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
-                    if(Settings::AntiAim::Lby::enabled){
-                        Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
-                    if(ImGui::Combo(XORSTR("##LBYTYPE"), (int*) & Settings::AntiAim::Lby::type, lbyTypes, IM_ARRAYSIZE(lbyTypes))){
-                        
-                        if (Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE) {
-                            Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
-                          
-
-                        }
-                        if (Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE) {
-                            Settings::AntiAim::Lby::enabled = false;
-
-                        }
-                    
-                    
+                    if(Settings::AntiAim::Lby::enabled)
+                    {
+                        if(ImGui::Combo(XORSTR("##LBYTYPE"), (int*) & Settings::AntiAim::Lby::type, lbyTypes, IM_ARRAYSIZE(lbyTypes)))
+                        {
+                            if (Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE)
+                            {
+                                Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
+                            }
+                            if (Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE)
+                            {
+                                Settings::AntiAim::Lby::enabled = false;
+                            }
                         }
                     }    
                     ImGui::PopItemWidth();
@@ -101,12 +89,8 @@ void HvH::RenderTab() {
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
-
                     ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
                     ImGui::Text(XORSTR("Roll Actual"));
-
-
-
                 }
                 ImGui::NextColumn();
                 {
@@ -187,8 +171,8 @@ void HvH::RenderTab() {
         {   
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
-            ImGui::Checkbox("Resolve All", &Settings::Resolver::resolveAll);
-            if (Settings::Resolver::resolveAll)
+            ImGui::Checkbox("Enable", &Settings::Resolver::enabled);
+            if (Settings::Resolver::enabled)
             { 
             ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
             ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 50, "Ticks: %0.f");

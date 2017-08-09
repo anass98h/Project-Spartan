@@ -192,6 +192,7 @@ enum class ResolverHugtype : int {
     APOSTROPHE,
     BRUTE1,
     AUTISM,
+    LUCKY,
 };
 
 struct AimbotWeapon_t {
@@ -448,9 +449,6 @@ namespace Settings {
 
         namespace velocityCheck {
             extern bool enabled;
-
-
-
         }
 
 
@@ -568,7 +566,7 @@ namespace Settings {
 
     namespace Resolver {
 
-        extern bool resolveAll;
+        extern bool enabled;
         extern float ticks;
         extern float modulo;
         extern ResolverHugtype Hugtype;

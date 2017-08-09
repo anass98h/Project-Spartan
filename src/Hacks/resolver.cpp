@@ -1,30 +1,24 @@
 #include "resolver.h"
 
-bool Settings::Resolver::resolveAll = false;
+bool Settings::Resolver::enabled = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
 
-ResolverHugtype Settings::Resolver::Hugtype = (ResolverHugtype) 1;
-std::vector<int64_t> Resolver::Players = {};
+ResolverHugtype Settings::Resolver::Hugtype = ResolverHugtype::OFF;
+std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
-static float r;
+
 int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
+std::random_device rd;
 
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
 
-
-
-
-    ResolverHugtype Hugtype = Settings::Resolver::Hugtype;
-    C_BasePlayer* MarcTheWeeb = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-
-
-
     static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 
+    /*
     static float* StoredYaw = 0; // TODO remove memes 
     static bool bLowerBodyIsUpdated = false;
     if (Circlebian->GetLowerBodyYawTarget() != StoredYaw) {
@@ -35,10 +29,11 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
     if (bLowerBodyIsUpdated) {
         StoredYaw = Circlebian->GetLowerBodyYawTarget();
     }
+     */
 
 
 
-    switch (Hugtype) {
+    switch (Settings::Resolver::Hugtype) {
         case ResolverHugtype::AIMTUX:
         {
             Circlebian->GetEyeAngles()->y = cur.front().m_flLowerBodyYawTarget;
@@ -46,28 +41,20 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         }
         case ResolverHugtype::PLUSDELTA:
         {
-
-
             Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
-
-
             break;
         }
-
-
         case ResolverHugtype::APOSTROPHE:
         {
-            if (LowerBodyYawChanged(Circlebian)) {
-
+            if (LowerBodyYawChanged(Circlebian))
+            {
                 Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
-
-            } 
-            
-            else {
-
-
+            }
+            else
+            {
                 int num = Shotsmissed % 4;
-                switch (num) {
+                switch (num)
+                {
                     case 0:
                         Circlebian->GetEyeAngles()->y -= 0.0f;
                         break;
@@ -80,21 +67,16 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                     case 3:
                         Circlebian->GetEyeAngles()->y -= 180.0f;
                         break;
-     
-
                 }
-
-
             }
 
             break;
         }
         case ResolverHugtype::BRUTE1:
         {
-
-
             int num2 = Shotsmissed % 6;
-            switch (num2) {
+            switch (num2)
+            {
                 case 0:
                     Circlebian->GetEyeAngles()->y -= 0.0f;
                     break;
@@ -113,12 +95,9 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 case 5:
                     Circlebian->GetEyeAngles()->y = -30.0f;
                     break;
-
             }
-
             break;
         }
-
         case ResolverHugtype::AUTISM: // dont use this atm 
         {
 
@@ -141,51 +120,58 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180;
             break;
         }
+        case ResolverHugtype::LUCKY:
+        {
+            static std::mt19937 gen(rd());
+            std::uniform_int_distribution<> dis(-180, 180);
+            Circlebian->GetEyeAngles()->y = dis(gen);
+        }
+        case ResolverHugtype::OFF:break;
     }
 }
 
 void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
-    if (!engine->IsInGame())
+    if (!Settings::Resolver::enabled || !engine->IsInGame())
         return;
 
-    C_BasePlayer* LWSS = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-    if (!LWSS)
+    C_BasePlayer* me = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+    if (!me || !me->GetAlive())
         return;
 
     if (stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START) {
         for (int i = 1; i < engine->GetMaxClients(); ++i) {
-            C_BasePlayer* Twotap = (C_BasePlayer*) entityList->GetClientEntity(i);
+            C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(i);
 
-            if (!Twotap
-                    || Twotap == LWSS
-                    || Twotap->GetDormant()
-                    || !Twotap->GetAlive()
-                    || Twotap->GetImmune()
-                    || Twotap->GetTeam() == LWSS->GetTeam())
+            if (!target
+                    || target == me
+                    || target->GetDormant()
+                    || !target->GetAlive()
+                    || target->GetImmune()
+                    || target->GetTeam() == me->GetTeam())
                 continue;
-
 
             IEngineClient::player_info_t entityInformation;
             engine->GetPlayerInfo(i, &entityInformation);
 
-            if (!Settings::Resolver::resolveAll && std::find(Resolver::Players.begin(), Resolver::Players.end(), entityInformation.xuid) == Resolver::Players.end())
-                continue;
-            static bool bFlip = true;
-            float flYaw = *Twotap->GetLowerBodyYawTarget();
+            if (std::find(Resolver::playerAngleLogs.begin(), Resolver::playerAngleLogs.end(), entityInformation.xuid) == Resolver::playerAngleLogs.end())
+            {
+                player_data.push_back(std::pair<C_BasePlayer*, QAngle>(target, *target->GetEyeAngles()));
+            }
 
-
-            player_data.push_back(std::pair<C_BasePlayer*, QAngle>(Twotap, *Twotap->GetEyeAngles()));
             if (shotATT) {
-
                 Shotsmissed++;
                 shotATT = false;
             }
 
+            float lby = *target->GetLowerBodyYawTarget();
 
-            if (Twotap->GetVelocity().Length2D() > 0.1f) {
+            /* Lby will update every 0.022 seconds while moving (assume that is just all the time) */
+            if (target->GetVelocity().Length2D() > 0.1f) {
+                /*
                 float flCurTime = globalVars->curtime;
                 static float flTimeUpdate = 0.5f;
                 static float flNextTimeUpdate = flCurTime + flTimeUpdate;
+                static bool bFlip = true;
 
                 if (flCurTime >= flNextTimeUpdate) {
                     bFlip = !bFlip;
@@ -195,21 +181,17 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
                     flNextTimeUpdate = flCurTime + flTimeUpdate;
 
                 if (bFlip) {
-                    flYaw += 35.f;
+                    lby += 35.f;
                 } else {
-                    flYaw -= 35.f;
+                    lby -= 35.f;
                 }
-
-                Twotap->GetEyeAngles()->y = flYaw;
+                */
+                target->GetEyeAngles()->y = lby;
                 shotATT = true;
             } else {
-                Hug(Twotap);
+                Hug(target);
                 shotATT = true;
             }
-            //player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget(); 
-
-
-
         }
     } else if (stage == ClientFrameStage_t::FRAME_RENDER_END) {
         for (unsigned long i = 0; i < player_data.size(); i++) {
@@ -381,13 +363,11 @@ void Resolver::FireGameEvent(IGameEvent* event) {
         Shotsmissed = 0;
     }
 
-
-
     if (strcmp(event->GetName(), "player_connect_full") != 0 && strcmp(event->GetName(), "cs_game_disconnected") != 0)
         return;
 
     if (event->GetInt("userid") && engine->GetPlayerForUserID(event->GetInt("userid")) != engine->GetLocalPlayer())
         return;
 
-    Resolver::Players.clear();
+    Resolver::playerAngleLogs.clear();
 }

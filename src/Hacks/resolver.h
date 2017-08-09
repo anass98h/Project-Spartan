@@ -7,6 +7,7 @@
 #include "../Utils/pstring.h"
 #include "../Utils/entity.h"
 #include "backtracking.h"
+#include <random>
 
 class CResolveInfo {
 	public:
@@ -18,7 +19,7 @@ class CResolveInfo {
 
 namespace Resolver
 {
-	extern std::vector<int64_t> Players;
+	extern std::vector<int64_t> playerAngleLogs;
 	extern std::array<CResolveInfo, 32> m_arrInfos;
 
 	void Hug(C_BasePlayer* Circlebian);
