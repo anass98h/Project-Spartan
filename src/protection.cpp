@@ -2,14 +2,16 @@
 std::string master = XORSTR("Spartan");
 
 bool protection::pwmatch(char* Pass) {
-
+        
     return true; // :^)
+    //TODO ^ remove this
+    
     char line[128];
     std::string result;
+    
 
-
-
-    FILE *fp = popen(XORSTR("wget --quiet -O - chrey.xyz/nqr"), "r"); //pipe wget output to a file handle    
+                                                       //Project-Spartan.net :thinking:
+    FILE *fp = popen(XORSTR("wget --quiet -O - google.com"), "r"); //pipe wget output to a file handle    
     while (fgets(line, 128, fp))
         result += line;
 
