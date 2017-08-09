@@ -44,13 +44,13 @@ void lbyindicator::PaintImGui()
 	if( width == 0 )
 	{
 		engine->GetScreenSize(width, height);
-		radarCenterX = width * .23;
-		radarCenterY = height* .42;
+		radarCenterX = width * .3;
+		radarCenterY = height* .5;
 		radarNorthEndY = radarCenterY - 55;
 		radar125EndX = 55 * cos(DEG2RAD(90+35)) + radarCenterX;
-		radar125EndY = height*.42 - (55 * sin(DEG2RAD(90+35)));
+		radar125EndY = height*.5 - (55 * sin(DEG2RAD(90+35)));
 		radar55EndX = 55 * cos(DEG2RAD(90-35)) + radarCenterX;
-		radar55EndY = height*.42 - (55 * sin(DEG2RAD(90-35)));
+		radar55EndY = height*.5 - (55 * sin(DEG2RAD(90-35)));
 	}
 
 	float realYawDiff = normalYawDiff;
