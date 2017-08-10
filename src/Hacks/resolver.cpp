@@ -371,3 +371,21 @@ void Resolver::FireGameEvent(IGameEvent* event) {
 
     Resolver::playerAngleLogs.clear();
 }
+void Resolver::CreateMove(CUserCmd *cmd)
+{
+    for (int x = 1; x < engine->GetMaxClients(); ++x)
+    {
+        C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(x);
+
+        if (!target
+                || target == entityList->GetClientEntity(engine->GetLocalPlayer())
+                || target->GetDormant()
+                || !target->GetAlive()
+                || target->GetImmune()
+                || target->GetTeam() == entityList->GetClientEntity(engine->GetLocalPlayer())->GetTeam())
+                continue;
+
+        Resolver::StoreVars(target);
+  
+    }
+}

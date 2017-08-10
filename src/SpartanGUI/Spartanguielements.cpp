@@ -215,11 +215,11 @@ void UI::SetupColors() {
     style.Alpha = 1.0f;
     style.WindowPadding = ImVec2(4, 4);
     style.WindowMinSize = ImVec2(32, 32);
-    style.WindowRounding = 15.0f;
+    style.WindowRounding = 10.0f;
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
-    style.ChildWindowRounding = 15.0f;
+    style.ChildWindowRounding = 10.0f;
     style.FramePadding = ImVec2(4, 3);
-    style.FrameRounding = 8.0f;
+    style.FrameRounding = 6.0f;
     style.ItemSpacing = ImVec2(8, 4);
     style.ItemInnerSpacing = ImVec2(4, 4);
     style.TouchExtraPadding = ImVec2(0, 2);
@@ -228,7 +228,7 @@ void UI::SetupColors() {
     style.ScrollbarSize = 12.0f;
     style.ScrollbarRounding = 20.0f;
     style.GrabMinSize = 10.0f;
-    style.GrabRounding = 40.0f;
+    style.GrabRounding = 30.0f;
     style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
     style.DisplayWindowPadding = ImVec2(22, 22);
     style.DisplaySafeAreaPadding = ImVec2(4, 4);
