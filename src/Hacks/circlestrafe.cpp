@@ -1,48 +1,40 @@
-/*#include "circlestrafe.h"
+#include "circlestrafe.h"
 bool Settings::CircleStrafe::enabled;
 ButtonCode_t Settings::CircleStrafe::key = ButtonCode_t::KEY_C;
 
-static void doCircleStrafe (CUserCmd* cmd, Vector& vecOriginalView) 
-{ 
-    
-    	C_BasePlayer* pLocalEntity = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+void CircleStrafe::CreateMove(CUserCmd* cmd) {
+    C_BasePlayer* Spartan = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+    if (!Spartan || !Spartan->GetAlive())
+        return;
 
-	
+    if (Spartan->GetMoveType() == MOVETYPE_LADDER || Spartan->GetMoveType() == MOVETYPE_NOCLIP)
+        return;
 
-	static int iCircleFact = 0;
-	iCircleFact++;
-	if (iCircleFact > 361)
-		iCircleFact = 0;
+    QAngle OView = cmd->viewangles;
 
-	float flRotation = 3.f * iCircleFact - globalVars->interval_per_tick;
+    static int Circle = 0;
+    Circle++;
+    if (Circle > 361)
+        Circle = 0;
 
-        Vector StoredViewAngles = cmd->viewangles;
+    float SpinBoy = 3.f * Circle - globalVars->interval_per_tick;
 
-	if (inputSystem->IsButtonDown(Settings::CircleStrafe::key)) {
-		cmd->forwardmove = 450.f;
-		cmd->viewangles = vecOriginalView;
-		flRotation = DEG2RAD(flRotation);
 
-		float cos_rot = cos(flRotation);
-		float sin_rot = sin(flRotation);
 
-		float new_forwardmove = (cos_rot * cmd->forwardmove) - (sin_rot * cmd->sidemove);
-		float new_sidemove = (sin_rot * cmd->forwardmove) + (cos_rot * cmd->sidemove);
+    if (inputSystem->IsButtonDown(Settings::CircleStrafe::key)) {
+        cmd->forwardmove = 450.f;
+        cmd->viewangles = OView;
+        SpinBoy = DEG2RAD(SpinBoy);
 
-		cmd->forwardmove = new_forwardmove;
-		cmd->sidemove = new_sidemove;
-	}
-    
+        float cos_rot = cos(SpinBoy);
+        float sin_rot = sin(SpinBoy);
+
+        float newforwardmove = (cos_rot * cmd->forwardmove) - (sin_rot * cmd->sidemove);
+        float newsidemove = (sin_rot * cmd->forwardmove) + (cos_rot * cmd->sidemove);
+
+        cmd->forwardmove = newforwardmove;
+        cmd->sidemove = newsidemove;
+    }
+
+
 }
-void CircleStrafe::CreateMove(CUserCmd* cmd)
-{
-	C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-	if (!localplayer || !localplayer->GetAlive())
-		return;
-
-	if (localplayer->GetMoveType() == MOVETYPE_LADDER || localplayer->GetMoveType() == MOVETYPE_NOCLIP)
-		return;
-
-	doCircleStrafe(cmd,???)
-}
-*/

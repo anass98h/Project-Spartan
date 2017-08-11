@@ -38,5 +38,5 @@
 #include "valvedscheck.h"
 #include "view.h"
 #include "fakewalk.h"
-//#include "circlestrafe.h"
+#include "circlestrafe.h"
 #include "lbyindicator.h"

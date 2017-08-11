@@ -129,7 +129,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("UI")][XORSTR("otherMenu")] = Settings::UI::otherMenu;
     settings[XORSTR("UI")][XORSTR("combinedMenu")] = Settings::UI::combinedMenu;
     settings[XORSTR("UI")][XORSTR("Pie")] = Settings::UI::Pie;
-    
+
     for (auto i : Settings::Aimbot::weapons) {
         // TODO this is kind of a hack and i'm too tired to find a better way to do this
         // yes i tried defining a variable, skinSetting, and giving it the same value but woooooo operator overloading
@@ -407,8 +407,8 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Airstuck")][XORSTR("key")] = Util::GetButtonName(Settings::Airstuck::key);
     settings[XORSTR("Fakewalk")][XORSTR("enabled")] = Settings::Fakewalk::enabled;
     settings[XORSTR("Fakewalk")][XORSTR("key")] = Util::GetButtonName(Settings::Fakewalk::key);
-    //settings[XORSTR("CircleStrafe")][XORSTR("enabled")] = Settings::CircleStrafe::enabled;
-    //settings[XORSTR("CircleStrafe")][XORSTR("key")] = Util::GetButtonName(Settings::CircleStrafe::key);
+    settings[XORSTR("CircleStrafe")][XORSTR("enabled")] = Settings::CircleStrafe::enabled;
+    settings[XORSTR("CircleStrafe")][XORSTR("key")] = Util::GetButtonName(Settings::CircleStrafe::key);
     //settings[XORSTR("anglechange")][XORSTR("enabled")] = Settings::anglechange::enabled;
     //settings[XORSTR("anglechange")][XORSTR("key")] = Util::GetButtonName(Settings::anglechange::key);
 

@@ -7,11 +7,7 @@ void Misc::RenderTab() {
     const char* animationTypes[] = {"Static", "Curtime", "Marquee", "Words", "Letters"};
     const char* spammerTypes[] = {"None", "Normal", "Positions"};
     const char* teams[] = {"Allies", "Enemies", "Both"};
-    const char* grenadeTypes[] = {"FLASH", "SMOKE", "MOLOTOV", "HEGRENADE"};
-    const char* throwTypes[] = {"NORMAL", "RUN", "JUMP", "WALK"};
-    const char* Models[] = {
-        "Standard", "Nekomimi", "Hitler", "Tux", "Bear", "MagicalGirl", "Banana", "Gaben"
-    };
+
     ImGui::Columns(2, NULL, true);
     {
         ImGui::BeginChild(XORSTR("Child1"), ImVec2(0, 0), true);
@@ -192,7 +188,7 @@ void Misc::RenderTab() {
                 }
                 ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Text(XORSTR("Modelchanger"));
+                ImGui::Text(XORSTR("Clean the menu"));
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
@@ -205,68 +201,15 @@ void Misc::RenderTab() {
 
                 ImGui::Columns(2);
                 {
-                    if (ImGui::Button(XORSTR("CustomModel"), ImVec2(-1, 0)))
-                        ImGui::OpenPopup(XORSTR("optionAimAssist"));
-                    ImGui::SetNextWindowSize(ImVec2(200, 120), ImGuiSetCond_Always);
-                    if (ImGui::BeginPopup(XORSTR("optionAimAssist"))) {
-                        ImGui::PushItemWidth(-1);
-                        ImGui::Checkbox(XORSTR("Enabled"), &Settings::GrenadeHelper::aimAssist);
-                        ImGui::SliderFloat(XORSTR("###aimstep"), &Settings::GrenadeHelper::aimStep, 0, 10, "Speed: %0.3f");
-                        ImGui::SliderFloat(XORSTR("###aimfov"), &Settings::GrenadeHelper::aimFov, 0, 180, "Fov: %0.2f");
-                        ImGui::SliderFloat(XORSTR("###aimdistance"), &Settings::GrenadeHelper::aimDistance, 0, 100, "Distance: %0.2f");
-                        ImGui::PopItemWidth();
-                        ImGui::EndPopup();
-                    }
+                    ImGui::Button(XORSTR("Clean the menu"), ImVec2(-1, 0));
+
+
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::Text(XORSTR("Modelchanger"));
-                    ImGui::Separator();
-                    ImGui::Combo("##MODEL", (int*) & Settings::ClanTagChanger::type, Models, IM_ARRAYSIZE(Models));
-                    ImGui::Columns(1);
-                    ImGui::PushItemWidth(500);
-                    /*ImGui::InputText("", inputName, sizeof(inputName));
-                    ImGui::PopItemWidth();
-                    ImGui::SameLine();
-                    if (ImGui::Button(XORSTR("Add")) && engine->IsInGame() && Settings::GrenadeHelper::actMapName.length() > 0)
-                    {
-                            C_BasePlayer* localPlayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-                            if (strlen(inputName) > 0)
-                            {
-                                    GrenadeInfo n = GrenadeInfo((GrenadeType)gType, localPlayer->GetEyePosition(), *localPlayer->GetVAngles(), (ThrowType)tType, inputName);
-                                    Settings::GrenadeHelper::grenadeInfos.push_back(n);
-                                    pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
-                                    if (!DoesFileExist(path.c_str()))
-                                            mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-                                    Settings::SaveGrenadeInfo(path << XORSTR("/config.json"));
-                            }
-                            strcpy(inputName, "");
-                    } */
-                    /*	ImGui::Columns(2);
-                            ImGui::Combo(XORSTR("###Throwtype"), &tType, throwTypes, IM_ARRAYSIZE(throwTypes));
-                            ImGui::NextColumn();
-                            ImGui::Combo(XORSTR("###Grenadetype"), &gType, grenadeTypes, IM_ARRAYSIZE(grenadeTypes));
-                            ImGui::Columns(1);
-                            ImGui::Separator();
-                            ImGui::PushItemWidth(550);
-                            auto lambda =[](void* data, int idx, const char** out_text)
-                            {
-                     *out_text = Settings::GrenadeHelper::grenadeInfos.at(idx).name.c_str();
-                                    return *out_text != NULL;
-                            };
-                            ImGui::ListBox("", &throwMessageCurrent, lambda, NULL, Settings::GrenadeHelper::grenadeInfos.size(), 7);
-                            ImGui::PopItemWidth();
-                            ImGui::Columns(1);
-                            if (ImGui::Button(XORSTR("Remove"),  ImVec2(ImGui::GetWindowWidth(), 30)))
-                                    if (throwMessageCurrent > -1 && (int) Settings::GrenadeHelper::grenadeInfos.size() > throwMessageCurrent)
-                                    {
-                                            Settings::GrenadeHelper::grenadeInfos.erase(Settings::GrenadeHelper::grenadeInfos.begin() + throwMessageCurrent);
-                                            pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
-                                            if (!DoesFileExist(path.c_str()))
-                                                    mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-                                            Settings::SaveGrenadeInfo(path << XORSTR("/config.json"));
-                                    }
-                            ImGui::EndPopup(); */
+                    ImGui::Text(XORSTR("Clean the menu"));
+
+
                 }
             }
             ImGui::Columns(1);
@@ -359,7 +302,7 @@ void Misc::RenderTab() {
                 ImGui::Checkbox(XORSTR("Auto Accept"), &Settings::AutoAccept::enabled);
                 ImGui::Checkbox(XORSTR("AirStuck"), &Settings::Airstuck::enabled);
                 ImGui::Checkbox(XORSTR("Fakewalk"), &Settings::Fakewalk::enabled);
-                //ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
+                ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
                 ImGui::Checkbox(XORSTR("Autoblock"), &Settings::Autoblock::enabled);
                 ImGui::Checkbox(XORSTR("Jump Throw"), &Settings::JumpThrow::enabled);
                 ImGui::Checkbox(XORSTR("Auto Defuse"), &Settings::AutoDefuse::enabled);
@@ -375,7 +318,7 @@ void Misc::RenderTab() {
                 ImGui::Checkbox(XORSTR("Screenshot Cleaner"), &Settings::ScreenshotCleaner::enabled);
                 UI::KeyBindButton(&Settings::Airstuck::key);
                 UI::KeyBindButton(&Settings::Fakewalk::key);
-                //UI::KeyBindButton(&Settings::CircleStrafe::key);
+                UI::KeyBindButton(&Settings::CircleStrafe::key);
                 UI::KeyBindButton(&Settings::Autoblock::key);
                 UI::KeyBindButton(&Settings::JumpThrow::key);
                 //ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);

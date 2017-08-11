@@ -839,12 +839,12 @@ namespace Settings {
         extern bool enabled;
         extern ButtonCode_t key;
     }
-    /*namespace CircleStrafe
+    namespace CircleStrafe
     {
             extern bool enabled;
             extern ButtonCode_t key;
     }
-     */
+     
     namespace Autoblock {
         extern bool enabled;
         extern ButtonCode_t key;

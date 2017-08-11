@@ -8,8 +8,7 @@
 
 
 
-namespace CircleStrafe
-{
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+namespace CircleStrafe {
+    //Hooks
+    void CreateMove(CUserCmd* cmd);
 }
