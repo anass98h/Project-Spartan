@@ -31,6 +31,8 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
         ESP::CreateMove(cmd);
         PredictionSystem::EndPrediction();
 
+        ThirdPerson::CreateMove(cmd);
+
         EdgeJump::PostPredictionCreateMove(cmd);
 
         if (CreateMove::sendPacket)

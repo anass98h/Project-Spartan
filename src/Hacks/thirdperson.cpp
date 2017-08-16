@@ -14,15 +14,6 @@ void ThirdPerson::BeginFrame()
 	if (!localplayer || !localplayer->GetAlive())
 		return;
 
-	long millis = Util::GetEpochTime();
-
-	if(millis - millisSinceLastPress >= 1000) {
-		if(inputSystem->IsButtonDown(Settings::ThirdPerson::key)) {
-			Settings::ThirdPerson::enabled = !Settings::ThirdPerson::enabled;
-			millisSinceLastPress = Util::GetEpochTime();
-		}
-	}
-
 	if (Settings::ThirdPerson::enabled)
 	{
 		for (ptrdiff_t off = 0; off < 0x2; off++)
@@ -52,4 +43,15 @@ void ThirdPerson::FrameStageNotify(ClientFrameStage_t stage)
 
 	if (Settings::ThirdPerson::enabled)
 		*localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
+}
+
+void ThirdPerson::CreateMove(CUserCmd* cmd) {
+	long millis = Util::GetEpochTime();
+
+	if(millis - millisSinceLastPress >= 1000) {
+		if(inputSystem->IsButtonDown(Settings::ThirdPerson::key)) {
+			Settings::ThirdPerson::enabled = !Settings::ThirdPerson::enabled;
+			millisSinceLastPress = Util::GetEpochTime();
+		}
+	}
 }
