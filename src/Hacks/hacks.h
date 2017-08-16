@@ -6,6 +6,7 @@
 #include "autoblock.h"
 #include "autodefuse.h"
 #include "autostrafe.h"
+#include "backtracking.h"
 #include "bhop.h"
 #include "chams.h"
 #include "clantagchanger.h"

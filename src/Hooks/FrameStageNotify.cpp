@@ -2,6 +2,7 @@
 
 void Hooks::FrameStageNotify(void* thisptr, ClientFrameStage_t stage)
 {
+	Backtracking::FrameStageNotify(stage);
 	CustomGlow::FrameStageNotify(stage);
 	SkinChanger::FrameStageNotifyModels(stage);
 	SkinChanger::FrameStageNotifySkins(stage);
