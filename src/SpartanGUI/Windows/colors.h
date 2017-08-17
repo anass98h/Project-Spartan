@@ -2,9 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace Colors
-{
-	extern bool showWindow;
+namespace Colors {
+    extern bool showWindow;
 
-	extern void RenderWindow();
+    extern void RenderWindow( );
 }

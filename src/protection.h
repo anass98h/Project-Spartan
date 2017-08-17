@@ -1,4 +1,5 @@
-#pragma once 
+#pragma once
+
 #include <iostream>
 #include <string.h>
 #include <memory>
@@ -10,7 +11,9 @@
 #include <cstdlib>
 #include <sys/time.h>
 #include "Utils/xorstring.h"
+
 namespace protection {
-    bool pwmatch(char* Pass);
-    void timerstart();
+    bool pwmatch( char *Pass );
+
+    void timerstart( );
 }

@@ -10,14 +10,11 @@
 #endif
 
 #include "imgui.h"
-#include <ctype.h>          // toupper, isprint
-#include <math.h>           // sqrtf, powf, cosf, sinf, floorf, ceilf
-#include <stdio.h>          // vsnprintf, sscanf, printf
-#include <stdlib.h>         // NULL, malloc, free, qsort, atoi
+
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
 #include <stddef.h>         // intptr_t
 #else
-#include <stdint.h>         // intptr_t
+
 #endif
 
 #ifdef _MSC_VER
@@ -38,7 +35,7 @@
 #pragma GCC diagnostic ignored "-Wformat-security"              // warning : format string is not a string literal (potentially insecure)
 #pragma GCC diagnostic ignored "-Wdouble-promotion"             // warning: implicit conversion from 'float' to 'double' when passing argument to function
 #pragma GCC diagnostic ignored "-Wconversion"                   // warning: conversion to 'xxxx' from 'xxxx' may alter its value
-#if (__GNUC__ >= 6)
+#if ( __GNUC__ >= 6 )
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"       // warning: this 'if' clause does not guard this statement      // GCC 6.0+ only. See #883 on github.
 #endif
 #endif
@@ -50,8 +47,8 @@
 #define IM_NEWLINE "\n"
 #endif
 
-#define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
-#define IM_MAX(_A,_B)       (((_A) >= (_B)) ? (_A) : (_B))
+#define IM_ARRAYSIZE( _ARR )  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
+#define IM_MAX( _A, _B )       (((_A) >= (_B)) ? (_A) : (_B))
 
 //-----------------------------------------------------------------------------
 // DEMO CODE
@@ -2631,8 +2628,10 @@ static void ShowExampleAppLongText(bool* p_open)
 // End of Demo code
 #else
 
-void ImGui::ShowTestWindow(bool*) {}
-void ImGui::ShowUserGuide() {}
-void ImGui::ShowStyleEditor(ImGuiStyle*) {}
+void ImGui::ShowTestWindow( bool * ) { }
+
+void ImGui::ShowUserGuide( ) { }
+
+void ImGui::ShowStyleEditor( ImGuiStyle * ) { }
 
 #endif

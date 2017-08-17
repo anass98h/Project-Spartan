@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 project(ImGuiGLFWVulkanExample C CXX)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
+endif ()
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DVK_PROTOTYPES")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_PROTOTYPES")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DVK_PROTOTYPES")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_PROTOTYPES")
 
 # GLFW
 set(GLFW_DIR ../../../glfw) # Set this to point to an up-to-date GLFW repo
@@ -24,7 +24,7 @@ include_directories(${IMGUI_DIR})
 
 # Libraries
 find_library(VULKAN_LIBRARY
-  NAMES vulkan vulkan-1)
+		NAMES vulkan vulkan-1)
 set(LIBRARIES "glfw;${VULKAN_LIBRARY}")
 
 # Use vulkan headers from glfw:

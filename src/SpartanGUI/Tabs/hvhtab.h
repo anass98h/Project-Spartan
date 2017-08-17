@@ -2,8 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace HvH
-{
-	void RenderTab();
-    void MainRenderTab();
+namespace HvH {
+    void RenderTab( );
+
+    void MainRenderTab( );
 }

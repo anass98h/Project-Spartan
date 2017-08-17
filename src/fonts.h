@@ -7,7 +7,6 @@
 
 extern HFont esp_font;
 extern HFont lby_font;
-namespace Fonts
-{
-	void SetupFonts();
+namespace Fonts {
+    void SetupFonts( );
 }

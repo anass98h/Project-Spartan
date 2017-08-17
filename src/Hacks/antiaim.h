@@ -8,14 +8,15 @@
 #include "aimbot.h"
 #include <lua.hpp>
 
-namespace AntiAim
-{
-	extern bool isAntiAiming;
-	extern float lastRealYaw;
-	extern float lastFakeYaw;
-	void LuaInit();
-	void LuaCleanup();
+namespace AntiAim {
+    extern bool isAntiAiming;
+    extern float lastRealYaw;
+    extern float lastFakeYaw;
 
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+    void LuaInit( );
+
+    void LuaCleanup( );
+
+    //Hooks
+    void CreateMove( CUserCmd *cmd );
 }

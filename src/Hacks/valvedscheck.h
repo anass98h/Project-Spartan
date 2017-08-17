@@ -3,10 +3,9 @@
 #include "../interfaces.h"
 #include "../Utils/xorstring.h"
 
-namespace ValveDSCheck
-{
-	extern bool forceUT;
+namespace ValveDSCheck {
+    extern bool forceUT;
 
-	//Hooks
-	void FireGameEvent(IGameEvent* event);
+    //Hooks
+    void FireGameEvent( IGameEvent *event );
 }

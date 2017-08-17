@@ -2,7 +2,6 @@
 
 #include "../Spartangui.h"
 
-namespace Skins
-{
-	void RenderTab();
+namespace Skins {
+    void RenderTab( );
 }

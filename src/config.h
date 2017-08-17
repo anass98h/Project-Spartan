@@ -9,19 +9,22 @@
 #include <algorithm>
 #include "Utils/pstring.h"
 #include "Utils/xorstring.h"
-bool DoesFileExist(const char* path);
-bool DoesDirectoryExist(const char* path);
+
+bool DoesFileExist( const char *path );
+
+bool DoesDirectoryExist( const char *path );
 
 struct Config {
     std::string name;
     std::string path;
 
-    Config(const char* name, const char* path);
+    Config( const char *name, const char *path );
 };
 
-std::vector<Config> GetConfigs(const char* directory);
+std::vector<Config> GetConfigs( const char *directory );
 
-pstring GetConfigDirectory();
-std::vector<std::string> GetConfigs();
+pstring GetConfigDirectory( );
 
-pstring GetGhConfigDirectory();
+std::vector<std::string> GetConfigs( );
+
+pstring GetGhConfigDirectory( );

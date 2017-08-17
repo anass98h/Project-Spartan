@@ -2,9 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace Fonts
-{
-	extern bool showWindow;
+namespace Fonts {
+    extern bool showWindow;
 
-	extern void RenderWindow();
+    extern void RenderWindow( );
 }

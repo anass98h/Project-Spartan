@@ -2,7 +2,6 @@
 
 #include "../settings.h"
 
-namespace DisablePostProcessing
-{
-	void BeginFrame();
+namespace DisablePostProcessing {
+    void BeginFrame( );
 }

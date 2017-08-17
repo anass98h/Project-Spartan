@@ -4,8 +4,7 @@
 
 #pragma once
 
-typedef struct DebugHUD
-{
+typedef struct DebugHUD {
     bool show_test_window;
     bool show_example_window;
     float rotation_speed;

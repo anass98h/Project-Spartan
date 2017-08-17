@@ -3,9 +3,9 @@
 #include "../interfaces.h"
 #include "../settings.h"
 
-namespace ThirdPerson
-{
-	//Hooks
-	void BeginFrame();
-	void FrameStageNotify(ClientFrameStage_t stage);
+namespace ThirdPerson {
+    //Hooks
+    void BeginFrame( );
+
+    void FrameStageNotify( ClientFrameStage_t stage );
 }

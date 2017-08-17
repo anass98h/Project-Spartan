@@ -1,6 +1,6 @@
 #include "otherstab.h"
 
-void Others2::RenderTab() {
+void Others2::RenderTab( ) {
 
     // Aimbot::RenderTab();
     /* static char nickname[127] = "";
@@ -42,75 +42,74 @@ void Others2::RenderTab() {
                              PlayerList::RenderTab();
                              break;
              }*/
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
-    ImGui::Spacing();
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
+    ImGui::Spacing( );
     //Align the labels centered to the checkboxes
     //Set Column flags to not dragable
-    ImGui::Columns(6, "Playerlist?", false);
+    ImGui::Columns( 6, "Playerlist?", false );
     {
-        ImGui::Text(ICON_PLAYERLIST);
-        ImGui::Checkbox("PlayerList", &PlayerList::showWindow);
+        ImGui::Text( ICON_PLAYERLIST );
+        ImGui::Checkbox( "PlayerList", &PlayerList::showWindow );
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine( );
 
-    ImGui::NextColumn();
+    ImGui::NextColumn( );
     {
-        ImGui::Text(ICON_SKINCHANGER);
-        ImGui::Checkbox("Skinchanger", &SkinModelChanger::showWindow);
+        ImGui::Text( ICON_SKINCHANGER );
+        ImGui::Checkbox( "Skinchanger", &SkinModelChanger::showWindow );
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine( );
 
-    ImGui::NextColumn();
+    ImGui::NextColumn( );
     {
-        ImGui::Text(ICON_SPECTATORS);
-        ImGui::Checkbox("Spectator", &Settings::ShowSpectators::enabled);
+        ImGui::Text( ICON_SPECTATORS );
+        ImGui::Checkbox( "Spectator", &Settings::ShowSpectators::enabled );
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine( );
 
-    ImGui::NextColumn();
+    ImGui::NextColumn( );
     {
-        ImGui::Text(ICON_COLOURS, ImVec2(100, 0));
-        ImGui::Checkbox("Colors", &Colors::showWindow);
+        ImGui::Text( ICON_COLOURS, ImVec2( 100, 0 ) );
+        ImGui::Checkbox( "Colors", &Colors::showWindow );
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine( );
 
-    ImGui::NextColumn();
+    ImGui::NextColumn( );
     {
-        ImGui::Text(ICON_CONFIGS, ImVec2(ImGui::CalcTextSize(ICON_CONFIGS).x, 0));
-        ImGui::Checkbox("Configs", &Configs::showWindow);
+        ImGui::Text( ICON_CONFIGS, ImVec2( ImGui::CalcTextSize( ICON_CONFIGS ).x, 0 ) );
+        ImGui::Checkbox( "Configs", &Configs::showWindow );
     }
-
 
 
 }

@@ -1,0 +1,73 @@
+<code_scheme name="Swag">
+    <option name="OTHER_INDENT_OPTIONS">
+        <value>
+            <option name="INDENT_SIZE" value="4"/>
+            <option name="CONTINUATION_INDENT_SIZE" value="8"/>
+            <option name="TAB_SIZE" value="4"/>
+            <option name="USE_TAB_CHARACTER" value="true"/>
+            <option name="SMART_TABS" value="false"/>
+            <option name="LABEL_INDENT_SIZE" value="0"/>
+            <option name="LABEL_INDENT_ABSOLUTE" value="false"/>
+            <option name="USE_RELATIVE_INDENTS" value="false"/>
+        </value>
+    </option>
+    <Objective-C>
+        <option name="KEEP_CASE_EXPRESSIONS_IN_ONE_LINE" value="true"/>
+        <option name="SPACE_WITHIN_TEMPLATE_DECLARATION_LTGT" value="true"/>
+        <option name="SPACE_WITHIN_EMPTY_TEMPLATE_DECLARATION_LTGT" value="true"/>
+        <option name="SPACE_WITHIN_EMPTY_TEMPLATE_CALL_LTGT" value="true"/>
+        <option name="SPACE_WITHIN_TEMPLATE_DOUBLE_GT" value="false"/>
+        <option name="SPACE_WITHIN_EMPTY_BRACES" value="true"/>
+        <option name="SPACE_WITHIN_FUNCTION_DECLARATION_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_EMPTY_FUNCTION_DECLARATION_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_FUNCTION_CALL_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_EMPTY_FUNCTION_CALL_PARENTHESES" value="true"/>
+        <option name="SPACE_BEFORE_INIT_LIST" value="true"/>
+        <option name="SPACE_BETWEEN_ADJACENT_BRACKETS" value="true"/>
+        <option name="DISCHARGED_SHORT_TERNARY_OPERATOR" value="true"/>
+    </Objective-C>
+    <Objective-C-extensions>
+        <file>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Import"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Macro"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Typedef"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Enum"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Constant"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Global"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Struct"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="FunctionPredecl"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Function"/>
+        </file>
+        <class>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Property"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Synthesize"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InitMethod"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="StaticMethod"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InstanceMethod"/>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="DeallocMethod"/>
+        </class>
+        <extensions>
+            <pair source="cpp" header="h"/>
+            <pair source="c" header="h"/>
+        </extensions>
+    </Objective-C-extensions>
+    <codeStyleSettings language="CMake">
+        <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true"/>
+        </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="ObjectiveC">
+        <option name="SPACE_WITHIN_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_IF_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_WHILE_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_FOR_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_CATCH_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_SWITCH_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_CAST_PARENTHESES" value="true"/>
+        <option name="SPACE_WITHIN_EMPTY_ARRAY_INITIALIZER_BRACES" value="true"/>
+        <option name="SPACE_AFTER_TYPE_CAST" value="false"/>
+        <option name="ARRAY_INITIALIZER_LBRACE_ON_NEXT_LINE" value="true"/>
+        <option name="ARRAY_INITIALIZER_RBRACE_ON_NEXT_LINE" value="true"/>
+        <option name="DOWHILE_BRACE_FORCE" value="3"/>
+    </codeStyleSettings>
+</code_scheme>

@@ -2,8 +2,8 @@
 
 bool Fonts::showWindow = false;
 
-void Fonts::RenderWindow() {
-    if (!Fonts::showWindow)
+void Fonts::RenderWindow( ) {
+    if ( !Fonts::showWindow )
         return;
     /*
             struct FontListVar
@@ -44,24 +44,26 @@ void Fonts::RenderWindow() {
 
             static int fontSelected = 0;
      */
-    ImGui::SetNextWindowSize(ImVec2(540, 325), ImGuiSetCond_Always);
-    if (ImGui::Begin("Fonts", &Fonts::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoResize)) {
-        ImGui::Columns(2, NULL, true);
+    ImGui::SetNextWindowSize( ImVec2( 540, 325 ), ImGuiSetCond_Always );
+    if ( ImGui::Begin( "Fonts", &Fonts::showWindow,
+                       ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
+                       ImGuiWindowFlags_NoResize ) ) {
+        ImGui::Columns( 2, NULL, true );
         {
-            ImGui::PushItemWidth(-1);
+            ImGui::PushItemWidth( -1 );
             //	ImGui::ListBox("##COLORSELECTION", &colorSelected, colorNames, IM_ARRAYSIZE(colorNames), 12);
-            ImGui::PopItemWidth();
+            ImGui::PopItemWidth( );
         }
-        ImGui::NextColumn();
+        ImGui::NextColumn( );
         {
 
             //		UI::ColorPicker4((float*)colors[colorSelected].colorVarPtr);
             //	ImGui::Checkbox("Rainbow", &colors[colorSelected].colorVarPtr->rainbow);
-            ImGui::PushItemWidth(-1);
+            ImGui::PushItemWidth( -1 );
 
-            ImGui::PopItemWidth();
+            ImGui::PopItemWidth( );
 
         }
-        ImGui::End();
+        ImGui::End( );
     }
 }

@@ -16,18 +16,19 @@
 #include "SpartanGUI/Spartan.h"
 
 
+typedef void (*SDL_GL_SwapWindow_t)( SDL_Window * );
+
+typedef int (*SDL_PollEvent_t)( SDL_Event * );
 
 
-typedef void (*SDL_GL_SwapWindow_t) (SDL_Window*);
-typedef int (*SDL_PollEvent_t) (SDL_Event*);
+namespace SDL2 {
+    void SwapWindow( SDL_Window * );
 
+    void UnhookWindow( );
 
-namespace SDL2
-{
-	void SwapWindow(SDL_Window*);
-	void UnhookWindow();
-	int PollEvent(SDL_Event*);
-	void UnhookPollEvent();
+    int PollEvent( SDL_Event * );
+
+    void UnhookPollEvent( );
 
 //Menu Icons
 #define ICON_1 u8"\uFFDE"
@@ -36,14 +37,14 @@ namespace SDL2
 #define ICON_4 u8"\uFFE1"
 #define ICON_5 u8"\uFFE2"
 #define ICON_6 u8"\uFFE3"
-    
+
 #define ICON_7 u8"\uFFE5"
 #define ICON_8 u8"\uFFE6"
 #define ICON_9 u8"\uFFE7"
 #define ICON_10 u8"\uFFE8"
 #define ICON_11 u8"\uFFE9"
 #define ICON_12 u8"\uFFEA"
-    
+
 #define ICON_MIN 0xe000
 #define ICON_MAX 0xe066
 
