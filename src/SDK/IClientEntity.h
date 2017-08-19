@@ -27,7 +27,7 @@ enum WeaponSound_t
 	FAST_RELOAD,
 
 	// Add new shoot sound types here
-			REVERSE_THE_NEW_SOUND,
+	REVERSE_THE_NEW_SOUND,
 
 	NUM_SHOOT_SOUND_TYPES,
 };
@@ -196,6 +196,10 @@ public:
 	bool* GetSpotted()
 	{
 		return (bool*)((uintptr_t)this + offsets.DT_BaseEntity.m_bSpotted);
+	}
+		bool isMoving()	
+	{
+		return *(bool*)((uintptr_t)this + 0x110);
 	}
 };
 
@@ -538,35 +542,57 @@ class CCSWeaponInfo : public FileWeaponInfo_t
 public:
 	CSWeaponType GetWeaponType()
 	{
-		return *(CSWeaponType*)((uintptr_t)this + 0x140);
+		return *(CSWeaponType*)((uintptr_t)this + 0x864);
 	}
-	int GetDamage()
+
+	bool IsFullAuto()
 	{
-		return *(int*)((uintptr_t)this + 0x16C);
+		return *(bool*)((uintptr_t)this + 0x870);
 	}
+
 	float GetWeaponArmorRatio()
 	{
-		return *(float*)((uintptr_t)this + 0x170);
+		return *(float*)((uintptr_t)this + 0x87C);
 	}
-	float GetPenetration()
-	{
-		return *(float*)((uintptr_t)this + 0x178);
-	}
-	float GetRange()
-	{
-		return *(float*)((uintptr_t)this + 0x184);
-	}
-	float GetRangeModifier()
-	{
-		return *(float*)((uintptr_t)this + 0x188);
-	}
+
 	float GetMaxPlayerSpeed()
 	{
-		return *(float*)((uintptr_t)this + 0x1B0);
+		return *(float*)((uintptr_t)this + 0x880);
 	}
+
+	float GetMaxPlayerSpeedAlt()
+	{
+		return *(float*)((uintptr_t)this + 0x884);
+	}
+
+	float GetPenetration()
+	{
+		return *(float*)((uintptr_t)this + 0x890);
+	}
+
+	int GetDamage()
+	{
+		return *(int*)((uintptr_t)this + 0x894);
+	}
+
+	float GetRange()
+	{
+		return *(float*)((uintptr_t)this + 0x898);
+	}
+
+	float GetRangeModifier()
+	{
+		return *(float*)((uintptr_t)this + 0x89C);
+	}
+
+	float GetSpread()
+	{
+		return *(float*)((uintptr_t)this + 0xA4C);
+	}
+
 	int GetZoomLevels()
 	{
-		return *(int*)((uintptr_t)this + 0x240);
+		return *(int*)((uintptr_t)this + 0xEE0);
 	}
 };
 
@@ -606,22 +632,25 @@ public:
 	CCSWeaponInfo* GetCSWpnData()
 	{
 		typedef CCSWeaponInfo* (* oGetCSWpnData)(void*);
-		return getvfunc<oGetCSWpnData>(this, 514)(this);
+		return getvfunc<oGetCSWpnData>(this, 524)(this);
 	}
-	float GetSpread()
-	{
-		typedef float (* oGetSpread)(void*);
-		return getvfunc<oGetSpread>(this, 513)(this); //553
-	}
+
 	float GetInaccuracy()
 	{
 		typedef float (* oGetInaccuracy)(void*);
-		return getvfunc<oGetInaccuracy>(this, 537)(this);
+		return getvfunc<oGetInaccuracy>(this, 551)(this);
 	}
+
+	float GetSpread()
+	{
+		typedef float (* oGetSpread)(void*);
+		return getvfunc<oGetSpread>(this, 552)(this); //553
+	}
+
 	void UpdateAccuracyPenalty()
 	{
 		typedef void (* oUpdateAccuracyPenalty)(void*);
-		return getvfunc<oUpdateAccuracyPenalty>(this, 538)(this);//554
+		return getvfunc<oUpdateAccuracyPenalty>(this, 553)(this);//554
 	}
 };
 
