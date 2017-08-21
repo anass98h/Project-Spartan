@@ -1,7 +1,7 @@
 #include "antiaim.h"
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
-AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE; // Dank Roll 
+AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE; // Dank Roll
 bool Settings::AntiAim::Yaw::enabled = false;
 bool Settings::AntiAim::Pitch::enabled = false;
 bool Settings::AntiAim::Lby::enabled = false;
@@ -471,146 +471,146 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         case AntiAimType_Y::APOSTROPHE:
         {
             if (CreateMove::sendPacket) {
-                angle.y -= 180.0f;
-                CreateMove::sendPacket = false;
+              int n = 0;
+              if (n == 0) {
+                  factor = 360.0 / M_PHI;
+                  factor *= 25;
+                  angle.y = fmodf(globalVars->curtime * factor, 360.0);
+                  n = 1;
+
+              } else if (n == 1) {
+                  factor = 660.0 / M_PHI;
+                  factor *= 65;
+                  angle.y = fmodf(globalVars->curtime * factor, 660.0);
+                  n = 2;
+              } else if (n == 2) {
+                  factor = 1360.0 / M_PHI;
+                  factor *= 125;
+                  angle.y = fmodf(globalVars->curtime * factor, 1360.0);
+                  n = 3;
+              } else if (n == 3) {
+
+                  factor = 187.0 / M_PHI;
+                  factor *= 88;
+                  angle.y = fmodf(globalVars->curtime * factor, 187.0);
+                  n = 4;
+              } else if (n == 4) {
+
+
+                  factor = 107.0 / M_PHI;
+                  factor *= 108;
+                  angle.y = fmodf(globalVars->curtime * factor, 107.0);
+                  n = 5;
+
+              } else if (n == 5) {
+
+
+                  factor = 687.0 / M_PHI;
+                  factor *= 188;
+                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                  n = 6;
+              } else if (n == 6) {
+
+
+                  factor = 387.0 / M_PHI;
+                  factor *= 288;
+                  angle.y = fmodf(globalVars->curtime * factor, 387.0);
+                  n = 7;
+              } else if (n == 7) {
+
+
+                  factor = 487.0 / M_PHI;
+                  factor *= 198;
+                  angle.y = fmodf(globalVars->curtime * factor, 487.0);
+                  n = 8;
+              } else if (n == 8) {
+
+
+                  factor = 287.0 / M_PHI;
+                  factor *= 388;
+                  angle.y = fmodf(globalVars->curtime * factor, 287.0);
+                  n = 9;
+              } else if (n == 9) {
+
+
+                  factor = 1187.0 / M_PHI;
+                  factor *= 588;
+                  angle.y = fmodf(globalVars->curtime * factor, 1187.0);
+                  n = 10;
+              } else if (n == 10) {
+
+
+                  factor = 1687.0 / M_PHI;
+                  factor *= 888;
+                  angle.y = fmodf(globalVars->curtime * factor, 1687.0);
+                  n = 11;
+              } else if (n == 11) {
+
+
+                  factor = 987.0 / M_PHI;
+                  factor *= 248;
+                  angle.y = fmodf(globalVars->curtime * factor, 987.0);
+                  n = 12;
+              } else if (n == 12) {
+
+
+                  factor = 687.0 / M_PHI;
+                  factor *= 188;
+                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                  n = 13;
+              } else if (n == 13) {
+
+
+                  factor = 487.0 / M_PHI;
+                  factor *= 168;
+                  angle.y = fmodf(globalVars->curtime * factor, 487.0);
+                  n = 14;
+              } else if (n == 14) {
+
+
+                  factor = 687.0 / M_PHI;
+                  factor *= 188;
+                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                  n = 15;
+              } else if (n == 15) {
+
+
+                  factor = 687.0 / M_PHI;
+                  factor *= 1868;
+                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                  n = 16;
+              } else if (n == 16) {
+
+
+                  factor = 6287.0 / M_PHI;
+                  factor *= 188;
+                  angle.y = fmodf(globalVars->curtime * factor, 6287.0);
+                  n = 17;
+              } else if (n == 17) {
+
+
+                  factor = 587.0 / M_PHI;
+                  factor *= 168;
+                  angle.y = fmodf(globalVars->curtime * factor, 587.0);
+                  n = 18;
+              } else if (n == 18) {
+
+
+                  factor = 687.0 / M_PHI;
+                  factor *= 1868;
+                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
+                  n = 19;
+              }
+              else {
+                  factor = 420.0;
+                  factor *= 50;
+                  angle.y = fmodf(globalVars->curtime * factor, 420);
+                  n = 0;
+
+              }
+              CreateMove::sendPacket = false;
             } else {
-                int n = 0;
-                if (n == 0) {
-                    factor = 360.0 / M_PHI;
-                    factor *= 25;
-                    angle.y = fmodf(globalVars->curtime * factor, 360.0);
-                    n = 1;
-
-                } else if (n == 1) {
-                    factor = 660.0 / M_PHI;
-                    factor *= 65;
-                    angle.y = fmodf(globalVars->curtime * factor, 660.0);
-                    n = 2;
-                } else if (n == 2) {
-                    factor = 1360.0 / M_PHI;
-                    factor *= 125;
-                    angle.y = fmodf(globalVars->curtime * factor, 1360.0);
-                    n = 3;
-                } else if (n == 3) {
-
-                    factor = 187.0 / M_PHI;
-                    factor *= 88;
-                    angle.y = fmodf(globalVars->curtime * factor, 187.0);
-                    n = 4;
-                } else if (n == 4) {
-
-
-                    factor = 107.0 / M_PHI;
-                    factor *= 108;
-                    angle.y = fmodf(globalVars->curtime * factor, 107.0);
-                    n = 5;
-
-                } else if (n == 5) {
-
-
-                    factor = 687.0 / M_PHI;
-                    factor *= 188;
-                    angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                    n = 6;
-                } else if (n == 6) {
-
-
-                    factor = 387.0 / M_PHI;
-                    factor *= 288;
-                    angle.y = fmodf(globalVars->curtime * factor, 387.0);
-                    n = 7;
-                } else if (n == 7) {
-
-
-                    factor = 487.0 / M_PHI;
-                    factor *= 198;
-                    angle.y = fmodf(globalVars->curtime * factor, 487.0);
-                    n = 8;
-                } else if (n == 8) {
-
-
-                    factor = 287.0 / M_PHI;
-                    factor *= 388;
-                    angle.y = fmodf(globalVars->curtime * factor, 287.0);
-                    n = 9;
-                } else if (n == 9) {
-
-
-                    factor = 1187.0 / M_PHI;
-                    factor *= 588;
-                    angle.y = fmodf(globalVars->curtime * factor, 1187.0);
-                    n = 10;
-                } else if (n == 10) {
-
-
-                    factor = 1687.0 / M_PHI;
-                    factor *= 888;
-                    angle.y = fmodf(globalVars->curtime * factor, 1687.0);
-                    n = 11;
-                } else if (n == 11) {
-
-
-                    factor = 987.0 / M_PHI;
-                    factor *= 248;
-                    angle.y = fmodf(globalVars->curtime * factor, 987.0);
-                    n = 12;
-                } else if (n == 12) {
-
-
-                    factor = 687.0 / M_PHI;
-                    factor *= 188;
-                    angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                    n = 13;
-                } else if (n == 13) {
-
-
-                    factor = 487.0 / M_PHI;
-                    factor *= 168;
-                    angle.y = fmodf(globalVars->curtime * factor, 487.0);
-                    n = 14;
-                } else if (n == 14) {
-
-
-                    factor = 687.0 / M_PHI;
-                    factor *= 188;
-                    angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                    n = 15;
-                } else if (n == 15) {
-
-
-                    factor = 687.0 / M_PHI;
-                    factor *= 1868;
-                    angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                    n = 16;
-                } else if (n == 16) {
-
-
-                    factor = 6287.0 / M_PHI;
-                    factor *= 188;
-                    angle.y = fmodf(globalVars->curtime * factor, 6287.0);
-                    n = 17;
-                } else if (n == 17) {
-
-
-                    factor = 587.0 / M_PHI;
-                    factor *= 168;
-                    angle.y = fmodf(globalVars->curtime * factor, 587.0);
-                    n = 18;
-                } else if (n == 18) {
-
-
-                    factor = 687.0 / M_PHI;
-                    factor *= 1868;
-                    angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                    n = 19;
-                }
-                else {
-                    factor = 420.0;
-                    factor *= 50;
-                    angle.y = fmodf(globalVars->curtime * factor, 420);
-                    n = 0;
-
-                }
+                angle.y -= 180;
                 CreateMove::sendPacket = true;
 
             }
@@ -621,7 +621,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             static bool ySwitch = false;
             static int velo = pLocal->GetVelocity().Length2D();
 
-            if (pLocal->GetVelocity().Length2D() > 0.1f) //u could move slower than 1 unit per sec 
+            if (pLocal->GetVelocity().Length2D() > 0.1f) //u could move slower than 1 unit per sec
             {
 
                 yFlip ? angle.y -= 160.f : angle.y -= 200.f;
@@ -768,7 +768,57 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
         case AntiAimType_Y::LBYBREAK:
            //Placeholder :/
-            // Someone should fix this probably  ._. 
+            // Someone should fix this probably  ._.
+            break;
+        case AntiAimType_Y::FAKELBY:
+            static bool lbyflip = false;
+            static bool lbyflip2 = false;
+            static bool lbyflip3 = false;
+            clamp = false;
+            if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)) {
+              if(CreateMove::sendPacket){
+                angle.y -= 90;
+                CreateMove::sendPacket = false;
+                }
+              else{
+                yFlip ? angle.y -= 165 : angle.y += 165;
+                CreateMove::sendPacket = true;
+                }
+            }
+            else
+            {
+              if(CreateMove::sendPacket)
+              {
+                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 1337 : angle.y = *pLocal->GetLowerBodyYawTarget() - rand() + 100;
+
+                CreateMove::sendPacket = false;
+              }
+              else
+              {
+                if (lbyflip)
+                {
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand();
+                }
+                else
+                {
+                  yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 9888 : angle.y = *pLocal->GetLowerBodyYawTarget() + 265;
+                }
+                if(lbyflip2)
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + 1337;
+                else
+                  *pLocal->GetLowerBodyYawTarget() + 200;
+                if(lbyflip3)
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 10000;
+                else
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + 888888;
+
+              }
+
+
+            }
+            lbyflip = !lbyflip;
+            lbyflip2 = !lbyflip2;
+            lbyflip3 = !lbyflip3;
             break;
         case AntiAimType_Y::LBYSPIN:
             factor = 360.0 / M_PHI;
@@ -1314,7 +1364,3 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     Math::CorrectMovement(oldAngle, cmd, oldForward, oldSideMove);
 
 }
-
-
-
-

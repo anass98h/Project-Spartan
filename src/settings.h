@@ -58,6 +58,7 @@ enum class AntiAimType_Y : int {
     TANK3,
     LBYBREAK,
     LBYSPIN,
+    FAKELBY,
     RANDOMBACKJITTER,
     CASUALJITTER,
     LBYJITTER,
@@ -317,7 +318,7 @@ struct AimbotWeapon_t {
                 this->autoSlow == another.autoSlow &&
                 this->predEnabled == another.predEnabled &&
                 this->autoAimRealDistance == another.autoAimRealDistance &&
-                this->moveMouse == another.moveMouse && 
+                this->moveMouse == another.moveMouse &&
                 this->autoCockRevolver == another.autoCockRevolver;
     }
 };
@@ -372,7 +373,7 @@ namespace Settings {
         extern bool otherMenu;
         extern bool combinedMenu;
         extern bool Pie;
-        
+
         namespace Fonts {
             namespace ESP {
                 extern char* family;
@@ -844,7 +845,7 @@ namespace Settings {
             extern bool enabled;
             extern ButtonCode_t key;
     }
-     
+
     namespace Autoblock {
         extern bool enabled;
         extern ButtonCode_t key;
