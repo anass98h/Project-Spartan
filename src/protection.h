@@ -13,4 +13,5 @@
 namespace protection {
     bool pwmatch(char* Pass);
     void timerstart();
+    void UniqueId();
 }
