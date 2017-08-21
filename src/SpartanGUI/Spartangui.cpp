@@ -49,16 +49,41 @@ void SetupMainMenuBar() {
             ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
             ImGuiWindowFlags_NoResize)) {
 
-        if (!LoggedIn)
+       if (!LoggedIn){
+           if(protection::isVerified()){ 
             ImGui::OpenPopup(XORSTR("Project Spartan"));
-
+           }
+           else{
+               protection::isVerified();
+           ImGui::OpenPopup(XORSTR("Unique ID"));
+           }
+       }
         if (miss >= 4) {
             projectspartan::SelfShutdown();
 
 
         }
+         if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
+            ImGui::Text(
+                    XORSTR(" Oooops looks like something went wrong \n close this window and open csgo console for more info ")
+                    );
+            ImGui::Spacing();
+           
+            ImGui::Separator();
+            ImGui::PushItemWidth(188);
+            
+            if (ImGui::Button(XORSTR("Ok"))) {
+                    UI::SetVisible(!UI::isVisible);
+                    ImGui::CloseCurrentPopup();
+                      
+                }
 
-
+            
+            ImGui::EndPopup();
+        }
+         
+       
+        
         ImGui::Columns(1);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 135));
 
@@ -83,6 +108,7 @@ void SetupMainMenuBar() {
                     miss = 0;
                     protection::timerstart();
                 } else {
+                    LoggedIn =false;
                     miss += 1;
                     ImGui::CloseCurrentPopup();
 
@@ -177,8 +203,14 @@ void SetupMainMenuBar() {
     }
     if (Settings::UI::oldMenu) {
        
-        if (!LoggedIn) {
+        if (!LoggedIn){
+           if(protection::isVerified()){ 
             ImGui::OpenPopup(XORSTR("Project Spartan"));
+           }
+           else{
+            protection::isVerified();
+           ImGui::OpenPopup(XORSTR("Unique ID"));
+           }
         } else {
             if (ImGui::BeginMainMenuBar()) {
 
@@ -228,8 +260,15 @@ void SetupMainMenuBar() {
     } else if (Settings::UI::otherMenu) {
 
         
-        if (!LoggedIn) {
+         if (!LoggedIn){
+           if(protection::isVerified()){ 
             ImGui::OpenPopup(XORSTR("Project Spartan"));
+           }
+           else{
+            protection::isVerified();
+           ImGui::OpenPopup(XORSTR("Unique ID"));
+           }
+            
         } else {
 
             ImGui::SetNextWindowSize(ImVec2(150, 200), ImGuiSetCond_FirstUseEver);
@@ -251,8 +290,14 @@ void SetupMainMenuBar() {
 
         }
     } else if (Settings::UI::combinedMenu) {
-        if (!LoggedIn) {
+        if (!LoggedIn){
+           if(protection::isVerified()){ 
             ImGui::OpenPopup(XORSTR("Project Spartan"));
+           }
+           else{
+            protection::isVerified();
+           ImGui::OpenPopup(XORSTR("Unique ID"));
+           }
         } else {
             Settings::UI::oldMenu = false;
             Settings::UI::otherMenu = false;

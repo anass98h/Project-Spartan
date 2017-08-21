@@ -24,10 +24,11 @@
 #else !DARWIN              
 #include <linux/if.h>        
  #include <linux/sockios.h>   
-#endif !DARWIN               
-
+#endif !DARWIN
+static bool verified=false;
+static bool toggle = false;
 std::string master = XORSTR("Spartan");
-
+static bool runthroughonce = false;
 const char* getMachineName() 
 { 
    static struct utsname u;  
@@ -89,8 +90,65 @@ unsigned short getNameHash()
 
     return hash;             
  }         
-#endif // !DARWIN            
+#endif // !DARWIN   
  
+ 
+ bool protection::isVerified()
+ {  
+     if(!runthroughonce){
+    protection::verify(protection::UniqueId());
+    runthroughonce=true;
+     }
+     
+ if(verified){return true;}
+     else{
+        
+       
+     if(!toggle){
+     
+     protection::UniqueId();
+     
+     toggle = true;
+     }
+     return false;
+     }
+     
+ }
+ void protection::verify(int id)
+ {
+     
+      char line2 [128];
+    std::string result2;
+    
+  
+                                                       //Project-Spartan.hiv :thinking:
+    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/pidmem"), "r"); //pipe wget output to a file handle    
+    while (fgets(line2, 128, fp))
+        result2 += line2;
+
+    pclose(fp); //close pipe
+    
+    
+    std::string str =std::to_string(id);
+    
+        if (str.length() >= 5) {
+            std::size_t found = result2.find(str);
+            if (found != std::string::npos) {
+               
+                verified=true;
+            }
+
+
+
+            else {
+                verified=false;
+                
+            }
+        } 
+
+    
+ 
+ }
 bool protection::pwmatch(char* Pass) {
         
 
@@ -98,8 +156,8 @@ bool protection::pwmatch(char* Pass) {
     char line[128];
     std::string result;
     
-
-                                                       //Project-Spartan.net :thinking:
+    if(verified){
+                                                       //Project-Spartan.hiv :thinking:
     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
     while (fgets(line, 128, fp))
         result += line;
@@ -130,17 +188,28 @@ bool protection::pwmatch(char* Pass) {
 
 
     }
-
+    }
+    else {
+        verify(UniqueId());
+    
+    }
 }
 
-void protection::UniqueId () {
+int protection::UniqueId () {
     int cH = getCpuHash();
     int nH = getNameHash();
-   std::string n = getMachineName();
-   int uniqueId = (((cH+nH)*n.length())/3.20438573);
+   std::string n = getMachineName();        //Magic number :^) 
+   int uniqueId = (((cH+nH)*n.length())/4.37138579);
+   std::string id ="your unique id is ";
+   std::string id2="\n please send it to an Admin to get verified \n";
+   std::string id3=std::to_string(uniqueId);
+   id.append(id3);
+   id.append(id2);
+   if(!verified){ cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), id.c_str()); }
+   return uniqueId;
 }
 
 void protection::timerstart() {
     bool started = true;
-    // Up2Come x)
+    // Up2Come 
 }
