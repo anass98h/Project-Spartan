@@ -20,7 +20,6 @@ std::string contents;
 
 // denied
 
-
 static void ccc() {
     ImGui::CloseCurrentPopup();
     ImGui::OpenPopup(XORSTR("Project Spartan"));
@@ -49,41 +48,40 @@ void SetupMainMenuBar() {
             ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
             ImGuiWindowFlags_NoResize)) {
 
-       if (!LoggedIn){
-           if(protection::isVerified()){ 
-            ImGui::OpenPopup(XORSTR("Project Spartan"));
-           }
-           else{
-               protection::isVerified();
-           ImGui::OpenPopup(XORSTR("Unique ID"));
-           }
-       }
+        if (!LoggedIn) {
+            if (protection::isVerified()) {
+                ImGui::OpenPopup(XORSTR("Project Spartan"));
+            } else {
+                protection::isVerified();
+                ImGui::OpenPopup(XORSTR("Unique ID"));
+            }
+        }
         if (miss >= 4) {
             projectspartan::SelfShutdown();
 
 
         }
-         if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
+        if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
             ImGui::Text(
                     XORSTR(" Oooops looks like something went wrong \n close this window and open csgo console for more info ")
                     );
             ImGui::Spacing();
-           
+
             ImGui::Separator();
             ImGui::PushItemWidth(188);
-            
-            if (ImGui::Button(XORSTR("Ok"))) {
-                    UI::SetVisible(!UI::isVisible);
-                    ImGui::CloseCurrentPopup();
-                      
-                }
 
-            
+            if (ImGui::Button(XORSTR("Ok"))) {
+                UI::SetVisible(!UI::isVisible);
+                ImGui::CloseCurrentPopup();
+
+            }
+
+
             ImGui::EndPopup();
         }
-         
-       
-        
+
+
+
         ImGui::Columns(1);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 135));
 
@@ -108,7 +106,7 @@ void SetupMainMenuBar() {
                     miss = 0;
                     protection::timerstart();
                 } else {
-                    LoggedIn =false;
+                    LoggedIn = false;
                     miss += 1;
                     ImGui::CloseCurrentPopup();
 
@@ -118,9 +116,9 @@ void SetupMainMenuBar() {
             }
             ImGui::EndPopup();
         }
-       
+
         ImGui::PopStyleVar();
-        
+
         if (ImGui::Button(XORSTR("Logout  "), ImVec2(ImGui::CalcTextSize(XORSTR("Logout  "), NULL, true).x, 0.0f))) {
             LoggedIn = false;
             Main::showWindow = false;
@@ -149,38 +147,41 @@ void SetupMainMenuBar() {
         }
 
         ImGui::Separator();
-        if(ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu))
-        { Settings::UI::otherMenu = false;
-        Settings::UI::combinedMenu = false;}
+        if (ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu)) {
+            Settings::UI::otherMenu = false;
+            Settings::UI::combinedMenu = false;
+        }
         ImGui::Separator();
-       if(ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu))
-        {Settings::UI::oldMenu = false;
-        Settings::UI::combinedMenu = false;}
+        if (ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu)) {
+            Settings::UI::oldMenu = false;
+            Settings::UI::combinedMenu = false;
+        }
         ImGui::Separator();
-        if(ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu))
-        {Settings::UI::oldMenu = false;
-        Settings::UI::otherMenu = false;}
+        if (ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu)) {
+            Settings::UI::oldMenu = false;
+            Settings::UI::otherMenu = false;
+        }
         ImGui::Separator();
-       
-       
-            
-          
-            
-	 static const char *test_data = "Menu";
+
+
+
+
+
+        static const char *test_data = "Menu";
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
         int items_count = sizeof (items) / sizeof (*items);
 
         static int selected = -1;
 
-        
-      
-         ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
-       if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
-         ImGui::OpenPopup("##piepopup");
-           
 
-      
-         ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
+
+        ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
+        if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
+            ImGui::OpenPopup("##piepopup");
+
+
+
+        ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
         int n = PiePopupSelectMenu(pie_menu_center, "##piepopup", items, items_count);
         if (n == 1) {
             Configs::showWindow = !Configs::showWindow;
@@ -196,21 +197,20 @@ void SetupMainMenuBar() {
             Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
         }
 
-        ImGui::End(); 
-           
-    
-    
+        ImGui::End();
+
+
+
     }
     if (Settings::UI::oldMenu) {
-       
-        if (!LoggedIn){
-           if(protection::isVerified()){ 
-            ImGui::OpenPopup(XORSTR("Project Spartan"));
-           }
-           else{
-            protection::isVerified();
-           ImGui::OpenPopup(XORSTR("Unique ID"));
-           }
+
+        if (!LoggedIn) {
+            if (protection::isVerified()) {
+                ImGui::OpenPopup(XORSTR("Project Spartan"));
+            } else {
+                protection::isVerified();
+                ImGui::OpenPopup(XORSTR("Unique ID"));
+            }
         } else {
             if (ImGui::BeginMainMenuBar()) {
 
@@ -259,16 +259,15 @@ void SetupMainMenuBar() {
         }
     } else if (Settings::UI::otherMenu) {
 
-        
-         if (!LoggedIn){
-           if(protection::isVerified()){ 
-            ImGui::OpenPopup(XORSTR("Project Spartan"));
-           }
-           else{
-            protection::isVerified();
-           ImGui::OpenPopup(XORSTR("Unique ID"));
-           }
-            
+
+        if (!LoggedIn) {
+            if (protection::isVerified()) {
+                ImGui::OpenPopup(XORSTR("Project Spartan"));
+            } else {
+                protection::isVerified();
+                ImGui::OpenPopup(XORSTR("Unique ID"));
+            }
+
         } else {
 
             ImGui::SetNextWindowSize(ImVec2(150, 200), ImGuiSetCond_FirstUseEver);
@@ -290,14 +289,13 @@ void SetupMainMenuBar() {
 
         }
     } else if (Settings::UI::combinedMenu) {
-        if (!LoggedIn){
-           if(protection::isVerified()){ 
-            ImGui::OpenPopup(XORSTR("Project Spartan"));
-           }
-           else{
-            protection::isVerified();
-           ImGui::OpenPopup(XORSTR("Unique ID"));
-           }
+        if (!LoggedIn) {
+            if (protection::isVerified()) {
+                ImGui::OpenPopup(XORSTR("Project Spartan"));
+            } else {
+                protection::isVerified();
+                ImGui::OpenPopup(XORSTR("Unique ID"));
+            }
         } else {
             Settings::UI::oldMenu = false;
             Settings::UI::otherMenu = false;
