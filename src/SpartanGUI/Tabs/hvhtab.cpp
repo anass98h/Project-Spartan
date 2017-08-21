@@ -6,12 +6,12 @@ int Settings::spinFactor::value = 1;
 void HvH::RenderTab() {
     const char* yTypes[] = {
 
-        "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Apostrophe", "Tank", "Tank 2", "Tank 3", "Lby Breaker", "Lby Spin", "Backjitter Random", "CasualJitter", "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards", "Forwards", "Static", "Static Jitter", "Static small Jitter", "LUA", "LUA2", "CasualAA", // safe
+        "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Apostrophe", "Tank", "Tank 2", "Tank 3", "Lby Breaker", "Lby Spin", "Fake LBY", "Backjitter Random", "CasualJitter", "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards", "Forwards", "Static", "Static Jitter", "Static small Jitter", "LUA", "LUA2", "CasualAA", // safe
         "LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
     };
     const char* lbyTypes[] = {
-        "Breaker 1", "Breaker 2", "Breaker 3", "NONE", 
+        "Breaker 1", "Breaker 2", "Breaker 3", "NONE",
     };
     const char* zTypes[] = {
         "Reverse", "Autismflip", "TEST",
@@ -79,7 +79,7 @@ void HvH::RenderTab() {
                                 Settings::AntiAim::Lby::enabled = false;
                             }
                         }
-                    }    
+                    }
                     ImGui::PopItemWidth();
                 }
                 ImGui::Columns(1);
@@ -168,17 +168,17 @@ void HvH::RenderTab() {
     ImGui::NextColumn();
     {
         ImGui::BeginChild(XORSTR("HVH2"), ImVec2(0, 0), true);
-        {   
+        {
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
             ImGui::Checkbox("Enable", &Settings::Resolver::enabled);
             if (Settings::Resolver::enabled)
-            { 
+            {
             ImGui::Combo("##HUGTYPE", (int*) & Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
             ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 50, "Ticks: %0.f");
             ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 50, "Modulo: %0.f");
-           
-            } 
+
+            }
              ImGui::Separator();
             ImGui::Text("Misc");
             ImGui::Checkbox("LBY Indicator", &Settings::lbyindicator::enabled);
@@ -258,4 +258,3 @@ void HvH::RenderTab() {
 
     }
 }
-
