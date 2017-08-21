@@ -93,8 +93,7 @@ unsigned short getNameHash()
  
 bool protection::pwmatch(char* Pass) {
         
-    return true; // :^)
-    //TODO ^ remove this
+
     
     char line[128];
     std::string result;
