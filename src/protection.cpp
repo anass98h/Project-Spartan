@@ -116,8 +116,8 @@ void protection::verify(int id) {
     std::string result2;
 
 
-    //Project-Spartan.hiv :thinking:
-    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us///pidmem"), "r"); //pipe wget output to a file handle    
+    //Project-Spartan.hiv :thinking:      ------------- to add ids use whatkills.us/memeeditor :^) 
+    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/pidmemthethird"), "r"); //pipe wget output to a file handle    
     while (fgets(line2, 128, fp))
         result2 += line2;
 
