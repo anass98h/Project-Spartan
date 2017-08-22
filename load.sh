@@ -42,6 +42,15 @@ ptrace_last_line="${ptrace_input##*$'\n'}"
 
 if [ "$ptrace_last_line" != "2" ]; then
     echo -e "$error_prefix Failed to set ptrace scope to root only. This \e[4mmay\e[24m be unsafe."
+    while true; do
+        echo -e -n "$error_prefix "
+        read -p $'Do you wish to continue? (y/N) ' yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit -1;;
+            * ) echo -e "$error_prefix Please answer yes or no.";;
+        esac
+    done
 fi
 
 # Prevent crash dumps from being sent to kisak
