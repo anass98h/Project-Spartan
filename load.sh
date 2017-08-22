@@ -2,6 +2,7 @@
 
 prefix="\e[34m\e[1mSpartan >\e[0m"
 error_prefix="\e[91m\e[1mSpartan >\e[0m"
+success_prefix="\e[32m\e[1mSpartan >\e[0m"
 
 # ----------------------------------------------- #
 #                                                 #
@@ -35,7 +36,13 @@ if [ -d ".git" ]; then
 fi
 
 # Allows only root to use ptrace. This is temporary until the user reboots the machine.
-sudo echo "2" | sudo tee /proc/sys/kernel/yama/ptrace_scope
+ptrace_input=$(sudo echo "2" | sudo tee /proc/sys/kernel/yama/ptrace_scope)
+
+ptrace_last_line="${ptrace_input##*$'\n'}"
+
+if [ "$ptrace_last_line" != "2" ]; then
+    echo -e "$error_prefix Failed to set ptrace scope to root only. This \e[4mmay\e[24m be unsafe."
+fi
 
 # Prevent crash dumps from being sent to kisak
 sudo rm -rf /tmp/dumps
@@ -57,7 +64,7 @@ sudo gdb -n -q -batch-silent \
 last_line="${input##*$'\n'}"
 
 if [ "$last_line" != "\$1 = (void *) 0x0" ]; then
-    echo -e "$prefix Project Spartan has been successfully injected."
+    echo -e "$success_prefix Project Spartan has been successfully injected."
 else
     echo -e "$error_prefix Project Spartan has failed to inject. Please restart CS:GO and retry."
 fi
