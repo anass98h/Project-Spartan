@@ -433,7 +433,7 @@ static bool HasViableEnemy() {
 
     return false;
 }
-
+QAngle DoAAatTarget();
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
     static bool yFlip;
@@ -446,6 +446,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
     int spinval = rand() % 80;
     int ticks = 0;
     int jitterticks = 0;
+  	QAngle Base;
+
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
     static float lastAngleY, lastAngleY2; // angle we had last frame
@@ -888,18 +890,34 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
 
         case AntiAimType_Y::SIDEWAYSRIGHT:
-            angle.y -= 90.0f;
+            if(Settings::AntiAim::Yaw::dynamicAA)
+            {
+
+            	Base = DoAAatTarget();
+            	angle.y = Base -90;
+
+            }
+            else
+            	angle.y -= 90.0f;
             break;
         case AntiAimType_Y::SIDEWAYSLEFT:
-            angle.y += 90.0f;
+	        if(Settings::AntiAim::Yaw::dynamicAA)
+	        {
+
+		         Base = DoAAatTarget();
+		         angle.y = Base - 90;
+
+	        }
+	        else
+           	 angle.y += 90.0f;
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
             if (CreateMove::sendPacket) {
-                angle.y = 90.0f;
+                angle.y += 90.0f;
                 CreateMove::sendPacket = false;
             } else {
-                angle.y = 180.0f;
+                angle.y -= 180.0f;
                 CreateMove::sendPacket = true;
             }
 
@@ -1192,10 +1210,11 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
     }
 }
 
-static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& clamp)
+static QAngle DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& clamp)
  {
 
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+
 
     if (Settings::AntiAim::Yaw::enabled) {
         if (Settings::AntiAim::Yaw::dynamicAA) {
@@ -1218,13 +1237,8 @@ static void DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& cl
 
                 if (bestDist > tempDist) {
                     bestDist = tempDist;
-                    if (CreateMove::sendPacket) {
-                        angle.y = Math::CalcAngle(eye_pos, target_pos).y + 90.0f;
-                        CreateMove::sendPacket = false;
-                    } else {
-                        angle.y = Math::CalcAngle(eye_pos, target_pos).y + 180.0f;
-                        CreateMove::sendPacket = true;
-                    }
+                    
+                       return Math::CalcAngle(eye_pos, target_pos).y;
 
                 }
             }
