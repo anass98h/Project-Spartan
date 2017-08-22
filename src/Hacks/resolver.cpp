@@ -44,7 +44,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             break;
         }
-        case ResolverHugtype::APOSTROPHE:
+        case ResolverHugtype::BRUTEHIV:
         {
             if (LowerBodyYawChanged(Circlebian))
             {

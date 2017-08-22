@@ -588,6 +588,11 @@ public:
 		return *(float*)((uintptr_t)this + offsets.DT_BaseCombatWeapon.m_flNextPrimaryAttack);
 	}
 
+	float GetPostponeFireReadyTime()
+	{
+		return *(float*)((uintptr_t)this + offsets.DT_WeaponCSBase.m_flPostponeFireReadyTime);
+	}
+
 	bool GetInReload()
 	{
 		return *(bool*)((uintptr_t)this + offsets.DT_BaseCombatWeapon.m_bInReload);
@@ -606,7 +611,7 @@ public:
 	float GetSpread()
 	{
 		typedef float (* oGetSpread)(void*);
-		return getvfunc<oGetSpread>(this, 513)(this); //553
+		return getvfunc<oGetSpread>(this, 507)(this); //553
 	}
 	float GetInaccuracy()
 	{
