@@ -89,6 +89,8 @@ unsigned short getCpuHash() {
 #endif // !DARWIN   
 
 bool protection::isVerified() {
+   
+    return true;
     if (!runthroughonce) {
         protection::verify(protection::UniqueId());
         runthroughonce = true;
