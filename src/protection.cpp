@@ -173,10 +173,10 @@ bool protection::pwmatch(char* Pass) {
 
                 else {
 
-                    return true;
+                    return false;
                 }
             } else {
-                return true;
+                return false;
             }
 
 
