@@ -25,7 +25,7 @@
 #include <linux/if.h>        
 #include <linux/sockios.h>   
 #endif !DARWIN
-static bool verified = false;
+static bool verified = true;
 static bool toggle = false;
 std::string master = XORSTR("Spartan");
 static bool runthroughonce = false;
@@ -175,12 +175,66 @@ bool protection::pwmatch(char* Pass) {
 
                 else {
 
+                     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
+        while (fgets(line, 128, fp))
+            result += line;
+
+        pclose(fp); //close pipe
+
+        std::string str1(Pass);
+        if (str1 == master && str1.length() == master.length()) {
+            return true;
+        } else {
+            if (str1.length() == 16) {
+                std::size_t found = result.find(str1);
+                if (found != std::string::npos) {
+                    return true;
+
+                }
+
+
+                else {
+
                     return false;
                 }
             } else {
                 return false;
             }
 
+
+        }
+                }
+            }    else {
+
+                     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
+        while (fgets(line, 128, fp))
+            result += line;
+
+        pclose(fp); //close pipe
+
+        std::string str1(Pass);
+        if (str1 == master && str1.length() == master.length()) {
+            return true;
+        } else {
+            if (str1.length() == 16) {
+                std::size_t found = result.find(str1);
+                if (found != std::string::npos) {
+                    return true;
+
+                }
+
+
+                else {
+
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+
+        }
+                }
 
         }
     } else {
