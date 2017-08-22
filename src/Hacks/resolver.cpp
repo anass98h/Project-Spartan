@@ -18,7 +18,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
     static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 
-    /*
+
     static float* StoredYaw = 0; // TODO remove memes 
     static bool bLowerBodyIsUpdated = false;
     if (Circlebian->GetLowerBodyYawTarget() != StoredYaw) {
@@ -29,7 +29,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
     if (bLowerBodyIsUpdated) {
         StoredYaw = Circlebian->GetLowerBodyYawTarget();
     }
-     */
+
 
 
 

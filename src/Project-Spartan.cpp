@@ -39,7 +39,7 @@ void MainThread() {
     Hooker::FindSendClanTag();
     Hooker::FindSendPacket();
     Hooker::FindPrediction();
-    //Hooker::FindIsReadyCallback();
+    Hooker::FindIsReadyCallback();
     Hooker::FindSurfaceDrawing();
     Hooker::FindGetLocalClient();
     Hooker::FindLineGoesThroughSmoke();
@@ -126,7 +126,7 @@ void MainThread() {
     / __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
     \__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
     |___/| .__/ \__,_||_|   \__|\__,_||_||_|
-|_|
+         |_|
 
      */
 
