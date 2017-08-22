@@ -255,7 +255,7 @@ void HvH::RenderTab() {
 
                         {
                             ImGui::PushItemWidth(-1);
-                            ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value, 0, 10000, XORSTR("Amount: %1.f"));
+                            ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value, -10000, 10000, XORSTR("Amount: %1.f"));
                             ImGui::PopItemWidth();
 
                         }
@@ -267,7 +267,7 @@ void HvH::RenderTab() {
 
                         {
                             ImGui::PushItemWidth(-1);
-                            ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, 0, 10000, XORSTR("Amount: %1.f"));
+                            ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, -10000, 10000, XORSTR("Amount: %1.f"));
                             ImGui::PopItemWidth();
 
                         }
