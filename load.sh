@@ -61,3 +61,7 @@ if [ "$last_line" != "\$1 = (void *) 0x0" ]; then
 else
     echo -e "$error_prefix Project Spartan has failed to inject. Please restart CS:GO and retry."
 fi
+
+if [ -f "$(pwd)/gdb.txt" ]; then
+    sudo rm -rf gdb.txt
+fi
