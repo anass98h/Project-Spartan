@@ -160,6 +160,14 @@ void PlayerList::RenderWindow() {
             }
             ImGui::NextColumn();
             {
+                bool isPreferBaim = std::find(Aimbot::baim.begin(), Aimbot::baim.end(), entityInformation.xuid) != Aimbot::baim.end();
+                if(ImGui::Checkbox(XORSTR("Prefer Baim"), &isPreferBaim)) {
+                    if(isPreferBaim)
+                        Aimbot::baim.push_back(entityInformation.xuid);
+                    else
+                        Aimbot::baim.erase(std::find(Aimbot::baim.begin(), Aimbot::baim.end(), entityInformation.xuid));
+                }
+
                 if (ImGui::Button(XORSTR("Print information"))) {
                     cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), XORSTR("\n=====\nPlayer informations:\n[%s] %s \nSteamID: %s\n=====\n"), (*csPlayerResource)->GetClan(currentPlayer), entityInformation.name, entityInformation.guid);
                 }

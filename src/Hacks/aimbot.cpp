@@ -62,6 +62,7 @@ bool Settings::Aimbot::velocityCheck::enabled = false;
 
 bool Aimbot::aimStepInProgress = false;
 std::vector<int64_t> Aimbot::friends = {};
+std::vector<int64_t> Aimbot::baim = {};
 std::vector<long> killTimes = {0}; // the Epoch time from when we kill someone
 float autoCockDifference = 0.0f;
 int missedShots = 0;
@@ -397,6 +398,23 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
             } else {
                 cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Missed Shots: %i\n", missedShots);
             }
+        }
+
+        if(!Aimbot::baim.empty()) {
+            cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Prefer Baim List contains xUIDs:\n");
+            for(int64_t &xuid : Aimbot::baim) {
+                cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "- %i\n", xuid);
+            }
+
+            IEngineClient::player_info_t entityInformation;
+            engine->GetPlayerInfo(i, &entityInformation);
+
+            if(std::find(Aimbot::baim.begin(), Aimbot::baim.end(), entityInformation.xuid) != Aimbot::baim.end()) {
+                cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Baiming current target because its in the Baim List.\n", missedShots);
+                eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
+            }
+        } else {
+            cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Prefer Baim List is empty.\n");
         }
 
         Vector pVecTarget = localplayer->GetEyePosition();
