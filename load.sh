@@ -65,7 +65,7 @@ sudo gdb -n -q -batch-silent \
   -ex "set logging file /dev/null" \
   -ex "attach $csgo" \
   -ex "set \$dlopen = (void*(*)(char*, int)) dlopen" \
-  -ex "call \$dlopen(\"/Spartan.so\", 1)" \
+  -ex "call \$dlopen(\"/$(pwd)/Spartan.so\", 1)" \
   -ex "detach" \
   -ex "quit"
 )"
