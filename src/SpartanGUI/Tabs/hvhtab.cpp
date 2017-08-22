@@ -2,11 +2,12 @@
 
 
 int Settings::spinFactor::value = 1;
-
+int Settings::customYaw::value = 1;
+int Settings::customYaw2::value = 1;
 void HvH::RenderTab() {
     const char* yTypes[] = {
 
-        "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Apostrophe", "Tank", "Tank 2", "Tank 3", "Lby Breaker", "Lby Spin", "Fake LBY", "Backjitter Random", "CasualJitter", "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards", "Forwards", "Static", "Static Jitter", "Static small Jitter", "LUA", "LUA2", "CasualAA", // safe
+        "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot","Custom Yaw", "Custom Yaw 2", "Apostrophe", "Tank", "Tank 2", "Tank 3", "Lby Breaker", "Lby Spin", "Fake LBY", "Backjitter Random", "CasualJitter", "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards", "Forwards", "Static", "Static Jitter", "Static small Jitter", "LUA", "LUA2", "CasualAA", // safe
         "LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN", "LOWERBODY", "LBYONGROUND", "LUA UNCLAMPED", "LUA UNCLAMPED2", // untrusted
 
     };
@@ -230,14 +231,14 @@ void HvH::RenderTab() {
                 }
             }
 
+            ImGui::NextColumn();
+            {
 
-            if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN) {
-                ImGui::NextColumn();
-
-
-                {
-                    ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
-                    {
+            if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM || Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2) {
+              ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
+              {
+                        if(Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN)
+                        {
                         ImGui::Text(XORSTR("Spin Factor"));
 
                         {
@@ -246,7 +247,31 @@ void HvH::RenderTab() {
                             ImGui::PopItemWidth();
 
                         }
+                        }
+                        ImGui::Separator();
+                        if(Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM)
+                        {
+                        ImGui::Text(XORSTR("Custom Yaw"));
 
+                        {
+                            ImGui::PushItemWidth(-1);
+                            ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value, 0, 10000, XORSTR("Amount: %1.f"));
+                            ImGui::PopItemWidth();
+
+                        }
+                        }
+                        ImGui::Separator();
+                        if(Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 || Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2)
+                        {
+                        ImGui::Text(XORSTR("Custom Yaw 2"));
+
+                        {
+                            ImGui::PushItemWidth(-1);
+                            ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, 0, 10000, XORSTR("Amount: %1.f"));
+                            ImGui::PopItemWidth();
+
+                        }
+                        }
                         ImGui::EndChild();
                     }
 
