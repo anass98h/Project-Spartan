@@ -433,9 +433,48 @@ static bool HasViableEnemy() {
 
     return false;
 }
-QAngle DoAAatTarget();
+
+static float DoAAatTarget()
+ {
+
+    static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+    static float Angle = 0.0f;
+
+    if (Settings::AntiAim::Yaw::enabled) {
+        if (Settings::AntiAim::Yaw::dynamicAA) {
+            float bestDist = 999999999.f; // easy cuz im retarded
+            for (int i = 1; i < engine->GetMaxClients(); ++i) {
+                C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(i);
+
+                if (!target
+                        || target == pLocal
+                        || target->GetDormant()
+                        || !target->GetAlive()
+                        || target->GetImmune()
+                        || target->GetTeam() == pLocal->GetTeam())
+                    continue;
+
+                Vector eye_pos = pLocal->GetEyePosition();
+                Vector target_pos = target->GetEyePosition();
+
+                float tempDist = eye_pos.DistTo(target_pos);
+
+                if (bestDist > tempDist) {
+                    bestDist = tempDist;
+                    	Angle = Math::CalcAngle(eye_pos, target_pos).y;
+                       return Angle;
+
+                }
+            }
+        }
+
+    }
+}
+
+
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
+
     static bool yFlip;
     float temp;
     double factor;
@@ -446,7 +485,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
     int spinval = rand() % 80;
     int ticks = 0;
     int jitterticks = 0;
-  	QAngle Base;
+  	float Base;
 
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
@@ -894,8 +933,11 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             {
 
             	Base = DoAAatTarget();
-            	angle.y = Base -90;
-
+            	if(Base > 0)
+            		angle.y = Base + 90;
+            	else
+            		angle.y = Base - 90;
+            	
             }
             else
             	angle.y -= 90.0f;
@@ -905,7 +947,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 	        {
 
 		         Base = DoAAatTarget();
-		         angle.y = Base - 90;
+            	if(Base < 0)
+            		angle.y = Base + 90;
+            	else
+            		angle.y = Base - 90;
 
 	        }
 	        else
@@ -1210,42 +1255,6 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
     }
 }
 
-static QAngle DoAAatTarget(QAngle& angle, bool yFlip, int command_number, bool& clamp)
- {
-
-    static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-
-
-    if (Settings::AntiAim::Yaw::enabled) {
-        if (Settings::AntiAim::Yaw::dynamicAA) {
-            float bestDist = 999999999.f; // easy cuz im retarded
-            for (int i = 1; i < engine->GetMaxClients(); ++i) {
-                C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(i);
-
-                if (!target
-                        || target == pLocal
-                        || target->GetDormant()
-                        || !target->GetAlive()
-                        || target->GetImmune()
-                        || target->GetTeam() == pLocal->GetTeam())
-                    continue;
-
-                Vector eye_pos = pLocal->GetEyePosition();
-                Vector target_pos = target->GetEyePosition();
-
-                float tempDist = eye_pos.DistTo(target_pos);
-
-                if (bestDist > tempDist) {
-                    bestDist = tempDist;
-                    
-                       return Math::CalcAngle(eye_pos, target_pos).y;
-
-                }
-            }
-        }
-
-    }
-}
 
 void AntiAim::CreateMove(CUserCmd* cmd) {
 	isAntiAiming = false;
@@ -1336,7 +1345,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
     }
-    if (Settings::AntiAim::Yaw::dynamicAA) {
+    /*if (Settings::AntiAim::Yaw::dynamicAA) {
 
         DoAAatTarget(angle, cmd->command_number, bFlip, should_clamp);
         Math::NormalizeAngles(angle);
@@ -1344,7 +1353,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
-    }
+    }*/
     if (Settings::AntiAim::Roll::enabled)
         DoAntiAimZ(angle, cmd->command_number, should_clamp);
     if (Settings::AntiAim::Pitch::enabled)
