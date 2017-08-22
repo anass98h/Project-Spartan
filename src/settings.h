@@ -192,7 +192,7 @@ enum class ResolverHugtype : int {
     OFF,
     AIMTUX,
     PLUSDELTA,
-    APOSTROPHE,
+    BRUTEHIV,
     BRUTE1,
     AUTISM,
     LUCKY,
