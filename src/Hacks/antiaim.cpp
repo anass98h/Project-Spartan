@@ -468,6 +468,14 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             factor *= Settings::spinFactor::value;
             angle.y = fmodf(globalVars->curtime * factor, 360.0);
             break;
+        case AntiAimType_Y::CUSTOM:
+            clamp = false;
+            angle.y = Settings::customYaw::value;
+            break;
+        case AntiAimType_Y::CUSTOM2:
+            clamp = false;
+            angle.y = Settings::customYaw2::value;
+            break;
         case AntiAimType_Y::APOSTROPHE:
         {
             if (CreateMove::sendPacket) {

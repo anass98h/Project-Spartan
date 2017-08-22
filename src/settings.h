@@ -52,6 +52,8 @@ enum class AntiAimType_Y : int {
     LEGITTROLLING2,
     NOAA,
     SPIN,
+    CUSTOM,
+    CUSTOM2,
     APOSTROPHE,
     Tank,
     TANK2,
@@ -902,6 +904,12 @@ namespace Settings {
     }
 
     namespace spinFactor {
+        extern int value;
+    }
+    namespace customYaw {
+        extern int value;
+    }
+    namespace customYaw2 {
         extern int value;
     }
 
