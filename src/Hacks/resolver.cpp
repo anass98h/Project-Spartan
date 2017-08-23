@@ -74,15 +74,15 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
 			
 		}
-                else if (Shotsmissed == 5 ){
+                else if (Shotsmissed == 3 ){
 		flYaw = flYaw - 180;
 		Circlebian->GetEyeAngles()->y = flYaw;
                 }
-                else if (Shotsmissed == 6) {
+                else if (Shotsmissed == 4) {
 		flYaw = flYaw + 90;
 		Circlebian->GetEyeAngles()->y = flYaw;
                  }
-                else if (Shotsmissed == 7 && Shotsmissed < 8) {
+                else if (Shotsmissed == 5 && Shotsmissed < 6) {
 		flYaw = flYaw + 180;
 		Circlebian->GetEyeAngles()->y = flYaw;
                 }
@@ -94,7 +94,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
 		}
         
-                else if (Shotsmissed > 5 &&isLBYPredictited[Circlebian->GetIndex()] == true)
+                else if (Shotsmissed > 3 && isLBYPredictited[Circlebian->GetIndex()] == true)
                 {
 		Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
                  }
