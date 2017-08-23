@@ -21,11 +21,13 @@ class CResolveInfo {
 namespace Resolver
 {       
     
-  
+        
+    
+    
 	extern std::vector<int64_t> playerAngleLogs;
 	extern std::array<CResolveInfo, 32> m_arrInfos;
 
-	void Hug(C_BasePlayer* Circlebian);
+	void Hug(C_BasePlayer* enemy,C_BasePlayer* pLocal);
 	void FrameStageNotify(ClientFrameStage_t stage);
 	void PostFrameStageNotify(ClientFrameStage_t stage);
 	void FireGameEvent(IGameEvent* event);
