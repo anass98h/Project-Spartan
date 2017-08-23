@@ -4,26 +4,6 @@ bool Settings::Resolver::enabled = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
 
-//AVOZ
-
-        std::map<int, QAngle>StoredAngles; //y and x lol (stored)
-	 std::map<int, QAngle>NewANgles; //y and x lol (new)
-	 std::map<int, float>storedlby;
-	 std::map<int, float>newlby;
-	 std::map<int, float>storeddelta;
-	 std::map<int, float>newdelta;
-	 std::map<int, float>finaldelta;
-	 std::map<int, float>storedlbydelta;
-	 std::map<int, float>newlbydelta;
-	 std::map<int, float>finallbydelta;
-	 float newsimtime;
-	 float storedsimtime;
-	 bool lbyupdated;
-	 float storedlbyFGE;
-	 float storedanglesFGE;
-    float storedsimtimeFGE;
-    bool didhitHS;
-//ENDVOZ
 ResolverHugtype Settings::Resolver::Hugtype = ResolverHugtype::OFF;
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
