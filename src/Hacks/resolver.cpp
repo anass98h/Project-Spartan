@@ -15,23 +15,40 @@ std::random_device rd;
 
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
-
+    float flYaw = 0;
+    static float OldLowerBodyYaws[65];
+    static float OldYawDeltas[65];
+    float CurYaw = *Circlebian->GetLowerBodyYawTarget();
+    static float oldTimer[65];
+	static bool isLBYPredictited[65];
     static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
+//-------------------NEW MEMES WOOOOH --------------------------------------------------------
+    //IServer* nci ;
+    //float nn,s;
+    //nci->GetNetStats(s,nn);
+    if (OldLowerBodyYaws[Circlebian->GetIndex()] == *Circlebian->GetLowerBodyYawTarget()) {
+		if (oldTimer[Circlebian->GetIndex()] + 1.1 >= globalVars->curtime) {
+			oldTimer[Circlebian->GetIndex()] = globalVars->curtime;
+			isLBYPredictited[Circlebian->GetIndex()] = true;
 
-    /*
-    static float* StoredYaw = 0; // TODO remove memes 
-    static bool bLowerBodyIsUpdated = false;
-    if (Circlebian->GetLowerBodyYawTarget() != StoredYaw) {
-        bLowerBodyIsUpdated = true;
-    } else {
-        bLowerBodyIsUpdated = false;
-    }
-    if (bLowerBodyIsUpdated) {
-        StoredYaw = Circlebian->GetLowerBodyYawTarget();
-    }
-     */
+		}
+		else {
+			isLBYPredictited[Circlebian->GetIndex()] = false;
+		}
+	}
+    else if (Circlebian->GetDormant() || !Circlebian->GetAlive()) {
+		oldTimer[Circlebian->GetIndex()] = -1;
+		isLBYPredictited[Circlebian->GetIndex()] = false;
+	}
+	else {
+		OldLowerBodyYaws[Circlebian->GetIndex()] = *Circlebian->GetLowerBodyYawTarget();
+		oldTimer[Circlebian->GetIndex()] = globalVars->curtime - 20;// TODO replace magic 20 through outgoing ping
+		isLBYPredictited[Circlebian->GetIndex()] = false;
+	}
 
+	
 
+// END OF NEW MEMES WOOOOH ----------------------------------------------------------------------
 
     switch (Settings::Resolver::Hugtype) {
         case ResolverHugtype::AIMTUX:
@@ -43,6 +60,47 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
             Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             break;
+        }
+         case ResolverHugtype::PASTEHUB:
+        {   
+       
+        
+		if (OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw) {
+			OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
+			OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
+			
+			
+			Circlebian->GetEyeAngles()->y = CurYaw;
+
+			
+		}
+                else if (Shotsmissed == 5 ){
+		flYaw = flYaw - 180;
+		Circlebian->GetEyeAngles()->y = flYaw;
+                }
+                else if (Shotsmissed == 6) {
+		flYaw = flYaw + 90;
+		Circlebian->GetEyeAngles()->y = flYaw;
+                 }
+                else if (Shotsmissed == 7 && Shotsmissed < 8) {
+		flYaw = flYaw + 180;
+		Circlebian->GetEyeAngles()->y = flYaw;
+                }
+          
+		else if ( OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw ) {
+			
+			
+			  Circlebian->GetEyeAngles()->y -= OldYawDeltas[Circlebian->GetIndex()];
+
+		}
+        
+                else if (isLBYPredictited[Circlebian->GetIndex()] == true)
+                {
+		Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+                 }
+		
+	
+	  break;
         }
         case ResolverHugtype::BRUTEHIV:
         {
@@ -56,16 +114,16 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 switch (num)
                 {
                     case 0:
-                        Circlebian->GetEyeAngles()->y -= 0.0f;
+                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + 20.0f);
                         break;
                     case 1:
-                        Circlebian->GetEyeAngles()->y += 90.0f;
+                        Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + 90.0f);
                         break;
                     case 2:
-                        Circlebian->GetEyeAngles()->y -= 90.0f;
+                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + 90.0f);
                         break;
                     case 3:
-                        Circlebian->GetEyeAngles()->y -= 180.0f;
+                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget - 180.0f);
                         break;
                 }
             }
