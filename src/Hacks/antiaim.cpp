@@ -934,9 +934,9 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
             	Base = DoAAatTarget();
             	if(Base > 0)
-            		angle.y = Base + 90;
-            	else
             		angle.y = Base - 90;
+            	else
+            		angle.y = Base + 90;
             	
             }
             else
@@ -947,7 +947,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 	        {
 
 		         Base = DoAAatTarget();
-            	if(Base < 0)
+            	if(Base > 0)
             		angle.y = Base + 90;
             	else
             		angle.y = Base - 90;
