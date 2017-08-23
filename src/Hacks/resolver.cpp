@@ -104,29 +104,79 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         }
         case ResolverHugtype::BRUTEHIV:
         {
-            if (LowerBodyYawChanged(Circlebian))
-            {
-                Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
-            }
-            else
-            {
-                int num = Shotsmissed % 4;
-                switch (num)
-                {
-                    case 0:
-                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + 20.0f);
-                        break;
-                    case 1:
-                        Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + 90.0f);
-                        break;
-                    case 2:
-                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + 90.0f);
-                        break;
-                    case 3:
-                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget - 180.0f);
-                        break;
-                }
-            }
+
+        	int missed = 0;
+        	int missed2 = 0;
+        	float fakeYaw;
+        	float fakeYaw2;
+        	float fakeYaw3;
+        	float fakeYaw4;
+        	
+        	
+        	if(LowerBodyYawChanged(Circlebian))
+        	{
+        		Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
+
+        		missed2 = Shotsmissed % 4;
+        	switch(missed2)
+        	{
+        		case 0:
+                    fakeYaw = Circlebian->GetEyeAngles()->y;
+                    Circlebian->GetEyeAngles()->y += 45;
+                    missed++;
+                    break;
+                case 1:
+                    fakeYaw2 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw == Circlebian->GetEyeAngles()->y){ 
+                    	Circlebian->GetEyeAngles()->y -= 90;
+                        missed++;}
+                    break;
+                case 2:
+                    fakeYaw3 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw2 == Circlebian->GetEyeAngles()->y){ 
+                    	Circlebian->GetEyeAngles()->y += 180;
+                        missed++;}
+                    break;
+                case 3:
+                    fakeYaw4 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw3 == Circlebian->GetEyeAngles()->y){
+                    	Circlebian->GetEyeAngles()->y -= 90;
+                        missed = 0;}
+                    break;
+        	}
+        	}
+        	else
+        	{ 
+        	missed = Shotsmissed % 4;
+        	switch(missed)
+        	{
+        		case 0:
+                    fakeYaw = Circlebian->GetEyeAngles()->y;
+                    Circlebian->GetEyeAngles()->y += 45;
+                    
+                    missed++;
+                    break;
+                case 1:
+                    fakeYaw2 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw == Circlebian->GetEyeAngles()->y){ 
+                        Circlebian->GetEyeAngles()->y -= 90;
+                        
+                        missed++;}
+                    break;
+                case 2:
+                    fakeYaw3 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw2 == Circlebian->GetEyeAngles()->y){ 
+                        Circlebian->GetEyeAngles()->y += 180;
+                        missed++;}
+                    break;
+                case 3:
+                    fakeYaw4 = Circlebian->GetEyeAngles()->y;
+                    if(fakeYaw3 == Circlebian->GetEyeAngles()->y){
+                        Circlebian->GetEyeAngles()->y -= 90;
+                        missed = 0;}
+                    break;
+        	}
+        }
 
             break;
         }
