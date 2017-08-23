@@ -899,10 +899,10 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     ShootCheck(activeWeapon, cmd);
     NoShoot(activeWeapon, player, cmd);
     Aimbot::AutoCockRevolver(activeWeapon, player, cmd);
-    if(Settings::Resolver::enabled)
+   /* if(Settings::Resolver::enabled)
     {
         StartLagCompensation(player,cmd);
-    }    
+    }    */
     Math::NormalizeAngles(angle);
     Math::ClampAngles(angle);
 
