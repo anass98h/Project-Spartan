@@ -42,7 +42,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 	}
 	else {
 		OldLowerBodyYaws[Circlebian->GetIndex()] = *Circlebian->GetLowerBodyYawTarget();
-		oldTimer[Circlebian->GetIndex()] = globalVars->curtime - 20;// TODO replace magic 20 through outgoing ping
+		oldTimer[Circlebian->GetIndex()] = globalVars->curtime - 50;// TODO replace magic 50 through outgoing ping
 		isLBYPredictited[Circlebian->GetIndex()] = false;
 	}
 
@@ -90,11 +90,11 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 		else if ( OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw ) {
 			
 			
-			  Circlebian->GetEyeAngles()->y -= OldYawDeltas[Circlebian->GetIndex()];
+			  Circlebian->GetEyeAngles()->y += OldYawDeltas[Circlebian->GetIndex()];
 
 		}
         
-                else if (isLBYPredictited[Circlebian->GetIndex()] == true)
+                else if (Shotsmissed > 5 &&isLBYPredictited[Circlebian->GetIndex()] == true)
                 {
 		Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
                  }

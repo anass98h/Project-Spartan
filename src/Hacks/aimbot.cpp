@@ -82,7 +82,14 @@ std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefini
             SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
             false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false}},
 };
+#define TIME_TO_TICKS( dt )		( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
+#define TICKS_TO_TIME( t )		( globalVars->interval_per_tick * ( t ) )
 
+static void StartLagCompensation(C_BasePlayer* pEntity,CUserCmd* cmd) {
+	float flSimTime = pEntity->GetSimulationTime();
+//is this how lagcomp works ? idk if not delete or spit on my feet 
+	cmd->tick_count = TIME_TO_TICKS(flSimTime + 0.031f); // +1 Send
+}
 static QAngle ApplyErrorToAngle(QAngle* angles, float margin) {
     QAngle error;
     error.Random(-1.0f, 1.0f);
@@ -892,7 +899,10 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     ShootCheck(activeWeapon, cmd);
     NoShoot(activeWeapon, player, cmd);
     Aimbot::AutoCockRevolver(activeWeapon, player, cmd);
-
+    if(Settings::Resolver::enabled)
+    {
+        StartLagCompensation(player,cmd);
+    }    
     Math::NormalizeAngles(angle);
     Math::ClampAngles(angle);
 
