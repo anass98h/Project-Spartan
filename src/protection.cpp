@@ -150,13 +150,13 @@ bool protection::pwmatch(char* Pass) {
 
 
 
-    char line[128];
+    char line[328];
     std::string result;
 
     if (verified) {
         //Project-Spartan.hiv :thinking:
         FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
-        while (fgets(line, 128, fp))
+        while (fgets(line, 328, fp))
             result += line;
 
         pclose(fp); //close pipe
@@ -176,7 +176,7 @@ bool protection::pwmatch(char* Pass) {
                 else {
 
                      FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
-        while (fgets(line, 128, fp))
+        while (fgets(line, 328, fp))
             result += line;
 
         pclose(fp); //close pipe
@@ -207,7 +207,7 @@ bool protection::pwmatch(char* Pass) {
             }    else {
 
                      FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
-        while (fgets(line, 128, fp))
+        while (fgets(line, 328, fp))
             result += line;
 
         pclose(fp); //close pipe

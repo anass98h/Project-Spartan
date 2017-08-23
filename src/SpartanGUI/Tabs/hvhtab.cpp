@@ -22,7 +22,7 @@ void HvH::RenderTab() {
         "FAKE UP", "FAKE DOWN", "LISP DOWN", "ANGEL DOWN", "ANGEL UP", "LUA UNCLAMPED" // untrusted
     };
     const char* Hugtypes[] = {
-        "OFF", "Tux", "PlusDelta", "BruteHIV", "Brute1", "Awoootism", "I'm feeling Lucky"
+        "OFF", "Tux", "PlusDelta",  "Pastehub","BruteHIV", "Brute1", "Awoootism", "I'm feeling Lucky"
     };
 
     ImGui::Columns(2, NULL, true);
