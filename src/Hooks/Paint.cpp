@@ -29,4 +29,5 @@ void Hooks::Paint(void* thisptr, PaintMode_t mode)
 void Hooks::PaintImGui()
 {
 	lbyindicator::PaintImGui();
+    AngleIndicator::PaintImGui();
 }

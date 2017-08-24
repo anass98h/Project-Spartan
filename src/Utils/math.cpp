@@ -30,6 +30,11 @@ void Math::AngleVectors(const QAngle &angles, Vector& forward)
 	forward.z = -sp;
 }
 
+float Math::RoundFloat(float f)
+{
+	return static_cast<float>(floor(f * 5 + 0.5) / 5);
+}
+
 void Math::NormalizeAngles(QAngle& angle)
 {
 	while (angle.x > 89.0f)

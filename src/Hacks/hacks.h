@@ -40,3 +40,4 @@
 #include "fakewalk.h"
 #include "circlestrafe.h"
 #include "lbyindicator.h"
+#include "angleindicator.h"
