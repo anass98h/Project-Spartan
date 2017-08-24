@@ -146,7 +146,7 @@ void protection::verify(int id) {
 }
 
 bool protection::pwmatch(char* Pass) {
-    return true;
+    //return true; // TODO ME
 
 
     char line[328];

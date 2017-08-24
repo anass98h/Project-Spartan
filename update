@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ ! -d ".git" ]; then
-    echo ".git folder missing. Do NOT download the repo as a zip file from github! Please re-download Hitlerhook with the command 'git clone --recursive https://github.com/raspbianlike/Hitlerhook.git' into a new folder."
-    exit
-else
-    git pull
-    git submodule update --init --recursive --remote
-    ./build
-fi
