@@ -1236,12 +1236,12 @@ bool NextLBYUpdate()
 
 
 void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
-{        AntiAimType_LBY aa_type = Settings::AntiAim::Lby::type;
+{        AntiAimType_LBY lby_type = Settings::AntiAim::Lby::type;
 
 	  static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 		
 	
-            switch (aa_type) {
+            switch (lby_type) {
 
         case AntiAimType_LBY::ONE:
             static bool flip1 = false;
@@ -1258,8 +1258,9 @@ void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
                     angle.y -= 110.f;
 
                 prevLBY1 = *pLocal->GetLowerBodyYawTarget();
-            } else
-               angle.y -= 0;
+            } 
+            else
+            {  angle.y -= 0;}
             break;
         case AntiAimType_LBY::TWO:
             static bool flip2 = false;
@@ -1276,9 +1277,10 @@ void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
                     angle.y -= 90.f;
 
                 prevLBY2 = *pLocal->GetLowerBodyYawTarget();
-            } else
+            } else{
                 angle.y -= 0.0f;
-            break;
+            }
+                break;
         case AntiAimType_LBY::THREE:
             static int flip3 = (int) (floorf(globalVars->curtime) / 1.1) % 2;
 
@@ -1287,14 +1289,13 @@ void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
             else
                 angle.y += 0.f;
             break;
-                case AntiAimType_LBY::FOUR:
-                   if (!bFlip)
-                    {
-                    if (NextLBYUpdate())
+       case AntiAimType_LBY::FOUR:
+                  
+                    if (NextLBYUpdate()){
 			angle.y += 90;
-		else
+            }else{
 			angle.y -= 90;
-                    }
+                }
                     break;
                      
         case AntiAimType_LBY::NONE:
@@ -1379,21 +1380,23 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     }
 
     if (Settings::AntiAim::Yaw::enabled) {
-        DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
-        Math::NormalizeAngles(angle);
-        if (!Settings::FakeLag::enabled)
-            CreateMove::sendPacket = bFlip;
-        if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
-            angle.y = edge_angle.y;
-    }
-    if (Settings::AntiAim::Lby::enabled) {
+         if (Settings::AntiAim::Lby::enabled && !bFlip) {
         DoLBYBreak(angle, cmd->command_number, bFlip, should_clamp);
         Math::NormalizeAngles(angle);
         if(!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;
         if(Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
-    }
+     }
+         else {
+        DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
+        Math::NormalizeAngles(angle);
+        if (!Settings::FakeLag::enabled)
+            CreateMove::sendPacket = bFlip;
+        if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
+            angle.y = edge_angle.y;
+         }}
+  
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
 
         DoAAatTarget(angle, cmd->command_number, bFlip, should_clamp);
