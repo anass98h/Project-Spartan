@@ -1366,21 +1366,23 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
     cmd->viewangles = angle;
 
-    if (Settings::AntiAim::Yaw::antiResolver) {
+    if (Settings::AntiAim::Yaw::antiResolver)
+    {
         static bool antiResolverFlip = false;
-        if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() + 35) {
+        if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
+        {
+            if (antiResolverFlip)
+                cmd->viewangles.y += 60.f;
+            else
+                cmd->viewangles.y -= 60.f;
 
-            cmd->viewangles.y = 110;
+            antiResolverFlip = !antiResolverFlip;
 
-        } else if (cmd->viewangles.y > *localplayer->GetLowerBodyYawTarget() - 35) {
-
-            cmd->viewangles.y = -110;
-
-        }
-
-        if (should_clamp) {
-            Math::NormalizeAngles(cmd->viewangles);
-            Math::ClampAngles(cmd->viewangles);
+            if (should_clamp)
+            {
+                Math::NormalizeAngles(cmd->viewangles);
+                Math::ClampAngles(cmd->viewangles);
+            }
         }
     }
 
