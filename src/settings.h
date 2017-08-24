@@ -59,8 +59,8 @@ enum class AntiAimType_Y : int {
     TANK2,
     TANK3,
     LBYBREAK,
-    LBYSPIN,
     FAKELBY,
+    LBYSPIN,
     RANDOMBACKJITTER,
     CASUALJITTER,
     LBYJITTER,
@@ -93,6 +93,7 @@ enum class AntiAimType_LBY : int {
     ONE,
     TWO,
     THREE,
+    FOUR,
     NONE,
 };
 

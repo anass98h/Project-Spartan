@@ -12,7 +12,7 @@ void HvH::RenderTab() {
 
     };
     const char* lbyTypes[] = {
-        "Breaker 1", "Breaker 2", "Breaker 3", "NONE",
+        "Breaker 1", "Breaker 2", "Breaker 3","Breaker 4", "NONE",
     };
     const char* zTypes[] = {
         "Reverse", "Autismflip", "TEST",
@@ -71,10 +71,7 @@ void HvH::RenderTab() {
                     {
                         if(ImGui::Combo(XORSTR("##LBYTYPE"), (int*) & Settings::AntiAim::Lby::type, lbyTypes, IM_ARRAYSIZE(lbyTypes)))
                         {
-                            if (Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE)
-                            {
-                                Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
-                            }
+                           
                             if (Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE)
                             {
                                 Settings::AntiAim::Lby::enabled = false;
