@@ -113,7 +113,6 @@ bool protection::isVerified() {
 }
 
 void protection::verify(int id) {
-
     char line2 [128];
     std::string result2;
 
@@ -147,7 +146,7 @@ void protection::verify(int id) {
 }
 
 bool protection::pwmatch(char* Pass) {
-
+    return true;
 
 
     char line[328];
