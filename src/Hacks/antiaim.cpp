@@ -1366,7 +1366,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     bFlip = !bFlip;
     FakeLag::bFlipping = bFlip;
 
-    bool should_clamp = true;
+    bool should_clamp = Settings::AntiAim::allowUntrustedAngles;
 
     if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS()) {
         if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)

@@ -273,6 +273,10 @@ void HvH::RenderTab() {
                         }
                         }
                         ImGui::EndChild();
+
+                        ImGui::Separator();
+
+                        ImGui::Checkbox("Untrusted Angles", &Settings::AntiAim::allowUntrustedAngles);
                     }
 
 
