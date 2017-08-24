@@ -1,6 +1,6 @@
     #include "aimbot.h"
 #include "autowall.h"
-
+//http://pastebin.com/raw/pQTLeXy8 <- Lagcomp by Sharklaser
 // Default aimbot settings
 bool Settings::Aimbot::enabled = false;
 bool Settings::Aimbot::pSilent = false;
