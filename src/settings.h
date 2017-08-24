@@ -59,8 +59,8 @@ enum class AntiAimType_Y : int {
     TANK2,
     TANK3,
     LBYBREAK,
+    FAKELBY, //Right order now
     LBYSPIN,
-    FAKELBY,
     RANDOMBACKJITTER,
     CASUALJITTER,
     LBYJITTER,

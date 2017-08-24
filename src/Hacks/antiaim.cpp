@@ -1331,14 +1331,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     }
 
     if (Settings::AntiAim::Yaw::enabled) {
-        DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
-        Math::NormalizeAngles(angle);
-        if (!Settings::FakeLag::enabled)
-            CreateMove::sendPacket = bFlip;
-        if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
-            angle.y = edge_angle.y;
-    }
-    if (Settings::AntiAim::Lby::enabled) {
+            if (Settings::AntiAim::Lby::enabled && !bFlip) {
         DoAntiAimLBY(angle, cmd->command_number, bFlip, should_clamp);
         Math::NormalizeAngles(angle);
         if (!Settings::FakeLag::enabled)
@@ -1346,6 +1339,15 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
     }
+        else{
+        DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
+        Math::NormalizeAngles(angle);
+        if (!Settings::FakeLag::enabled)
+            CreateMove::sendPacket = bFlip;
+        if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
+            angle.y = edge_angle.y;
+    }
+}
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
 
         DoAAatTarget(angle, cmd->command_number, bFlip, should_clamp);
