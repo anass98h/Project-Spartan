@@ -567,6 +567,9 @@ namespace Settings {
             extern char scriptY[512];
             extern char scriptY2[512];
         }
+
+        extern bool allowUntrustedAngles;
+
     }
 
     namespace Resolver {

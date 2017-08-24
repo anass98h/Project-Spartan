@@ -1,4 +1,5 @@
 #include "antiaim.h"
+bool Settings::AntiAim::allowUntrustedAngles = false;
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
 AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE; // Dank Roll
@@ -1366,7 +1367,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     bFlip = !bFlip;
     FakeLag::bFlipping = bFlip;
 
-    bool should_clamp = true;
+    bool should_clamp = Settings::AntiAim::allowUntrustedAngles;
 
     if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS()) {
         if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
