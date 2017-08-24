@@ -23,7 +23,9 @@ void Resolver::Hug(C_BasePlayer* enemy,C_BasePlayer* pLocal) {
 	static bool isLBYPredictited[65];
     static float bodyeyedelta = enemy->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 //-------------------NEW MEMES WOOOOH --------------------------------------------------------
-   
+    //IServer* nci ;
+    //float nn,s;
+    //nci->GetNetStats(s,nn);
     if (OldLowerBodyYaws[enemy->GetIndex()] == *enemy->GetLowerBodyYawTarget()) {
 		if (oldTimer[enemy->GetIndex()] + 1.1 >= globalVars->curtime) {
 			oldTimer[enemy->GetIndex()] = globalVars->curtime;
@@ -40,7 +42,7 @@ void Resolver::Hug(C_BasePlayer* enemy,C_BasePlayer* pLocal) {
 	}
 	else {
 		OldLowerBodyYaws[enemy->GetIndex()] = *enemy->GetLowerBodyYawTarget();
-		oldTimer[enemy->GetIndex()] = globalVars->curtime - (*csPlayerResource)->GetPing(enemy->GetIndex());// TODO replace magic 50 through outgoing ping
+		oldTimer[enemy->GetIndex()] = globalVars->curtime - 50;// TODO replace magic 50 through outgoing ping
 		isLBYPredictited[enemy->GetIndex()] = false;
 	}
 
