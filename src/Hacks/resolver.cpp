@@ -61,7 +61,7 @@ void Resolver::Hug(C_BasePlayer* enemy,C_BasePlayer* pLocal) {
         }
          case ResolverHugtype::PASTEHUB:
         {   
-             if (enemy->GetVelocity().Length2D() > 0.1f && !LowerBodyYawChanged(enemy))
+             if (!LowerBodyYawChanged(enemy))
              {  float fwyaw = 0;
                  if(Shotsmissed == 0)
                  {
@@ -118,11 +118,11 @@ void Resolver::Hug(C_BasePlayer* enemy,C_BasePlayer* pLocal) {
 		else if ( OldLowerBodyYaws[enemy->GetIndex()] == CurYaw ) {
 			
 			
-			  enemy->GetEyeAngles()->y += OldYawDeltas[enemy->GetIndex()];
+			  enemy->GetEyeAngles()->y -= OldYawDeltas[enemy->GetIndex()];
 
 		}
         
-                else if (Shotsmissed > 3 && isLBYPredictited[enemy->GetIndex()] == true)
+                else if (Shotsmissed > 3 && isLBYPredictited[enemy->GetIndex()] == true && LowerBodyYawChanged(enemy))
                 {
 		enemy->GetEyeAngles()->y = *enemy->GetLowerBodyYawTarget();
                  }
@@ -305,7 +305,7 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
             float lby = *target->GetLowerBodyYawTarget();
 
             /* Lby will update every 0.022 seconds while moving (assume that is just all the time) */
-            if (target->GetVelocity().Length2D() > 0.1f && LowerBodyYawChanged(target)) {
+            if (target->GetVelocity().Length2D() > 0.1f && !LowerBodyYawChanged(target)) {
                 /*
                 float flCurTime = globalVars->curtime;
                 static float flTimeUpdate = 0.5f;
@@ -325,11 +325,11 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
                     lby -= 35.f;
                 }
                 */
-                
-                target->GetEyeAngles()->y = lby;
+                 Hug(target,me);
+               
                 shotATT = true;
             } else {
-                Hug(target,me);
+                target->GetEyeAngles()->y = lby;
                 shotATT = true;
             }
         }

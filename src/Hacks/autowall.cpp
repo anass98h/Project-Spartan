@@ -2,20 +2,29 @@
 
 static float GetHitgroupDamageMultiplier(HitGroups iHitGroup) {
     switch (iHitGroup) {
+        case HitGroups::HITGROUP_GENERIC:
+            return 1.0f;
         case HitGroups::HITGROUP_HEAD:
             return 4.0f;
         case HitGroups::HITGROUP_CHEST:
-        case HitGroups::HITGROUP_LEFTARM:
-        case HitGroups::HITGROUP_RIGHTARM:
             return 1.0f;
         case HitGroups::HITGROUP_STOMACH:
-            return 1.25f;
+            return 1.5f;
+        case HitGroups::HITGROUP_LEFTARM:
+            return 1.0f;
+        case HitGroups::HITGROUP_RIGHTARM:
+            return 1.0f;
         case HitGroups::HITGROUP_LEFTLEG:
+            return 0.75f;
         case HitGroups::HITGROUP_RIGHTLEG:
             return 0.75f;
+        case HitGroups::HITGROUP_GEAR:
+                1.0f;
         default:
-            return 1.0f;
+            break;
+            
     }
+    return 1.0f;
 }
 
 static void ScaleDamage(HitGroups hitgroup, C_BasePlayer* enemy, float weapon_armor_ratio, float& current_damage) {
@@ -24,7 +33,7 @@ static void ScaleDamage(HitGroups hitgroup, C_BasePlayer* enemy, float weapon_ar
     if (enemy->GetArmor() > 0) {
         if (hitgroup == HitGroups::HITGROUP_HEAD) {
             if (enemy->HasHelmet())
-                current_damage *= weapon_armor_ratio * 0.5f;
+                current_damage *= weapon_armor_ratio * 1.5f;
         } else
             current_damage *= weapon_armor_ratio * 0.5f;
     }
@@ -136,7 +145,7 @@ static bool HandleBulletPenetration(CCSWeaponInfo* weaponInfo, Autowall::FireBul
     thickness *= v34;
     thickness /= 24.0f;
 
-    float lost_damage = fmaxf(0.0f, v35 + thickness);
+    float lost_damage = fmaxf(0.0f, v35 + thickness) - 1.6f;
 
     if (lost_damage > data.current_damage)
         return false;
