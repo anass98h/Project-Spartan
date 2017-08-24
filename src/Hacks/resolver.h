@@ -44,11 +44,11 @@ namespace Resolver
     float GetDeltaByComparingTicks(const std::deque<CTickRecord>& l);
     bool DeltaKeepsChanging(const std::deque<CTickRecord>& cur, float tolerance = 15.f);
     bool LBYKeepsChanging(const std::deque<CTickRecord>& cur, float tolerance = 15.f);
-    bool IsEntityMoving(C_BasePlayer* enemy);
-	bool& LowerBodyYawChanged(C_BasePlayer* enemy);
-	void StoreVars(C_BasePlayer* enemy);
-	void StoreVars(C_BasePlayer* enemy, QAngle ang, float lby, float simtime, float tick);
-	bool& BacktrackThisTick(C_BasePlayer* enemy);
+    bool IsEntityMoving(C_BasePlayer* Circlebian);
+	bool& LowerBodyYawChanged(C_BasePlayer* Circlebian);
+	void StoreVars(C_BasePlayer* Circlebian);
+	void StoreVars(C_BasePlayer* Circlebian, QAngle ang, float lby, float simtime, float tick);
+	bool& BacktrackThisTick(C_BasePlayer* Circlebian);
 }
 
 const inline float GetDelta(float a, float b) {
