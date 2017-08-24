@@ -1,4 +1,5 @@
 #include "antiaim.h"
+bool Settings::AntiAim::allowUntrustedAngles = false;
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
 AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE; // Dank Roll
