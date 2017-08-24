@@ -1236,10 +1236,10 @@ bool NextLBYUpdate()
 }
 
 
-void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
+void DoLBYBreak(CUserCmd * pCmd, C_BasePlayer* pLocal, bool& bFlip)
 {        AntiAimType_LBY aa_type = Settings::AntiAim::Lby::type;
 
-	  static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+	
 		
 	
             switch (aa_type) {
@@ -1254,13 +1254,13 @@ void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
                     flip1 = !flip1;
 
                 if (flip1)
-                    angle.y += 110.f;
+                    pCmd->viewangles.y += 110.f;
                 else
-                    angle.y -= 110.f;
+                    pCmd->viewangles.y -= 110.f;
 
                 prevLBY1 = *pLocal->GetLowerBodyYawTarget();
             } else
-               angle.y -= 0;
+               pCmd->viewangles.y -= 0;
             break;
         case AntiAimType_LBY::TWO:
             static bool flip2 = false;
@@ -1272,32 +1272,31 @@ void DoLBYBreak(QAngle& angle, int command_number, bool bFlip, bool& clamp)
                     flip2 = !flip2;
 
                 if (flip2)
-                    angle.y += 90.f;
+                    pCmd->viewangles.y += 90.f;
                 else
-                    angle.y -= 90.f;
+                    pCmd->viewangles.y -= 90.f;
 
                 prevLBY2 = *pLocal->GetLowerBodyYawTarget();
             } else
-                angle.y -= 0.0f;
+                pCmd->viewangles.y -= 0.0f;
             break;
         case AntiAimType_LBY::THREE:
             static int flip3 = (int) (floorf(globalVars->curtime) / 1.1) % 2;
 
             if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)
-                angle.y += 225.f + flip3 * 145.0f;
+                pCmd->viewangles.y += 225.f + flip3 * 145.0f;
             else
-                angle.y += 0.f;
+                pCmd->viewangles.y += 0.f;
             break;
                 case AntiAimType_LBY::FOUR:
                    if (!bFlip)
                     {
                     if (NextLBYUpdate())
-			angle.y += 90;
+			pCmd->viewangles.y += 90;
 		else
-			angle.y -= 90;
-                    }
+			pCmd->viewangles.y -= 90;
                     break;
-                     
+                     }
         case AntiAimType_LBY::NONE:
             Settings::AntiAim::Lby::enabled = false;
             break;
@@ -1388,7 +1387,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
             angle.y = edge_angle.y;
     }
     if (Settings::AntiAim::Lby::enabled) {
-        DoLBYBreak(angle, cmd->command_number, bFlip, should_clamp);
+        DoLBYBreak(cmd,localplayer,bFlip);
         Math::NormalizeAngles(angle);
         if(!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;

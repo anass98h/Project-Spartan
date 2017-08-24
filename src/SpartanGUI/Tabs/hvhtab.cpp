@@ -71,10 +71,7 @@ void HvH::RenderTab() {
                     {
                         if(ImGui::Combo(XORSTR("##LBYTYPE"), (int*) & Settings::AntiAim::Lby::type, lbyTypes, IM_ARRAYSIZE(lbyTypes)))
                         {
-                           if (Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE )
-                            {
-                                Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
-                            }
+                           
                             if (Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE)
                             {
                                 Settings::AntiAim::Lby::enabled = false;
