@@ -7,6 +7,7 @@
 #include "autodefuse.h"
 #include "autostrafe.h"
 #include "bhop.h"
+#include "backtracking.h"
 #include "chams.h"
 #include "clantagchanger.h"
 #include "customglow.h"

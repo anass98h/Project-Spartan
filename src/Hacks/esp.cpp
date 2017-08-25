@@ -90,6 +90,7 @@ bool Settings::ESP::Spread::enabled = false;
 bool Settings::ESP::Spread::spreadLimit = false;
 
 bool Settings::ESP::AutoWall::debugView = false;
+bool Settings::ESP::Backtracking::enabled = false;
 
 struct Footstep {
     long expiration;
@@ -565,7 +566,8 @@ static void DrawAutoWall(C_BasePlayer *player) {
     }
 }
 
-static void DrawHeaddot(C_BasePlayer* player) {
+static void DrawHeaddot(C_BasePlayer* player)
+{
 
     Vector head2D;
     Vector head3D = player->GetBonePosition((int) Bone::BONE_HEAD);
@@ -577,6 +579,9 @@ static void DrawHeaddot(C_BasePlayer* player) {
         bIsVisible = Entity::IsVisible(player, (int) Bone::BONE_HEAD, 180.f, Settings::ESP::Filters::smokeCheck);
 
     Draw::FilledCircle(Vector2D(head2D.x, head2D.y), 10, Settings::ESP::HeadDot::size, Color::FromImColor(ESP::GetESPPlayerColor(player, bIsVisible)));
+
+
+
 
     /*
     for( int bone = 127; bone >= (int)Bone::BONE_HIP; bone-- )
@@ -618,6 +623,18 @@ static void DrawHeaddot(C_BasePlayer* player) {
     Draw::Text(Vector2D(min2D.x, min2D.y), "Min", esp_font, Color(255, 0, 255, 255));
     Draw::Text(Vector2D(max2D.x, max2D.y), "Max", esp_font, Color(255, 0, 255, 255));
      */
+}
+
+static void DrawBacktrackIndicator(C_BasePlayer *player)
+{
+    // Like footprints but for the head xDDDDD D DD D D D DD D D
+    Vector headprints2D[Backtracking::MAX_QUEUE_SIZE+1];
+    for( int i = 1; i < Backtracking::lagRecords[player->GetIndex()].size(); i++ ){
+        debugOverlay->ScreenPosition(Vector(Backtracking::lagRecords[player->GetIndex()][i].headPos.x,
+                                            Backtracking::lagRecords[player->GetIndex()][i].headPos.y,
+                                            Backtracking::lagRecords[player->GetIndex()][i].headPos.z), headprints2D[i]);
+        Draw::FilledCircle(Vector2D(headprints2D[i].x, headprints2D[i].y), 10, Settings::ESP::HeadDot::size, Color::FromImColor(ESP::GetESPPlayerColor(player, true)));
+    }
 }
 
 static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info_t player_info) {
@@ -860,10 +877,10 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 
     if (Settings::ESP::HeadDot::enabled)
         DrawHeaddot(player);
-
+    if (Settings::ESP::Backtracking::enabled)
+        DrawBacktrackIndicator(player);
     if (Settings::ESP::AutoWall::debugView)
         DrawAutoWall(player);
-
 }
 
 static void DrawBomb(C_BaseCombatWeapon* bomb) {
