@@ -6,7 +6,7 @@
 #include "../interfaces.h"
 #include "../Utils/pstring.h"
 #include "../Utils/entity.h"
-#include "backtracking.h"
+#include "../SDK/CTickRecord.h"
 #include <random>
 
 class CResolveInfo {
