@@ -962,7 +962,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             	
             }
             else
-            	angle.y -=*pLocal->GetLowerBodyYawTarget() - 90.0f;
+            	angle.y -=90.0f;
             break;
         case AntiAimType_Y::SIDEWAYSLEFT:
 	        if(Settings::AntiAim::Yaw::dynamicAA)
