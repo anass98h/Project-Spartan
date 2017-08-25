@@ -94,11 +94,26 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                  
                  else
                  {
-                     fwyaw -=bodyeyedelta;
+                     fwyaw +=bodyeyedelta;
                  }  
                  
              Circlebian->GetEyeAngles()->y = fwyaw ;
              }
+             else if (HasStaticRealAngle(cur))
+                Circlebian->GetEyeAngles()->y =
+                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 10 : -10);
+            else if (HasStaticYawDifference(cur))
+                Circlebian->GetEyeAngles()->y =
+                    Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
+            else if (HasSteadyDifference(cur)) {
+                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
+                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
+                float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
+                Circlebian->GetEyeAngles()->y = (lbydif / tickdif) * ntickdif;
+            } else if (DeltaKeepsChanging(cur))
+                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks(cur);
+            else if (LBYKeepsChanging(cur))
+                Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
              else{
 		if (OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw) {
 			OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
@@ -530,7 +545,7 @@ void Resolver::CreateMove(CUserCmd *cmd)
 
         Resolver::StoreVars(target);
       
-        StartLagCompensation(target,cmd);
+     //   StartLagCompensation(target,cmd);
      
     }
 }
