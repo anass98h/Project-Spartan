@@ -1317,7 +1317,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     bFlip = !bFlip;
     FakeLag::bFlipping = bFlip;
 
-    bool should_clamp = Settings::AntiAim::allowUntrustedAngles;
+    bool should_clamp = !Settings::AntiAim::allowUntrustedAngles;
 
     if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS()) {
         if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
@@ -1332,7 +1332,8 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
     if (Settings::AntiAim::Yaw::enabled) {
         DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
-        Math::NormalizeAngles(angle);
+        if(should_clamp)
+            Math::NormalizeAngles(angle);
         if (!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
@@ -1340,7 +1341,8 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     }
     if (Settings::AntiAim::Lby::enabled) {
         DoAntiAimLBY(angle, cmd->command_number, bFlip, should_clamp);
-        Math::NormalizeAngles(angle);
+        if(should_clamp)
+            Math::NormalizeAngles(angle);
         if (!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)

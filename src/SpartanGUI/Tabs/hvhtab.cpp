@@ -183,11 +183,11 @@ void HvH::RenderTab() {
 
             ImGui::Separator();
 
-            ImGui::Text("Misc");
+            ImGui::Text("Indicators");
 
-            ImGui::Checkbox("LBY Indicator", &Settings::lbyindicator::enabled);
+            ImGui::Checkbox("Lower Body Yaw", &Settings::lbyindicator::enabled);
 
-            ImGui::Checkbox("Angle Indicator", &Settings::AngleIndicator::enabled);
+            ImGui::Checkbox("Angle", &Settings::AngleIndicator::enabled);
 
             ImGui::Separator();
 
