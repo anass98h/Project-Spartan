@@ -1011,7 +1011,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             clamp = false;
             temp = angle.y + 90.0f;
             temp_qangle = QAngle(0.0f, temp, 0.0f);
-            Math::NormalizeAngles(temp_qangle);
+            if(!Settings::AntiAim::allowUntrustedAngles)
+                Math::NormalizeAngles(temp_qangle);
             temp = temp_qangle.y;
 
             if (temp > -45.0f)

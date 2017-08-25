@@ -59,9 +59,10 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##YFAKETYPE"), (int *) &Settings::AntiAim::Yaw::typeFake, yTypes,
                                      IM_ARRAYSIZE(yTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
+                                !Settings::AntiAim::allowUntrustedAngles &&
                             Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP) {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
-                            ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
+
                         }
                     }
                     if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int *) &Settings::AntiAim::Yaw::type, yTypes,
@@ -70,6 +71,7 @@ void HvH::RenderTab() {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
                         }
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
+                                !Settings::AntiAim::allowUntrustedAngles &&
                             Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP) {
                             Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
@@ -104,6 +106,7 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##ZTYPE"), (int *) &Settings::AntiAim::Roll::type, zTypes,
                                      IM_ARRAYSIZE(zTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
+                                !Settings::AntiAim::allowUntrustedAngles &&
                             Settings::AntiAim::Roll::type >= AntiAimType_Z::REVERSE) {
 
 
@@ -127,6 +130,7 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##XTYPE"), (int *) &Settings::AntiAim::Pitch::type, xTypes,
                                      IM_ARRAYSIZE(xTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
+                                !Settings::AntiAim::allowUntrustedAngles &&
                             Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE) {
                             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
