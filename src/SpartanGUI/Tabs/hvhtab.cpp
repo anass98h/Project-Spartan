@@ -63,6 +63,7 @@ void HvH::RenderTab() {
                             Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP) {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
 
+                            ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
                     if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int *) &Settings::AntiAim::Yaw::type, yTypes,
