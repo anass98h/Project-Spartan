@@ -19,6 +19,7 @@
 #include "SpartanGUI/Spartangui.h"
 #include "Hacks/esp.h"
 #include "Hacks/lbyindicator.h"
+#include "Hacks/angleindicator.h"
 
 enum class SmoothType : int {
     SLOW_END,
@@ -527,6 +528,12 @@ namespace Settings {
             extern int highBound; // in ms
             extern int lastRoll;
         }
+    }
+
+    namespace AngleIndicator {
+
+        extern bool enabled;
+
     }
 
     namespace AntiAim {

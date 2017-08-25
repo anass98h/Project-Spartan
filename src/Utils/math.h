@@ -7,6 +7,7 @@ namespace Math {
 	void AngleVectors(const QAngle &angles, Vector &forward);
 	void NormalizeAngles(QAngle& angle);
 	void ClampAngles(QAngle& angle);
+	float RoundFloat(float f);
 	void CorrectMovement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove);
 	float GetFov(const QAngle &viewAngle, const QAngle &aimAngle);
 	float DotProduct(Vector &v1, const float* v2);
