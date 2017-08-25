@@ -168,15 +168,36 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         	
         	if(LowerBodyYawChanged(Circlebian))
         	{
-        		Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget);
+        		Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
 
         	}
         	else
         	{ 
-        	Circlebian->GetEyeAngles()->y -= 180;
+        	   int num3 = Shotsmissed % 6;
+            switch (num3)
+            {
+                case 0:
+                    Circlebian->GetEyeAngles()->y -= 180.0f;
+                    break;
+                case 1:
+                    Circlebian->GetEyeAngles()->y += 90.0f;
+                    break;
+                case 2:
+                    Circlebian->GetEyeAngles()->y -= 90.0f;
+                    break;
+                case 3:
+                    Circlebian->GetEyeAngles()->y = 0.0f;
+                    break;
+                case 4:
+                    Circlebian->GetEyeAngles()->y = -180.0f;
+                    break;
+                case 5:
+                    Circlebian->GetEyeAngles()->y = -30.0f;
+                    break;
+            }
 
            
-        }
+            }
         break; }
         case ResolverHugtype::BRUTE1:
         {
@@ -215,17 +236,13 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
-            else if (HasSteadyDifference(cur)) {
-                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
-                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
-                float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
-                Circlebian->GetEyeAngles()->y = (lbydif / tickdif) * ntickdif;
-            } else if (DeltaKeepsChanging(cur))
+            
+             else if (DeltaKeepsChanging(cur))
                 Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks(cur);
             else if (LBYKeepsChanging(cur))
                 Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
             else
-                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180;
+                Circlebian->GetEyeAngles()->y += (cur.front().m_flLowerBodyYawTarget) + 180;
             break;
         }
         case ResolverHugtype::LUCKY:

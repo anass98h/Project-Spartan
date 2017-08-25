@@ -465,6 +465,8 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("spinFactor")][XORSTR("value")] = Settings::spinFactor::value;
     settings[XORSTR("customYaw")][XORSTR("value")] = Settings::customYaw::value;
     settings[XORSTR("customYaw2")][XORSTR("value")] = Settings::customYaw2::value;
+    settings[XORSTR("customYawLby")][XORSTR("enabled")] = Settings::customYaw::lby;
+    settings[XORSTR("customYaw2Lby")][XORSTR("enabled")] = Settings::customYaw2::lby;
     settings[XORSTR("FakeLag")][XORSTR("adaptive")] = Settings::FakeLag::adaptive;
 
     settings[XORSTR("AutoAccept")][XORSTR("enabled")] = Settings::AutoAccept::enabled;

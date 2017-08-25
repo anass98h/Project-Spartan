@@ -4,6 +4,7 @@ int Settings::spinFactor::value = 1;
 int Settings::customYaw::value = 1;
 int Settings::customYaw2::value = 1;
 
+
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
@@ -301,6 +302,7 @@ void HvH::RenderTab() {
 
                             {
                                 ImGui::PushItemWidth(-1);
+                                ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw::lby);
                                 ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value, -10000, 10000,
                                                  XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
@@ -314,6 +316,7 @@ void HvH::RenderTab() {
 
                             {
                                 ImGui::PushItemWidth(-1);
+                                ImGui::Checkbox(XORSTR("Use LBY :)"), &Settings::customYaw2::lby);
                                 ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, -10000, 10000,
                                                  XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();

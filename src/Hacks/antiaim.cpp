@@ -23,6 +23,9 @@ char Settings::AntiAim::Lua::scriptY2[512];
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
+bool Settings::customYaw::lby;
+bool Settings::customYaw2::lby;
+
 // if the script is the same, we can skip some initialization.
 char luaLastX[sizeof (Settings::AntiAim::Lua::scriptX)];
 char luaLastY[sizeof (Settings::AntiAim::Lua::scriptY)];
@@ -511,11 +514,29 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             angle.y = fmodf(globalVars->curtime * factor, 360.0);
             break;
         case AntiAimType_Y::CUSTOM:
-            clamp = false;
+            
+            if(Settings::customYaw::lby)
+            {
+                if(Settings::customYaw::value > 0)
+                    angle.y = *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw::value);
+                else
+                    angle.y = *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw::value);
+
+            }
+            else
             angle.y = Settings::customYaw::value;
             break;
         case AntiAimType_Y::CUSTOM2:
-            clamp = false;
+          
+            if(Settings::customYaw2::lby)
+            {
+
+                if(Settings::customYaw2::value > 0)
+                    angle.y = *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
+                else
+                    angle.y = *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
+            }
+            else
             angle.y = Settings::customYaw2::value;
             break;
         case AntiAimType_Y::APOSTROPHE:
