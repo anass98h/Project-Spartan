@@ -38,19 +38,17 @@ float Math::RoundFloat(float f)
 
 void Math::NormalizeAngles(QAngle& angle)
 {
-	if(!Settings::AntiAim::allowUntrustedAngles) {
-		while (angle.x > 89.0f)
-			angle.x -= 180.0f;
+    while (angle.x > 89.0f)
+        angle.x -= 180.0f;
 
-		while (angle.x < -89.0f)
-			angle.x += 180.0f;
+    while (angle.x < -89.0f)
+        angle.x += 180.0f;
 
-		while (angle.y > 180.0f)
-			angle.y -= 360.0f;
+    while (angle.y > 180.0f)
+        angle.y -= 360.0f;
 
-		while (angle.y < -180.0f)
-			angle.y += 360.0f;
-	}
+    while (angle.y < -180.0f)
+        angle.y += 360.0f;
 }
 void Math::NormalizePitch(float &pitch)
 {
