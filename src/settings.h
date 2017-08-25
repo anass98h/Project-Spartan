@@ -919,9 +919,11 @@ namespace Settings {
     }
     namespace customYaw {
         extern int value;
+        extern bool lby;
     }
     namespace customYaw2 {
         extern int value;
+        extern bool lby;
     }
 
     namespace AutoAccept {
