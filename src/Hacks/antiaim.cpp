@@ -1319,7 +1319,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
     bool should_clamp = !Settings::AntiAim::allowUntrustedAngles;
 
-    if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS()) {
+    if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS() && should_clamp) {
         if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
             Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
 
