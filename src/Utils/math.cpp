@@ -1,4 +1,5 @@
 #include "math.h"
+#include "../settings.h"
 
 void inline Math::SinCos(float radians, float *sine, float *cosine)
 {
@@ -37,17 +38,19 @@ float Math::RoundFloat(float f)
 
 void Math::NormalizeAngles(QAngle& angle)
 {
-	while (angle.x > 89.0f)
-		angle.x -= 180.0f;
+	if(!Settings::AntiAim::allowUntrustedAngles) {
+		while (angle.x > 89.0f)
+			angle.x -= 180.0f;
 
-	while (angle.x < -89.0f)
-		angle.x += 180.0f;
+		while (angle.x < -89.0f)
+			angle.x += 180.0f;
 
-	while (angle.y > 180.0f)
-		angle.y -= 360.0f;
+		while (angle.y > 180.0f)
+			angle.y -= 360.0f;
 
-	while (angle.y < -180.0f)
-		angle.y += 360.0f;
+		while (angle.y < -180.0f)
+			angle.y += 360.0f;
+	}
 }
 void Math::NormalizePitch(float &pitch)
 {
@@ -66,17 +69,19 @@ void Math::NormalizeYaw(float &yaw)
 
 void Math::ClampAngles(QAngle& angle)
 {
-	if (angle.y > 180.0f)
-		angle.y = 180.0f;
-	else if (angle.y < -180.0f)
-		angle.y = -180.0f;
+	if(!Settings::AntiAim::allowUntrustedAngles) {
+		if (angle.y > 180.0f)
+			angle.y = 180.0f;
+		else if (angle.y < -180.0f)
+			angle.y = -180.0f;
 
-	if (angle.x > 89.0f)
-		angle.x = 89.0f;
-	else if (angle.x < -89.0f)
-		angle.x = -89.0f;
+		if (angle.x > 89.0f)
+			angle.x = 89.0f;
+		else if (angle.x < -89.0f)
+			angle.x = -89.0f;
 
-	angle.z = 0;
+		angle.z = 0;
+	}
 }
 
 void Math::CorrectMovement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove)
