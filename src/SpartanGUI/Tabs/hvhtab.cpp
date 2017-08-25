@@ -8,7 +8,7 @@ void HvH::RenderTab() {
 
     const char *yTypes[] = {
             "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "Apostrophe",
-            "Tank", "Tank 2", "Tank 3", "LBY Breaker", "LBY Spin", "Fake LBY", "Backjitter Random", "Casual Jitter",
+            "Tank", "Tank 2", "Tank 3", "LBY Breaker", "Fake LBY","LBY Spin",  "Backjitter Random", "Casual Jitter",
             "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards",
             "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", // safe
 

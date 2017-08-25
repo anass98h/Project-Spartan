@@ -1,7 +1,6 @@
-    #include "aimbot.h"
+#include "aimbot.h"
 #include "autowall.h"
 
-// Default aimbot settings
 bool Settings::Aimbot::enabled = false;
 bool Settings::Aimbot::pSilent = false;
 bool Settings::Aimbot::silent = false;
@@ -19,7 +18,9 @@ bool Settings::Aimbot::AutoAim::enabled = false;
 float Settings::Aimbot::AutoAim::fov = 180.0f;
 bool Settings::Aimbot::AutoAim::realDistance = false;
 bool Settings::Aimbot::AutoAim::closestBone = false;
-bool Settings::Aimbot::AutoAim::desiredBones[] = {true, true, true, true, true, true, true, // center mass
+bool Settings::Aimbot::AutoAim::desiredBones[] =
+{
+    true, true, true, true, true, true, true, // center mass
     false, false, false, false, false, false, false, // left arm
     false, false, false, false, false, false, false, // right arm
     false, false, false, false, false, // left leg
@@ -58,6 +59,7 @@ int Settings::Aimbot::HitChance::hitRays = 100;
 float Settings::Aimbot::HitChance::value = 0.5f;
 bool Settings::Aimbot::AutoCockRevolver::enabled = false;
 bool Settings::Aimbot::velocityCheck::enabled = false;
+bool Settings::Aimbot::backtrack = false;
 
 
 bool Aimbot::aimStepInProgress = false;
@@ -73,24 +75,19 @@ QAngle AimStepLastAngle;
 QAngle RCSLastPunch;
 
 int Aimbot::targetAimbot = -1;
-const int headVectors = 11;
+const int HEAD_VECTORS = 11;
 
 static xdo_t *xdo = xdo_new(NULL);
 
-std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons = {
+std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons =
+{
     { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
             SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-            false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false}},
+            false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
 };
-#define TIME_TO_TICKS( dt )		( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
-#define TICKS_TO_TIME( t )		( globalVars->interval_per_tick * ( t ) )
 
-static void StartLagCompensation(C_BasePlayer* pEntity,CUserCmd* cmd) {
-	float flSimTime = pEntity->GetSimulationTime();
-//is this how lagcomp works ? idk if not delete or spit on my feet 
-	cmd->tick_count = TIME_TO_TICKS(flSimTime + 0.031f); // +1 Send
-}
-static QAngle ApplyErrorToAngle(QAngle* angles, float margin) {
+static QAngle ApplyErrorToAngle(QAngle* angles, float margin)
+{
     QAngle error;
     error.Random(-1.0f, 1.0f);
     error *= margin;
@@ -98,15 +95,18 @@ static QAngle ApplyErrorToAngle(QAngle* angles, float margin) {
     return error;
 }
 
-static inline void ApplyOffsetToAngle(QAngle *angles, QAngle *offset) {
+static inline void ApplyOffsetToAngle(QAngle *angles, QAngle *offset)
+{
     angles->operator+=(*offset);
 }
 
-void Aimbot::XDOCleanup() {
+void Aimbot::XDOCleanup()
+{
     xdo_free(xdo);
 }
 
-bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localplayer) {
+bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localplayer)
+{
     if (!Settings::Aimbot::HitChance::enabled)
         return true;
 
@@ -151,7 +151,8 @@ bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localp
 }
 
 /* Fills points Vector. True if successful. False if not.  Credits for Original method - ReactiioN */
-static bool HeadMultiPoint(C_BasePlayer *player, Vector points[]) {
+static bool HeadMultiPoint(C_BasePlayer *player, Vector points[])
+{
     matrix3x4_t matrix[128];
 
     if (!player->SetupBones(matrix, 128, 0x100, 0.f))
@@ -174,7 +175,7 @@ static bool HeadMultiPoint(C_BasePlayer *player, Vector points[]) {
     Vector center = (mins + maxs) * 0.5f;
     // 0 - center, 1 - forehead, 2 - skullcap, 3 - upperleftear, 4 - upperrightear, 5 - uppernose, 6 - upperbackofhead
     // 7 - leftear, 8 - rightear, 9 - nose, 10 - backofhead
-    for (int i = 0; i < headVectors; i++) // set all points initially to center mass of head.
+    for (int i = 0; i < HEAD_VECTORS; i++) // set all points initially to center mass of head.
         points[i] = center;
     points[1].z += bbox->radius * 0.60f; // morph each point.
     points[2].z += bbox->radius * 1.25f; // ...
@@ -194,7 +195,8 @@ static bool HeadMultiPoint(C_BasePlayer *player, Vector points[]) {
     return true;
 }
 
-static float AutoWallBestSpot(C_BasePlayer *player, Vector &bestSpot) {
+static float AutoWallBestSpot(C_BasePlayer *player, Vector &bestSpot)
+{
     float bestDamage = Settings::Aimbot::AutoWall::value;
     const std::map<int, int> *modelType = Util::GetModelTypeBoneMap(player);
 
@@ -205,10 +207,10 @@ static float AutoWallBestSpot(C_BasePlayer *player, Vector &bestSpot) {
             continue;
         if (i == (int) DesiredBones::BONE_HEAD) // head multipoint
         {
-            Vector headPoints[headVectors];
+            Vector headPoints[HEAD_VECTORS];
             if (!HeadMultiPoint(player, headPoints))
                 continue;
-            for (int j = 0; j < headVectors; j++) {
+            for (int j = 0; j < HEAD_VECTORS; j++) {
                 Autowall::FireBulletData data;
                 float spotDamage = Autowall::GetDamage(headPoints[j], !Settings::Aimbot::friendly, data);
                 if (spotDamage > bestDamage) {
@@ -238,7 +240,8 @@ static float AutoWallBestSpot(C_BasePlayer *player, Vector &bestSpot) {
     return bestDamage;
 }
 
-static float GetRealDistanceFOV(float distance, QAngle angle, CUserCmd* cmd) {
+static float GetRealDistanceFOV(float distance, QAngle angle, CUserCmd* cmd)
+{
     /*    n
         w + e
           s        'real distance'
@@ -267,12 +270,14 @@ static float GetRealDistanceFOV(float distance, QAngle angle, CUserCmd* cmd) {
     return aimingAt.DistTo(aimAt);
 }
 
-static Vector VelocityExtrapolate(C_BasePlayer* player, Vector aimPos) {
+static Vector VelocityExtrapolate(C_BasePlayer* player, Vector aimPos)
+{
     return aimPos + (player->GetVelocity() * globalVars->interval_per_tick);
 }
 
 /* Original Credits to: https://github.com/goldenguy00 ( study! study! study! :^) ) */
-static Vector GetClosestSpot(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePlayer* enemy, AimTargetType aimTargetType = AimTargetType::FOV) {
+static Vector GetClosestSpot(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePlayer* enemy, AimTargetType aimTargetType = AimTargetType::FOV)
+{
     QAngle viewAngles;
     engine->GetViewAngles(viewAngles);
 
@@ -319,8 +324,29 @@ static Vector GetClosestSpot(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePla
     }
     return tempSpot;
 }
+static Vector GetClosestBacktrack(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePlayer* enemy, int *tickDiff)
+{
+    QAngle viewAngles;
+    engine->GetViewAngles(viewAngles);
+    // FOV Style Closest
+    float tempFov = Settings::Aimbot::AutoAim::fov;
+    Vector bestSpot = {0,0,0};
+    Vector pVecTarget = localPlayer->GetEyePosition();
+    for( int i = 1; i < Backtracking::lagRecords[enemy->GetIndex()].size(); i++ )
+    {
+        float cbFov = Math::GetFov(viewAngles, Math::CalcAngle(pVecTarget, Backtracking::lagRecords[enemy->GetIndex()][i].headPos));
+        if( cbFov < tempFov )
+        {
+            tempFov = cbFov;
+            bestSpot = Backtracking::lagRecords[enemy->GetIndex()][i].headPos;
+            *tickDiff = i;
+        }
+    }
+    return bestSpot;
+}
 
-static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& bestSpot, float& bestDamage, AimTargetType aimTargetType = AimTargetType::FOV) {
+static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& bestSpot, float& bestDamage, int *tickDiff, AimTargetType aimTargetType = AimTargetType::FOV)
+{
     if (Settings::Aimbot::AutoAim::realDistance)
         aimTargetType = AimTargetType::REAL_DISTANCE;
 
@@ -396,13 +422,23 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
                 continue;
             eVecTarget = tempSpot;
         }
+        else if( Settings::Aimbot::backtrack )
+        {
+            int tempTickDiff = -1;
+            Vector spot = GetClosestBacktrack(cmd, localplayer, player, &tempTickDiff);
+            if( (spot.x == 0 && spot.y == 0 && spot.z == 0) || tempTickDiff == -1 )
+                continue;
+            eVecTarget = spot;
+            *tickDiff = tempTickDiff;
+        }
 
-        if (Settings::SmartAim::enabled) {
-            if (missedShots <= 5) {
-                eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
+               if (Settings::SmartAim::enabled) {
+             if (missedShots <= 5) {
+                 eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
                 //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "BAIM TIME! We missed %i shots.\n", missedShots);
-                // Maybe introduce a SmartAim counting damage and not just shots
-            } else {
+               
+                 // Maybe introduce a SmartAim counting damage and not just shots
+             } else {
                 //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Missed Shots: %i\n", missedShots);
             }
         }
@@ -419,10 +455,12 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
             if(std::find(Aimbot::baim.begin(), Aimbot::baim.end(), entityInformation.xuid) != Aimbot::baim.end()) {
                 //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Baiming current target because its in the Baim List.\n", missedShots);
                 eVecTarget = player->GetBonePosition((int) Bone::BONE_MIDDLE_SPINAL_COLUMN);
-            }
+
+             }
         } else {
             //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Prefer Baim List is empty.\n");
-        }
+         }
+
 
         Vector pVecTarget = localplayer->GetEyePosition();
 
@@ -440,7 +478,7 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
         if (aimTargetType == AimTargetType::REAL_DISTANCE && realDistance > bestRealDistance)
             continue;
 
-        if (visibleCheck && !Settings::Aimbot::AutoWall::enabled && !Entity::IsSpotVisible(player, eVecTarget))
+        if (visibleCheck && !Settings::Aimbot::AutoWall::enabled && !Settings::Aimbot::backtrack && !Entity::IsSpotVisible(player, eVecTarget))
             continue;
 
         if (Settings::Aimbot::AutoWall::enabled) {
@@ -481,12 +519,13 @@ static C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& 
             engine->GetPlayerInfo(closestEntity->GetIndex(), &playerInfo);
             cvar->ConsoleDPrintf("%s is Closest.\n", playerInfo.name);
     }
-     */
+    */
 
     return closestEntity;
 }
 
-static void RCS(QAngle& angle, C_BasePlayer* player, CUserCmd* cmd) {
+static void RCS(QAngle& angle, C_BasePlayer* player, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::RCS::enabled)
         return;
 
@@ -526,17 +565,18 @@ void Aimbot::AutoCockRevolver(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* lo
         return;
     
     cmd->buttons |= IN_ATTACK;
-    //float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
+    float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
     if (cmd->buttons & IN_ATTACK2)
         cmd->buttons |= IN_ATTACK;
-    /*else if (postponeFireReady > 0 && postponeFireReady < globalVars->curtime)
+    else if (postponeFireReady > 0 && postponeFireReady < globalVars->curtime)
     {
         cmd->buttons &= ~IN_ATTACK;
-    }*/
+    }
 }
 
 
-static void AimStep(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd) {
+static void AimStep(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::AimStep::enabled)
         return;
 
@@ -580,14 +620,16 @@ static void AimStep(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd) {
     angle = AimStepLastAngle;
 }
 
-static void Salt(float& smooth) {
+static void Salt(float& smooth)
+{
     float sine = sin(globalVars->tickcount);
     float salt = sine * Settings::Aimbot::Smooth::Salting::multiplier;
     float oval = smooth + salt;
     smooth *= oval;
 }
 
-static void Smooth(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd) {
+static void Smooth(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::Smooth::enabled)
         return;
 
@@ -632,7 +674,8 @@ static void Smooth(C_BasePlayer* player, QAngle& angle, CUserCmd* cmd) {
     angle = viewAngles + toChange;
 }
 
-static void AutoCrouch(C_BasePlayer* player, CUserCmd* cmd) {
+static void AutoCrouch(C_BasePlayer* player, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::AutoCrouch::enabled)
         return;
 
@@ -642,7 +685,8 @@ static void AutoCrouch(C_BasePlayer* player, CUserCmd* cmd) {
     cmd->buttons |= IN_DUCK;
 }
 
-static void AutoSlow(C_BasePlayer* player, float& forward, float& sideMove, float& bestDamage, C_BaseCombatWeapon* active_weapon, CUserCmd* cmd) {
+static void AutoSlow(C_BasePlayer* player, float& forward, float& sideMove, float& bestDamage, C_BaseCombatWeapon* active_weapon, CUserCmd* cmd)
+{
 
     if (!Settings::Aimbot::AutoSlow::enabled) {
         Settings::Aimbot::AutoSlow::goingToSlow = false;
@@ -685,7 +729,8 @@ static void AutoSlow(C_BasePlayer* player, float& forward, float& sideMove, floa
     }
 }
 
-static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd) {
+static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::AutoPistol::enabled)
         return;
 
@@ -701,7 +746,8 @@ static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd) {
         cmd->buttons &= ~IN_ATTACK;
 }
 
-static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd) {
+static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
+{
     if (!Settings::Aimbot::AutoShoot::enabled)
         return;
 
@@ -755,7 +801,8 @@ static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CU
     }
 }
 
-static void ShootCheck(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd) {
+static void ShootCheck(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
+{
     if (!Settings::AntiAim::Pitch::enabled && !Settings::AntiAim::Yaw::enabled)
         return;
 
@@ -777,7 +824,8 @@ static void ShootCheck(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd) {
         cmd->buttons &= ~IN_ATTACK;
 }
 
-static void NoShoot(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* player, CUserCmd* cmd) {
+static void NoShoot(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* player, CUserCmd* cmd)
+{
     if (player && Settings::Aimbot::NoShoot::enabled) {
         if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_C4)
             return;
@@ -789,7 +837,8 @@ static void NoShoot(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* player, CUse
     }
 }
 
-void Aimbot::CreateMove(CUserCmd* cmd) {
+void Aimbot::CreateMove(CUserCmd* cmd)
+{
     C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
     if (!localplayer || !localplayer->GetAlive())
         return;
@@ -823,7 +872,8 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
 
     Vector aimSpot = {0, 0, 0};
     float bestDamage = 0.0f;
-    C_BasePlayer* player = GetClosestPlayer(cmd, true, aimSpot, bestDamage);
+    int tickDiff = -1;
+    C_BasePlayer* player = GetClosestPlayer(cmd, true, aimSpot, bestDamage, &tickDiff);
 
     if (player) {
         bool skipPlayer = false;
@@ -852,11 +902,11 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
                 //engine->GetPlayerInfo(player->GetIndex(), &playerInfo);
                 //studiohdr_t* pStudioModel = modelInfo->GetStudioModel(player->GetModel());
                 //cvar->ConsoleDPrintf("Model ID: %d, Name: %s, NumOfBones: %d, len %d\n", pStudioModel->id, pStudioModel->name, pStudioModel->numbones);
-
-
                 //cvar->ConsoleDPrintf("Aiming at: %s, he is a %s \n", playerInfo.name, Util::ModelTypeToString(Util::GetModelTypeID(player)).c_str());
 
-
+                if (Settings::Aimbot::backtrack && tickDiff != -1) {
+                    cmd->tick_count -= (16 - tickDiff);
+                }
                 if (Settings::Aimbot::Prediction::enabled) {
                     pVecTarget = VelocityExtrapolate(localplayer, pVecTarget); // get eye pos next tick
                     eVecTarget = VelocityExtrapolate(player, eVecTarget); // get target pos next tick
@@ -898,11 +948,8 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
     Smooth(player, angle, cmd);
     ShootCheck(activeWeapon, cmd);
     NoShoot(activeWeapon, player, cmd);
-    Aimbot::AutoCockRevolver(activeWeapon, player, cmd);
-    if(Settings::Resolver::enabled)
-    {
-        StartLagCompensation(localplayer,cmd);
-    }    
+    AutoCockRevolver(activeWeapon, player, cmd);
+
     Math::NormalizeAngles(angle);
     Math::ClampAngles(angle);
 
@@ -949,7 +996,8 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
 
 }
 
-void Aimbot::FireGameEvent(IGameEvent* event) {
+void Aimbot::FireGameEvent(IGameEvent* event)
+{
     if (!event)
         return;
 
@@ -1010,7 +1058,8 @@ void Aimbot::FireGameEvent(IGameEvent* event) {
     }
 }
 
-void Aimbot::UpdateValues() {
+void Aimbot::UpdateValues()
+{
     C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
     C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
     if (!activeWeapon)
@@ -1025,6 +1074,7 @@ void Aimbot::UpdateValues() {
     Settings::Aimbot::enabled = currentWeaponSetting.enabled;
     Settings::Aimbot::silent = currentWeaponSetting.silent;
     Settings::Aimbot::pSilent = currentWeaponSetting.pSilent;
+    Settings::Aimbot::backtrack = currentWeaponSetting.backtrack;
     Settings::Aimbot::friendly = currentWeaponSetting.friendly;
     Settings::Aimbot::bone = currentWeaponSetting.bone;
     Settings::Aimbot::aimkey = currentWeaponSetting.aimkey;
