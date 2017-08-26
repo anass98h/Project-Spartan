@@ -790,7 +790,7 @@ static void AutoShoot(C_BasePlayer* player,Vector spot, C_BaseCombatWeapon* acti
         if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
             cmd->buttons |= IN_ATTACK2;
         else
-            if(Settings::Aimbot::AutoShoot::autoscope  && !localplayer->IsScoped()){
+            if(Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 && !localplayer->IsScoped()){
             cmd->buttons &= ~IN_ATTACK;}
             else{
             cmd->buttons |= IN_ATTACK;}
