@@ -54,7 +54,7 @@ void SDL2::SwapWindow(SDL_Window* window) {
         ImFontConfig config;
 
         // Add SegoeUI as default font
-        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, 15.0f, &config, arial_ranges);
+        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, 17.0f, &config, arial_ranges);
 
         //not sure if I set this after or before the merge mode 
 

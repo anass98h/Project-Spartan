@@ -79,6 +79,11 @@
         <df name="json">
           <in>jsoncpp.cpp</in>
         </df>
+        <df name="SDK">
+          <in>itexture.h</in>
+          <in>lodepng.cpp</in>
+          <in>lodepng.h</in>
+        </df>
         <df name="SpartanGUI">
           <df name="Tabs">
             <in>aimbottab.cpp</in>
@@ -454,6 +459,12 @@
       <item path="src/Project-Spartan.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/SDK/itexture.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/SDK/lodepng.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SDK/lodepng.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/SpartanGUI/Spartangui.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
