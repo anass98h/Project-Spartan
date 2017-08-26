@@ -238,6 +238,8 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")] = Settings::AntiAim::Lua::scriptY2;
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")] = Settings::AntiAim::Lby::enabled;
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")] = (int) Settings::AntiAim::Lby::type;
+    settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("enabled")] = Settings::AntiAim::SwitchAA::enabled;
+    settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("key")] = Settings::AntiAim::SwitchAA::key;
 
     settings[XORSTR("ESP")][XORSTR("enabled")] = Settings::ESP::enabled;
     settings[XORSTR("ESP")][XORSTR("key")] = Util::GetButtonName(Settings::ESP::key);
@@ -676,6 +678,8 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")], Settings::AntiAim::Lua::scriptY2);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")], &Settings::AntiAim::Lby::enabled);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")], (int*) & Settings::AntiAim::Lby::type);
+    GetVal(settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("enabled")], &Settings::AntiAim::SwitchAA::enabled);
+    GetButtonCode(settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("key")], &Settings::AntiAim::SwitchAA::key);
 
     GetVal(settings[XORSTR("ESP")][XORSTR("enabled")], &Settings::ESP::enabled);
     GetButtonCode(settings[XORSTR("ESP")][XORSTR("key")], &Settings::ESP::key);

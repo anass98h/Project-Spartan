@@ -1,4 +1,5 @@
-	#include "antiaim.h"
+#include "antiaim.h"
+
 bool Settings::AntiAim::allowUntrustedAngles = false;
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
@@ -20,6 +21,8 @@ bool Settings::AntiAim::Lua::debugMode = true;
 char Settings::AntiAim::Lua::scriptX[512];
 char Settings::AntiAim::Lua::scriptY[512];
 char Settings::AntiAim::Lua::scriptY2[512];
+bool Settings::AntiAim::SwitchAA::enabled = false;
+ButtonCode_t Settings::AntiAim::SwitchAA::key = ButtonCode_t::KEY_DOWN;
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
@@ -474,28 +477,22 @@ static float DoAAatTarget()
     }
 }
 
-static void swapAA()
+static void SwapAA()
 {
+    int count = 0;
 
-	static int x;
-            if (inputSystem->IsButtonDown(KEY_DOWN))
-                { 
-                    x++;
-                    cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "- %i\n", x);
-                }
-               else{ 
-                if(x > 0){ 
-                    static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
-                    static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
-                    fake = Settings::AntiAim::Yaw::typeFake;
-                    real = Settings::AntiAim::Yaw::type;
-                    Settings::AntiAim::Yaw::type = fake;
-                    Settings::AntiAim::Yaw::typeFake = real;
-                    x = 0;
-
-                }
-                }
-
+    if(inputSystem->IsButtonDown(Settings::AntiAim::SwitchAA::key)) {
+        count++;
+        cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Swap AA Count: %i\n", count);
+    } else if (count > 0) {
+        static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
+        static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
+        fake = Settings::AntiAim::Yaw::typeFake;
+        real = Settings::AntiAim::Yaw::type;
+        Settings::AntiAim::Yaw::type = fake;
+        Settings::AntiAim::Yaw::typeFake = real;
+        count = 0;
+    }
 }
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
@@ -1379,7 +1376,8 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
-        swapAA();
+        if (Settings::AntiAim::SwitchAA::enabled)
+            SwapAA();
     }
 }
     /*if (Settings::AntiAim::Yaw::dynamicAA) {

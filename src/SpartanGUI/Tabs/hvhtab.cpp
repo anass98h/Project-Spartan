@@ -142,6 +142,21 @@ void HvH::RenderTab() {
                     }
                     ImGui::PopItemWidth();
                 }
+
+                ImGui::Columns(1);
+                ImGui::Separator();
+                ImGui::Text(XORSTR("Switch AA"));
+                ImGui::Separator();
+                ImGui::Columns(2, NULL, true);
+                {
+                    ImGui::Checkbox(XORSTR("Enabled"), &Settings::AntiAim::SwitchAA::enabled);
+                }
+                ImGui::NextColumn();
+                {
+                    ImGui::Text("Key");
+                    UI::KeyBindButton(&Settings::AntiAim::SwitchAA::key);
+                }
+
                 ImGui::Columns(1);
                 ImGui::Separator();
                 ImGui::Text(XORSTR("Disable"));
@@ -315,10 +330,9 @@ void HvH::RenderTab() {
                         if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
                             Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2) {
                             ImGui::Text(XORSTR("Custom Yaw 2"));
-
                             {
                                 ImGui::PushItemWidth(-1);
-                                ImGui::Checkbox(XORSTR("Use LBY :)"), &Settings::customYaw2::lby);
+                                ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw2::lby);
                                 ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, -10000, 10000,
                                                  XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();

@@ -577,6 +577,13 @@ namespace Settings {
             extern char scriptY2[512];
         }
 
+        namespace SwitchAA {
+
+            extern bool enabled;
+            extern ButtonCode_t key;
+
+        }
+
         extern bool allowUntrustedAngles;
 
     }
