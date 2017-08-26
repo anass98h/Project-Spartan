@@ -51,7 +51,7 @@ static bool autoSlow = false;
 static bool predEnabled = false;
 static bool hitChanceEnabled = false;
 static int hitChanceRays = 100;
-static float hitChanceValue = 0.5f;
+static float hitChanceValue = 0.0f;
 static bool autoCockRevolver = false;
 static bool velocityCheck = false;
 static bool backtrack = false;
@@ -382,6 +382,20 @@ void Aimbot::RenderTab() {
             if (ImGui::SliderFloat(XORSTR("##SPREADLIMIT"), &spreadLimit, 0, 0.1))
                 UI::UpdateWeaponSettings();
             SetTooltip("Below this value, autoshoot does not shoot");
+            ImGui::Separator();
+            ImGui::Text(XORSTR("Hitchance"));
+            ImGui::Separator();
+            ImGui::Columns(1);
+            {
+                if (ImGui::Checkbox("Hit Chance", &hitChanceEnabled))
+                    UI::UpdateWeaponSettings();
+                if (ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1))
+                    UI::UpdateWeaponSettings();
+                if (ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250))
+                    UI::UpdateWeaponSettings();
+                SetTooltip("Amount of rays to be shot");
+            }
+            
             ImGui::EndChild();
         }
     }
@@ -422,19 +436,7 @@ void Aimbot::RenderTab() {
             }
             ImGui::Columns(1);
             ImGui::Separator();
-            ImGui::Text(XORSTR("Hitchance"));
-            ImGui::Separator();
-            ImGui::Columns(1);
-            {
-                if (ImGui::Checkbox("Hit Chance", &hitChanceEnabled))
-                    UI::UpdateWeaponSettings();
-                if (ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1))
-                    UI::UpdateWeaponSettings();
-                if (ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250))
-                    UI::UpdateWeaponSettings();
-                SetTooltip("Amount of rays to be shot");
-            }
-            ImGui::Separator();
+            
             ImGui::Text(XORSTR("Other"));
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
@@ -475,8 +477,7 @@ void Aimbot::RenderTab() {
                     UI::UpdateWeaponSettings();
                 if (ImGui::Checkbox(XORSTR("Backtrack"), &backtrack))
                     UI::UpdateWeaponSettings();
-                if (ImGui::Checkbox(XORSTR("Prediction"), &predEnabled))
-                    UI::UpdateWeaponSettings();
+               
             }
             ImGui::NextColumn();
             {
@@ -487,6 +488,8 @@ void Aimbot::RenderTab() {
                 if (ImGui::Checkbox(XORSTR("Ignore Jump"), &ignoreJumpEnabled))
                     UI::UpdateWeaponSettings();
                 if (ImGui::Checkbox(XORSTR("Flash Check"), &flashCheck))
+                    UI::UpdateWeaponSettings();
+             if (ImGui::Checkbox(XORSTR("Prediction"), &predEnabled))
                     UI::UpdateWeaponSettings();
             }
 

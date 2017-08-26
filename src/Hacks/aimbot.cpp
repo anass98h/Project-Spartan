@@ -107,47 +107,47 @@ void Aimbot::XDOCleanup()
 
 bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localplayer)
 {
-    if (!Settings::Aimbot::HitChance::enabled)
-        return true;
+	if (!Settings::Aimbot::HitChance::enabled)
+		return true;
+	
+                int hitCount = 0;
+            for (int i = 0; i < Settings::Aimbot::HitChance::hitRays; i++) {
+		Vector dst = point;
+	
+		C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
+		if (!activeWeapon)
+			return false;
 
-    int hitCount = 0;
-    for (int i = 0; i < Settings::Aimbot::HitChance::hitRays; i++) {
-        Vector dst = point;
+		float a = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f);
+		float b = activeWeapon->GetSpread() * ((float)(rand() % 1000)/1000.0f) * 90.0f;
+		float c = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f);
+		float d = activeWeapon->GetInaccuracy() * ((float)(rand() % 1000)/1000.0f) * 90.0f;
 
-        C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
-        if (!activeWeapon)
-            return false;
+                 Vector dir, src, dest;
+                 trace_t tr;
+                 Ray_t ray;
+                 CTraceFilterEntitiesOnly filter;
 
-        float a = (float) M_PI * 2.0f * ((float) (rand() % 1000) / 1000.0f);
-        float b = activeWeapon->GetSpread() * ((float) (rand() % 1000) / 1000.0f) * 90.0f;
-        float c = (float) M_PI * 2.0f * ((float) (rand() % 1000) / 1000.0f);
-        float d = activeWeapon->GetInaccuracy() * ((float) (rand() % 1000) / 1000.0f) * 90.0f;
+                 src = localplayer->GetEyePosition();
+                 QAngle angles = Math::CalcAngle(src, dst);
+                 angles.x += (cos(a) * b) + (cos(c) * d);
+                 angles.y += (sin(a) * b) + (sin(c) * d);
+                 Math::AngleVectors(angles, dir);
+                 dest = src + (dir * 8192);
+		
+		ray.Init(src, dest);
+                filter.pSkip = localplayer;
+		trace->TraceRay(ray, MASK_SHOT, &filter, &tr);
+	
+		C_BasePlayer* player = (C_BasePlayer*) tr.m_pEntityHit;
+    if (player && player->GetClientClass()->m_ClassID == EClassIds::CCSPlayer && player != localplayer && !player->GetDormant() && player->GetAlive() && !player->GetImmune() && (player->GetTeam() != localplayer->GetTeam() || Settings::Aimbot::friendly))	
+			hitCount++;
+	}
 
-        Vector dir, src, dest;
-        trace_t tr;
-        Ray_t ray;
-        CTraceFilterEntitiesOnly filter;
-
-        src = localplayer->GetEyePosition();
-        QAngle angles = Math::CalcAngle(src, dst);
-        angles.x += (cos(a) * b) + (cos(c) * d);
-        angles.y += (sin(a) * b) + (sin(c) * d);
-        Math::AngleVectors(angles, dir);
-        dest = src + (dir * 8192);
-
-        ray.Init(src, dest);
-        filter.pSkip = localplayer;
-        trace->TraceRay(ray, MASK_SHOT, &filter, &tr);
-
-        C_BasePlayer* player = (C_BasePlayer*) tr.m_pEntityHit;
-        if (player && player->GetClientClass()->m_ClassID == EClassIds::CCSPlayer && player != localplayer && !player->GetDormant() && player->GetAlive() && !player->GetImmune() && (player->GetTeam() != localplayer->GetTeam() || Settings::Aimbot::friendly))
-            hitCount++;
-    }
-
-    //cvar->ConsoleDPrintf("HitCount: %d/%d - %f\n", hitCount, Settings::Aimbot::HitChance::hitRays, Settings::Aimbot::HitChance::value);
+	//cvar->ConsoleDPrintf("HitCount: %d/%d - %f\n", hitCount, Settings::Aimbot::HitChance::hitRays, Settings::Aimbot::HitChance::value);
 
 
-    return ((float) hitCount / (float) Settings::Aimbot::HitChance::hitRays > Settings::Aimbot::HitChance::value);
+	return ((float)hitCount/(float)Settings::Aimbot::HitChance::hitRays > Settings::Aimbot::HitChance::value);
 }
 
 /* Fills points Vector. True if successful. False if not.  Credits for Original method - ReactiioN */
@@ -746,7 +746,7 @@ static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
         cmd->buttons &= ~IN_ATTACK;
 }
 
-static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
+static void AutoShoot(C_BasePlayer* player,Vector spot, C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
 {
     if (!Settings::Aimbot::AutoShoot::enabled)
         return;
@@ -767,12 +767,16 @@ static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CU
     C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
     if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 && !localplayer->IsScoped())
+        
         cmd->buttons |= IN_ATTACK2;
 
     if (Settings::Aimbot::velocityCheck::enabled && localplayer->GetVelocity().Length() > (activeWeapon->GetCSWpnData()->GetMaxPlayerSpeed() / 3))
         return;
     if (Settings::Aimbot::SpreadLimit::enabled && ((activeWeapon->GetSpread() + activeWeapon->GetInaccuracy()) > Settings::Aimbot::SpreadLimit::value))
         return;
+    
+	if (Settings::Aimbot::HitChance::enabled && !Aimbot::HitChance(spot, !Settings::Aimbot::friendly, localplayer))
+		return;
 
     float nextPrimaryAttack = activeWeapon->GetNextPrimaryAttack();
 
@@ -780,12 +784,16 @@ static void AutoShoot(C_BasePlayer* player, C_BaseCombatWeapon* activeWeapon, CU
         if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
             cmd->buttons &= ~IN_ATTACK2;
         else
+            
             cmd->buttons &= ~IN_ATTACK;
     } else {
         if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
             cmd->buttons |= IN_ATTACK2;
         else
-            cmd->buttons |= IN_ATTACK;
+            if(Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 && !localplayer->IsScoped()){
+            cmd->buttons &= ~IN_ATTACK;}
+            else{
+            cmd->buttons |= IN_ATTACK;}
     }
 
     if (Settings::SmartAim::enabled) {
@@ -869,15 +877,15 @@ void Aimbot::CreateMove(CUserCmd* cmd)
     CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
     if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE || weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
         return;
-
+    
     Vector aimSpot = {0, 0, 0};
     float bestDamage = 0.0f;
     int tickDiff = -1;
     C_BasePlayer* player = GetClosestPlayer(cmd, true, aimSpot, bestDamage, &tickDiff);
-
+    
     if (player) {
         bool skipPlayer = false;
-
+        
         Vector eVecTarget = aimSpot;
         Vector pVecTarget = localplayer->GetEyePosition();
 
@@ -943,7 +951,7 @@ void Aimbot::CreateMove(CUserCmd* cmd)
     AutoCrouch(player, cmd);
     AutoSlow(player, oldForward, oldSideMove, bestDamage, activeWeapon, cmd);
     AutoPistol(activeWeapon, cmd);
-    AutoShoot(player, activeWeapon, cmd);
+    AutoShoot(player,aimSpot,activeWeapon, cmd);
     RCS(angle, player, cmd);
     Smooth(player, angle, cmd);
     ShootCheck(activeWeapon, cmd);

@@ -11,7 +11,7 @@ namespace AngleIndicator
 
 
     // Hooks
-    void PaintImGui();
+    void Paint();
     void PostPredictionCreateMove(CUserCmd* cmd);
 
 }
