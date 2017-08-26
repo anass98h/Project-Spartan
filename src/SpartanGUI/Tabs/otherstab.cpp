@@ -2,46 +2,7 @@
 
 void Others2::RenderTab() {
 
-    // Aimbot::RenderTab();
-    /* static char nickname[127] = "";
-     static int page = 0;
-             const char* tabs[] = {
-                             ICON_SKINCHANGER,
-                             ICON_PLAYERLIST,
-             };
-        
-		
-                     for (int i = 0; i < IM_ARRAYSIZE(tabs); i++)
-         {
-                     int distance = i == page ? 0 : i > page ? i - page : page - i;
-
-                     ImGui::GetStyle().Colors[ImGuiCol_Button] = ImVec4(
-                                     Settings::UI::mainColor.Color().Value.x - (distance * 0.035f),
-                                     Settings::UI::mainColor.Color().Value.y - (distance * 0.035f),
-                                     Settings::UI::mainColor.Color().Value.z - (distance * 0.035f),
-                                     Settings::UI::mainColor.Color().Value.w
-                     );
-
-         ImGui::GetStyle().Colors[ImGuiCol_Button] = Settings::UI::mainColor.Color();
-            
-                     if (ImGui::Button(tabs[i], ImVec2(ImGui::GetWindowSize().x / IM_ARRAYSIZE(tabs) - 9, 80)))
-                             page = i;
-
-
-                     if (i < IM_ARRAYSIZE(tabs) - 1)
-             ImGui::SameLine();
-				
-         }
-        
-                     switch (page)
-             {
-                     case 0:
-                             SkinModelChanger::RenderTab();
-                             break;
-                     case 1:
-                             PlayerList::RenderTab();
-                             break;
-             }*/
+    
     ImGui::Spacing();
     ImGui::Spacing();
     ImGui::Spacing();
@@ -62,7 +23,7 @@ void Others2::RenderTab() {
     ImGui::Spacing();
     ImGui::Spacing();
     ImGui::Spacing();
-    ImGui::Spacing();
+    ImGui::Spacing(); // p
     ImGui::Spacing();
     ImGui::Spacing();
     ImGui::Spacing();
