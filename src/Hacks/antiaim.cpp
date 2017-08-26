@@ -1333,7 +1333,6 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 	isAntiAiming = true;
     QAngle edge_angle = angle;
     bool edging_head = Settings::AntiAim::HeadEdge::enabled && GetBestHeadAngle(edge_angle);
-
     static bool bFlip;
 
     bFlip = !bFlip;
@@ -1356,8 +1355,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
             if (Settings::AntiAim::Lby::enabled && !bFlip) {
         DoAntiAimLBY(angle, cmd->command_number, bFlip, should_clamp);
-          if(should_clamp){
-        Math::NormalizeAngles(angle);}
+        Math::NormalizeAngles(angle);
         if (!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
@@ -1366,8 +1364,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
         else{
         DoAntiAimY(angle, cmd->command_number, bFlip, should_clamp);
-           if(should_clamp){
-        Math::NormalizeAngles(angle);}
+        Math::NormalizeAngles(angle);
         if (!Settings::FakeLag::enabled)
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
@@ -1387,8 +1384,8 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         DoAntiAimZ(angle, cmd->command_number, should_clamp);
     if (Settings::AntiAim::Pitch::enabled)
         DoAntiAimX(angle, bFlip, should_clamp);
+    Math::NormalizeAngles(angle);
     if (should_clamp) {
-        Math::NormalizeAngles(angle);
         Math::ClampAngles(angle);
     }
 
@@ -1406,9 +1403,10 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
             antiResolverFlip = !antiResolverFlip;
 
+            Math::NormalizeAngles(cmd->viewangles);
+
             if (should_clamp)
             {
-                Math::NormalizeAngles(cmd->viewangles);
                 Math::ClampAngles(cmd->viewangles);
             }
         }
