@@ -3,7 +3,8 @@
 int Settings::spinFactor::value = 1;
 int Settings::customYaw::value = 1;
 int Settings::customYaw2::value = 1;
-
+bool Settings::customYaw::lby;
+bool Settings::customYaw2::lby;
 
 void HvH::RenderTab() {
 
@@ -43,6 +44,7 @@ void HvH::RenderTab() {
             ImGui::BeginChild(XORSTR("##ANTIAIM"), ImVec2(0, 0), true);
             {
                 ImGui::Checkbox(XORSTR("Yaw"), &Settings::AntiAim::Yaw::enabled);
+                
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
@@ -333,6 +335,7 @@ void HvH::RenderTab() {
                 }
 
                 ImGui::Checkbox(XORSTR("Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
+
             }
             ImGui::EndChild();
         }
