@@ -54,6 +54,7 @@ fi
 
 rm -rf "${csgo_bin64}/binkalnx64.asi"
 
+# Credit to Emma @ https://github.com/emskye96/binkload
 echo -e "void _init() { dlopen(L, 1); } " | gcc -shared -fPIC -s -O3 -nostdlib -DL=\"$(pwd)/Spartan.so\" -include dlfcn.h -o "${csgo_bin64}/binkalnx64.asi" -xc -
 
 if [ $? -eq 0 ]; then
