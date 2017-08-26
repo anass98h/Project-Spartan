@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 prefix="\e[34m\e[1mSpartan >\e[0m"
 error_prefix="\e[91m\e[1mSpartan >\e[0m"
