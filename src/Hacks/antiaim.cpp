@@ -1,4 +1,4 @@
-#include "antiaim.h"
+	#include "antiaim.h"
 bool Settings::AntiAim::allowUntrustedAngles = false;
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
@@ -23,8 +23,7 @@ char Settings::AntiAim::Lua::scriptY2[512];
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
-bool Settings::customYaw::lby;
-bool Settings::customYaw2::lby;
+
 
 // if the script is the same, we can skip some initialization.
 char luaLastX[sizeof (Settings::AntiAim::Lua::scriptX)];
@@ -475,7 +474,29 @@ static float DoAAatTarget()
     }
 }
 
+static void swapAA()
+{
 
+	static int x;
+            if (inputSystem->IsButtonDown(KEY_DOWN))
+                { 
+                    x++;
+                    cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "- %i\n", x);
+                }
+               else{ 
+                if(x > 0){ 
+                    static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
+                    static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
+                    fake = Settings::AntiAim::Yaw::typeFake;
+                    real = Settings::AntiAim::Yaw::type;
+                    Settings::AntiAim::Yaw::type = fake;
+                    Settings::AntiAim::Yaw::typeFake = real;
+                    x = 0;
+
+                }
+                }
+
+}
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
 
@@ -518,13 +539,13 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(Settings::customYaw::lby)
             {
                 if(Settings::customYaw::value > 0)
-                    angle.y = *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw::value);
+                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw::value);
                 else
-                    angle.y = *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw::value);
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw::value);
 
             }
             else
-            angle.y = Settings::customYaw::value;
+            angle.y += Settings::customYaw::value;
             break;
         case AntiAimType_Y::CUSTOM2:
           
@@ -532,12 +553,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             {
 
                 if(Settings::customYaw2::value > 0)
-                    angle.y = *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
+                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
                 else
-                    angle.y = *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
             }
             else
-            angle.y = Settings::customYaw2::value;
+            angle.y += Settings::customYaw2::value;
             break;
         case AntiAimType_Y::APOSTROPHE:
         {
@@ -951,18 +972,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
 
         case AntiAimType_Y::SIDEWAYSRIGHT:
-            if(Settings::AntiAim::Yaw::dynamicAA)
-            {
-
-            	Base = DoAAatTarget();
-            	if(Base > 0)
-            		angle.y = Base - 90;
-            	else
-            		angle.y = Base + 90;
-            	
-            }
-            else
-            	angle.y -=90.0f;
+        angle.y += 90;
             break;
         case AntiAimType_Y::SIDEWAYSLEFT:
 	        if(Settings::AntiAim::Yaw::dynamicAA)
@@ -976,7 +986,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
 	        }
 	        else
-           	 angle.y += 90.0f;
+           	 angle.y -= 90.0f;
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
@@ -1369,6 +1379,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
             CreateMove::sendPacket = bFlip;
         if (Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip)
             angle.y = edge_angle.y;
+        swapAA();
     }
 }
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
