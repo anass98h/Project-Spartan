@@ -8,10 +8,8 @@
 namespace AngleIndicator
 {
 
-
-
     // Hooks
-    void Paint();
+    void PaintImGui();
     void PostPredictionCreateMove(CUserCmd* cmd);
 
 }
