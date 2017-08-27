@@ -28,6 +28,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
     float CurYaw = *Circlebian->GetLowerBodyYawTarget();
     static float oldTimer[65];
 	static bool isLBYPredictited[65];
+        INetChannelInfo* nci = engine->GetNetChannelInfo();
     static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 //-------------------NEW MEMES WOOOOH --------------------------------------------------------
 
@@ -47,7 +48,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 	}
 	else {
 		OldLowerBodyYaws[Circlebian->GetIndex()] = *Circlebian->GetLowerBodyYawTarget();
-		oldTimer[Circlebian->GetIndex()] = globalVars->curtime -  (*csPlayerResource)->GetPing(Circlebian->GetIndex());// hope this is right
+		oldTimer[Circlebian->GetIndex()] = globalVars->curtime -  nci->GetAvgLatency(FLOW_OUTGOING); // pValveC0denz
 		isLBYPredictited[Circlebian->GetIndex()] = false;
 	}
 
