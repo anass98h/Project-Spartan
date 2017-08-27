@@ -320,7 +320,9 @@ void HvH::RenderTab() {
                             {
                                 ImGui::PushItemWidth(-1);
                                 ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw::lby);
-                                ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value, -10000, 10000,
+                                ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
                                                  XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
 
@@ -333,7 +335,9 @@ void HvH::RenderTab() {
                             {
                                 ImGui::PushItemWidth(-1);
                                 ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw2::lby);
-                                ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value, -10000, 10000,
+                                ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
                                                  XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
 
