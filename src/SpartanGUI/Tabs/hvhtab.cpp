@@ -228,6 +228,10 @@ void HvH::RenderTab() {
 
             ImGui::Separator();
 
+            ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
+
+            ImGui::Separator();
+
             ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
             if (Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 ||
                 Settings::AntiAim::Pitch::type == AntiAimType_X::LUA_UNCLAMPED) {
@@ -348,11 +352,7 @@ void HvH::RenderTab() {
 
                         ImGui::EndChild();
                     }
-
-
                 }
-
-                ImGui::Checkbox(XORSTR("Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
             }
             ImGui::EndChild();
