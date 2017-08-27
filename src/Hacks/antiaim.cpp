@@ -1220,7 +1220,7 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp) {
             break;
         case AntiAimType_Z::TEST:
 
-            angle.z = 50.0f;
+            angle.z = 180.0f;
             break;
     }
 }

@@ -230,10 +230,10 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
 
             if (HasStaticRealAngle(cur))
-                Circlebian->GetEyeAngles()->y =
-                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 25 : -25);
+                Circlebian->GetEyeAngles()->y += 180;
+                    
             else if(LowerBodyYawChanged(Circlebian))
-                Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
+               Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
