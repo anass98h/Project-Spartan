@@ -201,6 +201,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox(XORSTR("ASUS Walls"), &Settings::ASUSWalls::enabled);
                 ImGui::Checkbox(XORSTR("No Scope Border"), &Settings::NoScopeBorder::enabled);
                 ImGui::Checkbox(XORSTR("Autowall Debug"), &Settings::ESP::AutoWall::debugView);
+                ImGui::Checkbox(XORSTR("Backtrack Indicator"), &Settings::ESP::Backtracking::enabled);
             }
             ImGui::Columns(1);
             ImGui::Separator();

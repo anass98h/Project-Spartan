@@ -13,25 +13,146 @@ bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 
+
+template<class T, class U>
+T LagCompensation::clamp(T in, U low, U high)
+{
+	if (in <= low)
+		return low;
+
+	if (in >= high)
+		return high;
+
+
+	return in;
+}
+static float max (float& a , int b)
+{
+    if(a>b)
+    {
+        return a;
+
+    }
+    else if (b>a)
+    {
+        return b;
+    }
+
+
+
+}
+float LagCompensation::LerpTime()
+{      
+	ConVar* cvar_cl_interp = cvar->FindVar(XORSTR("cl_interp"));
+	ConVar* cvar_cl_updaterate = cvar->FindVar(XORSTR("cl_updaterate"));
+	ConVar* cvar_sv_maxupdaterate = cvar->FindVar(XORSTR("sv_maxupdaterate"));
+	ConVar* cvar_sv_minupdaterate = cvar->FindVar(XORSTR("sv_minupdaterate"));
+	ConVar* cvar_cl_interp_ratio = cvar->FindVar(XORSTR("cl_interp_ratio"));
+
+	float cl_interp = cvar_cl_interp->fValue;
+	int cl_updaterate = cvar_cl_updaterate->fValue;
+	int sv_maxupdaterate = cvar_sv_maxupdaterate->fValue;
+	int sv_minupdaterate = cvar_sv_minupdaterate->fValue;
+	int cl_interp_ratio = cvar_cl_interp_ratio->fValue;
+
+	if (sv_maxupdaterate <= cl_updaterate)
+		cl_updaterate = sv_maxupdaterate;
+
+	if (sv_minupdaterate > cl_updaterate)
+		cl_updaterate = sv_minupdaterate;
+
+	float new_interp = (float)cl_interp_ratio / (float)cl_updaterate;
+
+	if (new_interp > cl_interp)
+		cl_interp = new_interp;
+
+	return max(cl_interp, cl_interp_ratio / cl_updaterate);
+}
+
+void LagCompensation::InitLagRecord()
+{
+	for (int i = 0; i <= 32; i++)
+	{
+		for (int j = 0; j < 11; j++)
+		{
+			m_LagRecord[i][j].m_fSimulationTime = 0.0f;
+		}
+	}
+}
+
+int LagCompensation::FixTickcount(C_BasePlayer* player)
+{
+	int idx = player->GetIndex();
+
+	LagRecord* m_LagRecords = this->m_LagRecord[idx];
+
+	LagRecord recentLR = m_LagRecords[idx];
+
+	if (recentLR.m_fSimulationTime == 0.0f)
+		return TIME_TO_TICKS(player->GetSimulationTime() + LerpTime()) + 1;
+
+	int iLerpTicks = TIME_TO_TICKS(LerpTime());
+	int iTargetTickCount = TIME_TO_TICKS(recentLR.m_fSimulationTime) + iLerpTicks;
+
+	return iTargetTickCount + 1;
+}
+
+bool LagCompensation::IsValidTick(float simTime)
+{
+	INetChannelInfo* nci =  engine->GetNetChannelInfo();
+
+	if (!nci)
+		return false;
+
+	int LerpTicks = TIME_TO_TICKS(LerpTime());
+
+	int predCmdArrivTick = globalVars->tickcount + 1 + TIME_TO_TICKS(nci->GetAvgLatency(FLOW_INCOMING) + nci->GetAvgLatency(FLOW_OUTGOING));
+
+	float flCorrect = clamp(LerpTime() + nci->GetLatency(FLOW_OUTGOING), 0.f, 1.f) - TICKS_TO_TIME(predCmdArrivTick + LerpTicks - (TIME_TO_TICKS(simTime) + TIME_TO_TICKS(LerpTime())));
+
+	return abs(flCorrect) <= 0.2f;
+}
+
+
+static void StartLagComp(C_BasePlayer* target,CUserCmd* cmd)
+{
+    cmd->tick_count = LagComp->FixTickcount(target); // Im probably retarded
+}
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
-
+    float flYaw = 0;
+    static float OldLowerBodyYaws[65];
+    static float OldYawDeltas[65];
+    float CurYaw = *Circlebian->GetLowerBodyYawTarget();
+    static float oldTimer[65];
+	static bool isLBYPredictited[65];
+        INetChannelInfo* nci = engine->GetNetChannelInfo();
     static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
+//-------------------NEW MEMES WOOOOH --------------------------------------------------------
 
+    if (OldLowerBodyYaws[Circlebian->GetIndex()] == *Circlebian->GetLowerBodyYawTarget()) {
+		if (oldTimer[Circlebian->GetIndex()] + 1.1 >= globalVars->curtime) {
+			oldTimer[Circlebian->GetIndex()] = globalVars->curtime;
+			isLBYPredictited[Circlebian->GetIndex()] = true;
 
-    static float* StoredYaw = 0; // TODO remove memes 
-    static bool bLowerBodyIsUpdated = false;
-    if (Circlebian->GetLowerBodyYawTarget() != StoredYaw) {
-        bLowerBodyIsUpdated = true;
-    } else {
-        bLowerBodyIsUpdated = false;
-    }
-    if (bLowerBodyIsUpdated) {
-        StoredYaw = Circlebian->GetLowerBodyYawTarget();
-    }
+		}
+		else {
+			isLBYPredictited[Circlebian->GetIndex()] = false;
+		}
+	}
+    else if (Circlebian->GetDormant() || !Circlebian->GetAlive()) {
+		oldTimer[Circlebian->GetIndex()] = -1;
+		isLBYPredictited[Circlebian->GetIndex()] = false;
+	}
+	else {
+		OldLowerBodyYaws[Circlebian->GetIndex()] = *Circlebian->GetLowerBodyYawTarget();
+		oldTimer[Circlebian->GetIndex()] = globalVars->curtime -  nci->GetAvgLatency(FLOW_OUTGOING); // pValveC0denz
+		isLBYPredictited[Circlebian->GetIndex()] = false;
+	}
 
+	
 
-
+// END OF NEW MEMES WOOOOH ----------------------------------------------------------------------
 
     switch (Settings::Resolver::Hugtype) {
         case ResolverHugtype::AIMTUX:
@@ -44,34 +165,139 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             break;
         }
-        case ResolverHugtype::BRUTEHIV:
-        {
-            if (LowerBodyYawChanged(Circlebian))
-            {
-                Circlebian->GetEyeAngles()->y =  (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
-            }
-            else
-            {
-                int num = Shotsmissed % 4;
-                switch (num)
-                {
-                    case 0:
-                        Circlebian->GetEyeAngles()->y -= 0.0f;
-                        break;
-                    case 1:
-                        Circlebian->GetEyeAngles()->y += 90.0f;
-                        break;
-                    case 2:
-                        Circlebian->GetEyeAngles()->y -= 90.0f;
-                        break;
-                    case 3:
-                        Circlebian->GetEyeAngles()->y -= 180.0f;
-                        break;
+         case ResolverHugtype::PASTEHUB:
+         {   
+           
+              if (HasStaticRealAngle(cur))
+                Circlebian->GetEyeAngles()->y =
+                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 10 : -10);
+            else if (HasStaticYawDifference(cur))
+                Circlebian->GetEyeAngles()->y =
+                    Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
+            else if (HasSteadyDifference(cur)) {
+                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
+                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
+                float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
+                Circlebian->GetEyeAngles()->y = (lbydif / tickdif) * ntickdif;
+            } else if (DeltaKeepsChanging(cur))
+                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks(cur);
+            else if (LBYKeepsChanging(cur))
+                Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
+            
+            else   if (!LowerBodyYawChanged(Circlebian))
+             {  float fwyaw = 0;
+                 if(Shotsmissed == 0)
+                 {
+                     fwyaw -= 180; 
+                 }
+                 else if (Shotsmissed == 1)
+                     fwyaw +=90 ;
+                 
+                 else if (Shotsmissed == 2)
+                     fwyaw +=180;
+                 
+                 else if (Shotsmissed == 3)
+                     fwyaw -= 45 ;
+                 
+                 else if (Shotsmissed == 4)
+                     fwyaw -= 90 ;
+                 
+                 else if (Shotsmissed == 5)
+                     fwyaw -= 30;
+                 
+                 else if (Shotsmissed == 6)
+                     fwyaw += 150;
+                 
+                 else
+                 {
+                     fwyaw +=bodyeyedelta;
+                 }  
+                 
+             Circlebian->GetEyeAngles()->y = fwyaw ;
+             }
+            
+            else{
+		if (OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw) {
+			OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
+			OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
+			
+			
+			Circlebian->GetEyeAngles()->y = CurYaw;
+
+			
+		}
+                else if (Shotsmissed == 3 ){
+		flYaw = flYaw - 180;
+		Circlebian->GetEyeAngles()->y = flYaw;
                 }
+                else if (Shotsmissed == 4) {
+		flYaw = flYaw + 90;
+		Circlebian->GetEyeAngles()->y = flYaw;
+                 }
+                else if (Shotsmissed == 5 && Shotsmissed < 6) {
+		flYaw = flYaw + 180;
+		Circlebian->GetEyeAngles()->y = flYaw;
+                }
+          
+		else if ( OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw ) {
+			
+			
+			  Circlebian->GetEyeAngles()->y -= OldYawDeltas[Circlebian->GetIndex()];
+
+		}
+        
+                else if (Shotsmissed > 3 && isLBYPredictited[Circlebian->GetIndex()] == true && LowerBodyYawChanged(Circlebian))
+                {
+		Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+                 }
+		
+             }
+	  break;
+        }
+                 case ResolverHugtype::BRUTEHIV:
+        {
+
+        	int missed = 0;
+        	int missed2 = 0;
+        	float fakeYaw;
+        	float fakeYaw2;
+        	float fakeYaw3;
+        	float fakeYaw4;
+        	
+        	
+        	if(LowerBodyYawChanged(Circlebian))
+        	{
+        		Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
+
+        	}
+        	else
+        	{ 
+        	   int num3 = Shotsmissed % 6;
+            switch (num3)
+            {
+                case 0:
+                    Circlebian->GetEyeAngles()->y -= 180.0f;
+                    break;
+                case 1:
+                    Circlebian->GetEyeAngles()->y += 90.0f;
+                    break;
+                case 2:
+                    Circlebian->GetEyeAngles()->y -= 90.0f;
+                    break;
+                case 3:
+                    Circlebian->GetEyeAngles()->y = 0.0f;
+                    break;
+                case 4:
+                    Circlebian->GetEyeAngles()->y = -180.0f;
+                    break;
+                case 5:
+                    Circlebian->GetEyeAngles()->y = -30.0f;
+                    break;
             }
 
-            break;
-        }
+           
+            }
+        break; }
         case ResolverHugtype::BRUTE1:
         {
             int num2 = Shotsmissed % 6;
@@ -102,22 +328,20 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
 
             if (HasStaticRealAngle(cur))
-                Circlebian->GetEyeAngles()->y =
-                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 10 : -10);
+                Circlebian->GetEyeAngles()->y += 180;
+                    
+            else if(LowerBodyYawChanged(Circlebian))
+               Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
-            else if (HasSteadyDifference(cur)) {
-                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
-                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
-                float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
-                Circlebian->GetEyeAngles()->y = (lbydif / tickdif) * ntickdif;
-            } else if (DeltaKeepsChanging(cur))
+            
+             else if (DeltaKeepsChanging(cur))
                 Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks(cur);
             else if (LBYKeepsChanging(cur))
                 Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
             else
-                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180;
+                Circlebian->GetEyeAngles()->y += (cur.front().m_flLowerBodyYawTarget) + 180;
             break;
         }
         case ResolverHugtype::LUCKY:
@@ -386,6 +610,8 @@ void Resolver::CreateMove(CUserCmd *cmd)
                 continue;
 
         Resolver::StoreVars(target);
-  
+      
+      //  StartLagComp(target,cmd);
+     
     }
 }

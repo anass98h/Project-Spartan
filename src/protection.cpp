@@ -25,7 +25,7 @@
 #include <linux/if.h>        
 #include <linux/sockios.h>   
 #endif !DARWIN
-static bool verified = false;
+static bool verified = true;
 static bool toggle = false;
 std::string master = XORSTR("Spartan");
 static bool runthroughonce = false;
@@ -114,13 +114,13 @@ bool protection::isVerified() {
 }
 
 void protection::verify(int id) {
-
     char line2 [128];
     std::string result2;
 
 
     //Project-Spartan.hiv :thinking:
-    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/pidmem"), "r"); //pipe wget output to a file handle    
+    FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/nyctumtap"), "r"); //pipe wget output to a file handle    
+
     while (fgets(line2, 128, fp))
         result2 += line2;
 
@@ -148,17 +148,38 @@ void protection::verify(int id) {
 }
 
 bool protection::pwmatch(char* Pass) {
-    return true;
+
+    //return true; // TODO ME
 
 
 
-    char line[128];
+    char line[328];
     std::string result;
 
     if (verified) {
         //Project-Spartan.hiv :thinking:
         FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
-        while (fgets(line, 128, fp))
+        while (fgets(line, 328, fp))
+            result += line;
+
+        pclose(fp); //close pipe
+
+        std::string str1(Pass);
+        if (str1 == master && str1.length() == master.length()) {
+            return true;
+        } else {
+            if (str1.length() == 16) {
+                std::size_t found = result.find(str1);
+                if (found != std::string::npos) {
+                    return true;
+
+                }
+
+
+                else {
+
+                     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
+        while (fgets(line, 328, fp))
             result += line;
 
         pclose(fp); //close pipe
@@ -183,6 +204,40 @@ bool protection::pwmatch(char* Pass) {
                 return false;
             }
 
+
+        }
+                }
+            }    else {
+
+                     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/psecuritymemez"), "r"); //pipe wget output to a file handle    
+        while (fgets(line, 328, fp))
+            result += line;
+
+        pclose(fp); //close pipe
+
+        std::string str1(Pass);
+        if (str1 == master && str1.length() == master.length()) {
+            return true;
+        } else {
+            if (str1.length() == 16) {
+                std::size_t found = result.find(str1);
+                if (found != std::string::npos) {
+                    return true;
+
+                }
+
+
+                else {
+
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+
+        }
+                }
 
         }
     } else {

@@ -47,3 +47,5 @@
 #include "ICommandLine.h"
 #include "CBaseClientState.h"
 #include "IMDLCache.h"
+#include "CTickRecord.h"
+#include "INetChannel.h"

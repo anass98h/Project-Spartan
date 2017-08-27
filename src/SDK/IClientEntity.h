@@ -325,7 +325,7 @@ public:
 
 	float GetFlashBangTime()
 	{
-		return *(float*)((uintptr_t)this + 0xABE4);
+		return *(float*)((uintptr_t)this + 0xABC4);
 	}
 
 	float GetFlashDuration()
@@ -611,7 +611,7 @@ public:
 	float GetSpread()
 	{
 		typedef float (* oGetSpread)(void*);
-		return getvfunc<oGetSpread>(this, 513)(this); //553
+		return getvfunc<oGetSpread>(this, 507)(this); //553
 	}
 	float GetInaccuracy()
 	{

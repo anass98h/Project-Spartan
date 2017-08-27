@@ -12,8 +12,7 @@ void CircleStrafe::CreateMove(CUserCmd* cmd) {
     if(!Settings::CircleStrafe::enabled){return;}
     
     
-    QAngle OView = cmd->viewangles;
-
+    QAngle OView = *Spartan->GetVAngles();
     static int Circle = 0;
     Circle++;
     if (Circle > 361)

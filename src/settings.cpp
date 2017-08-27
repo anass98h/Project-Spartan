@@ -138,6 +138,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
         weaponSetting[XORSTR("Enabled")] = i.second.enabled;
         weaponSetting[XORSTR("Silent")] = i.second.silent;
         weaponSetting["pSilent"] = i.second.pSilent;
+        weaponSetting["backtrack"] = i.second.backtrack;
         weaponSetting[XORSTR("Friendly")] = i.second.friendly;
         weaponSetting[XORSTR("ClosestBone")] = i.second.closestBone;
         weaponSetting[XORSTR("engageLock")] = i.second.engageLock;
@@ -214,6 +215,9 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")] = Settings::Triggerbot::RandomDelay::lowBound;
     settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")] = Settings::Triggerbot::RandomDelay::highBound;
 
+    settings[XORSTR("AngleIndicator")][XORSTR("enabled")] = Settings::AngleIndicator::enabled;
+
+    settings[XORSTR("AntiAim")][XORSTR("allowUntrustedAngles")] = Settings::AntiAim::allowUntrustedAngles;
     settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")] = Settings::AntiAim::Yaw::enabled;
     settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")] = (int) Settings::AntiAim::Yaw::type;
     settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")] = (int) Settings::AntiAim::Yaw::typeFake;
@@ -234,6 +238,8 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")] = Settings::AntiAim::Lua::scriptY2;
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")] = Settings::AntiAim::Lby::enabled;
     settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")] = (int) Settings::AntiAim::Lby::type;
+    settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("enabled")] = Settings::AntiAim::SwitchAA::enabled;
+    settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("key")] = Settings::AntiAim::SwitchAA::key;
 
     settings[XORSTR("ESP")][XORSTR("enabled")] = Settings::ESP::enabled;
     settings[XORSTR("ESP")][XORSTR("key")] = Util::GetButtonName(Settings::ESP::key);
@@ -461,6 +467,8 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("spinFactor")][XORSTR("value")] = Settings::spinFactor::value;
     settings[XORSTR("customYaw")][XORSTR("value")] = Settings::customYaw::value;
     settings[XORSTR("customYaw2")][XORSTR("value")] = Settings::customYaw2::value;
+    settings[XORSTR("customYawLby")][XORSTR("enabled")] = Settings::customYaw::lby;
+    settings[XORSTR("customYaw2Lby")][XORSTR("enabled")] = Settings::customYaw2::lby;
     settings[XORSTR("FakeLag")][XORSTR("adaptive")] = Settings::FakeLag::adaptive;
 
     settings[XORSTR("AutoAccept")][XORSTR("enabled")] = Settings::AutoAccept::enabled;
@@ -546,7 +554,7 @@ void Settings::LoadConfig(std::string path) {
     Settings::Aimbot::weapons = {
         { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
                 SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false}},
+                false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
     };
 
     for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++) {
@@ -613,7 +621,8 @@ void Settings::LoadConfig(std::string path) {
             weaponSetting[XORSTR("HitChance")][XORSTR("hitRays")].asInt(),
             weaponSetting[XORSTR("HitChance")][XORSTR("value")].asFloat(),
             weaponSetting[XORSTR("AutoCockRevolver")][XORSTR("enabled")].asBool(),
-            weaponSetting[XORSTR("velocityCheck")][XORSTR("enabled")].asBool()
+            weaponSetting[XORSTR("velocityCheck")][XORSTR("enabled")].asBool(),
+            weaponSetting[XORSTR("backtrack")].asBool()
 
         };
 
@@ -630,6 +639,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("Hugtype")], (int*) &Settings::Resolver::Hugtype);
     GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")], (int*) &Settings::Resolver::enabled);
 
+    GetVal(settings[XORSTR("AngleIndicator")][XORSTR("enabled")], &Settings::AngleIndicator::enabled);
 
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
     GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
@@ -647,6 +657,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("lowBound")], &Settings::Triggerbot::RandomDelay::lowBound);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")], &Settings::Triggerbot::RandomDelay::highBound);
 
+    GetVal(settings[XORSTR("AntiAim")][XORSTR("allowUntrustedAngles")], &Settings::AntiAim::allowUntrustedAngles);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")], &Settings::AntiAim::Yaw::enabled);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type")], (int*) & Settings::AntiAim::Yaw::type);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("type_fake")], (int*) & Settings::AntiAim::Yaw::typeFake);
@@ -667,6 +678,8 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lua")][XORSTR("scriptY2")], Settings::AntiAim::Lua::scriptY2);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("enabled")], &Settings::AntiAim::Lby::enabled);
     GetVal(settings[XORSTR("AntiAim")][XORSTR("Lby")][XORSTR("type")], (int*) & Settings::AntiAim::Lby::type);
+    GetVal(settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("enabled")], &Settings::AntiAim::SwitchAA::enabled);
+    GetButtonCode(settings[XORSTR("AntiAim")][XORSTR("SwitchAA")][XORSTR("key")], &Settings::AntiAim::SwitchAA::key);
 
     GetVal(settings[XORSTR("ESP")][XORSTR("enabled")], &Settings::ESP::enabled);
     GetButtonCode(settings[XORSTR("ESP")][XORSTR("key")], &Settings::ESP::key);
