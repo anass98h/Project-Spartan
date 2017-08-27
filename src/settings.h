@@ -94,6 +94,7 @@ enum class AntiAimType_LBY : int {
     ONE,
     TWO,
     THREE,
+    FOUR,
     NONE,
 };
 
