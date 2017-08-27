@@ -1,6 +1,5 @@
 #pragma once
 
-      
 #ifndef NETWORKSTRINGTABLEDEFS_H
 #define NETWORKSTRINGTABLEDEFS_H
 #ifdef _WIN32
@@ -64,28 +63,25 @@ public:
 	virtual void				RemoveAllTables( void ) = 0;
 	
 	// table infos
-	virtual INetworkStringTable	*FindTable( const char *tableName ) const = 0;
+	
 	virtual INetworkStringTable	*GetTable( TABLEID stringTable ) const = 0;
 	virtual int					GetNumTables( void ) const = 0;
 
 	virtual INetworkStringTable	*CreateStringTableEx( const char *tableName, int maxentries, int userdatafixedsize = 0, int userdatanetworkbits = 0, bool bIsFilenames = false ) = 0;
 	virtual void				SetAllowClientSideAddString( INetworkStringTable *table, bool bAllowClientSideAddString ) = 0;
+            
+        INetworkStringTable* FindTable(const char *tableName)
+        	{
+        		typedef INetworkStringTable*(* oFindTable)(void*, const char*);
+        		return getvfunc<oFindTable>(this, 3)(this, tableName);
+        	}
+
+
 };
 
 #endif // NETWORKSTRINGTABLEDEFS_H
-/* INETCHANNELINFO_H*/
-//========= Copyright Valve Corporation, All rights reserved. ============//
-//
-// Purpose: 
-//
-// $Workfile:     $
-// $Date:         $
-//
-//-----------------------------------------------------------------------------
-// $Log: $
-//
-// $NoKeywords: $
-//=============================================================================//
+
+
 #if !defined( INETCHANNELINFO_H )
 #define INETCHANNELINFO_H
 
@@ -148,7 +144,9 @@ public:
 };
 
 #endif // INETCHANNELINFO_H
-// EngineClient
+
+
+// EngineClient --------------------------------------------
 class IEngineClient
 {
 public:
