@@ -14,7 +14,7 @@ float Math::float_rand( float min, float max ) // thanks foo - https://stackover
 {
 	float scale = rand() / (float) RAND_MAX; /* [0, 1.0] */
 	return min + scale * ( max - min );      /* [min, max] */
-}
+}                       
 
 void Math::AngleVectors(const QAngle &angles, Vector& forward)
 {
@@ -201,4 +201,39 @@ void Math::NormalizeVector(Vector& vec) {
 			vec[i] += 360.f;
 	}
 	vec[2] = 0.f;
+}
+void Math::VectorAngles2(Vector &vecForward, Vector &vecAngles)
+{
+	Vector vecView;
+	if (vecForward[1] == 0.f && vecForward[0] == 0.f)
+	{
+		vecView[0] = 0.f;
+		vecView[1] = 0.f;
+	}
+	else
+	{
+		vecView[1] = atan2(vecForward[1], vecForward[0]) * 180.f / M_PI;
+
+		if (vecView[1] < 0.f)
+			vecView[1] += 360.f;
+
+		vecView[2] = sqrt(vecForward[0] * vecForward[0] + vecForward[1] * vecForward[1]);
+
+		vecView[0] = atan2(vecForward[2], vecView[2]) * 180.f / M_PI;
+	}
+
+	vecAngles[0] = -vecView[0];
+	vecAngles[1] = vecView[1];
+	vecAngles[2] = 0.f;
+}
+
+void Math::AngleVectors2(Vector& qAngles, Vector& vecForward)
+{
+	float sp, sy, cp, cy;
+	SinCos((float)(qAngles[1] * (M_PI / 180.f)), &sy, &cy);
+	SinCos((float)(qAngles[0] * (M_PI / 180.f)), &sp, &cp);
+
+	vecForward[0] = cp*cy;
+	vecForward[1] = cp*sy;
+	vecForward[2] = -sp;
 }

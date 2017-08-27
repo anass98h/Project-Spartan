@@ -118,7 +118,19 @@ public:
 	// This gets called with each handle
 	virtual bool EnumEntity(IHandleEntity* pHandleEntity) = 0;
 };
+class CTraceFilterWorldOnly : public ITraceFilter
+{
+public:
+	bool ShouldHitEntity(C_BaseEntity* pEntityHandle, int contentsMask)
+	{
+		return false;
+	}
 
+	TraceType_t GetTraceType() const
+	{
+		return TRACE_WORLD_ONLY;
+	}
+};
 class CTraceFilterEntitiesOnly : public ITraceFilter
 {
 public:

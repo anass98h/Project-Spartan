@@ -12,13 +12,107 @@ int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
-#define TIME_TO_TICKS( dt )		( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
-#define TICKS_TO_TIME( t )		( globalVars->interval_per_tick * ( t ) )
 
- void StartLagCompensation(C_BasePlayer* pEntity,CUserCmd* cmd) {
-	float flSimTime = pEntity->GetSimulationTime();
-//is this how lagcomp works ? idk if not delete or spit on my feet 
-	cmd->tick_count = TIME_TO_TICKS(flSimTime + 0.031f); // +1 Send
+
+template<class T, class U>
+T LagCompensation::clamp(T in, U low, U high)
+{
+	if (in <= low)
+		return low;
+
+	if (in >= high)
+		return high;
+
+	return in;
+}
+static float max (float& a , int b)
+{
+    if(a>b)
+    {
+        return a;
+    }
+    else if (b>a)
+    {
+        return b;
+    }
+
+}
+float LagCompensation::LerpTime()
+{      
+	ConVar* cvar_cl_interp = cvar->FindVar(XORSTR("cl_interp"));
+	ConVar* cvar_cl_updaterate = cvar->FindVar(XORSTR("cl_updaterate"));
+	ConVar* cvar_sv_maxupdaterate = cvar->FindVar(XORSTR("sv_maxupdaterate"));
+	ConVar* cvar_sv_minupdaterate = cvar->FindVar(XORSTR("sv_minupdaterate"));
+	ConVar* cvar_cl_interp_ratio = cvar->FindVar(XORSTR("cl_interp_ratio"));
+
+	float cl_interp = cvar_cl_interp->fValue;
+	int cl_updaterate = cvar_cl_updaterate->fValue;
+	int sv_maxupdaterate = cvar_sv_maxupdaterate->fValue;
+	int sv_minupdaterate = cvar_sv_minupdaterate->fValue;
+	int cl_interp_ratio = cvar_cl_interp_ratio->fValue;
+
+	if (sv_maxupdaterate <= cl_updaterate)
+		cl_updaterate = sv_maxupdaterate;
+
+	if (sv_minupdaterate > cl_updaterate)
+		cl_updaterate = sv_minupdaterate;
+
+	float new_interp = (float)cl_interp_ratio / (float)cl_updaterate;
+
+	if (new_interp > cl_interp)
+		cl_interp = new_interp;
+
+	return max(cl_interp, cl_interp_ratio / cl_updaterate);
+}
+
+void LagCompensation::InitLagRecord()
+{
+	for (int i = 0; i <= 32; i++)
+	{
+		for (int j = 0; j < 11; j++)
+		{
+			m_LagRecord[i][j].m_fSimulationTime = 0.0f;
+		}
+	}
+}
+
+int LagCompensation::FixTickcount(C_BasePlayer* player)
+{
+	int idx = player->GetIndex();
+
+	LagRecord* m_LagRecords = this->m_LagRecord[idx];
+
+	LagRecord recentLR = m_LagRecords[idx];
+
+	if (recentLR.m_fSimulationTime == 0.0f)
+		return TIME_TO_TICKS(player->GetSimulationTime() + LerpTime()) + 1;
+
+	int iLerpTicks = TIME_TO_TICKS(LerpTime());
+	int iTargetTickCount = TIME_TO_TICKS(recentLR.m_fSimulationTime) + iLerpTicks;
+
+	return iTargetTickCount + 1;
+}
+
+bool LagCompensation::IsValidTick(float simTime)
+{
+	INetChannelInfo* nci =  engine->GetNetChannelInfo();
+
+	if (!nci)
+		return false;
+
+	int LerpTicks = TIME_TO_TICKS(LerpTime());
+
+	int predCmdArrivTick = globalVars->tickcount + 1 + TIME_TO_TICKS(nci->GetAvgLatency(FLOW_INCOMING) + nci->GetAvgLatency(FLOW_OUTGOING));
+
+	float flCorrect = clamp(LerpTime() + nci->GetLatency(FLOW_OUTGOING), 0.f, 1.f) - TICKS_TO_TIME(predCmdArrivTick + LerpTicks - (TIME_TO_TICKS(simTime) + TIME_TO_TICKS(LerpTime())));
+
+	return abs(flCorrect) <= 0.2f;
+}
+
+
+static void StartLagComp(C_BasePlayer* target,CUserCmd* cmd)
+{
+    cmd->tick_count = LagComp->FixTickcount(target); // Im probably retarded
 }
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
@@ -513,7 +607,7 @@ void Resolver::CreateMove(CUserCmd *cmd)
 
         Resolver::StoreVars(target);
       
-     //   StartLagCompensation(target,cmd);
+      //  StartLagComp(target,cmd);
      
     }
 }

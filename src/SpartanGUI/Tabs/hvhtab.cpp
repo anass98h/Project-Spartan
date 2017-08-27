@@ -19,7 +19,7 @@ void HvH::RenderTab() {
     };
 
     const char *lbyTypes[] = {
-            "Breaker 1", "Breaker 2", "Breaker 3", "NONE",
+            "Breaker 1", "Breaker 2", "Breaker 3","Avoz", "NONE",
     };
 
     const char *zTypes[] = {

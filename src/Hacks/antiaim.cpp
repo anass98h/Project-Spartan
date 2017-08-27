@@ -494,6 +494,87 @@ static void SwapAA()
         count = 0;
     }
 }
+float GetLatency()
+{
+	INetChannelInfo *nci = engine->GetNetChannelInfo();
+	if (nci)
+	{
+		float Latency = nci->GetAvgLatency(FLOW_OUTGOING) + nci->GetAvgLatency(FLOW_INCOMING);
+		return Latency;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+float GetOutgoingLatency()
+{
+	INetChannelInfo *nci = engine->GetNetChannelInfo();
+	if (nci)
+	{
+		float OutgoingLatency = nci->GetAvgLatency(FLOW_OUTGOING);
+		return OutgoingLatency;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+float GetIncomingLatency()
+{
+	INetChannelInfo *nci = engine->GetNetChannelInfo();
+	if (nci)
+	{
+		float IncomingLatency = nci->GetAvgLatency(FLOW_INCOMING);
+		return IncomingLatency;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+float OldLBY;
+float LBYBreakerTimer;
+float LastLBYUpdateTime;
+bool bSwitch;
+float CurrentVelocity(C_BasePlayer* LocalPlayer)
+{
+	int vel = LocalPlayer->GetVelocity().Length2D();
+	return vel;
+}
+bool NextLBYUpdate()
+{
+	C_BasePlayer* LocalPlayer =  (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+
+	float flServerTime = (float)(LocalPlayer->GetTickBase()  * globalVars->interval_per_tick);
+
+
+	if (OldLBY != *LocalPlayer->GetLowerBodyYawTarget())
+	{
+		LBYBreakerTimer++;
+		OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
+		bSwitch = !bSwitch;
+		LastLBYUpdateTime = flServerTime;
+	}
+
+	if (CurrentVelocity(LocalPlayer) > 0.5)
+	{
+		LastLBYUpdateTime = flServerTime;
+		return false;
+	}
+
+	if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
+	{
+		if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime)
+		{
+			LastLBYUpdateTime += 1.1;
+		}
+		return true;
+	}
+	return false;
+}
+
+
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
 
@@ -705,6 +786,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             }
             break;
         }
+       
         case AntiAimType_Y::Tank:
             static bool fakeantiaim;
             static bool ySwitch = false;
@@ -1279,6 +1361,13 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
             else
                 angle.y += 0.f;
             break;
+        case AntiAimType_LBY::FOUR:
+
+		if (NextLBYUpdate())
+			angle.y -= 90;
+		else
+			angle.y += 90;
+                break;
         case AntiAimType_LBY::NONE:
             Settings::AntiAim::Lby::enabled = false;
             break;
