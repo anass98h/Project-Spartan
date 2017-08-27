@@ -56,5 +56,5 @@ void AngleIndicator::PaintImGui() {
     int textY2 = height - (height - (height * 51 / 100));
 
     Draw::ImText(ImVec2(textX, textY), ImColor(255, 255, 255), text.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
-    Draw::ImText(ImVec2(textX2, textY2), ImColor(255, 255, 255), text2.c_str());
+    Draw::ImText(ImVec2(textX2, textY2), ImColor(255, 255, 255), text2.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }

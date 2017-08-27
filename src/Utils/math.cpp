@@ -82,6 +82,17 @@ void Math::ClampAngles(QAngle& angle)
 	}
 }
 
+void Math::ClampY(int& y)
+{
+	if(!Settings::AntiAim::allowUntrustedAngles) {
+		if (y > 180)
+			y = 180;
+
+		if (y < 180)
+			y = -180;
+	}
+}
+
 void Math::CorrectMovement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove)
 {
 	// side/forward move correction
