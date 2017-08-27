@@ -227,7 +227,26 @@ void HvH::RenderTab() {
             ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
 
             ImGui::Separator();
-
+            ImGui::Text(XORSTR("pMemez :^)"));
+            ImGui::Separator();
+            ImGui::Columns(2, NULL, true);
+            {
+                
+                ImGui::Checkbox(XORSTR("Fakewalk"), &Settings::Fakewalk::enabled);
+                ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
+                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled);
+                
+            }
+            ImGui::NextColumn();
+            {
+               
+                UI::KeyBindButton(&Settings::Fakewalk::key);
+                UI::KeyBindButton(&Settings::CircleStrafe::key);
+                UI::KeyBindButton(&Settings::SlowMo::key);
+               
+            }
+            ImGui::Columns(1);
+            ImGui::Separator();
             ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
             if (Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 ||
                 Settings::AntiAim::Pitch::type == AntiAimType_X::LUA_UNCLAMPED) {

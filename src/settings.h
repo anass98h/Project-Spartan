@@ -867,6 +867,10 @@ namespace Settings {
         extern bool enabled;
         extern ButtonCode_t key;
     }
+    namespace SlowMo {
+        extern bool enabled;
+        extern ButtonCode_t key;
+    }
     namespace CircleStrafe
     {
             extern bool enabled;
