@@ -227,6 +227,7 @@ void HvH::RenderTab() {
             ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
 
             ImGui::Separator();
+
             ImGui::Text(XORSTR("pMemez :^)"));
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
@@ -247,6 +248,12 @@ void HvH::RenderTab() {
             }
             ImGui::Columns(1);
             ImGui::Separator();
+
+
+            ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
+
+            ImGui::Separator();
+
             ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
             if (Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 ||
                 Settings::AntiAim::Pitch::type == AntiAimType_X::LUA_UNCLAMPED) {
@@ -367,11 +374,7 @@ void HvH::RenderTab() {
 
                         ImGui::EndChild();
                     }
-
-
                 }
-
-                ImGui::Checkbox(XORSTR("Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
             }
             ImGui::EndChild();
