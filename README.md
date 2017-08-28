@@ -48,7 +48,7 @@ Then execute the following:
 $ git clone https://github.com/anass98h/Project-Spartan
 $ ./build
 # Open CS:GO
-$ ./load
+$ ./load.sh
 ```
 
 ## Usage
