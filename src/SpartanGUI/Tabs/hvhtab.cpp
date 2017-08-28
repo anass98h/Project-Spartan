@@ -10,24 +10,24 @@ void HvH::RenderTab() {
 
     const char *yTypes[] = {
             "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "Apostrophe",
-            "Tank", "Tank 2", "Tank 3", "LBY Breaker", "Fake LBY","LBY Spin",  "Backjitter Random", "Casual Jitter",
+            "Tank", "Tank 2", "Tank 3", "LBY Breaker", "Fake LBY", "LBY Spin",  "Backjitter Random", "Casual Jitter",
             "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards",
-            "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", // safe
+            "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", // safe, contains untrusted like "Fake LBY"
 
             "Lisp", "Lisp Side", "Lisp Jitter", "Angel Backwards", "Angel Inverse", "Angel Spin", "Lowerbody",
-            "LBY on Ground", "Lua Unclamped", "Lua Unclamped 2", // untrusted
+            "LBY on Ground", "Lua Unclamped", "Lua Unclamped 2" // untrusted
     };
 
     const char *lbyTypes[] = {
-            "Breaker 1", "Breaker 2", "Breaker 3","Avoz", "NONE",
+            "Breaker 1", "Breaker 2", "Breaker 3","Avoz", "NONE"
     };
 
     const char *zTypes[] = {
-            "Reverse", "Autismflip", "TEST",
+            "Reverse", "Autismflip", "TEST" // untrusted
     };
 
     const char *xTypes[] = {
-            "Up", "Flip", "Down", "Dance", "Front", "Lua", // safe
+            "Up", "Flip", "Down", "Dance", "Front", "Lua" // safe
 
             "Fake Up", "Fake Down", "Lisp Down", "Angel Down", "Angel Up", "Lua Unclamped" // untrusted
     };
@@ -153,7 +153,6 @@ void HvH::RenderTab() {
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::Text("Key");
                     UI::KeyBindButton(&Settings::AntiAim::SwitchAA::key);
                 }
 
@@ -205,52 +204,53 @@ void HvH::RenderTab() {
         {
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
-            ImGui::Checkbox("Enable", &Settings::Resolver::enabled);
+            ImGui::Checkbox(XORSTR("Enable"), &Settings::Resolver::enabled);
             if (Settings::Resolver::enabled) {
-                ImGui::Combo("##HUGTYPE", (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
-                ImGui::SliderFloat("##HUGTICKS", &Settings::Resolver::ticks, 0, 50, "Ticks: %0.f");
-                ImGui::SliderFloat("##HUGMODULO", &Settings::Resolver::modulo, 0, 50, "Modulo: %0.f");
+                ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
+                ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50, XORSTR("Ticks: %0.f"));
+                ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50, XORSTR("Modulo: %0.f"));
 
             }
 
             ImGui::Separator();
 
-            ImGui::Text("Indicators");
+            ImGui::Text(XORSTR("Indicators"));
 
-            ImGui::Checkbox("Lower Body Yaw", &Settings::lbyindicator::enabled);
+            ImGui::Checkbox(XORSTR("Lower Body Yaw"), &Settings::lbyindicator::enabled);
 
-            ImGui::Checkbox("Angle", &Settings::AngleIndicator::enabled);
+            ImGui::Checkbox(XORSTR("Angle"), &Settings::AngleIndicator::enabled);
 
             ImGui::Separator();
 
             ImGui::Text(XORSTR("Movement"));
-            ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
-
-            ImGui::Separator();
-
-            ImGui::Text(XORSTR("pMemez :^)"));
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
             {
-                
                 ImGui::Checkbox(XORSTR("Fakewalk"), &Settings::Fakewalk::enabled);
                 ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
-                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled);
-                
+                ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
             }
             ImGui::NextColumn();
             {
-               
                 UI::KeyBindButton(&Settings::Fakewalk::key);
                 UI::KeyBindButton(&Settings::CircleStrafe::key);
+            }
+
+            ImGui::Separator();
+
+            ImGui::Text(XORSTR("Miscellaneous"));
+            ImGui::Separator();
+            ImGui::Columns(2, NULL, true);
+            {
+                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled);
+                ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
+            }
+            ImGui::NextColumn();
+            {
                 UI::KeyBindButton(&Settings::SlowMo::key);
-               
             }
             ImGui::Columns(1);
             ImGui::Separator();
-
-
-            ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
             ImGui::Separator();
 

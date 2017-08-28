@@ -117,11 +117,11 @@ const char* Util::GetCurrentTimeAsISO8601Timestamp()
 {
 	time_t rawtime;
 	struct tm *timeinfo;
-	char buffer[sizeof "2011-10-08T07:07:09Z"];
+	char buffer[sizeof("2011-10-08T07:07:09Z")];
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	strftime(buffer, sizeof (buffer), "%FT%TZ", timeinfo);
+	strftime(buffer, sizeof(buffer), "%FT%TZ", timeinfo);
 	std::string time(buffer);
 
 	return time.c_str();
