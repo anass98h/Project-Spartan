@@ -1000,6 +1000,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
         case AntiAimType_Y::LBYSPIN:
             factor = 360.0 / M_PHI;
+            factor *= Settings::spinFactor::value;
             angle.y = *pLocal->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
             break;
         case AntiAimType_Y::RANDOMBACKJITTER:

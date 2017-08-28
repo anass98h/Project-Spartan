@@ -213,15 +213,15 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
              }
             
             else{
-		if (OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw) {
-			OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
-			OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
-			
-			
-			Circlebian->GetEyeAngles()->y = CurYaw;
+		if (OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw) {
+            OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
+            OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
+            
+            
+            Circlebian->GetEyeAngles()->y = CurYaw;
 
-			
-		}
+            
+        } 
                 else if (Shotsmissed == 3 ){
 		flYaw = flYaw - 180;
 		Circlebian->GetEyeAngles()->y = flYaw;

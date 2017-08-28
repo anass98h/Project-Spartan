@@ -323,11 +323,15 @@ void HvH::RenderTab() {
                     Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ||
                     Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
-                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2) {
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2 ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN) {
                     ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
                     {
                         if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN ||
-                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN) {
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN ||
+                            Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN) {
                             ImGui::Text(XORSTR("Spin Factor"));
 
                             {
