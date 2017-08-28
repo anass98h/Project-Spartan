@@ -242,7 +242,7 @@ void HvH::RenderTab() {
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
             {
-                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled);
+                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled); // why you move my memes ? :feelssad:
                 ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
             }
             ImGui::NextColumn();
