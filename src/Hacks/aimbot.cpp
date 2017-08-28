@@ -568,7 +568,7 @@ void Aimbot::AutoCockRevolver(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* lo
     float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
     if (cmd->buttons & IN_ATTACK2)
         cmd->buttons |= IN_ATTACK;
-    else if (postponeFireReady > 0 && postponeFireReady < globalVars->curtime)
+    else if (postponeFireReady > 0 && postponeFireReady - globalVars->curtime <= 0.05f)
     {
         cmd->buttons &= ~IN_ATTACK;
     }

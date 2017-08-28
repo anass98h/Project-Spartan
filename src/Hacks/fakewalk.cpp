@@ -2,10 +2,12 @@
 
 bool Settings::Fakewalk::enabled;
 ButtonCode_t Settings::Fakewalk::key = ButtonCode_t::KEY_C;
+bool Settings::SlowMo::enabled;
+ButtonCode_t Settings::SlowMo::key = ButtonCode_t::KEY_C;
 
 
 
-// this is still beta pls no hate :<
+// I should rename this to pMemes
 
 
 void Fakewalk::CreateMove(CUserCmd* cmd)
@@ -14,8 +16,8 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
 	if (!localplayer || !localplayer->GetAlive())
 		return;
 
-	if (!Settings::Fakewalk::enabled)
-		return;
+	if (Settings::Fakewalk::enabled){
+		
 
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
 	if (!activeWeapon || activeWeapon->GetInReload())
@@ -50,14 +52,36 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
     			globalVars->frametime *= (localplayer->GetVelocity().Length2D()) / 1.f;
     			cmd->buttons |= localplayer->GetMoveType() == IN_FORWARD;
     		}
-    	}
+            }
+        }
+        else if(Settings::SlowMo::enabled)
+        {   
+            
+            	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
+                if (!activeWeapon || activeWeapon->GetInReload())
+		return;
 
-	
+            CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
+            if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE || weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
+		return;
+
+            
+            if (inputSystem->IsButtonDown(Settings::SlowMo::key))
+	{
+		static bool slowmo;
+		slowmo = !slowmo;
+		if (slowmo)
+		{
+			cmd->tick_count = INT_MAX;
+		}
+	}
+        } 
+        
+        else  
+            return;
 	
 	
  }
- 
- 
  
 
 

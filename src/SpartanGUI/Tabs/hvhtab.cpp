@@ -228,6 +228,28 @@ void HvH::RenderTab() {
 
             ImGui::Separator();
 
+            ImGui::Text(XORSTR("pMemez :^)"));
+            ImGui::Separator();
+            ImGui::Columns(2, NULL, true);
+            {
+                
+                ImGui::Checkbox(XORSTR("Fakewalk"), &Settings::Fakewalk::enabled);
+                ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
+                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled);
+                
+            }
+            ImGui::NextColumn();
+            {
+               
+                UI::KeyBindButton(&Settings::Fakewalk::key);
+                UI::KeyBindButton(&Settings::CircleStrafe::key);
+                UI::KeyBindButton(&Settings::SlowMo::key);
+               
+            }
+            ImGui::Columns(1);
+            ImGui::Separator();
+
+
             ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
             ImGui::Separator();
