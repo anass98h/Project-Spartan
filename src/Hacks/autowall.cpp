@@ -1,29 +1,32 @@
 #include "autowall.h"
 
 static float GetHitgroupDamageMultiplier(HitGroups iHitGroup) {
-    switch (iHitGroup) {
-        case HitGroups::HITGROUP_GENERIC:
-            return 1.0f;
+    
+      switch (iHitGroup)
+    {
+          case HitGroups::HITGROUP_GENERIC:
+            return 0.5f;
         case HitGroups::HITGROUP_HEAD:
-            return 4.0f;
+            return 2.0f;
         case HitGroups::HITGROUP_CHEST:
-            return 1.0f;
+            return 0.5f;
         case HitGroups::HITGROUP_STOMACH:
-            return 1.5f;
+            return 0.75f;
         case HitGroups::HITGROUP_LEFTARM:
-            return 1.0f;
+            return 0.5f;
         case HitGroups::HITGROUP_RIGHTARM:
-            return 1.0f;
+            return 0.5f;
         case HitGroups::HITGROUP_LEFTLEG:
-            return 0.75f;
+            return 0.375f;
         case HitGroups::HITGROUP_RIGHTLEG:
-            return 0.75f;
+            return 0.375f;
         case HitGroups::HITGROUP_GEAR:
-                1.0f;
+            return 0.5f;
         default:
-            break;
+            return 1.0f;
             
     }
+    
     return 1.0f;
 }
 
@@ -33,7 +36,7 @@ static void ScaleDamage(HitGroups hitgroup, C_BasePlayer* enemy, float weapon_ar
     if (enemy->GetArmor() > 0) {
         if (hitgroup == HitGroups::HITGROUP_HEAD) {
             if (enemy->HasHelmet())
-                current_damage *= weapon_armor_ratio * 1.5f;
+                current_damage *= weapon_armor_ratio * 0.5f;
         } else
             current_damage *= weapon_armor_ratio * 0.5f;
     }
@@ -139,8 +142,8 @@ static bool HandleBulletPenetration(CCSWeaponInfo* weaponInfo, Autowall::FireBul
 
     float v34 = fmaxf(0.f, 1.0f / combined_penetration_modifier);
     float v35 = (data.current_damage * final_damage_modifier) + v34 * 3.0f * fmaxf(0.0f, (3.0f / weaponInfo->GetPenetration()) * 1.25f);
-    float thickness = (trace_exit.endpos - data.enter_trace.endpos).Length();
-
+    float thickness = VectorLength(trace_exit.endpos - data.enter_trace.endpos);
+    
     thickness *= thickness;
     thickness *= v34;
     thickness /= 24.0f;

@@ -66,7 +66,7 @@ bool Aimbot::aimStepInProgress = false;
 std::vector<int64_t> Aimbot::friends = {};
 std::vector<int64_t> Aimbot::baim = {};
 std::vector<long> killTimes = {0}; // the Epoch time from when we kill someone
-float autoCockDifference = 0.0f;
+
 int missedShots = 0;
 bool sentShotToTarget;
 

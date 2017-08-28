@@ -38,7 +38,7 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
     		{
     			CreateMove::sendPacket = false;
      
-    			cmd->tick_count += 10;
+    			cmd->tick_count = INT_MAX ;
     			cmd->command_number += 7 + cmd->tick_count % 2 ? 0 : 1;
      
     			cmd->buttons |= localplayer->GetMoveType() == IN_BACK;
