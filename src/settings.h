@@ -19,6 +19,7 @@
 #include "SpartanGUI/Spartangui.h"
 #include "Hacks/esp.h"
 #include "Hacks/lbyindicator.h"
+#include "Hacks/angleindicator.h"
 
 enum class SmoothType : int {
     SLOW_END,
@@ -52,11 +53,14 @@ enum class AntiAimType_Y : int {
     LEGITTROLLING2,
     NOAA,
     SPIN,
+    CUSTOM,
+    CUSTOM2,
     APOSTROPHE,
     Tank,
     TANK2,
     TANK3,
     LBYBREAK,
+    FAKELBY, //Right order now
     LBYSPIN,
     RANDOMBACKJITTER,
     CASUALJITTER,
@@ -90,6 +94,7 @@ enum class AntiAimType_LBY : int {
     ONE,
     TWO,
     THREE,
+    FOUR,
     NONE,
 };
 
@@ -189,14 +194,15 @@ enum class ResolverHugtype : int {
     OFF,
     AIMTUX,
     PLUSDELTA,
-    APOSTROPHE,
+    PASTEHUB,
+    BRUTEHIV,
     BRUTE1,
     AUTISM,
     LUCKY,
 };
 
 struct AimbotWeapon_t {
-    bool enabled, silent, pSilent, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
+     bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
     int engageLockTTR, hitChanceRays;
     Bone bone;
     SmoothType smoothType;
@@ -214,10 +220,11 @@ struct AimbotWeapon_t {
             bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
             bool spreadLimitEnabled, float spreadLimit,
             bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-            bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue, bool autoCockRevolver, bool velocityCheck) {
+            bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue, bool autoCockRevolver, bool velocityCheck, bool backtrack) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
+        this->backtrack = backtrack;
         this->friendly = friendly;
         this->closestBone = closestBone;
         this->engageLock = engageLock;
@@ -279,6 +286,7 @@ struct AimbotWeapon_t {
         return this->enabled == another.enabled &&
                 this->silent == another.silent &&
                 this->pSilent == another.pSilent &&
+                this->backtrack == another.backtrack &&
                 this->friendly == another.friendly &&
                 this->closestBone == another.closestBone &&
                 this->engageLock == another.engageLock &&
@@ -317,7 +325,7 @@ struct AimbotWeapon_t {
                 this->autoSlow == another.autoSlow &&
                 this->predEnabled == another.predEnabled &&
                 this->autoAimRealDistance == another.autoAimRealDistance &&
-                this->moveMouse == another.moveMouse && 
+                this->moveMouse == another.moveMouse &&
                 this->autoCockRevolver == another.autoCockRevolver;
     }
 };
@@ -372,7 +380,7 @@ namespace Settings {
         extern bool otherMenu;
         extern bool combinedMenu;
         extern bool Pie;
-        
+
         namespace Fonts {
             namespace ESP {
                 extern char* family;
@@ -386,6 +394,7 @@ namespace Settings {
         extern bool enabled;
         extern bool silent;
         extern bool pSilent;
+        extern bool backtrack;
         extern bool friendly;
         extern Bone bone;
         extern ButtonCode_t aimkey;
@@ -525,6 +534,12 @@ namespace Settings {
         }
     }
 
+    namespace AngleIndicator {
+
+        extern bool enabled;
+
+    }
+
     namespace AntiAim {
         namespace AutoDisable {
             extern bool noEnemy;
@@ -562,6 +577,16 @@ namespace Settings {
             extern char scriptY[512];
             extern char scriptY2[512];
         }
+
+        namespace SwitchAA {
+
+            extern bool enabled;
+            extern ButtonCode_t key;
+
+        }
+
+        extern bool allowUntrustedAngles;
+
     }
 
     namespace Resolver {
@@ -603,6 +628,9 @@ namespace Settings {
 
         namespace AutoWall {
             extern bool debugView;
+        }
+        namespace Backtracking {
+            extern bool enabled;
         }
         namespace Glow {
             extern bool enabled;
@@ -839,12 +867,16 @@ namespace Settings {
         extern bool enabled;
         extern ButtonCode_t key;
     }
+    namespace SlowMo {
+        extern bool enabled;
+        extern ButtonCode_t key;
+    }
     namespace CircleStrafe
     {
             extern bool enabled;
             extern ButtonCode_t key;
     }
-     
+
     namespace Autoblock {
         extern bool enabled;
         extern ButtonCode_t key;
@@ -902,6 +934,14 @@ namespace Settings {
 
     namespace spinFactor {
         extern int value;
+    }
+    namespace customYaw {
+        extern int value;
+        extern bool lby;
+    }
+    namespace customYaw2 {
+        extern int value;
+        extern bool lby;
     }
 
     namespace AutoAccept {

@@ -13,7 +13,6 @@ void Hooks::Paint(void* thisptr, PaintMode_t mode)
 	if (mode & PAINT_UIPANELS)
 	{
 		StartDrawing(surface);
-
 		Dlights::Paint();
 		ESP::Paint();
 		GrenadeHelper::Paint();
@@ -28,5 +27,6 @@ void Hooks::Paint(void* thisptr, PaintMode_t mode)
 
 void Hooks::PaintImGui()
 {
-	lbyindicator::PaintImGui();
+    lbyindicator::PaintImGui();
+    AngleIndicator::PaintImGui();
 }

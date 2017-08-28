@@ -9,6 +9,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
     if (cmd && cmd->command_number) {
         *bSendPacket = CreateMove::sendPacket;
         CreateMove::sendPacket = true;
+
         lbyindicator::CreateMove(cmd);
         Resolver::CreateMove(cmd);
         BHop::CreateMove(cmd);
@@ -30,8 +31,9 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
         FakeLag::CreateMove(cmd);
         ESP::CreateMove(cmd);
         PredictionSystem::EndPrediction();
-
         ThirdPerson::CreateMove(cmd);
+        AngleIndicator::PostPredictionCreateMove(cmd);
+
 
         EdgeJump::PostPredictionCreateMove(cmd);
 

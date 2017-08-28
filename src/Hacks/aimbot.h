@@ -14,9 +14,10 @@ namespace Aimbot
 {
 	extern bool aimStepInProgress;
 	extern std::vector<int64_t> friends;
+	extern std::vector<int64_t> baim;
     extern int targetAimbot;
     void AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* localplayer, CUserCmd* cmd);
-    bool HitChance(const Vector& vecPoint, bool teamCheck, C_BasePlayer* localplayer);
+   bool HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localplayer);
 	void XDOCleanup();
 
 	//Hooks

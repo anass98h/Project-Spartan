@@ -9,9 +9,10 @@ void CircleStrafe::CreateMove(CUserCmd* cmd) {
 
     if (Spartan->GetMoveType() == MOVETYPE_LADDER || Spartan->GetMoveType() == MOVETYPE_NOCLIP)
         return;
-
-    QAngle OView = cmd->viewangles;
-
+    if(!Settings::CircleStrafe::enabled){return;}
+    
+    
+    QAngle OView = *Spartan->GetVAngles();
     static int Circle = 0;
     Circle++;
     if (Circle > 361)

@@ -1,5 +1,6 @@
 #include "util.h"
 #include "../settings.h"
+#include "picosha2.h"
 
 std::string Util::ReplaceString(std::string subject, const std::string& search, const std::string& replace)
 {
@@ -110,6 +111,37 @@ long Util::GetEpochTime()
 	auto duration = std::chrono::system_clock::now().time_since_epoch();
 
 	return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+}
+
+const char* Util::GetCurrentTimeAsISO8601Timestamp()
+{
+	time_t rawtime;
+	struct tm *timeinfo;
+	char buffer[sizeof "2011-10-08T07:07:09Z"];
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof (buffer), "%FT%TZ", timeinfo);
+	std::string time(buffer);
+
+	return time.c_str();
+}
+
+const char* Util::GetSHA256(const char* input)
+{
+	std::string uniqueID = std::string(input);
+	std::vector<unsigned char> hash(32);
+	picosha2::hash256(uniqueID.begin(), uniqueID.end(), hash.begin(), hash.end());
+
+	return picosha2::bytes_to_hex_string(hash.begin(), hash.end()).c_str();
+}
+
+const char* Util::GetSHA256(std::ifstream stream)
+{
+	std::vector<unsigned char> hash(32);
+	picosha2::hash256(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>(), hash.begin(), hash.end());
+
+	return picosha2::bytes_to_hex_string(hash.begin(), hash.end()).c_str();
 }
 
 const std::map<int,int> * Util::GetModelTypeBoneMap(C_BasePlayer* player)

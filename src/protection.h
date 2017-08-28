@@ -10,7 +10,11 @@
 #include <cstdlib>
 #include <sys/time.h>
 #include "Utils/xorstring.h"
+#include "project-spartan.h"
 namespace protection {
     bool pwmatch(char* Pass);
     void timerstart();
+    int UniqueId();
+    void verify(int id);
+    bool isVerified();
 }

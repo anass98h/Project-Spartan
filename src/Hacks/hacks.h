@@ -7,6 +7,7 @@
 #include "autodefuse.h"
 #include "autostrafe.h"
 #include "bhop.h"
+#include "backtracking.h"
 #include "chams.h"
 #include "clantagchanger.h"
 #include "customglow.h"
@@ -40,3 +41,4 @@
 #include "fakewalk.h"
 #include "circlestrafe.h"
 #include "lbyindicator.h"
+#include "angleindicator.h"

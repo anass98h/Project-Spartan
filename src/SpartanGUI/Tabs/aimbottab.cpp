@@ -51,9 +51,10 @@ static bool autoSlow = false;
 static bool predEnabled = false;
 static bool hitChanceEnabled = false;
 static int hitChanceRays = 100;
-static float hitChanceValue = 0.5f;
+static float hitChanceValue = 0.0f;
 static bool autoCockRevolver = false;
 static bool velocityCheck = false;
+static bool backtrack = false;
 
 
 void UI::ReloadWeaponSettings() {
@@ -64,6 +65,7 @@ void UI::ReloadWeaponSettings() {
     enabled = Settings::Aimbot::weapons.at(index).enabled;
     silent = Settings::Aimbot::weapons.at(index).silent;
     pSilent = Settings::Aimbot::weapons.at(index).pSilent;
+    backtrack = Settings::Aimbot::weapons.at(index).backtrack;
     friendly = Settings::Aimbot::weapons.at(index).friendly;
     moveMouse = Settings::Aimbot::weapons.at(index).moveMouse;
     closestBone = Settings::Aimbot::weapons.at(index).closestBone;
@@ -118,13 +120,16 @@ void UI::UpdateWeaponSettings() {
         Settings::Aimbot::weapons[currentWeapon] = AimbotWeapon_t();
 
     AimbotWeapon_t settings = {
-        enabled, silent, pSilent, friendly, closestBone, engageLock, engageLockTR, engageLockTTR, bone, aimkey, aimkeyOnly,
-        smoothEnabled, smoothValue, smoothType, smoothSaltEnabled, smoothSaltMultiplier,
-        errorMarginEnabled, errorMarginValue,
-        autoAimEnabled, autoAimValue, aimStepEnabled, aimStepMin, aimStepMax,
-        rcsEnabled, rcsAlwaysOn, rcsAmountX, rcsAmountY,
-        autoPistolEnabled, autoShootEnabled, autoScopeEnabled,
-        noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled, spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue, autoCockRevolver, velocityCheck
+        enabled, silent, pSilent, friendly, closestBone,
+        engageLock, engageLockTR, engageLockTTR, bone, aimkey,
+        aimkeyOnly, smoothEnabled, smoothValue, smoothType, smoothSaltEnabled,
+        smoothSaltMultiplier, errorMarginEnabled, errorMarginValue, autoAimEnabled, autoAimValue,
+        aimStepEnabled, aimStepMin, aimStepMax, rcsEnabled, rcsAlwaysOn,
+        rcsAmountX, rcsAmountY, autoPistolEnabled, autoShootEnabled, autoScopeEnabled,
+        noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled,
+        spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow,
+        predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue,
+        autoCockRevolver, velocityCheck, backtrack
     };
 
     for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
@@ -377,6 +382,20 @@ void Aimbot::RenderTab() {
             if (ImGui::SliderFloat(XORSTR("##SPREADLIMIT"), &spreadLimit, 0, 0.1))
                 UI::UpdateWeaponSettings();
             SetTooltip("Below this value, autoshoot does not shoot");
+            ImGui::Separator();
+            ImGui::Text(XORSTR("Hitchance"));
+            ImGui::Separator();
+            ImGui::Columns(1);
+            {
+                if (ImGui::Checkbox("Hit Chance", &hitChanceEnabled))
+                    UI::UpdateWeaponSettings();
+                if (ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1))
+                    UI::UpdateWeaponSettings();
+                if (ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250))
+                    UI::UpdateWeaponSettings();
+                SetTooltip("Amount of rays to be shot");
+            }
+            
             ImGui::EndChild();
         }
     }
@@ -417,19 +436,7 @@ void Aimbot::RenderTab() {
             }
             ImGui::Columns(1);
             ImGui::Separator();
-            ImGui::Text(XORSTR("Hitchance"));
-            ImGui::Separator();
-            ImGui::Columns(1);
-            {
-                if (ImGui::Checkbox("Hit Chance", &hitChanceEnabled))
-                    UI::UpdateWeaponSettings();
-                if (ImGui::SliderFloat("##HITCHANCEVALUE", &hitChanceValue, 0, 1))
-                    UI::UpdateWeaponSettings();
-                if (ImGui::SliderInt("##HITCHANCERAYS", &hitChanceRays, 1, 250))
-                    UI::UpdateWeaponSettings();
-                SetTooltip("Amount of rays to be shot");
-            }
-            ImGui::Separator();
+            
             ImGui::Text(XORSTR("Other"));
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
@@ -466,10 +473,11 @@ void Aimbot::RenderTab() {
                 }
                 if (ImGui::Checkbox(XORSTR("Smoke Check"), &smokeCheck))
                     UI::UpdateWeaponSettings();
-                if (ImGui::Checkbox("pSilent", &pSilent))
+                if (ImGui::Checkbox(XORSTR("pSilent"), &pSilent))
                     UI::UpdateWeaponSettings();
-                if (ImGui::Checkbox(XORSTR("Prediction"), &predEnabled))
+                if (ImGui::Checkbox(XORSTR("Backtrack"), &backtrack))
                     UI::UpdateWeaponSettings();
+               
             }
             ImGui::NextColumn();
             {
@@ -480,6 +488,8 @@ void Aimbot::RenderTab() {
                 if (ImGui::Checkbox(XORSTR("Ignore Jump"), &ignoreJumpEnabled))
                     UI::UpdateWeaponSettings();
                 if (ImGui::Checkbox(XORSTR("Flash Check"), &flashCheck))
+                    UI::UpdateWeaponSettings();
+             if (ImGui::Checkbox(XORSTR("Prediction"), &predEnabled))
                     UI::UpdateWeaponSettings();
             }
 

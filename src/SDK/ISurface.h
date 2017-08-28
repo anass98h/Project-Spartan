@@ -132,7 +132,17 @@ public:
 		typedef void(* oDrawOutlinedCircle)(void*, int, int, int, int);
 		return getvfunc<oDrawOutlinedCircle>(this, 103)(this, x0, y0, x1, y1);
 	}
-
+        void DrawTexturedRect(int x0, int y0, int W, int T)
+        {
+        typedef void(* oDrawTexturedRect)(void*, int, int, int, int);
+        return getvfunc<oDrawTexturedRect>(this, 41)(this, x0, y0, W, T);
+        }
+         
+        bool IsTextureIDValid(int TextureID)
+        {
+        typedef bool(* oIsTextureIDValid)(void*, int);
+        return getvfunc<oIsTextureIDValid>(this, 42)(this, TextureID);
+        }
 	void DrawTexturedPolygon(int vtxCount, FontVertex_t *vtx, bool bClipVertices = true)
 	{
 		typedef void (* oDrawTexturedPolygon)(void*, int, FontVertex_t*, bool);

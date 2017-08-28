@@ -24,7 +24,7 @@ void SDL2::SwapWindow(SDL_Window* window) {
         };
          */
 
-        ImWchar Spartan_ranges[] = {
+        ImWchar arial_ranges[] = {
             0x0020, 0x007E, // Basic Latin
             0x00A0, 0x00FF, // Latin-1 Supplement
             0x0100, 0x017F, // Latin Extended-A
@@ -54,7 +54,7 @@ void SDL2::SwapWindow(SDL_Window* window) {
         ImFontConfig config;
 
         // Add SegoeUI as default font
-        io.Fonts->AddFontFromMemoryCompressedTTF(Spartan_compressed_data, Spartan_compressed_size, 21.0f, &config, Spartan_ranges);
+        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, 17.0f, &config, arial_ranges);
 
         //not sure if I set this after or before the merge mode 
 

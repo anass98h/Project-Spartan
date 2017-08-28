@@ -1,7 +1,7 @@
 #include "project-spartan.h"
 #include "EventListener.h"
 
-//#include "Utils/netvarmanager.h"
+#include "Utils/netvarmanager.h"
 
 static EventListener* eventListener = nullptr;
 // The Below Line is Set by the Build script. Keep this on Line 8.
