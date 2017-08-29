@@ -9,7 +9,7 @@ bool Settings::customYaw2::lby;
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "Apostrophe",
+            "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "AutismSpin",
             "Tank", "Tank 2", "Tank 3", "LBY Breaker", "Fake LBY", "LBY Spin",  "Backjitter Random", "Casual Jitter",
             "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards",
             "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", // safe, contains untrusted like "Fake LBY"
@@ -33,7 +33,7 @@ void HvH::RenderTab() {
     };
 
     const char *Hugtypes[] = {
-            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "Apostrophe's Autism", "I'm feeling Lucky"
+            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky"
     };
 
     ImGui::Columns(2, NULL, true);
@@ -208,9 +208,9 @@ void HvH::RenderTab() {
                 ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
                 ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50, XORSTR("Ticks: %0.f"));
                 ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50, XORSTR("Modulo: %0.f"));
-               // ImGui::Checkbox(XORSTR("LagComp"), &Settings::Resolver::LagComp);   -> will fix this later :/ 
+                ImGui::Checkbox(XORSTR("crash game"), &Settings::Resolver::LagComp);  
             }
-
+          
             ImGui::Separator();
 
             ImGui::Text(XORSTR("Indicators"));
@@ -218,7 +218,8 @@ void HvH::RenderTab() {
             ImGui::Checkbox(XORSTR("Lower Body Yaw"), &Settings::lbyindicator::enabled);
 
             ImGui::Checkbox(XORSTR("Angle"), &Settings::AngleIndicator::enabled);
-
+            
+             ImGui::Checkbox(XORSTR("Velocity"), &Settings::AngleIndicator::Veloc);
             ImGui::Separator();
 
             ImGui::Text(XORSTR("Movement"));

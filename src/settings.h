@@ -537,6 +537,7 @@ namespace Settings {
     namespace AngleIndicator {
 
         extern bool enabled;
+        extern bool Veloc;
 
     }
 
