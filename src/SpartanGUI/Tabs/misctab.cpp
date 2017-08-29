@@ -4,7 +4,7 @@ static char nickname[127] = "";
 
 void Misc::RenderTab() {
     const char* strafeTypes[] = {"Forwards", "Backwards", "Left", "Right", "Rage"};
-    const char* animationTypes[] = {"Static", "Curtime", "Marquee", "Words", "Letters"};
+    const char* animationTypes[] = {"Static", "Curtime", "Marquee", "Words", "Letters", "Project Spartan"};
     const char* spammerTypes[] = {"None", "Normal", "Positions"};
     const char* teams[] = {"Allies", "Enemies", "Both"};
 
@@ -240,8 +240,9 @@ void Misc::RenderTab() {
                 ImGui::PushItemWidth(-1);
                 if (ImGui::Combo(XORSTR("##ANIMATIONTYPE"), (int*) & Settings::ClanTagChanger::type, animationTypes, IM_ARRAYSIZE(animationTypes)))
                     ClanTagChanger::UpdateClanTagCallback();
-                if (ImGui::SliderInt(XORSTR("##ANIMATIONSPEED"), &Settings::ClanTagChanger::animationSpeed, 0, 2000))
-                    ClanTagChanger::UpdateClanTagCallback();
+                if(Settings::ClanTagChanger::type != ClanTagType::SPARTAN)
+                    if (ImGui::SliderInt(XORSTR("##ANIMATIONSPEED"), &Settings::ClanTagChanger::animationSpeed, 0, 2000))
+                        ClanTagChanger::UpdateClanTagCallback();
                 ImGui::PopItemWidth();
             }
             ImGui::Columns(1);

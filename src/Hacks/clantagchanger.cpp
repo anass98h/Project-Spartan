@@ -35,7 +35,7 @@ static ClanTagChanger::Animation Marquee(std::string name, std::wstring text, in
 
     std::vector<ClanTagChanger::Frame> frames;
     for (unsigned long i = 0; i < text.length() + width; i++)
-        frames.push_back(ClanTagChanger::Frame(cropString.substr(i, width + i), Settings::ClanTagChanger::animationSpeed));
+        frames.push_back(ClanTagChanger::Frame(cropString.substr(i, width + i), Settings::ClanTagChanger::type == ClanTagType::SPARTAN ? 300 : Settings::ClanTagChanger::animationSpeed));
 
     return ClanTagChanger::Animation(name, frames, ClanTagChanger::ANIM_LOOP);
 }
@@ -61,6 +61,8 @@ ClanTagChanger::Animation* ClanTagChanger::animation = &ClanTagChanger::animatio
 void ClanTagChanger::UpdateClanTagCallback() {
     if (strlen(Settings::ClanTagChanger::value) > 0 && Settings::ClanTagChanger::type > ClanTagType::STATIC) {
         std::wstring wc = Util::StringToWstring(Settings::ClanTagChanger::value);
+        if(Settings::ClanTagChanger::value == "Project Spartan")
+            Settings::ClanTagChanger::type = ClanTagType::SPARTAN;
 
         switch (Settings::ClanTagChanger::type) {
 
@@ -73,6 +75,8 @@ void ClanTagChanger::UpdateClanTagCallback() {
             case ClanTagType::LETTERS:
                 *ClanTagChanger::animation = Letters("------", wc);
                 break;
+            case ClanTagType::SPARTAN:
+                *ClanTagChanger::animation = Marquee("------", Util::StringToWstring("Project Spartan"));
             default:
                 break;
         }

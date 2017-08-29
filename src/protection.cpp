@@ -89,8 +89,9 @@ unsigned short getCpuHash() {
 #endif // !DARWIN   
 
 bool protection::isVerified() {
-   
     return true;
+
+
     if (!runthroughonce) {
         protection::verify(protection::UniqueId());
         runthroughonce = true;
@@ -119,6 +120,7 @@ void protection::verify(int id) {
 
     //Project-Spartan.hiv :thinking:
     FILE *fp = popen(XORSTR("wget --quiet -O - whatKills.us/nyctumtap"), "r"); //pipe wget output to a file handle    
+
     while (fgets(line2, 128, fp))
         result2 += line2;
 
@@ -146,7 +148,9 @@ void protection::verify(int id) {
 }
 
 bool protection::pwmatch(char* Pass) {
+
     //return true; // TODO ME
+
 
 
     char line[328];

@@ -23,6 +23,7 @@ T LagCompensation::clamp(T in, U low, U high)
 	if (in >= high)
 		return high;
 
+
 	return in;
 }
 static float max (float& a , int b)
@@ -30,11 +31,14 @@ static float max (float& a , int b)
     if(a>b)
     {
         return a;
+
     }
     else if (b>a)
     {
         return b;
     }
+
+
 
 }
 float LagCompensation::LerpTime()
