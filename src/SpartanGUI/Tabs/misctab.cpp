@@ -7,7 +7,8 @@ void Misc::RenderTab() {
     const char* animationTypes[] = {"Static", "Curtime", "Marquee", "Words", "Letters"};
     const char* spammerTypes[] = {"None", "Normal", "Positions"};
     const char* teams[] = {"Allies", "Enemies", "Both"};
-
+    
+    
     ImGui::Columns(2, NULL, true);
     {
         ImGui::BeginChild(XORSTR("Child1"), ImVec2(0, 0), true);
@@ -16,6 +17,7 @@ void Misc::RenderTab() {
             ImGui::Separator();
 
             ImGui::Checkbox(XORSTR("Bunny Hop"), &Settings::BHop::enabled);
+    
             ImGui::Columns(2, NULL, true);
             {
                 ImGui::Checkbox(XORSTR("Edge Jump"), &Settings::EdgeJump::enabled);
@@ -25,7 +27,6 @@ void Misc::RenderTab() {
                 UI::KeyBindButton(&Settings::EdgeJump::key);
             }
             ImGui::Columns(1);
-
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
             {
@@ -198,7 +199,7 @@ void Misc::RenderTab() {
                 {
                     ImGui::Checkbox(XORSTR("Force Update ###match"), &Settings::GrenadeHelper::onlyMatchingInfos);
                 }
-
+                ImGui::Columns(1);
                 ImGui::Columns(2);
                 {
                     ImGui::Button(XORSTR("Clean the menu"), ImVec2(-1, 0));
@@ -216,6 +217,7 @@ void Misc::RenderTab() {
             ImGui::Separator();
             ImGui::EndChild();
         }
+        
     }
     ImGui::NextColumn();
     {

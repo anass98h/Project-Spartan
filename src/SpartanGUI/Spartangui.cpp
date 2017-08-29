@@ -83,7 +83,7 @@ void SetupMainMenuBar() {
 
 
         ImGui::Columns(1);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 135));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 135));
 
 
         if (ImGui::BeginPopupModal(XORSTR("Project Spartan"))) {
@@ -93,7 +93,7 @@ void SetupMainMenuBar() {
             ImGui::Spacing();
             ImGui::BulletText(" Verification-ID ");
             ImGui::Separator();
-            ImGui::PushItemWidth(188);
+            ImGui::PushItemWidth(440);
             ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass),
                     ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
                     ImGuiInputTextFlags_AutoSelectAll);

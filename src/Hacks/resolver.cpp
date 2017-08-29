@@ -3,7 +3,7 @@
 bool Settings::Resolver::enabled = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
-
+bool Settings::Resolver::LagComp = false;
 ResolverHugtype Settings::Resolver::Hugtype = ResolverHugtype::OFF;
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
@@ -12,19 +12,9 @@ int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
+ static float rSimTime[65]; 
 
 
-template<class T, class U>
-T LagCompensation::clamp(T in, U low, U high)
-{
-	if (in <= low)
-		return low;
-
-	if (in >= high)
-		return high;
-
-	return in;
-}
 static float max (float& a , int b)
 {
     if(a>b)
@@ -44,7 +34,7 @@ float LagCompensation::LerpTime()
 	ConVar* cvar_sv_maxupdaterate = cvar->FindVar(XORSTR("sv_maxupdaterate"));
 	ConVar* cvar_sv_minupdaterate = cvar->FindVar(XORSTR("sv_minupdaterate"));
 	ConVar* cvar_cl_interp_ratio = cvar->FindVar(XORSTR("cl_interp_ratio"));
-
+        
 	float cl_interp = cvar_cl_interp->fValue;
 	int cl_updaterate = cvar_cl_updaterate->fValue;
 	int sv_maxupdaterate = cvar_sv_maxupdaterate->fValue;
@@ -65,54 +55,22 @@ float LagCompensation::LerpTime()
 	return max(cl_interp, cl_interp_ratio / cl_updaterate);
 }
 
-void LagCompensation::InitLagRecord()
-{
-	for (int i = 0; i <= 32; i++)
-	{
-		for (int j = 0; j < 11; j++)
-		{
-			m_LagRecord[i][j].m_fSimulationTime = 0.0f;
-		}
-	}
-}
-
 int LagCompensation::FixTickcount(C_BasePlayer* player)
 {
-	int idx = player->GetIndex();
+    rSimTime[player->GetIndex()] = player->GetSimulationTime();
 
-	LagRecord* m_LagRecords = this->m_LagRecord[idx];
-
-	LagRecord recentLR = m_LagRecords[idx];
-
-	if (recentLR.m_fSimulationTime == 0.0f)
+	if ( rSimTime[player->GetIndex()] == 0.0f)
 		return TIME_TO_TICKS(player->GetSimulationTime() + LerpTime()) + 1;
 
 	int iLerpTicks = TIME_TO_TICKS(LerpTime());
-	int iTargetTickCount = TIME_TO_TICKS(recentLR.m_fSimulationTime) + iLerpTicks;
-
+	int iTargetTickCount = TIME_TO_TICKS( rSimTime[player->GetIndex()]) + iLerpTicks;
+        
 	return iTargetTickCount + 1;
 }
 
-bool LagCompensation::IsValidTick(float simTime)
-{
-	INetChannelInfo* nci =  engine->GetNetChannelInfo();
-
-	if (!nci)
-		return false;
-
-	int LerpTicks = TIME_TO_TICKS(LerpTime());
-
-	int predCmdArrivTick = globalVars->tickcount + 1 + TIME_TO_TICKS(nci->GetAvgLatency(FLOW_INCOMING) + nci->GetAvgLatency(FLOW_OUTGOING));
-
-	float flCorrect = clamp(LerpTime() + nci->GetLatency(FLOW_OUTGOING), 0.f, 1.f) - TICKS_TO_TIME(predCmdArrivTick + LerpTicks - (TIME_TO_TICKS(simTime) + TIME_TO_TICKS(LerpTime())));
-
-	return abs(flCorrect) <= 0.2f;
-}
-
-
 static void StartLagComp(C_BasePlayer* target,CUserCmd* cmd)
 {
-    cmd->tick_count = LagComp->FixTickcount(target); // Im probably retarded
+    cmd->tick_count = LagCompensation::FixTickcount(target); // Im probably retarded
 }
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
@@ -606,8 +564,9 @@ void Resolver::CreateMove(CUserCmd *cmd)
                 continue;
 
         Resolver::StoreVars(target);
-      
-      //  StartLagComp(target,cmd);
+        
+        if(Settings::Resolver::LagComp)
+         StartLagComp(target,cmd);
      
     }
 }

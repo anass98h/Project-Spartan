@@ -23,7 +23,7 @@ void Others2::RenderTab() {
     ImGui::Spacing();
     ImGui::Spacing();
     ImGui::Spacing();
-    ImGui::Spacing(); // p
+    ImGui::Spacing(); // will replace this soon
     ImGui::Spacing();
     ImGui::Spacing();
     ImGui::Spacing();
@@ -34,7 +34,8 @@ void Others2::RenderTab() {
     ImGui::Spacing();
     //Align the labels centered to the checkboxes
     //Set Column flags to not dragable
-    ImGui::Columns(6, "Playerlist?", false);
+    
+    ImGui::Columns(5, "Playerlist?", false);
     {
         ImGui::Text(ICON_PLAYERLIST);
         ImGui::Checkbox("PlayerList", &PlayerList::showWindow);

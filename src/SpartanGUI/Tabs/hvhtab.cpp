@@ -96,13 +96,12 @@ void HvH::RenderTab() {
                 }
                 ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Columns(2, NULL, true);
-                ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
+                ImGui::Text(XORSTR("Roll Actual"));
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
-                    ImGui::Text(XORSTR("Roll Actual"));
+                      ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
+                   
                 }
                 ImGui::NextColumn();
                 {
@@ -209,7 +208,7 @@ void HvH::RenderTab() {
                 ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
                 ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50, XORSTR("Ticks: %0.f"));
                 ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50, XORSTR("Modulo: %0.f"));
-
+                ImGui::Checkbox(XORSTR("LagComp"), &Settings::Resolver::LagComp);
             }
 
             ImGui::Separator();
@@ -234,10 +233,13 @@ void HvH::RenderTab() {
             {
                 UI::KeyBindButton(&Settings::Fakewalk::key);
                 UI::KeyBindButton(&Settings::CircleStrafe::key);
+            
+                
             }
-
+           
+            
+            ImGui::Columns(1);
             ImGui::Separator();
-
             ImGui::Text(XORSTR("Miscellaneous"));
             ImGui::Separator();
             ImGui::Columns(2, NULL, true);
