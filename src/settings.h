@@ -590,7 +590,7 @@ namespace Settings {
     }
 
     namespace Resolver {
-
+        extern bool LagComp;
         extern bool enabled;
         extern float ticks;
         extern float modulo;

@@ -34,14 +34,19 @@ void Visuals::RenderTab() {
         "vertigoblue_hdr",
         "vietnam" // 21
     };
-
+    
+    ImGui::Checkbox(XORSTR("Enabled"), &Settings::ESP::enabled);
+    ImGui::Separator();
     ImGui::Columns(2, NULL, true);
     {
-        ImGui::Checkbox(XORSTR("Enabled"), &Settings::ESP::enabled);
-        ImGui::NextColumn();
-        ImGui::Text(XORSTR("Only on Key"));
-        UI::KeyBindButton(&Settings::ESP::key);
+       ImGui::Text(XORSTR("Only on Key"));
     }
+    ImGui::NextColumn();
+    {
+        UI::KeyBindButton(&Settings::ESP::key);
+         
+    }
+    ImGui::Columns(1);
     ImGui::Separator();
 
     ImGui::Columns(2, NULL, true);
