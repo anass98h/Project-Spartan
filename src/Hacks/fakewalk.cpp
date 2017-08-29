@@ -64,6 +64,7 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
                      // ik ik this still isnt even close to fakewalk but old meme fucked some shit up :eyo:
     		}
             }
+        }
         else if(Settings::SlowMo::enabled)
         {   
             

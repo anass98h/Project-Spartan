@@ -30,9 +30,12 @@ void AngleIndicator::PostPredictionCreateMove(CUserCmd* cmd) {
 }
 
 void AngleIndicator::PaintImGui() {
-    if (!Settings::AngleIndicator::enabled || !engine->IsInGame())
+       if(!engine->IsInGame())
         return;
-
+    
+    if (!Settings::AngleIndicator::enabled && !Settings::AngleIndicator::Veloc)
+        return;
+       
     C_BasePlayer *pLocal = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
     if (!pLocal || !pLocal->GetAlive())
         return;
