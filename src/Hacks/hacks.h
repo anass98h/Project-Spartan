@@ -42,3 +42,4 @@
 #include "circlestrafe.h"
 #include "lbyindicator.h"
 #include "angleindicator.h"
+#include "grenadeprediction.h"

@@ -144,6 +144,8 @@ bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localp
 			hitCount++;
 	}
 
+    // Mr Apostrope paste from suicide.cc lmao: https://github.com/SimpleRealistic/Suicide.cc-Source-Ayyware-Fixed/blob/master/AYYWARE%20CSGO/RageBot.cpp#L127
+
 	//cvar->ConsoleDPrintf("HitCount: %d/%d - %f\n", hitCount, Settings::Aimbot::HitChance::hitRays, Settings::Aimbot::HitChance::value);
 
 
