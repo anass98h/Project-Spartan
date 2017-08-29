@@ -88,7 +88,7 @@ void Math::ClampY(int& y)
 		if (y > 180)
 			y = 180;
 
-		if (y < 180)
+		if (y < -180)
 			y = -180;
 	}
 }
