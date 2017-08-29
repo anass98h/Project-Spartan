@@ -208,7 +208,7 @@ void HvH::RenderTab() {
                 ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
                 ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50, XORSTR("Ticks: %0.f"));
                 ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50, XORSTR("Modulo: %0.f"));
-                ImGui::Checkbox(XORSTR("LagComp"), &Settings::Resolver::LagComp);
+               // ImGui::Checkbox(XORSTR("LagComp"), &Settings::Resolver::LagComp);   -> will fix this later :/ 
             }
 
             ImGui::Separator();
