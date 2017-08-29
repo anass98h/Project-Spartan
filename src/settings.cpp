@@ -217,6 +217,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")] = Settings::Triggerbot::RandomDelay::highBound;
 
     settings[XORSTR("AngleIndicator")][XORSTR("enabled")] = Settings::AngleIndicator::enabled;
+    settings[XORSTR("AngleIndicator")][XORSTR("Veloc")] = Settings::AngleIndicator::Veloc;
 
     settings[XORSTR("AntiAim")][XORSTR("allowUntrustedAngles")] = Settings::AntiAim::allowUntrustedAngles;
     settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")] = Settings::AntiAim::Yaw::enabled;
@@ -643,7 +644,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")],  &Settings::Resolver::enabled);
      GetVal(settings[XORSTR("Resolver")][XORSTR("LagComp")],  &Settings::Resolver::LagComp);
     GetVal(settings[XORSTR("AngleIndicator")][XORSTR("enabled")], &Settings::AngleIndicator::enabled);
-
+    GetVal(settings[XORSTR("AngleIndicator")][XORSTR("Veloc")], &Settings::AngleIndicator::Veloc);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
     GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")], &Settings::Triggerbot::Filters::enemies);

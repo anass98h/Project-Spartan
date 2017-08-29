@@ -18,15 +18,6 @@
 
 
 
-namespace LagCompensation
-{
-	 
-	void InitLagRecord();
-	int  FixTickcount(C_BasePlayer* player);
-	
-	float LerpTime();
-};
-
 
 
 

@@ -27,8 +27,11 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
 	if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE || weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
 		return;
 
-
-
+        ConVar* stopme = cvar->FindVar(XORSTR("sv_stopspeed"));
+        ConVar* runsme = cvar->FindVar(XORSTR("sv_accelerate"));
+        
+        float stopfact = stopme->fValue;
+        float stopspeed = runsme->fValue;
     	if (inputSystem->IsButtonDown(Settings::Fakewalk::key))
     	{
     		static int iChoked = -1;
@@ -38,22 +41,29 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
     		{
     			CreateMove::sendPacket = false;
      
-    			cmd->tick_count += 10.57 ;
-    			cmd->command_number += 7 + cmd->tick_count % 2 ? 0 : 1;
-     
     			cmd->buttons |= localplayer->GetMoveType() == IN_BACK;
     			cmd->forwardmove = cmd->sidemove = 0.f;
+                        
     		}
+             
     		else
-    		{
-    			CreateMove::sendPacket = true;
+    		{       
+                    if (localplayer->GetVelocity().Length2D()> 0.1f)
+                    {
+                     cmd->upmove = -localplayer->GetVelocity().Length2D();
+                     
+                     
+                    }
+                    
+                    CreateMove::sendPacket = true;
     			iChoked = -1;
-     
-    			globalVars->frametime *= (localplayer->GetVelocity().Length2D()) / 1.f;
-    			cmd->buttons |= localplayer->GetMoveType() == IN_FORWARD;
+                        
+    			
+    			
+                      cmd->buttons |= localplayer->GetMoveType() == IN_WALK;
+                     // ik ik this still isnt even close to fakewalk but old meme fucked some shit up :eyo:
     		}
             }
-        }
         else if(Settings::SlowMo::enabled)
         {   
             
