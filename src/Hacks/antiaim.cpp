@@ -1075,7 +1075,18 @@ break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
             if (CreateMove::sendPacket) {
-                yFlip ? angle.y = -90.0f : angle.y = 90.0f;
+                angle.y = 90.f;
+                CreateMove::sendPacket = false;
+            } else {
+                angle.y = 180.0f;
+                CreateMove::sendPacket = true;
+            }
+
+            break;
+               case AntiAimType_Y::FAKESIDEWAYS2:
+
+            if (CreateMove::sendPacket) {
+                angle.y -= 90.f;
                 CreateMove::sendPacket = false;
             } else {
                 angle.y = 180.0f;
@@ -1365,6 +1376,9 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp) {
 
             angle.z = 180.0f;
             break;
+        case AntiAimType_Z::LOLEAP:
+            angle.z = 200.0f;
+            break;
     }
 }
 
@@ -1554,9 +1568,9 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
         {
             if (antiResolverFlip)
-                cmd->viewangles.y += 18.f;
+                cmd->viewangles.y += *localplayer->GetLowerBodyYawTarget() + 90;
             else
-                cmd->viewangles.y -= 18.f;
+                cmd->viewangles.y -= *localplayer->GetLowerBodyYawTarget() + 90;
 
             antiResolverFlip = !antiResolverFlip;
 
