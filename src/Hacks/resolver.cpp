@@ -78,30 +78,9 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
          case ResolverHugtype::PASTEHUB:
          {   
            
-              if (HasStaticRealAngle(cur)){ 
-            int num3 = Shotsmissed % 6;
-            switch (num3)
-            {
-                case 0:
-                    Circlebian->GetEyeAngles()->y -= 0.0f;
-                    break;
-                case 1:
-                    Circlebian->GetEyeAngles()->y = 35.0f;
-                    break;
-                case 2:
-                    Circlebian->GetEyeAngles()->y = -70.0f;
-                    break;
-                case 3:
-                    Circlebian->GetEyeAngles()->y = 55.0f;
-                    break;
-                case 4:
-                    Circlebian->GetEyeAngles()->y = -180.0f;
-                    break;
-                case 5:
-                    Circlebian->GetEyeAngles()->y = -30.0f;
-                    break;
-            }
-        }
+              if (HasStaticRealAngle(cur))
+                Circlebian->GetEyeAngles()->y =
+                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 10 : -10);
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
