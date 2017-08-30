@@ -1074,11 +1074,11 @@ break;
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
-                      if (CreateMove::sendPacket) {
-                angle.y += 90.0f;
+            if (CreateMove::sendPacket) {
+                yFlip ? angle.y = -90.0f : angle.y = 90.0f;
                 CreateMove::sendPacket = false;
             } else {
-                angle.y = 190.0f;
+                angle.y = 180.0f;
                 CreateMove::sendPacket = true;
             }
 
@@ -1554,9 +1554,9 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
         {
             if (antiResolverFlip)
-                cmd->viewangles.y += 60.f;
+                cmd->viewangles.y += 18.f;
             else
-                cmd->viewangles.y -= 60.f;
+                cmd->viewangles.y -= 18.f;
 
             antiResolverFlip = !antiResolverFlip;
 
