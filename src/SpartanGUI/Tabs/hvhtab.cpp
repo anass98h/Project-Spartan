@@ -11,7 +11,7 @@ void HvH::RenderTab() {
     const char *yTypes[] = {
             "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "AutismSpin",
             "Tank", "Tank 2", "Tank 3", "FJITTER", "LBY Breaker", "Fake LBY", "LBY Spin",  "Backjitter Random", "Casual Jitter",
-            "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Backwards",
+            "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "FAKESIDEWAYS2", "Backwards",
             "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", "richi's eap", // safe, contains untrusted like "Fake LBY"
 
             "Lisp", "Lisp Side", "Lisp Jitter", "Angel Backwards", "Angel Inverse", "Angel Spin", "Lowerbody",
@@ -23,7 +23,7 @@ void HvH::RenderTab() {
     };
 
     const char *zTypes[] = {
-            "Reverse", "Autismflip", "TEST" // untrusted
+            "Reverse", "Autismflip", "TEST", "eap of shit"// untrusted
     };
 
     const char *xTypes[] = {

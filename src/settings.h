@@ -71,6 +71,7 @@ enum class AntiAimType_Y : int {
     SIDEWAYSRIGHT,
     SIDEWAYSLEFT,
     FAKESIDEWAYS,
+    FAKESIDEWAYS2,
     BACKWARDS,
     FORWARDS,
     STATICAA,
@@ -104,6 +105,7 @@ enum class AntiAimType_Z : int {
     REVERSE,
     AUTISMFLIP,
     TEST,
+    LOLEAP,
 };
 
 enum class AntiAimType_X : int {
