@@ -1081,7 +1081,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
-            if (CreateMove::sendPacket) {
+                      if (CreateMove::sendPacket) {
                 angle.y += 90.0f;
                 CreateMove::sendPacket = false;
             } else {
@@ -1090,7 +1090,6 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             }
 
             break;
-
         case AntiAimType_Y::BACKWARDS:
             angle.y -= 180.0f;
             break;
@@ -1230,6 +1229,41 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     angle.y = + add;
                         }
             break;
+        case AntiAimType_Y::EXPERIMENTAL:
+        if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)) 
+        {
+            if (CreateMove::sendPacket)
+            {
+                yFlip ? angle.y = 35.0f : angle.y -= 35.0f;
+                CreateMove::sendPacket = false;
+            }
+            else
+            {
+                angle.y = 180.f;
+                CreateMove::sendPacket = true;
+            }
+        }
+        else
+        {
+            if (CreateMove::sendPacket)
+            {
+                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() - 170.f : angle.y = *pLocal->GetLowerBodyYawTarget() - 190.f;
+                CreateMove::sendPacket = false;
+            }
+            else
+            {
+                if (fakeantiaim) 
+                {
+                    CreateMove::sendPacket = false;
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
+                }
+                else 
+                {
+                    CreateMove::sendPacket = true;
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() * 18.f;
+                }
+            }
+        }
         default:
             angle.y -= 0.0f;
             break;
@@ -1277,11 +1311,13 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
             angle.x = 0.0f;
             break;
         case AntiAimType_X::STATIC_UP_FAKE:
-            if (CreateMove::sendPacket) {
-                angle.x = 89.0f;
+            if (CreateMove::sendPacket) 
+            {
+                angle.x -= 89.0f;
                 CreateMove::sendPacket = false;
-            } else {
-                angle.x = -89.0f;
+            } else 
+            {
+                angle.x = 89.0f;
                 CreateMove::sendPacket = true;
             }
             break;

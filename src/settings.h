@@ -79,6 +79,7 @@ enum class AntiAimType_Y : int {
     LUA1, // ImGui stole the name of LUA
     LUA2, // Alternate LUA if you want a separate one for Fake.
     CASUAL,
+    EXPERIMENTAL,
     LISP,
     LISP_SIDE,
     LISP_JITTER,
@@ -88,7 +89,7 @@ enum class AntiAimType_Y : int {
     LOWERBODY,
     LBYONGROUND,
     LUA_UNCLAMPED,
-    LUA_UNCLAMPED2
+    LUA_UNCLAMPED2,
 };
 
 enum class AntiAimType_LBY : int {
