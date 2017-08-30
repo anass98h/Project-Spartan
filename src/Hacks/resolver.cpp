@@ -25,7 +25,7 @@ static void StartLagComp(C_BasePlayer* player, CUserCmd* cmd)
 	float cl_updaterate = cvar_cl_updaterate->fValue;
 	float cl_interp_ratio = cvar_cl_interp_ratio->fValue;
         float tick = (player->GetSimulationTime() + std::max(cl_interp, cl_interp_ratio / cl_updaterate));
-    cmd->tick_count = TIME_TO_TICKS(tick);
+        cmd->tick_count = TIME_TO_TICKS(tick);
 }
 
 void Resolver::Hug(C_BasePlayer* Circlebian) {
