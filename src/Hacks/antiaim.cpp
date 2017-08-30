@@ -868,7 +868,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 if (CreateMove::sendPacket) {
 
                     if (pLocal->GetFlags() & FL_ONGROUND)
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 90 + 99;
                     else {
                         random = rand() % 4;
                         switch (random) {
@@ -876,7 +876,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                                 yFlip ? angle.y += 90.f : angle.y -= 90.0f;
                                 break;
                             case 2:
-                                yFlip ? angle.y -= 120.0f : angle.y -= 210.0f;
+                                yFlip ? angle.y -= 120.0f : angle.y -= 120.0f;
                                 break;
                             case 3:
                                 factor = 360.0 / M_PHI;
@@ -894,11 +894,11 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
                         if (uff) {
 
-                            angle.y = *pLocal->GetLowerBodyYawTarget() + 90.0f;
+                            angle.y = *pLocal->GetLowerBodyYawTarget() + 97.0f;
                             uff = false;
 
                         } else {
-                            angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 1000;
+                            angle.y -= *pLocal->GetLowerBodyYawTarget() + 97.f;
                             uff = true;
                         }
 
@@ -907,8 +907,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                             if (uff4 > 0) {
 
                                 uff4 = 1000;
-                                angle.y += 199 + uff4 / rand();
-                                uff4 = 901000;
+                                angle.y += 1888 + uff4 / rand();
+                                uff4 = 88000;
                             } else {
                                 angle.y = *pLocal->GetLowerBodyYawTarget() + uff4;
                                 uff4 = rand();
@@ -925,10 +925,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
 
                         if (uff3) {
-                            angle.y = 90;
+                            angle.y = -97.f;
                             uff3 = false;
                         } else {
-                            angle.y = *pLocal->GetLowerBodyYawTarget() + 1337;
+                            angle.y = *pLocal->GetLowerBodyYawTarget() + 97.f;
                             uff3 = true;
 
 
@@ -940,7 +940,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 }
             } else {
 
-                yFlip ? angle.y -= 160 : angle.y += 160;
+                yFlip ? angle.y -= 170 : angle.y += 170;
 
             }
             break;
@@ -1085,7 +1085,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 angle.y += 90.0f;
                 CreateMove::sendPacket = false;
             } else {
-                angle.y -= 180.0f;
+                angle.y = 190.0f;
                 CreateMove::sendPacket = true;
             }
 
@@ -1209,6 +1209,26 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                         angle.y -= 180.0f;
                 }
             }
+        case AntiAimType_Y::FJITTER:
+        {
+        if (CreateMove::sendPacket)
+                        {
+                            if (jitterticks > 0)
+                                jitterticks = -1;
+                                jitterticks++;
+                        }
+                    int add = 0;
+                    if (jitterticks == 0)
+                        add = 130;
+                    if (jitterticks == 1)
+                        add = -145;
+                    if (ticks > 0 || !CreateMove::sendPacket)
+                        {
+                            add = -add;
+                            CreateMove::sendPacket = false;
+                        }
+                    angle.y = + add;
+                        }
             break;
         default:
             angle.y -= 0.0f;
