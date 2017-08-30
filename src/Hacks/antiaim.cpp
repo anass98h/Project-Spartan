@@ -954,20 +954,24 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             static bool lbyflip3 = false;
             clamp = false;
             if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)) {
-              if(CreateMove::sendPacket){
-                angle.y -= 90;
-                CreateMove::sendPacket = false;
-                }
-              else{
-                yFlip ? angle.y -= 165 : angle.y += 165;
-                CreateMove::sendPacket = true;
+              if(CreateMove::sendPacket)
+              {
+                
+                yFlip ? angle.y -= 170.f : angle.y -= 190.f;
+                
+              }
+              else
+                { 
+                    CreateMove::sendPacket = true;
+                    yFlip ? angle.y -= 120 : angle.y += 120;
+                    CreateMove::sendPacket = false;
                 }
             }
             else
             {
               if(CreateMove::sendPacket)
               {
-                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 1337 : angle.y = *pLocal->GetLowerBodyYawTarget() - rand() + 100;
+                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 97 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 97;
 
                 CreateMove::sendPacket = false;
               }
@@ -975,20 +979,20 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
               {
                 if (lbyflip)
                 {
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand();
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + 120;
                 }
                 else
                 {
-                  yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 9888 : angle.y = *pLocal->GetLowerBodyYawTarget() + 265;
+                  yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 88 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 88;
                 }
                 if(lbyflip2)
                   angle.y = *pLocal->GetLowerBodyYawTarget() + 1337;
                 else
-                  *pLocal->GetLowerBodyYawTarget() + 200;
+                  *pLocal->GetLowerBodyYawTarget() + 180;
                 if(lbyflip3)
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 10000;
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 1080;
                 else
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 888888;
+                  angle.y = *pLocal->GetLowerBodyYawTarget() + 97;
 
               }
 
