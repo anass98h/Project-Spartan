@@ -734,8 +734,6 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
         if (Settings::ESP::Bars::type == BarType::VERTICAL) {
             barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
             barx -= barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
-
-            Draw::Rectangle(barx - 1, bary - 1, barx + barw + 1, bary + barh + 1, Color(255, 255, 255, 170));
             Draw::FilledRectangle(barx, bary, barx + barw, bary + barh, Color(10, 10, 10, 255));
 
             if (HealthPerc > 0)
