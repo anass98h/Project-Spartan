@@ -1256,7 +1256,7 @@ break;
             }
             else
             {
-                if (fakeantiaim) 
+                if (bFlip) //  @rishi pls fix if this is wrong
                 {
                     CreateMove::sendPacket = false;
                     angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
