@@ -300,7 +300,7 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
             float lby = *target->GetLowerBodyYawTarget();
 
             /* Lby will update every 0.022 seconds while moving (assume that is just all the time) */
-            if (target->GetVelocity().Length2D() > 0.1f) {
+            if (target->GetVelocity().Length2D() > 0.1f  && target->GetFlags() & FL_ONGROUND) {
                 /*
                 float flCurTime = globalVars->curtime;
                 static float flTimeUpdate = 0.5f;
