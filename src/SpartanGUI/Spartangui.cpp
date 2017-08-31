@@ -321,13 +321,13 @@ void UI::SwapWindow() {
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, sizeof (buffer), "%T %Z", timeinfo);
+    strftime(buffer, sizeof (buffer), "%R", timeinfo);
     std::string time(buffer);
 
     std::string watermark(XORSTR("Project Spartan | "));
     watermark.append(time);
 
-    Draw::ImText(ImVec2(4.f, 4.f), ImColor(244, 66, 83), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    Draw::ImText(ImVec2(4.f, 4.f), ImColor(233, 30, 96), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }
 
 // This may come in handy if we want to display some good shit in the watermark
