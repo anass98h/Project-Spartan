@@ -18,23 +18,26 @@ void CircleStrafe::CreateMove(CUserCmd* cmd) {
     if (Circle > 361)
         Circle = 0;
 
-    float SpinBoy = 3.f * Circle - globalVars->interval_per_tick;
-
-
+    float rotation = 3.f * Circle - globalVars->interval_per_tick;
+    
+    QAngle storedview = cmd->viewangles;
 
     if (inputSystem->IsButtonDown(Settings::CircleStrafe::key)) {
         cmd->forwardmove = 450.f;
         cmd->viewangles = OView;
-        SpinBoy = DEG2RAD(SpinBoy);
+        
+        
+	rotation = DEG2RAD(rotation);
 
-        float cos_rot = cos(SpinBoy);
-        float sin_rot = sin(SpinBoy);
+	float cos_rot = cos(rotation);
+	float sin_rot = sin(rotation);
 
-        float newforwardmove = (cos_rot * cmd->forwardmove) - (sin_rot * cmd->sidemove);
-        float newsidemove = (sin_rot * cmd->forwardmove) + (cos_rot * cmd->sidemove);
+	float new_forwardmove = (cos_rot * cmd->forwardmove) - (sin_rot * cmd->sidemove);
+	float new_sidemove = (sin_rot * cmd->forwardmove) + (cos_rot * cmd->sidemove);
 
-        cmd->forwardmove = newforwardmove;
-        cmd->sidemove = newsidemove;
+	cmd->forwardmove = new_forwardmove;
+	cmd->sidemove = -new_sidemove;
+        
     }
 
 
