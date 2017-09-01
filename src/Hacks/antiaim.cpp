@@ -853,7 +853,44 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 CreateMove::sendPacket = false;
 
             }
-break;
+            break;
+        case AntiAimType_Y::TANK2: 
+            
+            if(bSendPacket) {
+                random = rand() % 4; 
+                switch (random) { 
+                    case 1: angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165; 
+                    break; 
+                    case 2: yFlip ? angle.y -= 160 : angle.y += 160;
+                    break; 
+                    case 3: factor = 360.0 / M_PHI; factor *= rand() % 25; float x = fmodf(globalVars->curtime * factor, 360.0); factor *= 5; float y = fmodf(globalVars->curtime * factor, 360.0f);
+                    if (y >= 100.0f) 
+                    { 
+                            y -= 170.0f; } if (y <= 200.0f) 
+                    { 
+                            y += 305.00f;
+                }
+                angle.y=((x/y)+60.2f)*M_PI;
+                } 
+                } 
+                else 
+                {
+                random = rand() % 4; 
+                switch (random) { 
+                case 1: angle.y -= 180.0f; 
+                break; 
+                case 2: yFlip ? angle.y += 90.f : angle.y -= 90.0f;
+                break; 
+                case 3: factor = 360.0 / M_PHI; angle.y = fmodf(globalVars->curtime * factor, 360.0);
+
+                } 
+            }
+            if (angle.y == *(pLocal->GetLowerBodyYawTarget())){
+                angle.y = *pLocal->GetLowerBodyYawTarget() + 90;
+
+            }
+            
+            break;
         case AntiAimType_Y::TANK3:
             static bool uff = false;
             static bool uff2 = false;

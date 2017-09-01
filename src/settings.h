@@ -20,6 +20,7 @@
 #include "Hacks/esp.h"
 #include "Hacks/lbyindicator.h"
 #include "Hacks/angleindicator.h"
+#include "Hacks/tracereffect.h"
 
 enum class SmoothType : int {
     SLOW_END,
@@ -1030,6 +1031,27 @@ namespace Settings {
         extern ColorVar infoMolotov;
         extern pstring actMapName;
     }
+
+    namespace TracerEffects
+    {
+        extern bool enabled;
+        extern bool serverSide;
+        extern TracerEffects_t effect;
+        extern int frequency;
+
+    }
+    namespace AutoKnife
+    {
+        extern bool enabled;
+        extern bool onKey;
+ 
+        namespace Filters
+        {
+            extern bool enemies;
+            extern bool allies;
+        }
+    }
+
 
     void LoadDefaultsOrSave(std::string path);
     void LoadConfig(std::string path);

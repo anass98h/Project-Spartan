@@ -51,6 +51,7 @@ void MainThread() {
     Hooker::FindCamThinkSvCheatsCheck();
     Hooker::HookSwapWindow();
     Hooker::HookPollEvent();
+    TracerEffect::RestoreTracers();
 
 
 
