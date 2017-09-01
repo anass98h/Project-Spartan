@@ -31,8 +31,9 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
         FakeLag::CreateMove(cmd);
         ESP::CreateMove(cmd);
         PredictionSystem::EndPrediction();
-
+        ThirdPerson::CreateMove(cmd);
         AngleIndicator::PostPredictionCreateMove(cmd);
+
 
         EdgeJump::PostPredictionCreateMove(cmd);
 
