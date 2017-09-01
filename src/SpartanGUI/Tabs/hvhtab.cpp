@@ -33,7 +33,7 @@ void HvH::RenderTab() {
     };
 
     const char *Hugtypes[] = {
-            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky"
+            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky", "Myrrib's DELTA"
     };
 
     ImGui::Columns(2, NULL, true);
