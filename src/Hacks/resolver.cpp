@@ -302,7 +302,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 isMovingM = false;
             }
 
-            if (lbyFirstUpdateM && curTime > nextUpdate){
+            if (lbyFirstUpdateM && curTime > nextUpdate && fabsf(bodyeyedelta) > 35.0f){
                 lbyUpdatedM = true;
                 nextUpdate = curTime + 1.1f;
             }
