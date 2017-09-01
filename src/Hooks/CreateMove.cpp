@@ -24,6 +24,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
         Autoblock::CreateMove(cmd);
         Aimbot::CreateMove(cmd);
         Triggerbot::CreateMove(cmd);
+        AutoKnife::CreateMove(cmd);
         AntiAim::CreateMove(cmd);
         Airstuck::CreateMove(cmd);
         Fakewalk::CreateMove(cmd);
@@ -31,6 +32,7 @@ bool Hooks::CreateMove(void* thisptr, float flInputSampleTime, CUserCmd* cmd) {
         FakeLag::CreateMove(cmd);
         ESP::CreateMove(cmd);
         PredictionSystem::EndPrediction();
+        TracerEffect::CreateMove(cmd);
 
         AngleIndicator::PostPredictionCreateMove(cmd);
 
