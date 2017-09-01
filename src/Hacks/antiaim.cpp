@@ -1308,6 +1308,30 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 }
             }
         }
+	case AntiAimType_Y::MYRRIB:
+            if (CreateMove::sendPacket)
+            {
+                if (pLocal->GetVelocity().Length2D() != 0) {
+                    angle.y -= 180.f;
+                    CreateMove::sendPacket = false;
+                }
+                else {
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() + 45.f;
+                    CreateMove::sendPacket = false;
+                }
+            }
+            else
+            {
+                if (pLocal->GetVelocity().Length2D() != 0) {
+                    angle.y -= 0.f; //pMemez here plz fix me
+                    CreateMove::sendPacket = true;
+                }
+                else {
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
+                    CreateMove::sendPacket = true;
+                }
+            }
+            break;
         default:
             angle.y -= 0.0f;
             break;
