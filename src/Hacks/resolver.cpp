@@ -285,15 +285,22 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
             static bool lbyUpdatedM = false;
             static bool isMovingM = false;
-
+	    static bool isFakeWalking = false;
             static float lbySaveM = 0;
-
+	    bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
+		
             float curTime = globalVars->curtime;
             static float nextUpdate = 0;
             static bool lbyFirstUpdateM = false;
-
+		
+	    if (Circlebian->GetVelocity().Length2D() != 0 && onGround && Circlebian->GetVelocity().Length2D() < 25){
+	    	isFakeWalking = true;
+	    }
+	    else {
+		isFakeWalking = false;    
+	    }
+		
             float LBY = (cur.front().m_flLowerBodyYawTarget);
-            bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
 
             if (Circlebian->GetVelocity().Length2D() > 1 && onGround) {
                 isMovingM = true;
@@ -302,7 +309,11 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 isMovingM = false;
             }
 
-            if (lbyFirstUpdateM && curTime > nextUpdate && fabsf(bodyeyedelta) > 35.0f){
+	    if (isFakeWalking){
+	    	Circlebian->GetEyeAngles()->y += 180.f;
+	    }
+	    else {
+	    if (lbyFirstUpdateM && curTime > nextUpdate && fabsf(bodyeyedelta) > 35.0f){
                 lbyUpdatedM = true;
                 nextUpdate = curTime + 1.1f;
             }
@@ -331,7 +342,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                         case 5: Circlebian->GetEyeAngles()->y = LBY - 135; break;
                         case 6: Circlebian->GetEyeAngles()->y = LBY + 45; break;
                         case 7: Circlebian->GetEyeAngles()->y = LBY - 45; break;
-                        case 8: Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180; break;
+                        case 8: Circlebian->GetEyeAngles()->y += 180; break;
                     }
                 }
                 else {
@@ -341,6 +352,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 }
             }
         }
+	    }
         case ResolverHugtype::OFF:break;
     }
 }
