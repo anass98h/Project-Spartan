@@ -82,6 +82,7 @@ enum class AntiAimType_Y : int {
     LUA2, // Alternate LUA if you want a separate one for Fake.
     CASUAL,
     EXPERIMENTAL,
+    MYRRIB,
     LISP,
     LISP_SIDE,
     LISP_JITTER,
