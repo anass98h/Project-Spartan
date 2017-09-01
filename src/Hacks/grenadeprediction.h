@@ -8,8 +8,6 @@
 namespace GrenadePrediction
 {
 
-    void DrawPrediction(C_BasePlayer* pLocal, C_BaseCombatWeapon* grenade);
-
     // Hooks
     void Paint();
 

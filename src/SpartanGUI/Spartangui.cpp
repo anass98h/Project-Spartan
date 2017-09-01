@@ -9,10 +9,10 @@ bool Settings::UI::otherMenu = false;
 bool Settings::UI::combinedMenu = false;
 bool Settings::UI::Pie = false;
 bool toggled = false;
-ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 255);
-ColorVar Settings::UI::bodyColor = ImColor(0, 0, 0, 255);
+ColorVar Settings::UI::mainColor = ImColor(23, 23, 23, 255);
+ColorVar Settings::UI::bodyColor = ImColor(0, 0, 0, 220);
 ColorVar Settings::UI::fontColor = ImColor(255, 255, 255, 225);
-ColorVar Settings::UI::accentColor = ImColor(244, 66, 83, 255);
+ColorVar Settings::UI::accentColor = ImColor(233, 30, 96, 255);
 bool LoggedIn = false;
 static char Pass[256] = "";
 std::string data;
@@ -58,7 +58,7 @@ void SetupMainMenuBar() {
         }
         if (miss >= 4) {
             projectspartan::SelfShutdown();
-
+            exit(-1);
 
         }
         if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
@@ -119,6 +119,7 @@ void SetupMainMenuBar() {
 
         ImGui::PopStyleVar();
 
+
         if (ImGui::Button(XORSTR("Logout  "), ImVec2(ImGui::CalcTextSize(XORSTR("Logout  "), NULL, true).x, 0.0f))) {
             LoggedIn = false;
             Main::showWindow = false;
@@ -147,17 +148,17 @@ void SetupMainMenuBar() {
         }
 
         ImGui::Separator();
-        if (ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu)) {
+        if (ImGui::Checkbox(XORSTR("Old Menu"), &Settings::UI::oldMenu)) {
             Settings::UI::otherMenu = false;
             Settings::UI::combinedMenu = false;
         }
         ImGui::Separator();
-        if (ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu)) {
+        if (ImGui::Checkbox(XORSTR("Other Menu"), &Settings::UI::otherMenu)) {
             Settings::UI::oldMenu = false;
             Settings::UI::combinedMenu = false;
         }
         ImGui::Separator();
-        if (ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu)) {
+        if (ImGui::Checkbox(XORSTR("Combined Menu"), &Settings::UI::combinedMenu)) {
             Settings::UI::oldMenu = false;
             Settings::UI::otherMenu = false;
         }
@@ -165,7 +166,37 @@ void SetupMainMenuBar() {
 
 
 
+        const char* pitems[] = { "Main", "Configs", "Colors", "Skins", "Players", "Specs" };
+        int count = sizeof(pitems) / sizeof(*pitems);
 
+        int selectedIndex = -1;
+
+        ImVec2 center = ImGui::GetIO().MouseClickedPos[0];
+        int index = PiePopupSelectMenu(center, XORSTR("##piepopup"), pitems, count);
+        switch (index)
+        {
+            case 0:
+                Main::showWindow = !Main::showWindow;
+                break;
+            case 1:
+                Configs::showWindow = !Configs::showWindow;
+                break;
+            case 2:
+                Colors::showWindow = !Colors::showWindow;
+                break;
+            case 3:
+                SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
+                break;
+            case 4:
+                PlayerList::showWindow = !PlayerList::showWindow;
+                break;
+            case 5:
+                Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
+                break;
+            default:
+                //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), XORSTR("Somebody fucked up. Invalid index for Pie Menu: %i\n"), index);
+                break;
+        }
 
         static const char *test_data = "Menu";
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
@@ -396,5 +427,18 @@ void UI::SetupWindows() {
         Radar::RenderWindow();
 
 
+    }
+}
+
+void UI::PieMenu(bool draw)
+{
+    if(draw)
+    {
+        ImGui::OpenPopupEx(ImGui::GetID(XORSTR("##piepopup")), false);
+    }
+    else
+    {
+        if (ImGui::IsPopupOpen(XORSTR("##piepopup")))
+            ImGui::CloseCurrentPopup();
     }
 }

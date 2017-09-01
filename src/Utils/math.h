@@ -24,4 +24,6 @@ namespace Math {
         void VectorAngles2(Vector& vecForward, Vector& vecAngles);
 	void AngleVectors2(Vector& qAngles, Vector& vecForward);
 	float ClampYaw(float val);
+	void AngleVectors(const Vector &angles, Vector *forward);
+	float DotProduct(const Vector& a, const Vector& b);
 }

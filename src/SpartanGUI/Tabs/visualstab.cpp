@@ -192,6 +192,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox(XORSTR("Weapons"), &Settings::ESP::Chams::Weapon::enabled);
                 ImGui::Checkbox(XORSTR("No Sky"), &Settings::NoSky::enabled);
                 ImGui::Checkbox(XORSTR("No Smoke"), &Settings::NoSmoke::enabled);
+                ImGui::Checkbox(XORSTR("Grenade Prediction"), &Settings::GrenadePrediction::enabled);
             }
             ImGui::NextColumn();
             {
