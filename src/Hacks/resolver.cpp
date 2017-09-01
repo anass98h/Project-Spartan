@@ -281,6 +281,66 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             std::uniform_int_distribution<> dis(-180, 180);
             Circlebian->GetEyeAngles()->y = dis(gen);
         }
+	case ResolverHugtype::MYRRIBDELTA:
+        {
+            static bool lbyUpdatedM = false;
+            static bool isMovingM = false;
+
+            static float lbySaveM = 0;
+
+            float curTime = globalVars->curtime;
+            static float nextUpdate = 0;
+            static bool lbyFirstUpdateM = false;
+
+            float LBY = (cur.front().m_flLowerBodyYawTarget);
+            bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
+
+            if (Circlebian->GetVelocity().Length2D() > 1 && onGround) {
+                isMovingM = true;
+            }
+            else {
+                isMovingM = false;
+            }
+
+            if (lbyFirstUpdateM && curTime > nextUpdate){
+                lbyUpdatedM = true;
+                nextUpdate = curTime + 1.1f;
+            }
+            else {
+                lbyUpdatedM = false;
+            }
+
+            if (lbyUpdatedM || isMovingM || fabsf(bodyeyedelta) >= 35.0f){
+                Circlebian->GetEyeAngles()->y = LBY;
+                lbySaveM = LBY;
+                lbyFirstUpdateM = true;
+            }
+            else if (!onGround){
+                Circlebian->GetEyeAngles()->y = lbySaveM;
+            }
+            else {
+                if (Shotsmissed > 2){
+                    int n = Shotsmissed % 9;
+
+                    switch (n){
+                        case 0: Circlebian->GetEyeAngles()->y = lbySaveM; break;
+                        case 1: Circlebian->GetEyeAngles()->y = LBY + 180; break;
+                        case 2: Circlebian->GetEyeAngles()->y = LBY + 90; break;
+                        case 3: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+                        case 4: Circlebian->GetEyeAngles()->y = LBY + 135; break;
+                        case 5: Circlebian->GetEyeAngles()->y = LBY - 135; break;
+                        case 6: Circlebian->GetEyeAngles()->y = LBY + 45; break;
+                        case 7: Circlebian->GetEyeAngles()->y = LBY - 45; break;
+                        case 8: Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180; break;
+                    }
+                }
+                else {
+                    if (fabsf(bodyeyedelta) < 35.0f && fabsf(bodyeyedelta) > 0.0f) {
+                        Circlebian->GetEyeAngles()->y = LBY + bodyeyedelta;
+                    }
+                }
+            }
+        }
         case ResolverHugtype::OFF:break;
     }
 }

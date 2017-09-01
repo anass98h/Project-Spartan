@@ -205,6 +205,7 @@ enum class ResolverHugtype : int {
     BRUTE1,
     AUTISM,
     LUCKY,
+    MYRRIBDELTA,
 };
 
 struct AimbotWeapon_t {
