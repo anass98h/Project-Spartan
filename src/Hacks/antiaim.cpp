@@ -479,12 +479,13 @@ static float DoAAatTarget()
 
 static void SwapAA()
 {
-    int count = 0;
+    int count;
 
-    if(inputSystem->IsButtonDown(Settings::AntiAim::SwitchAA::key)) {
+    if(inputSystem->IsButtonDown(KEY_DOWN)) {
         count++;
-        cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Swap AA Count: %i\n", count);
-    } else if (count > 0) {
+        //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Swap AA Count: %i\n", count);
+    } else{ 
+    if (count > 0) {
         static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
         static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
         fake = Settings::AntiAim::Yaw::typeFake;
@@ -494,6 +495,8 @@ static void SwapAA()
         count = 0;
     }
 }
+}
+
 float GetLatency()
 {
 	INetChannelInfo *nci = engine->GetNetChannelInfo();
@@ -589,7 +592,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
     int ticks = 0;
     int jitterticks = 0;
   	float Base;
-
+  	bool fakeantiaim;
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
     static float lastAngleY, lastAngleY2; // angle we had last frame
