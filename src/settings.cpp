@@ -217,6 +217,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("Triggerbot")][XORSTR("RandomDelay")][XORSTR("highBound")] = Settings::Triggerbot::RandomDelay::highBound;
 
     settings[XORSTR("AngleIndicator")][XORSTR("enabled")] = Settings::AngleIndicator::enabled;
+    settings[XORSTR("AngleIndicator")][XORSTR("Veloc")] = Settings::AngleIndicator::Veloc;
 
     settings[XORSTR("AntiAim")][XORSTR("allowUntrustedAngles")] = Settings::AntiAim::allowUntrustedAngles;
     settings[XORSTR("AntiAim")][XORSTR("Yaw")][XORSTR("enabled")] = Settings::AntiAim::Yaw::enabled;
@@ -343,6 +344,10 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimit")] = Settings::ESP::Spread::spreadLimit;
     LoadColor(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("color")], Settings::ESP::Spread::color);
     LoadColor(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimitColor")], Settings::ESP::Spread::spreadLimitColor);
+    settings[XORSTR("TracerEffects")][XORSTR("enabled")] = Settings::TracerEffects::enabled;
+    settings[XORSTR("TracerEffects")][XORSTR("serverSide")] = Settings::TracerEffects::serverSide;
+    settings[XORSTR("TracerEffects")][XORSTR("effect")] = (int) Settings::TracerEffects::effect;
+    settings[XORSTR("TracerEffects")][XORSTR("frequency")] = Settings::TracerEffects::frequency;
 
 
     settings[XORSTR("Dlights")][XORSTR("enabled")] = Settings::Dlights::enabled;
@@ -530,6 +535,10 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     LoadColor(settings[XORSTR("GrenadeHelper")][XORSTR("infoSmoke")], Settings::GrenadeHelper::infoSmoke);
     LoadColor(settings[XORSTR("GrenadeHelper")][XORSTR("infoMolotov")], Settings::GrenadeHelper::infoMolotov);
     LoadColor(settings[XORSTR("GrenadeHelper")][XORSTR("infoFlash")], Settings::GrenadeHelper::infoFlash);
+    settings[XORSTR("AutoKnife")][XORSTR("enabled")] = Settings::AutoKnife::enabled;
+    settings[XORSTR("AutoKnife")][XORSTR("Filters")][XORSTR("enemies")] = Settings::AutoKnife::Filters::enemies;
+    settings[XORSTR("AutoKnife")][XORSTR("Filters")][XORSTR("allies")] = Settings::AutoKnife::Filters::allies;
+    settings[XORSTR("AutoKnife")][XORSTR("onKey")] = Settings::AutoKnife::onKey;
 
     settings[XORSTR("GrenadePrediction")][XORSTR("enabled")] = Settings::GrenadePrediction::enabled;
 
@@ -539,6 +548,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
 void Settings::LoadConfig(std::string path) {
     if (!std::ifstream(path).good()) {
         Settings::LoadDefaultsOrSave(path);
+        TracerEffect::RestoreTracers();
         return;
     }
 
@@ -645,7 +655,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")],  &Settings::Resolver::enabled);
      GetVal(settings[XORSTR("Resolver")][XORSTR("LagComp")],  &Settings::Resolver::LagComp);
     GetVal(settings[XORSTR("AngleIndicator")][XORSTR("enabled")], &Settings::AngleIndicator::enabled);
-
+    GetVal(settings[XORSTR("AngleIndicator")][XORSTR("Veloc")], &Settings::AngleIndicator::Veloc);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
     GetButtonCode(settings[XORSTR("Triggerbot")][XORSTR("key")], &Settings::Triggerbot::key);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")], &Settings::Triggerbot::Filters::enemies);
@@ -787,7 +797,10 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimit")], &Settings::ESP::Spread::spreadLimit);
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("color")], &Settings::ESP::Spread::color);
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimitColor")], &Settings::ESP::Spread::spreadLimitColor);
-
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("enabled")], &Settings::TracerEffects::enabled);
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("serverSide")], &Settings::TracerEffects::serverSide);
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("effect")], (int*)&Settings::TracerEffects::effect);    
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("frequency")], &Settings::TracerEffects::frequency);
     GetVal(settings[XORSTR("lbyindicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
 
     GetVal(settings[XORSTR("Dlights")][XORSTR("enabled")], &Settings::Dlights::enabled);
@@ -1012,6 +1025,10 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("GrenadeHelper")][XORSTR("infoSmoke")], &Settings::GrenadeHelper::infoSmoke);
     GetVal(settings[XORSTR("GrenadeHelper")][XORSTR("infoFlash")], &Settings::GrenadeHelper::infoFlash);
     GetVal(settings[XORSTR("GrenadeHelper")][XORSTR("infoMolotov")], &Settings::GrenadeHelper::infoMolotov);
+    GetVal(settings[XORSTR("AutoKnife")][XORSTR("enabled")], &Settings::AutoKnife::enabled);
+    GetVal(settings[XORSTR("AutoKnife")][XORSTR("Filters")][XORSTR("enemies")], &Settings::AutoKnife::Filters::enemies);
+    GetVal(settings[XORSTR("AutoKnife")][XORSTR("Filters")][XORSTR("allies")], &Settings::AutoKnife::Filters::allies);
+    GetVal(settings[XORSTR("AutoKnife")][XORSTR("onKey")], &Settings::AutoKnife::onKey);
 
     GetVal(settings[XORSTR("GrenadePrediction")][XORSTR("enabled")], &Settings::GrenadePrediction::enabled);
 

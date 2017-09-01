@@ -43,3 +43,5 @@
 #include "lbyindicator.h"
 #include "angleindicator.h"
 #include "grenadeprediction.h"
+#include "tracereffect.h"
+#include "autoknife.h"

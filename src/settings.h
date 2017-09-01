@@ -20,6 +20,7 @@
 #include "Hacks/esp.h"
 #include "Hacks/lbyindicator.h"
 #include "Hacks/angleindicator.h"
+#include "Hacks/tracereffect.h"
 
 enum class SmoothType : int {
     SLOW_END,
@@ -59,6 +60,7 @@ enum class AntiAimType_Y : int {
     Tank,
     TANK2,
     TANK3,
+    FJITTER,
     LBYBREAK,
     FAKELBY, //Right order now
     LBYSPIN,
@@ -70,6 +72,7 @@ enum class AntiAimType_Y : int {
     SIDEWAYSRIGHT,
     SIDEWAYSLEFT,
     FAKESIDEWAYS,
+    FAKESIDEWAYS2,
     BACKWARDS,
     FORWARDS,
     STATICAA,
@@ -78,6 +81,8 @@ enum class AntiAimType_Y : int {
     LUA1, // ImGui stole the name of LUA
     LUA2, // Alternate LUA if you want a separate one for Fake.
     CASUAL,
+    EXPERIMENTAL,
+    MYRRIB,
     LISP,
     LISP_SIDE,
     LISP_JITTER,
@@ -87,7 +92,7 @@ enum class AntiAimType_Y : int {
     LOWERBODY,
     LBYONGROUND,
     LUA_UNCLAMPED,
-    LUA_UNCLAMPED2
+    LUA_UNCLAMPED2,
 };
 
 enum class AntiAimType_LBY : int {
@@ -102,6 +107,7 @@ enum class AntiAimType_Z : int {
     REVERSE,
     AUTISMFLIP,
     TEST,
+    LOLEAP,
 };
 
 enum class AntiAimType_X : int {
@@ -199,6 +205,7 @@ enum class ResolverHugtype : int {
     BRUTE1,
     AUTISM,
     LUCKY,
+    MYRRIBDELTA,
 };
 
 struct AimbotWeapon_t {
@@ -537,6 +544,7 @@ namespace Settings {
     namespace AngleIndicator {
 
         extern bool enabled;
+        extern bool Veloc;
 
     }
 
@@ -1030,6 +1038,27 @@ namespace Settings {
 
         extern bool enabled;
 
+    }
+
+    namespace TracerEffects
+    {
+        extern bool enabled;
+        extern bool serverSide;
+        extern TracerEffects_t effect;
+        extern int frequency;
+
+    }
+  
+    namespace AutoKnife
+    {
+        extern bool enabled;
+        extern bool onKey;
+ 
+        namespace Filters
+        {
+            extern bool enemies;
+            extern bool allies;
+        }
     }
 
     void LoadDefaultsOrSave(std::string path);
