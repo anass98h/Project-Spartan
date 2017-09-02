@@ -85,7 +85,7 @@ void SetupMainMenuBar() {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 135));
 
 
-        if (ImGui::BeginPopupModal(XORSTR("Project Spartan"))) {
+        if (ImGui::BeginPopupModal(XORSTR("Project Spartan"),NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove )) {
             ImGui::Text(
                     XORSTR(" Welcome to Project Spartan. Please enter your Verification ID: ")
                     );
@@ -146,30 +146,44 @@ void SetupMainMenuBar() {
 
 
 
-        if (ImGui::IsMouseClicked(1, true))
+        if (ImGui::IsMouseClicked(1, true)|| ImGui::IsMouseClicked(2,true))
             ImGui::OpenPopup("##piepopup");
 
         ImVec2 center = ImGui::GetIO().MouseClickedPos[1];
         int n = PiePopupSelectMenu(center, "##piepopup", items, items_count);
-        if (n == 1) {
+        switch (n){ // a switch for my love Myrrib 
+        
+        
+            case 1: 
+        {
             Configs::showWindow = !Configs::showWindow;
-        } else if (n == 0) {
+            break;
+        } case 0:
+        {
             Main::showWindow = !Main::showWindow;
-
-        } else if (n == 2) {
-            Colors::showWindow = !Colors::showWindow;
-
-        } else if (n == 3) {
-            SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
-
-        } else if (n == 4) {
-            PlayerList::showWindow = !PlayerList::showWindow;
-
-        } else if (n == 5) {
-            Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
-
+            break;
         }
-
+            case 2:
+        {
+            Colors::showWindow = !Colors::showWindow;
+            break;
+        } 
+            case 3:
+            {
+            SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
+            break;
+        } 
+            case 4:
+            {
+            PlayerList::showWindow = !PlayerList::showWindow;
+            break;
+        } 
+            case 5:
+            {
+            Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
+            break;
+         }
+        }
 
 
 
@@ -231,28 +245,7 @@ void UI::SetVisible(bool visible) {
 }
 
 void UI::SetupWindows() {
-    if (Settings::UI::oldMenu) {
-        if (UI::isVisible) {
-            SetupMainMenuBar();
-
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(960, 645));
-            Main::RenderWindow();
-            ImGui::PopStyleVar();
-
-            if (ModSupport::current_mod != ModType::CSCO) {
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1050, 645));
-                SkinModelChanger::RenderWindow();
-                ImGui::PopStyleVar();
-            }
-
-            Configs::RenderWindow();
-            Colors::RenderWindow();
-            PlayerList::RenderWindow();
-        }
-
-        ShowSpectators::RenderWindow();
-        Radar::RenderWindow();
-    } else {
+  
         if (UI::isVisible) {
             SetupMainMenuBar();
 
@@ -275,5 +268,5 @@ void UI::SetupWindows() {
         Radar::RenderWindow();
 
 
-    }
+    
 }
