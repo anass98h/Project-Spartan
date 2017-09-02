@@ -1334,6 +1334,16 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 }
             }
             break;
+        case AntiAimType_Y::FAKEFRONT:
+             if (CreateMove::sendPacket) {
+                angle.y -= 0.f;
+                CreateMove::sendPacket = false;
+            } else {
+                angle.y = 180.0f;
+                CreateMove::sendPacket = true;
+            }
+
+            break;
         default:
             angle.y -= 0.0f;
             break;

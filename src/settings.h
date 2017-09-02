@@ -73,6 +73,7 @@ enum class AntiAimType_Y : int {
     SIDEWAYSLEFT,
     FAKESIDEWAYS,
     FAKESIDEWAYS2,
+    FAKEFRONT,
     BACKWARDS,
     FORWARDS,
     STATICAA,
