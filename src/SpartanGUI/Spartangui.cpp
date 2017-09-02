@@ -144,18 +144,12 @@ void SetupMainMenuBar() {
 
 
 
-        ImVec2 center;
-
-        if (ImGui::IsMouseClicked(1, true)){
-            ImGui::OpenPopup("##piepopup");
-
-            center = ImGui::GetIO().MouseClickedPos[1];
-        }
-        if(ImGui::IsMouseClicked(2,true)){
+        
+        if(ImGui::IsMouseClicked(2,true))
          ImGui::OpenPopup("##piepopup");
 
-            center = ImGui::GetIO().MouseClickedPos[2];
-        }
+          ImVec2 center = ImGui::GetIO().MouseClickedPos[2];
+        
         
         int n = PiePopupSelectMenu(center, "##piepopup", items, items_count);
         switch (n){ // a switch for my love Myrrib 
