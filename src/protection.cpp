@@ -1,4 +1,5 @@
 #include "protection.h"
+#include "Protection/Protection.h"
 #include <stdio.h>
 #include <iostream>     // std::cout
 #include <algorithm>  
@@ -146,8 +147,11 @@ void protection::verify(int id) {
 }
 
 bool protection::pwmatch(char* Pass) {
-    //return true; // TODO ME
+    //Protection::GetOwnFilePath();
 
+    return true; // TODO ME
+
+    //return Pass == "Lx5j9M5RMtegKIOT";
 
     char line[328];
     std::string result;

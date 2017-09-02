@@ -4,11 +4,8 @@
 #include "Utils/netvarmanager.h"
 
 static EventListener* eventListener = nullptr;
-// The Below Line is Set by the Build script. Keep this on Line 8.
-char buildID[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // Line Set by build script  // This is useless btw 
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-bool preload;
+const bool preload = false; // Project Spartan is not supporting preload at the moment.
 bool isShuttingDown = false;
 
 void MainThread() {
@@ -39,7 +36,7 @@ void MainThread() {
     Hooker::FindSendClanTag();
     Hooker::FindSendPacket();
     Hooker::FindPrediction();
-    //Hooker::FindIsReadyCallback();
+    Hooker::FindIsReadyCallback();
     Hooker::FindSurfaceDrawing();
     Hooker::FindGetLocalClient();
     Hooker::FindLineGoesThroughSmoke();
@@ -100,7 +97,7 @@ void MainThread() {
     soundVMT->HookVM((void*) Hooks::EmitSound2, 6);
     soundVMT->ApplyVMT();
 
-    eventListener = new EventListener({"cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team"});
+    eventListener = new EventListener({ "cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team" });
 
     if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
         SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
@@ -116,6 +113,16 @@ void MainThread() {
 
     AntiAim::LuaInit();
 
+    try
+    {
+        curlpp::initialize();
+    }
+    catch (std::logic_error ex)
+    {
+        cvar->ConsoleColorPrintf(ColorRGBA(255, 0, 0), XORSTR("Error: Logic error when trying to initialize curl++."));
+        exit(-1);
+    }
+
     /*
 
     (
@@ -126,7 +133,7 @@ void MainThread() {
     / __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
     \__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
     |___/| .__/ \__,_||_|   \__|\__,_||_||_|
-|_|
+         |_|
 
      */
 
@@ -141,21 +148,13 @@ void MainThread() {
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
 
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
+    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected. \n"));
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
 
 }
 
 /* Entrypoint to the Library. Called when loading */
 int __attribute__ ((constructor)) Startup() {
-    // Search in Environment Memory for our buildID before purging environ memory
-    for (int i = 0; environ[i]; i++) {
-        if (strstr(environ[i], buildID) != NULL) {
-            preload = true;
-
-        }
-    }
-
     std::thread mainThread(MainThread);
     // The root of all suffering is attachment
     // Therefore our little buddy must detach from this realm.
@@ -169,11 +168,21 @@ int __attribute__ ((constructor)) Startup() {
 void __attribute__ ((destructor)) Shutdown() {
     isShuttingDown = true;
     cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
+    cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.007812f);
 
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();
     if (!preload) {
         ImGui::Shutdown();
+    }
+
+    try
+    {
+        curlpp::terminate();
+    }
+    catch (std::logic_error ex)
+    {
+        cvar->ConsoleColorPrintf(ColorRGBA(255, 0, 0), XORSTR("Error: Logic error when trying to terminate curl++."));
     }
 
     AntiAim::LuaCleanup();

@@ -36,6 +36,18 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
+    curlpp-config --version
+    if [ $? -ne 0 ]; then
+        echo -e "$prefix Could not find Curl++. Installing it as its a required dependency."
+        bash -c "./install-curlpp.sh"
+        if [ $? -ne 0 ]; then
+            echo -e "$error_prefix Could not install Curl++. Please install it manually to proceed building."
+            exit -1
+        fi
+    else
+        echo -e "$prefix Successfully detected $(curlpp-config --version)."
+    fi
+
     cmake -DCMAKE_BUILD_TYPE="$target" .
     if [ $? -ne 0 ]; then
         echo -e "$error_prefix Failed to create CMake files."

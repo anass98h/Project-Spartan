@@ -10,8 +10,10 @@
 #include <locale>
 #include <codecvt>
 #include <sstream>
+#include <fstream>
 #include "../ImGUI/imgui.h"
 #include "../SDK/SDK.h"
+#include "picosha2.h"
 
 namespace Util
 {
@@ -29,7 +31,9 @@ namespace Util
 	Color GetHealthColor(C_BasePlayer* player);
 	int RandomInt(int min, int max);
 	long GetEpochTime();
-
+	const char* GetCurrentTimeAsISO8601Timestamp();
+	const char* GetSHA256(const char* input);
+	const char* GetSHA256(std::ifstream stream);
 	const std::map<int,int> * GetModelTypeBoneMap(C_BasePlayer* player);
 	ModelType GetModelTypeID(C_BasePlayer* player);
 	std::string ModelTypeToString(ModelType model);

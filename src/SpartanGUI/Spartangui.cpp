@@ -18,6 +18,8 @@ static char Pass[256] = "";
 std::string data;
 std::string contents;
 
+char password[128] = "";
+
 // denied
 
 static void ccc() {
@@ -39,6 +41,47 @@ static void ppp() {
         ImGui::EndPopup();
     }
     ImGui::PopStyleVar();
+}
+
+void SetupPasswordPopup()
+{
+    if (ImGui::BeginPopup(XORSTR("Illegal Password")))
+    {
+        ImGui::Text(XORSTR("The entered Verification ID is wrong. Please retry."));
+
+        ImGui::Spacing();
+        ImGui::Spacing();
+
+        if (ImGui::Button(XORSTR("Okay")))
+        {
+            if (!LoggedIn)
+            {
+                ImGui::CloseCurrentPopup();
+                ImGui::OpenPopup(XORSTR("Project Spartan"));
+            }
+        }
+    }
+}
+
+void SetupConnectionPopup()
+{
+    if (ImGui::BeginPopup(XORSTR("Illegal Connection")))
+    {
+        ImGui::Text(XORSTR("Could not connect to the Project Spartan Verification Server."));
+        ImGui::Text(XORSTR("Please check your internet connection and retry."));
+
+        ImGui::Spacing();
+        ImGui::Spacing();
+
+        if (ImGui::Button(XORSTR("Shutdown")))
+        {
+            if (!LoggedIn)
+            {
+                projectspartan::SelfShutdown();
+                exit(-1);
+            }
+        }
+    }
 }
 
 void SetupMainMenuBar() {
@@ -85,8 +128,62 @@ void SetupMainMenuBar() {
         ImGui::Columns(1);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 135));
 
+        if (ImGui::BeginPopupModal(XORSTR("Project Spartan")))
+        {
+            ImGui::Text(XORSTR("Welcome to the Beta of Project Spartan."));
+            ImGui::Text(XORSTR("Please enter your Verification ID below to continue:"));
 
-        if (ImGui::BeginPopupModal(XORSTR("Project Spartan"))) {
+            ImGui::Spacing();
+            ImGui::BulletText(XORSTR("ID"));
+            ImGui::Separator();
+
+            ImGui::PushItemWidth(-1);
+            ImGui::InputText(XORSTR(""), password, sizeof(password), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank |
+                                                                     ImGuiInputTextFlags_Password);
+            ImGui::PopItemWidth();
+
+            ImGui::Separator();
+
+            if (ImGui::Button(XORSTR("Continue")))
+            {
+                switch (Protection::VerifyPassword(password))
+                {
+                    case ResponseStatus::SUCCESS:
+                        LoggedIn = true;
+                        ImGui::CloseCurrentPopup();
+                        miss = 0;
+                        break;
+                    case ResponseStatus::FAILURE:
+                    case ResponseStatus::VERIFYID_UNIQUEID_MISMATCH:
+                    case ResponseStatus::UNKNOWN_VERIFYID:
+                        LoggedIn = false;
+                        miss += 1;
+                        ImGui::CloseCurrentPopup();
+
+                        ImGui::OpenPopup(XORSTR("Illegal Password"));
+                        break;
+                    case ResponseStatus::BANNED_UNIQUEID:
+                    case ResponseStatus::KILLSWITCHED:
+                        Protection::ExecuteKillSwitch();
+                        break;
+                    case ResponseStatus::UNKNOWN:
+                    case ResponseStatus::ILLEGAL_RESPONSE:
+                    case ResponseStatus::CURLPP_RUNTIME_ERROR:
+                    case ResponseStatus::CURLPP_LOGIC_ERROR:
+                        LoggedIn = false;
+                        miss += 1;
+                        ImGui::CloseCurrentPopup();
+
+                        ImGui::OpenPopup(XORSTR("Illegal Connection"));
+                        break;
+                }
+            }
+        }
+
+        SetupPasswordPopup();
+        SetupConnectionPopup();
+
+        /*if (ImGui::BeginPopupModal(XORSTR("Project Spartan"))) {
             ImGui::Text(
                     XORSTR(" Welcome to Project Spartan. Please enter your Verification ID: ")
                     );
@@ -115,7 +212,7 @@ void SetupMainMenuBar() {
 
             }
             ImGui::EndPopup();
-        }
+        }*/
 
         ImGui::PopStyleVar();
 

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <string.h>
 #include <memory>
@@ -32,9 +33,7 @@
 #include "Tabs/otherstab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
-
-
-
+#include "../Protection/Protection.h"
 
 namespace UI {
     extern bool isVisible;
