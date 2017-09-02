@@ -215,11 +215,11 @@ void UI::SetupColors() {
     style.Alpha = 1.0f;
     style.WindowPadding = ImVec2(4, 4);
     style.WindowMinSize = ImVec2(32, 32);
-    style.WindowRounding = 0.f;
+    style.WindowRounding = 1.f;
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
-    style.ChildWindowRounding = 0.5f;
+    style.ChildWindowRounding = 2.f;
     style.FramePadding = ImVec2(4, 3);
-    style.FrameRounding = 2.0f;
+    style.FrameRounding = 4.0f;
     style.ItemSpacing = ImVec2(8, 4);
     style.ItemInnerSpacing = ImVec2(4, 4);
     style.TouchExtraPadding = ImVec2(0, 2);
