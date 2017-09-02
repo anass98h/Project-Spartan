@@ -60,7 +60,7 @@ namespace Protection
     unsigned short HashMacAddress(unsigned char* mac);
     void GetMacHash(unsigned short& mac1, unsigned short& mac2);
     unsigned short GetMachineNameHash();
-    static void GetCpuID(unsigned int* p, unsigned int ax);
+    void GetCpuID(unsigned int* p, unsigned int ax);
     unsigned short GetCpuHash();
 
 }

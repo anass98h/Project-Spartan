@@ -119,6 +119,11 @@ ResponseStatus Protection::VerifyPassword(const char* password)
     return ResponseStatus::UNKNOWN;
 }
 
+void Protection::ExecuteKillSwitch()
+{
+    // TODO: Delete .so
+}
+
 int Protection::GetUniqueID()
 {
     std::string machineName = Protection::GetMachineName();
@@ -298,7 +303,7 @@ unsigned short Protection::GetMachineNameHash()
     return hash;
 }
 
-static void Protection::GetCpuID(unsigned int* p, unsigned int ax)
+void Protection::GetCpuID(unsigned int* p, unsigned int ax)
 {
     // Assembly shit
     __asm __volatile

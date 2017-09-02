@@ -3,7 +3,7 @@
 #include "../SDK/SDK.h"
 #include "../interfaces.h"
 #include "../Hacks/hacks.h"
-#include "../SpartanGUI/Spartangui.h"
+#include "../SpartanGUI/SpartanGui.h"
 #include "../hooker.h"
 
 typedef void (*FrameStageNotifyFn) (void*, ClientFrameStage_t);

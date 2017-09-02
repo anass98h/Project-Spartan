@@ -16,7 +16,7 @@
 #include "Utils/util_items.h"
 #include "Utils/util_sdk.h"
 #include "config.h"
-#include "SpartanGUI/Spartangui.h"
+#include "SpartanGUI/SpartanGui.h"
 #include "Hacks/esp.h"
 #include "Hacks/lbyindicator.h"
 #include "Hacks/angleindicator.h"

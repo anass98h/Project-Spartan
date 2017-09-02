@@ -60,5 +60,5 @@ include_directories(${INCLUDE_DIRS})
 
 ####################################################
 
-add_library(Spartan SHARED ${SOURCE_FILES} src/Utils/protectionutil.cpp src/Utils/protectionutil.h)
+add_library(Spartan SHARED ${SOURCE_FILES})
 target_link_libraries(Spartan SDL2 GL dl xdo ${CURL_LIBRARIES} ${LUA_LIBRARY})
