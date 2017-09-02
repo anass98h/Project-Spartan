@@ -33,7 +33,7 @@ void Backtracking::FrameStageNotify(ClientFrameStage_t stage)
 	if( !engine->IsInGame() )
 	{
 		// pMeme starts here
-		static runOnce = false;
+		static bool runOnce = false;
 		if(runOnce == false){
 			cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.f);
 			cvar->FindVar(XORSTR("cl_interpolate"))->SetValue(0.f);
