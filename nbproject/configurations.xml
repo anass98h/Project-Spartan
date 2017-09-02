@@ -90,7 +90,6 @@
             <in>hvhtab.cpp</in>
             <in>misctab.cpp</in>
             <in>modelstab.cpp</in>
-            <in>otherstab.cpp</in>
             <in>skinstab.cpp</in>
             <in>triggerbottab.cpp</in>
             <in>visualstab.cpp</in>
@@ -490,10 +489,6 @@
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/modelstab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/SpartanGUI/Tabs/otherstab.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
       </item>
