@@ -32,6 +32,15 @@ void Backtracking::FrameStageNotify(ClientFrameStage_t stage)
 {
 	if( !engine->IsInGame() )
 	{
+		// pMeme starts here
+		static runOnce = false;
+		if(runOnce == false){
+			cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.f);
+			cvar->FindVar(XORSTR("cl_interpolate"))->SetValue(0.f);
+			cvar->FindVar(XORSTR("cl_lagcompensation"))->SetValue(1.f);
+			runOnce = true;
+		}
+		// pMeme ends here
 		Backtracking::lagRecords.clear(); // empty records.
 		return;
 	}
