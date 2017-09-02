@@ -10,6 +10,8 @@
 #include <locale>
 #include <codecvt>
 #include <sstream>
+#include <ctime>
+#include <iostream>
 #include <fstream>
 #include "../ImGUI/imgui.h"
 #include "../SDK/SDK.h"
@@ -34,6 +36,7 @@ namespace Util
 	const char* GetCurrentTimeAsISO8601Timestamp();
 	const char* GetSHA256(const char* input);
 	const char* GetSHA256(std::ifstream stream);
+  
 	const std::map<int,int> * GetModelTypeBoneMap(C_BasePlayer* player);
 	ModelType GetModelTypeID(C_BasePlayer* player);
 	std::string ModelTypeToString(ModelType model);

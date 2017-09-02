@@ -30,7 +30,6 @@
 #include "Tabs/misctab.h"
 #include "Tabs/modelstab.h"
 #include "Tabs/skinstab.h"
-#include "Tabs/otherstab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
 #include "../Protection/Protection.h"

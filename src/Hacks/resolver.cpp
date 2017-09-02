@@ -3,7 +3,7 @@
 bool Settings::Resolver::enabled = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
-
+bool Settings::Resolver::LagComp = false;
 ResolverHugtype Settings::Resolver::Hugtype = ResolverHugtype::OFF;
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
@@ -12,14 +12,22 @@ int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
-#define TIME_TO_TICKS( dt )		( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
-#define TICKS_TO_TIME( t )		( globalVars->interval_per_tick * ( t ) )
+ static float rSimTime[65]; 
 
- void StartLagCompensation(C_BasePlayer* pEntity,CUserCmd* cmd) {
-	float flSimTime = pEntity->GetSimulationTime();
-//is this how lagcomp works ? idk if not delete or spit on my feet 
-	cmd->tick_count = TIME_TO_TICKS(flSimTime + 0.031f); // +1 Send
+
+static void StartLagComp(C_BasePlayer* player, CUserCmd* cmd)
+{   
+        ConVar* cvar_cl_interp = cvar->FindVar(XORSTR("cl_interp"));
+	ConVar* cvar_cl_updaterate = cvar->FindVar(XORSTR("cl_updaterate"));
+	ConVar* cvar_cl_interp_ratio = cvar->FindVar(XORSTR("cl_interp_ratio"));
+        // is this lagcomp ? :/
+	float cl_interp = cvar_cl_interp->fValue;
+	float cl_updaterate = cvar_cl_updaterate->fValue;
+	float cl_interp_ratio = cvar_cl_interp_ratio->fValue;
+        float tick = (player->GetSimulationTime() + std::max(cl_interp, cl_interp_ratio / cl_updaterate));
+        cmd->tick_count = TIME_TO_TICKS(tick);
 }
+
 void Resolver::Hug(C_BasePlayer* Circlebian) {
     auto cur = m_arrInfos.at(Circlebian->GetIndex()).m_sRecords;
     float flYaw = 0;
@@ -70,9 +78,30 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
          case ResolverHugtype::PASTEHUB:
          {   
            
-              if (HasStaticRealAngle(cur))
-                Circlebian->GetEyeAngles()->y =
-                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 10 : -10);
+              if (HasStaticRealAngle(cur)){ 
+                int num4 = Shotsmissed % 6;
+            switch (num4)
+            {
+                case 0:
+                    Circlebian->GetEyeAngles()->y -= 0.0f;
+                    break;
+                case 1:
+                    Circlebian->GetEyeAngles()->y = 35.0f;
+                    break;
+                case 2:
+                    Circlebian->GetEyeAngles()->y = -70.0f;
+                    break;
+                case 3:
+                    Circlebian->GetEyeAngles()->y = 55.0f;
+                    break;
+                case 4:
+                    Circlebian->GetEyeAngles()->y = -180.0f;
+                    break;
+                case 5:
+                    Circlebian->GetEyeAngles()->y = -30.0f;
+                    break;
+            }
+        }
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
@@ -119,15 +148,15 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
              }
             
             else{
-		if (OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw) {
-			OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
-			OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
-			
-			
-			Circlebian->GetEyeAngles()->y = CurYaw;
+		if (OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw) {
+            OldYawDeltas[Circlebian->GetIndex()] = Circlebian->GetEyeAngles()->y - CurYaw;
+            OldLowerBodyYaws[Circlebian->GetIndex()] = CurYaw;
+            
+            
+            Circlebian->GetEyeAngles()->y = CurYaw;
 
-			
-		}
+            
+        } 
                 else if (Shotsmissed == 3 ){
 		flYaw = flYaw - 180;
 		Circlebian->GetEyeAngles()->y = flYaw;
@@ -230,10 +259,10 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
         {
 
             if (HasStaticRealAngle(cur))
-                Circlebian->GetEyeAngles()->y =
-                    (cur.front().m_flLowerBodyYawTarget) + (Math::float_rand(0.f, 1.f) > 0.5f ? 25 : -25);
+                Circlebian->GetEyeAngles()->y += 180;
+                    
             else if(LowerBodyYawChanged(Circlebian))
-                Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
+               Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget + bodyeyedelta);
             else if (HasStaticYawDifference(cur))
                 Circlebian->GetEyeAngles()->y =
                     Circlebian->GetEyeAngles()->y - (cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget);
@@ -252,6 +281,78 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             std::uniform_int_distribution<> dis(-180, 180);
             Circlebian->GetEyeAngles()->y = dis(gen);
         }
+	case ResolverHugtype::MYRRIBDELTA:
+        {
+            static bool lbyUpdatedM = false;
+            static bool isMovingM = false;
+	    static bool isFakeWalking = false;
+            static float lbySaveM = 0;
+	    bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
+		
+            float curTime = globalVars->curtime;
+            static float nextUpdate = 0;
+            static bool lbyFirstUpdateM = false;
+		
+	    if (Circlebian->GetVelocity().Length2D() != 0 && onGround && Circlebian->GetVelocity().Length2D() < 25){
+	    	isFakeWalking = true;
+	    }
+	    else {
+		isFakeWalking = false;    
+	    }
+		
+            float LBY = (cur.front().m_flLowerBodyYawTarget);
+
+            if (Circlebian->GetVelocity().Length2D() > 1 && onGround) {
+                isMovingM = true;
+            }
+            else {
+                isMovingM = false;
+            }
+
+	    if (isFakeWalking){
+	    	Circlebian->GetEyeAngles()->y += 180.f;
+	    }
+	    else {
+	    if (lbyFirstUpdateM && curTime > nextUpdate && fabsf(bodyeyedelta) > 35.0f){
+                lbyUpdatedM = true;
+                nextUpdate = curTime + 1.1f;
+            }
+            else {
+                lbyUpdatedM = false;
+            }
+
+            if (lbyUpdatedM || isMovingM || fabsf(bodyeyedelta) >= 35.0f){
+                Circlebian->GetEyeAngles()->y = LBY;
+                lbySaveM = LBY;
+                lbyFirstUpdateM = true;
+            }
+            else if (!onGround){
+                Circlebian->GetEyeAngles()->y = lbySaveM;
+            }
+            else {
+                if (Shotsmissed > 2){
+                    int n = Shotsmissed % 9;
+
+                    switch (n){
+                        case 0: Circlebian->GetEyeAngles()->y = lbySaveM; break;
+                        case 1: Circlebian->GetEyeAngles()->y = LBY + 180; break;
+                        case 2: Circlebian->GetEyeAngles()->y = LBY + 90; break;
+                        case 3: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+                        case 4: Circlebian->GetEyeAngles()->y = LBY + 135; break;
+                        case 5: Circlebian->GetEyeAngles()->y = LBY - 135; break;
+                        case 6: Circlebian->GetEyeAngles()->y = LBY + 45; break;
+                        case 7: Circlebian->GetEyeAngles()->y = LBY - 45; break;
+                        case 8: Circlebian->GetEyeAngles()->y += 180; break;
+                    }
+                }
+                else {
+                    if (fabsf(bodyeyedelta) < 35.0f && fabsf(bodyeyedelta) > 0.0f) {
+                        Circlebian->GetEyeAngles()->y = LBY + bodyeyedelta;
+                    }
+                }
+            }
+        }
+	    }
         case ResolverHugtype::OFF:break;
     }
 }
@@ -292,7 +393,7 @@ void Resolver::FrameStageNotify(ClientFrameStage_t stage) {
             float lby = *target->GetLowerBodyYawTarget();
 
             /* Lby will update every 0.022 seconds while moving (assume that is just all the time) */
-            if (target->GetVelocity().Length2D() > 0.1f) {
+            if (target->GetVelocity().Length2D() > 0.1f  && target->GetFlags() & FL_ONGROUND) {
                 /*
                 float flCurTime = globalVars->curtime;
                 static float flTimeUpdate = 0.5f;
@@ -512,8 +613,9 @@ void Resolver::CreateMove(CUserCmd *cmd)
                 continue;
 
         Resolver::StoreVars(target);
-      
-     //   StartLagCompensation(target,cmd);
+        
+        if(Settings::Resolver::LagComp)
+            StartLagComp(target, cmd);
      
     }
 }

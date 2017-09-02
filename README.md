@@ -46,9 +46,9 @@ Then execute the following:
 
 ```bash
 $ git clone https://github.com/anass98h/Project-Spartan
-$ ./build
+$ ./build.sh
 # Open CS:GO
-$ ./load
+$ ./load.sh
 ```
 
 ## Usage

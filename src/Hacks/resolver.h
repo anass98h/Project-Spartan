@@ -9,6 +9,18 @@
 #include "../SDK/CTickRecord.h"
 #include <random>
 
+
+
+
+
+    #define TIME_TO_TICKS( dt )		( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
+    #define TICKS_TO_TIME( t )		( globalVars->interval_per_tick * ( t ) )
+
+
+
+
+
+
 class CResolveInfo {
    
 	public:

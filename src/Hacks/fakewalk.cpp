@@ -2,10 +2,12 @@
 
 bool Settings::Fakewalk::enabled;
 ButtonCode_t Settings::Fakewalk::key = ButtonCode_t::KEY_C;
+bool Settings::SlowMo::enabled;
+ButtonCode_t Settings::SlowMo::key = ButtonCode_t::KEY_C;
 
 
 
-// this is still beta pls no hate :<
+// I should rename this to pMemes
 
 
 void Fakewalk::CreateMove(CUserCmd* cmd)
@@ -14,8 +16,8 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
 	if (!localplayer || !localplayer->GetAlive())
 		return;
 
-	if (!Settings::Fakewalk::enabled)
-		return;
+	if (Settings::Fakewalk::enabled){
+		
 
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
 	if (!activeWeapon || activeWeapon->GetInReload())
@@ -25,8 +27,11 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
 	if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE || weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
 		return;
 
-
-
+        ConVar* stopme = cvar->FindVar(XORSTR("sv_stopspeed"));
+        ConVar* runsme = cvar->FindVar(XORSTR("sv_accelerate"));
+        
+        float stopfact = stopme->fValue;
+        float stopspeed = runsme->fValue;
     	if (inputSystem->IsButtonDown(Settings::Fakewalk::key))
     	{
     		static int iChoked = -1;
@@ -36,28 +41,58 @@ void Fakewalk::CreateMove(CUserCmd* cmd)
     		{
     			CreateMove::sendPacket = false;
      
-    			cmd->tick_count += 10;
-    			cmd->command_number += 7 + cmd->tick_count % 2 ? 0 : 1;
-     
     			cmd->buttons |= localplayer->GetMoveType() == IN_BACK;
     			cmd->forwardmove = cmd->sidemove = 0.f;
+                        
     		}
+             
     		else
-    		{
-    			CreateMove::sendPacket = true;
+    		{       
+                    if (localplayer->GetVelocity().Length2D()> 0.1f)
+                    {
+                     cmd->upmove = -localplayer->GetVelocity().Length2D();
+                     
+                     
+                    }
+                    
+                    CreateMove::sendPacket = true;
     			iChoked = -1;
-     
-    			globalVars->frametime *= (localplayer->GetVelocity().Length2D()) / 1.f;
-    			cmd->buttons |= localplayer->GetMoveType() == IN_FORWARD;
+                        
+    			
+    			
+                      cmd->buttons |= localplayer->GetMoveType() == IN_WALK;
+                     // ik ik this still isnt even close to fakewalk but old meme fucked some shit up :eyo:
     		}
-    	}
+            }
+        }
+        else if(Settings::SlowMo::enabled)
+        {   
+            
+            	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*) entityList->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
+                if (!activeWeapon || activeWeapon->GetInReload())
+		return;
 
-	
+            CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
+            if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE || weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
+		return;
+
+            
+            if (inputSystem->IsButtonDown(Settings::SlowMo::key))
+	{
+		static bool slowmo;
+		slowmo = !slowmo;
+		if (slowmo)
+		{
+			cmd->tick_count = INT_MAX;
+		}
+	}
+        } 
+        
+        else  
+            return;
 	
 	
  }
- 
- 
  
 
 

@@ -1,5 +1,6 @@
 #include "util.h"
 #include "../settings.h"
+#include "picosha2.h"
 
 std::string Util::ReplaceString(std::string subject, const std::string& search, const std::string& replace)
 {

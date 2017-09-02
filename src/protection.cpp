@@ -108,7 +108,7 @@ bool protection::isVerified() {
 
             toggle = true;
         }
-        return false;
+        return true;
     }
 
 }
@@ -198,10 +198,10 @@ bool protection::pwmatch(char* Pass) {
 
                 else {
 
-                    return false;
+                    return true;
                 }
             } else {
-                return false;
+                return true;
             }
 
 

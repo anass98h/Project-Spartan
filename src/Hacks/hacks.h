@@ -42,3 +42,5 @@
 #include "circlestrafe.h"
 #include "lbyindicator.h"
 #include "angleindicator.h"
+#include "tracereffect.h"
+#include "autoknife.h"

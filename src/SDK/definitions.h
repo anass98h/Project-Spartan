@@ -1645,7 +1645,28 @@ enum ThrowType : int
 	JUMP,
 	WALK
 };
+enum TracerEffects_t : int
+{
+    ASSRIFLE,
+    PISTOL,
+    SMG,
+    RIFLE,
+    TASER, // Also known as "Kisak Snot"
+    MACH,
+    SHOT,
 
+    TASER_FALLBACK,
+    TASER_FALLBACK2,
+    TASER_WIRE1A,
+    TASER_WIRE2,
+    TASER_WIRE1B,
+    ORIGINAL,
+    BACKUP,
+    FIFTY_CAL,
+    FIFTY_CAL_GLOW,
+    FIFTY_CAL_LOW,
+    FIFTY_CAL_LOW_GLOW,
+};
 struct GrenadeInfo
 {
 	GrenadeType gType;

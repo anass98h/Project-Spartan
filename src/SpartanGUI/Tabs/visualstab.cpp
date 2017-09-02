@@ -34,14 +34,41 @@ void Visuals::RenderTab() {
         "vertigoblue_hdr",
         "vietnam" // 21
     };
+    
 
+const char *tracerEffectNames[] = {
+			"Assault Rifle", // 0
+			"Pistol",
+			"SMG",
+			"Rifle",
+			"Kisak Snot",
+			"Machine Gun",
+			"Shotgun",
+			"Kisak Snot Fallback",
+			"Kisak Snot Fallback2",
+			"Wire1A",
+			"Wire2",
+			"Wire1B",
+			"Original",
+			"Backup",
+			".50 Cal",
+			".50 Cal Glow",
+			".50 Cal Low",
+			".50 Cal Low Glow", // 17
+};
+
+    ImGui::Checkbox(XORSTR("Enabled"), &Settings::ESP::enabled);
+    ImGui::Separator();
     ImGui::Columns(2, NULL, true);
     {
-        ImGui::Checkbox(XORSTR("Enabled"), &Settings::ESP::enabled);
-        ImGui::NextColumn();
-        ImGui::Text(XORSTR("Only on Key"));
-        UI::KeyBindButton(&Settings::ESP::key);
+       ImGui::Text(XORSTR("Only on Key"));
     }
+    ImGui::NextColumn();
+    {
+        UI::KeyBindButton(&Settings::ESP::key);
+         
+    }
+    ImGui::Columns(1);
     ImGui::Separator();
 
     ImGui::Columns(2, NULL, true);
@@ -188,6 +215,36 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox(XORSTR("No Sky"), &Settings::NoSky::enabled);
                 ImGui::Checkbox(XORSTR("No Smoke"), &Settings::NoSmoke::enabled);
             }
+
+            if(ImGui::Button(XORSTR("Tracer Effect"), ImVec2(-1, 0)))
+					ImGui::OpenPopup(XORSTR("##TracerEffectWindow"));
+				ImGui::SetNextWindowSize(ImVec2(320,120), ImGuiSetCond_Always);
+				if( ImGui::BeginPopup(XORSTR("##TracerEffectWindow")) )
+				{
+					ImGui::PushItemWidth(-1);
+                    if( Settings::TracerEffects::serverSide )
+                    {
+                        Settings::TracerEffects::frequency = 1;
+                        Settings::TracerEffects::effect = TracerEffects_t::TASER;
+                    }
+					ImGui::Combo(XORSTR("##TracerEffects"), (int*)& Settings::TracerEffects::effect, tracerEffectNames, IM_ARRAYSIZE(tracerEffectNames));
+					ImGui::Checkbox(XORSTR("Enable Tracers"), &Settings::TracerEffects::enabled);
+                    ImGui::Checkbox(XORSTR("Server Sided?"), &Settings::TracerEffects::serverSide);
+                    SetTooltip("Requires a Taser in your Inventory.\nCan only shoot one shot at a time\nOnly Works with Kisak Snot");
+                    ImGui::Columns(2, NULL, false);
+                    {
+                        ImGui::SliderInt(XORSTR("##TracerFreq"),&Settings::TracerEffects::frequency, 0, 10, XORSTR("Freq: %0.f"));
+                    }
+                    ImGui::NextColumn();
+                    {
+                        if( ImGui::Button(XORSTR("Restore Tracers")) ){
+                            TracerEffect::RestoreTracers();
+                        }
+                    }
+					ImGui::PopItemWidth();
+					ImGui::EndPopup();
+}
+            
             ImGui::NextColumn();
             {
                 ImGui::PushItemWidth(-1);
