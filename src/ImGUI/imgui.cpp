@@ -9801,7 +9801,7 @@ int PiePopupSelectMenu(const ImVec2& center, const char* popup_id, const char** 
         }
         draw_list->PopClipRect();
 
-        if (ImGui::IsMouseReleased(1)) {
+        if (ImGui::IsMouseReleased(1) || ImGui::IsMouseReleased(2)) { //middle click == 2 ? idk fix if not 
             ImGui::CloseCurrentPopup();
             ret = item_hovered;
             //   if (p_selected)
