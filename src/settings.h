@@ -1035,6 +1035,12 @@ namespace Settings {
         extern pstring actMapName;
     }
 
+    namespace GrenadePrediction {
+
+        extern bool enabled;
+
+    }
+
     namespace TracerEffects
     {
         extern bool enabled;
@@ -1043,6 +1049,7 @@ namespace Settings {
         extern int frequency;
 
     }
+  
     namespace AutoKnife
     {
         extern bool enabled;
@@ -1054,7 +1061,6 @@ namespace Settings {
             extern bool allies;
         }
     }
-
 
     void LoadDefaultsOrSave(std::string path);
     void LoadConfig(std::string path);

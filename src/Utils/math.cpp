@@ -248,3 +248,23 @@ void Math::AngleVectors2(Vector& qAngles, Vector& vecForward)
 	vecForward[1] = cp*sy;
 	vecForward[2] = -sp;
 }
+
+void Math::AngleVectors(const Vector &angles, Vector *forward)
+{
+	float sp, sy, cp, cy;
+
+	sy = sin(DEG2RAD(angles[1]));
+	cy = cos(DEG2RAD(angles[1]));
+
+	sp = sin(DEG2RAD(angles[0]));
+	cp = cos(DEG2RAD(angles[0]));
+
+	forward->x = cp*cy;
+	forward->y = cp*sy;
+	forward->z = -sp;
+}
+
+float Math::DotProduct(const Vector& a, const Vector& b)
+{
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}

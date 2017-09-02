@@ -214,6 +214,7 @@ const char *tracerEffectNames[] = {
                 ImGui::Checkbox(XORSTR("Weapons"), &Settings::ESP::Chams::Weapon::enabled);
                 ImGui::Checkbox(XORSTR("No Sky"), &Settings::NoSky::enabled);
                 ImGui::Checkbox(XORSTR("No Smoke"), &Settings::NoSmoke::enabled);
+                ImGui::Checkbox(XORSTR("Grenade Prediction"), &Settings::GrenadePrediction::enabled);
             }
 
             if(ImGui::Button(XORSTR("Tracer Effect"), ImVec2(-1, 0)))
