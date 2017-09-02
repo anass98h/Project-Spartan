@@ -321,7 +321,7 @@ void UI::SwapWindow() {
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, sizeof (buffer), "%R", timeinfo);
+    strftime(buffer, sizeof (buffer), "%T %Z", timeinfo);
     std::string time(buffer);
 
     std::string watermark(XORSTR("Project Spartan | "));
