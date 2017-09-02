@@ -44,9 +44,8 @@ static void ppp() {
 void SetupMainMenuBar() {
 
 
-    if (ImGui::Begin("Menu Selector", &ShowMainWindow,
-            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
-            ImGuiWindowFlags_NoResize)) {
+    if (ImGui::Begin("Logout", &ShowMainWindow, ImGuiWindowFlags_AlwaysAutoResize |
+            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
 
         if (!LoggedIn) {
             if (protection::isVerified()) {
@@ -122,195 +121,75 @@ void SetupMainMenuBar() {
         if (ImGui::Button(XORSTR("Logout  "), ImVec2(ImGui::CalcTextSize(XORSTR("Logout  "), NULL, true).x, 0.0f))) {
             LoggedIn = false;
             Main::showWindow = false;
+            SkinModelChanger::showWindow = false;
+            Colors::showWindow = false;
+            PlayerList::showWindow = false;
+            Configs::showWindow = false;
+
             UI::isVisible = false;
             Settings::UI::oldMenu = false;
             Settings::UI::otherMenu = false;
             Settings::Aimbot::enabled = false;
             Settings::ESP::enabled = false;
         }
-        ImGui::Separator();
-
-        if (ImGui::Button(XORSTR("Normal Menu  "),
-                ImVec2(ImGui::CalcTextSize(XORSTR("Normal Menu  "), NULL, true).x, 0.0f))) {
-            if (!LoggedIn)
-                ImGui::OpenPopup(XORSTR("Project Spartan"));
-            if (!toggled && LoggedIn) {
-                Main::showWindow = true;
-                Settings::UI::otherMenu = false;
-                Settings::UI::combinedMenu = false;
-                Settings::UI::oldMenu = false;
-                toggled = !toggled;
-            } else if (toggled && LoggedIn) {
-                Main::showWindow = false;
-                toggled = !toggled;
-            }
-        }
 
         ImGui::Separator();
-        if (ImGui::Checkbox("Old Menu", &Settings::UI::oldMenu)) {
-            Settings::UI::otherMenu = false;
-            Settings::UI::combinedMenu = false;
-        }
-        ImGui::Separator();
-        if (ImGui::Checkbox("Other Menu", &Settings::UI::otherMenu)) {
-            Settings::UI::oldMenu = false;
-            Settings::UI::combinedMenu = false;
-        }
-        ImGui::Separator();
-        if (ImGui::Checkbox("Combined Menu", &Settings::UI::combinedMenu)) {
-            Settings::UI::oldMenu = false;
-            Settings::UI::otherMenu = false;
-        }
-        ImGui::Separator();
+        if (ImGui::Button(XORSTR("RQUIT  "), ImVec2(ImGui::CalcTextSize(XORSTR("RQUIT  "), NULL, true).x, 0.0f)))
+            projectspartan::SelfShutdown();
 
 
 
-
-
-        static const char *test_data = "Menu";
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
         int items_count = sizeof (items) / sizeof (*items);
 
-        static int selected = -1;
 
 
 
-        ImGui::Button(selected >= 0 ? items[selected] : "Pie Menu", ImVec2(150, 30));
-        if (ImGui::IsItemActive()) // Don't wait for button release to activate the pie menu
+
+        if (ImGui::IsMouseClicked(1, true))
             ImGui::OpenPopup("##piepopup");
 
-
-
-        ImVec2 pie_menu_center = ImGui::GetIO().MouseClickedPos[0];
-        int n = PiePopupSelectMenu(pie_menu_center, "##piepopup", items, items_count);
+        ImVec2 center = ImGui::GetIO().MouseClickedPos[1];
+        int n = PiePopupSelectMenu(center, "##piepopup", items, items_count);
         if (n == 1) {
             Configs::showWindow = !Configs::showWindow;
         } else if (n == 0) {
             Main::showWindow = !Main::showWindow;
+
         } else if (n == 2) {
             Colors::showWindow = !Colors::showWindow;
+
         } else if (n == 3) {
             SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
+
         } else if (n == 4) {
             PlayerList::showWindow = !PlayerList::showWindow;
+
         } else if (n == 5) {
             Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
+
         }
+
+
+
 
         ImGui::End();
 
 
 
     }
-    if (Settings::UI::oldMenu) {
-
-        if (!LoggedIn) {
-            if (protection::isVerified()) {
-                ImGui::OpenPopup(XORSTR("Project Spartan"));
-            } else {
-                protection::isVerified();
-                ImGui::OpenPopup(XORSTR("Unique ID"));
-            }
-        } else {
-            if (ImGui::BeginMainMenuBar()) {
 
 
-                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8 * 2.0f, 4 * 2.0f));
 
-                ImGui::Selectable(XORSTR("Main Window"), &Main::showWindow, 0,
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Main Window"), NULL, true).x, 0.0f));
-                ImGui::SameLine();
-
-                if (ModSupport::current_mod != ModType::CSCO) {
-                    ImGui::Selectable(XORSTR("Skin & Model Changer Window"), &SkinModelChanger::showWindow, 0,
-                            ImVec2(ImGui::CalcTextSize(XORSTR("Skin & Model Changer Window"), NULL, true).x,
-                            0.0f));
-                    ImGui::SameLine();
-                }
-
-                ImGui::Selectable(XORSTR("Config Window"), &Configs::showWindow, 0,
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Config Window"), NULL, true).x, 0.0f));
-                ImGui::SameLine();
-
-                ImGui::Selectable(XORSTR("Spectators Window"), &Settings::ShowSpectators::enabled, 0,
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Spectators Window"), NULL, true).x, 0.0f));
-                ImGui::SameLine();
-
-                ImGui::Selectable(XORSTR("Colors Window"), &Colors::showWindow, 0,
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Colors Window"), NULL, true).x, 0.0f));
-                ImGui::SameLine();
-
-                ImGui::Selectable(XORSTR("Player List Window"), &PlayerList::showWindow, 0,
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Player List Window"), NULL, true).x, 0.0f));
-                ImGui::SameLine();
-
-
-                ImGui::SameLine(ImGui::GetWindowContentRegionMax().x -
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true)).x);
-
-                if (ImGui::Button(XORSTR("Unload   "),
-                        ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true).x, 0.0f))) {
-                    projectspartan::SelfShutdown();
-                }
-
-                ImGui::PopStyleVar();
-                ImGui::EndMainMenuBar();
-            }
-        }
-    } else if (Settings::UI::otherMenu) {
-
-
-        if (!LoggedIn) {
-            if (protection::isVerified()) {
-                ImGui::OpenPopup(XORSTR("Project Spartan"));
-            } else {
-                protection::isVerified();
-                ImGui::OpenPopup(XORSTR("Unique ID"));
-            }
-
-        } else {
-
-            ImGui::SetNextWindowSize(ImVec2(150, 200), ImGuiSetCond_FirstUseEver);
-            if (ImGui::Begin("OPTIONS", &ShowMainWindow,
-                    ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders |
-                    ImGuiWindowFlags_NoResize)) {
-
-                ImGui::Checkbox("Main Window", &Main::showWindow);
-                ImGui::Separator();
-                ImGui::Checkbox("Spectator Window", &Settings::ShowSpectators::enabled);
-                ImGui::Checkbox("PlayerList Window", &PlayerList::showWindow);
-                ImGui::Checkbox("Skinchanger Window", &SkinModelChanger::showWindow);
-                ImGui::Separator();
-                ImGui::Checkbox("Colors Window", &Colors::showWindow);
-                ImGui::Checkbox("Config Window", &Configs::showWindow);
-
-                ImGui::End();
-            }
-
-        }
-    } else if (Settings::UI::combinedMenu) {
-        if (!LoggedIn) {
-            if (protection::isVerified()) {
-                ImGui::OpenPopup(XORSTR("Project Spartan"));
-            } else {
-                protection::isVerified();
-                ImGui::OpenPopup(XORSTR("Unique ID"));
-            }
-        } else {
-            Settings::UI::oldMenu = false;
-            Settings::UI::otherMenu = false;
-            Main::showWindow = true;
-
-        }
-    }
 }
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 void UI::SwapWindow() {
-    if (UI::isVisible)
+    if (UI::isVisible) {
+        Draw::ImText(ImVec2(4.f, 4.f), ImColor(0, 180, 12), "Spartan-menu active", NULL, 0.0f, NULL, ImFontFlags_Outline);
         return;
-
+    }
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
     // I have enabled the drawing of the watermark even when In-Game
     // If you don't want that, add || engine->IsInGame() after the UI::isVisible statement
