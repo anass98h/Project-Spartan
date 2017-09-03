@@ -36,7 +36,8 @@ namespace NameChanger
 	extern std::string origName;
 	extern Colors color;
 	extern std::vector<std::pair<NameChanger::Colors, const char*>> colors;
-
+	
+	void AyywareCrash();
 	void SetName(const char* name);
 	void InitColorChange(NC_Type type, Colors color = Colors::LIGHT_RED);
 
