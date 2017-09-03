@@ -310,7 +310,23 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             }
 
 	    if (isFakeWalking){
-	    	Circlebian->GetEyeAngles()->y += 180.f;
+	    	if (Shotsmissed > 2){
+			int n = Shotsmissed % 9;
+			switch (n){
+                        	case 0: Circlebian->GetEyeAngles()->y = lbySaveM; break;
+				case 1: Circlebian->GetEyeAngles()->y = LBY + 90; break;
+                        	case 2: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+                        	case 3: Circlebian->GetEyeAngles()->y = LBY + 180; break; // This is where it will start
+                        	case 4: Circlebian->GetEyeAngles()->y = LBY + 135; break;
+                        	case 5: Circlebian->GetEyeAngles()->y = LBY - 135; break;
+                        	case 6: Circlebian->GetEyeAngles()->y = LBY + 45; break;
+                        	case 7: Circlebian->GetEyeAngles()->y = LBY - 45; break;
+                        	case 8: Circlebian->GetEyeAngles()->y += 180; break;
+                	}
+		}
+		else {
+			Circlebian->GetEyeAngles()->y += 180.f;	
+		}
 	    }
 	    else {
 	    if (lbyFirstUpdateM && curTime > nextUpdate && fabsf(bodyeyedelta) > 35.0f){
@@ -327,7 +343,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 lbyFirstUpdateM = true;
             }
             else if (!onGround){
-                Circlebian->GetEyeAngles()->y = lbySaveM;
+                Circlebian->GetEyeAngles()->y = lbySaveM; // Just force LBY in air, baiming in air is retarded
             }
             else {
                 if (Shotsmissed > 2){
@@ -335,9 +351,9 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
                     switch (n){
                         case 0: Circlebian->GetEyeAngles()->y = lbySaveM; break;
-                        case 1: Circlebian->GetEyeAngles()->y = LBY + 180; break;
-                        case 2: Circlebian->GetEyeAngles()->y = LBY + 90; break;
-                        case 3: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+			case 1: Circlebian->GetEyeAngles()->y = LBY + 90; break;
+                        case 2: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+                        case 3: Circlebian->GetEyeAngles()->y = LBY + 180; break; // This is where it will start
                         case 4: Circlebian->GetEyeAngles()->y = LBY + 135; break;
                         case 5: Circlebian->GetEyeAngles()->y = LBY - 135; break;
                         case 6: Circlebian->GetEyeAngles()->y = LBY + 45; break;
