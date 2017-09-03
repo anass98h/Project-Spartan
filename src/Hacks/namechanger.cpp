@@ -29,28 +29,17 @@ static std::string GetName() {
     return std::string(playerInfo.name);
 }
 
-static std::string Rainbowify(const std::string& name) {
-    std::string base = " \x01\x0B";
-    std::vector<char> rainbow = {
-        (char) (NameChanger::Colors::RED),
-        (char) (NameChanger::Colors::ORANGE),
-        (char) (NameChanger::Colors::YELLOW),
-        (char) (NameChanger::Colors::GREEN),
-        (char) (NameChanger::Colors::BLUE),
-        (char) (NameChanger::Colors::PURPLE),
-    };
-
-    size_t color = 0;
-    for (char c : name) {
-        if (color > rainbow.size() - 1)
-            color = 0;
-        base.push_back(rainbow[color]);
-        base.push_back(c);
-        color++;
+void NameChanger::AyywareCrash() {
+    for (int i = 0; i < 6; i++){
+        static bool ayywareS = false;
+        ayywareS = !ayywareS; 
+        if (ayywareS){
+            SetName("-AyyWare Crasher 2k17 --- Project Spartan --- CrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWare");
+        }
+        else {
+            SetName("AyyWare Crasher 2k17 --- Project Spartan --- CrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWare");
+        }
     }
-
-    base.append("\230");
-    return base;
 }
 
 static std::string Colorize(const std::string& name, NameChanger::Colors color = NameChanger::Colors::LIGHT_RED) {
@@ -96,7 +85,7 @@ void NameChanger::BeginFrame(float frameTime) {
                 SetName(Util::PadStringRight(XORSTR("\230\nProject Spartan"), strlen(XORSTR("\230\nProject Spartan")) + Util::RandomInt(10, 50)));
                 break;
             case NC_Type::NC_RAINBOW:
-                SetName(Util::PadStringRight(Rainbowify(origName), origName.size() + Util::RandomInt(10, 50)));
+                AyywareCrash();
                 break;
             case NC_Type::NC_SOLID:
                 SetName(Util::PadStringRight(Colorize(origName, NameChanger::color), origName.size() + Util::RandomInt(10, 50)));
