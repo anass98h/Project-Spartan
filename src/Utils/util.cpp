@@ -116,7 +116,7 @@ long Util::GetEpochTime()
 const char* Util::GetCurrentTimeAsISO8601Timestamp()
 {
 	time_t rawtime;
-	struct tm *timeinfo;
+	struct tm* timeinfo;
 	char buffer[sizeof("2011-10-08T07:07:09Z")];
 
 	time(&rawtime);

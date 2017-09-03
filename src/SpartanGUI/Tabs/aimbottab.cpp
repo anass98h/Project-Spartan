@@ -1,4 +1,4 @@
-#include "../Spartangui.h"
+#include "aimbottab.h"
 
 static ItemDefinitionIndex currentWeapon = ItemDefinitionIndex::INVALID;
 static bool enabled = false;
@@ -475,8 +475,18 @@ void Aimbot::RenderTab() {
                     UI::UpdateWeaponSettings();
                 if (ImGui::Checkbox(XORSTR("pSilent"), &pSilent))
                     UI::UpdateWeaponSettings();
-                if (ImGui::Checkbox(XORSTR("Backtrack"), &backtrack))
+                if (ImGui::Checkbox(XORSTR("Backtrack"), &backtrack)) {
+                    if(backtrack)
+                    {
+                        cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.f);
+                    }
+                    else
+                    {
+                        cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.007812f);
+                    }
+
                     UI::UpdateWeaponSettings();
+                }
                
             }
             ImGui::NextColumn();

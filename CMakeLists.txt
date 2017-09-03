@@ -3,10 +3,10 @@ project(Project-Spartan)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.2)
-        message(FATAL_ERROR "Your GCC seems outdated. Go to https://github.com/AimTuxOfficial/AimTux/wiki/Updating-your-compiler for further instructions. If you have done so and still see this message, run 'git clean -fdx' and try again")
+        message(FATAL_ERROR "Your GCC seems outdated. Update your compiler, run 'git clean -fdx' and try again.")
     endif()
 else()
-    message(FATAL_ERROR "You must have GCC >= 5.2 installed in order to compile AimTux. Go to https://github.com/AimTuxOfficial/AimTux/wiki/Updating-your-compiler for further instructions.")
+    message(FATAL_ERROR "Install GCC version 5.2 or higher to compile Project Spartan.")
 endif()
 
 FUNCTION (EXCLUDE_FILES_FROM_DIR_IN_LIST _InFileList _excludeDirName _verbose)
@@ -16,7 +16,7 @@ FUNCTION (EXCLUDE_FILES_FROM_DIR_IN_LIST _InFileList _excludeDirName _verbose)
         endif ("${_verbose}")
 
         if ("${ITR}" MATCHES "(.*)${_excludeDirName}(.*)") # Check if the item matches the directory name in _excludeDirName
-            message(STATUS "Remove Item from List:${ITR}")
+            message(STATUS "Remove Item from List: ${ITR}")
             list (REMOVE_ITEM _InFileList ${ITR}) # Remove the item from the list
         endif ("${ITR}" MATCHES "(.*)${_excludeDirName}(.*)")
 
@@ -39,13 +39,26 @@ file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 EXCLUDE_FILES_FROM_DIR_IN_LIST("${SOURCE_FILES}" "${CMAKE_SOURCE_DIR}/src/ImGUI/examples/" FALSE)
 EXCLUDE_FILES_FROM_DIR_IN_LIST("${SOURCE_FILES}" "${CMAKE_SOURCE_DIR}/src/ImGUI/extra_fonts" FALSE)
 
+####################################################
+# DEPENDENCIES                                     #
+####################################################
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+FIND_PACKAGE(CURL REQUIRED)
+set(INCLUDE_DIRS ${INCLUDE_DIRS} "${CURL_INCLUDE_DIRS}")
+
+# I'd be happy if somebody could teach me how to CMake module cuz every example only checked for availability of Curl++ and not installing it
+#FIND_PACKAGE(curlpp REQUIRED)
+#set(INCLUDE_DIRS ${INCLUDE_DIRS} "${curlpp_INCLUDE_DIRS}")
+
 FIND_PACKAGE(Lua 5.3 REQUIRED)
-
-set(INCLUDE_DIRS ${LUA_INCLUDE_DIR})
-
+set(INCLUDE_DIRS ${INCLUDE_DIRS} "${LUA_INCLUDE_DIR}")
 add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS})
 
+####################################################
+
 add_library(Spartan SHARED ${SOURCE_FILES})
-target_link_libraries(Spartan SDL2 GL dl xdo ${LUA_LIBRARY})
+target_link_libraries(Spartan SDL2 GL dl xdo ${CURL_LIBRARIES} ${LUA_LIBRARY})

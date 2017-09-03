@@ -3,7 +3,7 @@
 #include "settings.h"
 #include "SDK/SDK.h"
 
-#include "SpartanGUI/Spartangui.h"
+#include "SpartanGUI/SpartanGui.h"
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_sdl.h"

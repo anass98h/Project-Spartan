@@ -15,6 +15,7 @@
 #include <fstream>
 #include "../ImGUI/imgui.h"
 #include "../SDK/SDK.h"
+#include "picosha2.h"
 
 namespace Util
 {
@@ -35,7 +36,7 @@ namespace Util
 	const char* GetCurrentTimeAsISO8601Timestamp();
 	const char* GetSHA256(const char* input);
 	const char* GetSHA256(std::ifstream stream);
-
+  
 	const std::map<int,int> * GetModelTypeBoneMap(C_BasePlayer* player);
 	ModelType GetModelTypeID(C_BasePlayer* player);
 	std::string ModelTypeToString(ModelType model);

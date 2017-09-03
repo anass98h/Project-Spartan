@@ -1,4 +1,4 @@
-#include "Spartangui.h"
+#include "SpartanGui.h"
 
 void UI::KeyBindButton(ButtonCode_t* key) {
     const char* text = inputSystem->ButtonCodeToString(*key);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Spartangui.h"
+#include "../SpartanGui.h"
 
 namespace Models
 {
