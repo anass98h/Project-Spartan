@@ -1114,22 +1114,22 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
         case AntiAimType_Y::FAKESIDEWAYS:
 
-            if (CreateMove::sendPacket) {
+             if (CreateMove::sendPacket) {
                 angle.y = 90.f;
                 CreateMove::sendPacket = false;
             } else {
-                angle.y = 180.0f;
+                angle.y -= 120.0f;
                 CreateMove::sendPacket = true;
             }
 
             break;
-               case AntiAimType_Y::FAKESIDEWAYS2:
+            case AntiAimType_Y::FAKESIDEWAYS2:
 
             if (CreateMove::sendPacket) {
                 angle.y -= 90.f;
                 CreateMove::sendPacket = false;
             } else {
-                angle.y = 180.0f;
+                angle.y = 120.0f;
                 CreateMove::sendPacket = true;
             }
 
@@ -1274,38 +1274,31 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                         }
             break;
         case AntiAimType_Y::EXPERIMENTAL:
-        if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)) 
+        static bool besteap;
+        if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) 
         {
-            if (CreateMove::sendPacket)
-            {
-                yFlip ? angle.y = 35.0f : angle.y -= 35.0f;
-                CreateMove::sendPacket = false;
-            }
-            else
-            {
-                angle.y = 180.f;
-                CreateMove::sendPacket = true;
-            }
+                if (CreateMove::sendPacket) 
+                {
+                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 90.f;
+                    CreateMove::sendPacket = false;
+                }
+                else 
+                {
+                    angle.y = *pLocal->GetLowerBodyYawTarget() + 120.0f;
+                    CreateMove::sendPacket = true;
+                }
         }
         else
         {
             if (CreateMove::sendPacket)
             {
-                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() - 170.f : angle.y = *pLocal->GetLowerBodyYawTarget() - 190.f;
+                angle.y = 180.0f;
                 CreateMove::sendPacket = false;
             }
             else
             {
-                if (bFlip) //  @rishi pls fix if this is wrong
-                {
-                    CreateMove::sendPacket = false;
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
-                }
-                else 
-                {
-                    CreateMove::sendPacket = true;
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() * 18.f;
-                }
+                yFlip ? angle.y -= 174.0f : angle.y -= 186.0f;
+                CreateMove::sendPacket = true;
             }
         }
 	case AntiAimType_Y::MYRRIB:
