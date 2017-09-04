@@ -540,6 +540,10 @@ public:
 	{
 		return *(char**)((uintptr_t)this + 0x8);
 	}
+	int GetClipSize()
+	{
+		return *(int*)((uintptr_t)this + 0x20);
+	}
 	CSWeaponType GetWeaponType()
 	{
 		return *(CSWeaponType*)((uintptr_t)this + 0x140);

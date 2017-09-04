@@ -266,7 +266,7 @@ void Misc::RenderTab() {
             }
 
             ImGui::SameLine();
-            if (ImGui::Button(XORSTR("Rainbow Name")))
+            if (ImGui::Button(XORSTR("Ayyware Crash Name")))
                 NameChanger::InitColorChange(NameChanger::NC_Type::NC_RAINBOW);
 
             ImGui::SameLine();

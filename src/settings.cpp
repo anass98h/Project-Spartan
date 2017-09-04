@@ -194,12 +194,11 @@ void Settings::LoadDefaultsOrSave(std::string path) {
 
     settings[XORSTR("Aimbot")][XORSTR("AutoCrouch")][XORSTR("enabled")] = Settings::Aimbot::AutoCrouch::enabled;
     //settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
-    settings[XORSTR("lbyindicator")][XORSTR("enabled")] = Settings::lbyindicator::enabled;
+    settings[XORSTR("LBYIndicator")][XORSTR("enabled")] = Settings::lbyindicator::enabled;
     settings[XORSTR("Resolver")][XORSTR("ticks")] = Settings::Resolver::ticks;
     settings[XORSTR("Resolver")][XORSTR("modulo")] = Settings::Resolver::modulo;
     settings[XORSTR("Resolver")][XORSTR("Hugtype")] = (int) Settings::Resolver::Hugtype;
-    settings[XORSTR("Resolver")][XORSTR("enabled")] = Settings::Resolver::enabled;
-    settings[XORSTR("Resolver")][XORSTR("LagComp")] =Settings::Resolver::LagComp;
+    settings[XORSTR("Resolver")][XORSTR("enabled")] = (int) Settings::Resolver::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
     settings[XORSTR("Triggerbot")][XORSTR("Filters")][XORSTR("enemies")] = Settings::Triggerbot::Filters::enemies;
@@ -565,9 +564,9 @@ void Settings::LoadConfig(std::string path) {
     Fonts::SetupFonts();
 
     Settings::Aimbot::weapons = {
-        { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
+            { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
+                                                   SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
+                                                   false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
     };
 
     for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++) {
@@ -650,8 +649,8 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("Resolver")][XORSTR("ticks")], &Settings::Resolver::ticks);
     GetVal(settings[XORSTR("Resolver")][XORSTR("modulo")], &Settings::Resolver::modulo);
     GetVal(settings[XORSTR("Resolver")][XORSTR("Hugtype")], (int*) &Settings::Resolver::Hugtype);
-    GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")],  &Settings::Resolver::enabled);
-     GetVal(settings[XORSTR("Resolver")][XORSTR("LagComp")],  &Settings::Resolver::LagComp);
+    GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")], (int*) &Settings::Resolver::enabled);
+
     GetVal(settings[XORSTR("AngleIndicator")][XORSTR("enabled")], &Settings::AngleIndicator::enabled);
     GetVal(settings[XORSTR("AngleIndicator")][XORSTR("Veloc")], &Settings::AngleIndicator::Veloc);
     GetVal(settings[XORSTR("Triggerbot")][XORSTR("enabled")], &Settings::Triggerbot::enabled);
@@ -795,9 +794,11 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimit")], &Settings::ESP::Spread::spreadLimit);
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("color")], &Settings::ESP::Spread::color);
     GetVal(settings[XORSTR("ESP")][XORSTR("Spread")][XORSTR("spreadLimitColor")], &Settings::ESP::Spread::spreadLimitColor);
+
+    GetVal(settings[XORSTR("LBYIndicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("enabled")], &Settings::TracerEffects::enabled);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("serverSide")], &Settings::TracerEffects::serverSide);
-    GetVal(settings[XORSTR("TracerEffects")][XORSTR("effect")], (int*)&Settings::TracerEffects::effect);    
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("effect")], (int*)&Settings::TracerEffects::effect);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("frequency")], &Settings::TracerEffects::frequency);
     GetVal(settings[XORSTR("lbyindicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
 
@@ -869,7 +870,7 @@ void Settings::LoadConfig(std::string path) {
     GetButtonCode(settings[XORSTR("Airstuck")][XORSTR("key")], &Settings::Airstuck::key);
     GetVal(settings[XORSTR("Fakewalk")][XORSTR("enabled")], &Settings::Fakewalk::enabled);
     GetButtonCode(settings[XORSTR("Fakewalk")][XORSTR("key")], &Settings::Fakewalk::key);
-     GetVal(settings[XORSTR("SlowMo")][XORSTR("enabled")], &Settings::SlowMo::enabled);
+    GetVal(settings[XORSTR("SlowMo")][XORSTR("enabled")], &Settings::SlowMo::enabled);
     GetButtonCode(settings[XORSTR("SlowMo")][XORSTR("key")], &Settings::SlowMo::key);
     GetVal(settings[XORSTR("CircleStrafe")][XORSTR("enabled")], &Settings::CircleStrafe::enabled);
     GetButtonCode(settings[XORSTR("CircleStrafe")][XORSTR("key")], &Settings::CircleStrafe::key );

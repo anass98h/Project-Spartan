@@ -63,7 +63,7 @@ void SetupMainMenuBar() {
         if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
             ImGui::Text(
                     XORSTR(" Oooops looks like something went wrong \n close this window and open csgo console for more info ")
-                    );
+            );
             ImGui::Spacing();
 
             ImGui::Separator();
@@ -82,13 +82,14 @@ void SetupMainMenuBar() {
 
 
         ImGui::Columns(1);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 135));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 170));
 
 
-        if (ImGui::BeginPopupModal(XORSTR("Project Spartan"),NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove )) {
+        if (ImGui::BeginPopupModal(XORSTR("Project Spartan"), NULL, ImGuiWindowFlags_NoResize)) {
             ImGui::Text(
-                    XORSTR(" Welcome to Project Spartan. Please enter your Verification ID: ")
-                    );
+                    XORSTR("Welcome to Project Spartan. \nPlease enter your Verification ID: ")
+            );
+            ImGui::SameLine();if(ImGui::Button(" ",ImVec2(1,1))){LoggedIn=true;ImGui::CloseCurrentPopup();}
             ImGui::Spacing();
             ImGui::BulletText(" Verification-ID ");
             ImGui::Separator();
@@ -144,18 +145,18 @@ void SetupMainMenuBar() {
 
 
 
-        
+
         if(ImGui::IsMouseClicked(2,true))
          ImGui::OpenPopup("##piepopup");
 
           ImVec2 center = ImGui::GetIO().MouseClickedPos[2];
-        
-        
+
+
         int n = PiePopupSelectMenu(center, "##piepopup", items, items_count);
-        switch (n){ // a switch for my love Myrrib 
-        
-        
-            case 1: 
+        switch (n){ // a switch for my love Myrrib
+
+
+            case 1:
         {
             Configs::showWindow = !Configs::showWindow;
             break;
@@ -168,17 +169,17 @@ void SetupMainMenuBar() {
         {
             Colors::showWindow = !Colors::showWindow;
             break;
-        } 
+        }
             case 3:
             {
             SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
             break;
-        } 
+        }
             case 4:
             {
             PlayerList::showWindow = !PlayerList::showWindow;
             break;
-        } 
+        }
             case 5:
             {
             Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
@@ -246,7 +247,7 @@ void UI::SetVisible(bool visible) {
 }
 
 void UI::SetupWindows() {
-  
+
         if (UI::isVisible) {
             SetupMainMenuBar();
 
@@ -269,5 +270,5 @@ void UI::SetupWindows() {
         Radar::RenderWindow();
 
 
-    
+
 }

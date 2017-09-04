@@ -29,4 +29,5 @@ void Hooks::PaintImGui()
 {
     lbyindicator::PaintImGui();
     AngleIndicator::PaintImGui();
+	SpeedIndicator::PaintImGui();
 }

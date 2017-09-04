@@ -174,7 +174,7 @@ enum class ResolverHugtype : int {
 };
 
 struct AimbotWeapon_t {
-     bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
+    bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
     int engageLockTTR, hitChanceRays;
     Bone bone;
     SmoothType smoothType;
@@ -573,6 +573,9 @@ namespace Settings {
     namespace lbyindicator {
         extern bool enabled;
     }
+    namespace SpeedIndicator {
+        extern bool enabled;
+    }
     namespace ESP {
         extern bool enabled;
         extern ButtonCode_t key;
@@ -846,8 +849,8 @@ namespace Settings {
     }
     namespace CircleStrafe
     {
-            extern bool enabled;
-            extern ButtonCode_t key;
+        extern bool enabled;
+        extern ButtonCode_t key;
     }
 
     namespace Autoblock {

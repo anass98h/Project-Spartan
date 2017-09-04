@@ -4,23 +4,9 @@
 #include "Utils/netvarmanager.h"
 
 static EventListener* eventListener = nullptr;
-// The Below Line is Set by the Build script. Keep this on Line 8.
-char buildID[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // Line Set by build script  // This is useless btw 
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-bool preload;
-bool isShuttingDown = false;
-
-void MainThread() {
-    if (preload) {
-        while (client == nullptr) {
-            client = GetInterface<IBaseClientDLL>(XORSTR("./csgo/bin/linux64/client_client.so"), XORSTR("VClient"));
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-        }
-
-        cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected "
-                "using the LD_PRELOAD environment variable. \n"));
-    }
+/* Entrypoint to the Library. Called when loading */
+int __attribute__ ((constructor)) Startup() {
 
     Interfaces::FindInterfaces();
     //Interfaces::DumpInterfaces();
@@ -77,6 +63,7 @@ void MainThread() {
     gameEventsVMT->HookVM((void*) Hooks::FireEventClientSide, 10);
     gameEventsVMT->ApplyVMT();
 
+    viewRenderVMT->HookVM((void*) Hooks::RenderView, 6);
     viewRenderVMT->HookVM((void*) Hooks::RenderSmokePostViewmodel, 41);
     viewRenderVMT->ApplyVMT();
 
@@ -106,7 +93,7 @@ void MainThread() {
     if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
         SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
 
-    //NetVarManager::DumpNetvars();
+    NetVarManager::DumpNetvars();
     Offsets::GetOffsets();
 
     Fonts::SetupFonts();
@@ -116,20 +103,7 @@ void MainThread() {
     srand(time(NULL)); // Seed random # Generator so we can call rand() later
 
 
-    /*
-
-    (
-    )\ )                      )
-    (()/(           )  (    ( /(    )
-    /(_))`  )   ( /(  )(   )\())( /(   (
-    (_))  /(/(   )(_))(()\ (_))/ )(_))  )\ )
-    / __|((_)_\ ((_)_  ((_)| |_ ((_)_  _(_/(
-    \__ \| '_ \)/ _` || '_||  _|/ _` || ' \))
-    |___/| .__/ \__,_||_|   \__|\__,_||_||_|
-|_|
-
-     */
-
+    engine->ExecuteClientCmd("clear;");
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
@@ -144,37 +118,17 @@ void MainThread() {
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
 
-}
-
-/* Entrypoint to the Library. Called when loading */
-int __attribute__ ((constructor)) Startup() {
-    // Search in Environment Memory for our buildID before purging environ memory
-    for (int i = 0; environ[i]; i++) {
-        if (strstr(environ[i], buildID) != NULL) {
-            preload = true;
-
-        }
-    }
-
-    std::thread mainThread(MainThread);
-    // The root of all suffering is attachment
-    // Therefore our little buddy must detach from this realm.
-    // Farewell my thread, may we join again some day..
-    mainThread.detach();
-
+    Image::InitImages();
     return 0;
 }
 
 /* Called when un-injecting the library */
 void __attribute__ ((destructor)) Shutdown() {
-    isShuttingDown = true;
+
     cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
 
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();
-    if (!preload) {
-        ImGui::Shutdown();
-    }
 
     Aimbot::XDOCleanup();
     NoSmoke::Cleanup();
