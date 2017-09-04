@@ -216,7 +216,7 @@ void HvH::RenderTab() {
 
             ImGui::Checkbox(XORSTR("Kisak Earnhardt Jr."), &Settings::SpeedIndicator::enabled);
             SetTooltip(XORSTR("Get ready to Rumble"));
-            ImGui::Separator()
+            ImGui::Separator();
 
             ImGui::Text(XORSTR("Movement"));
             ImGui::Separator();
