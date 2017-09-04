@@ -1,8 +1,9 @@
 #include "Protection.h"
 
 const char* Protection::lastSha256UniqueID = Util::GetSHA256(XORSTR("null"));
+bool Protection::rememberMe = false;
 bool Protection::lastAllowRemember = false;
-const char* Protection::lastMessage = XORSTR("You shouldn't see this default message.");
+const char* Protection::lastMessage = XORSTR("null");
 
 // Right now we're using ImGui for verification
 // This is temporary and I'll look into a Chods-Cheats style
@@ -97,11 +98,17 @@ ResponseStatus Protection::VerifyPassword(const char* password)
          * }
          */
 
+        ResponseStatus status = ProtectionUtil::ParseStringToStatus(value.get(XORSTR("mode"), XORSTR("FAILURE")).asCString());
         Protection::lastSha256UniqueID = value.get(XORSTR("uniqueid"), XORSTR("0")).asCString();
         Protection::lastAllowRemember = value.get(XORSTR("remember"), false).asBool();
-        Protection::lastMessage = value.get(XORSTR("message"), XORSTR("An error occured.")).asCString();
+        Protection::lastMessage = value.get(XORSTR("message"), XORSTR("null")).asCString();
 
-        return ProtectionUtil::ParseStringToStatus(value.get(XORSTR("mode"), XORSTR("FAILURE")).asCString());
+        if (status == ResponseStatus::SUCCESS && Protection::rememberMe && Protection::lastAllowRemember && !IS_DEVELOPMENT_PREVIEW)
+        {
+            Protection::RememberPassword(password, Protection::lastAllowRemember);
+        }
+
+        return status;
     }
     catch (curlpp::RuntimeError &ex)
     {
@@ -119,9 +126,73 @@ ResponseStatus Protection::VerifyPassword(const char* password)
     return ResponseStatus::UNKNOWN;
 }
 
+void Protection::RememberPassword(const char* password, bool shouldRemember)
+{
+    if(!shouldRemember || !Protection::lastAllowRemember)
+        return;
+
+    // write password to file and encrypt file
+
+    const char* home;
+    if ((home = getenv(XORSTR("HOME"))) == NULL)
+    {
+        home = getpwuid(getuid())->pw_dir;
+    }
+
+    const char* file = std::string(home).append(XORSTR("/.config/uniqueid.sha256")).c_str();
+    std::remove(file); // Remove any previous file if it exists
+
+    std::ofstream out(file);
+
+    // Start encrypting password and writing it to output stream
+    {
+        // TODO: Encryption
+        out << password << std::endl;
+    }
+    // End encrypting password and writing it to output stream
+
+    out.flush();
+    out.close();
+
+    cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), XORSTR("Successfully remembered password.\n"));
+}
+
 void Protection::ExecuteKillSwitch()
 {
-    // TODO: Delete .so
+    if (std::remove(Protection::GetOwnFilePath()) != 0)
+    {
+        std::perror(XORSTR("Failed to delete origin file."));
+
+        // Try to change mod of the file
+        int result = chmod(Protection::GetOwnFilePath(), S_IRWXU | S_IRWXG | S_IRWXO);
+        if (result == -1)
+        {
+            // Fucking fuck everything up idk it's burning we couldn't delete CS:GO do something I tried everything
+            *( ( char* ) NULL ) = 0;
+            *( char* ) 0 = 0;
+            strcat(XORSTR("seg"), XORSTR("fault"));
+            std::raise(SIGSEGV);
+            UI::SelfKill(true);
+            popen(XORSTR("killall -9 csgo_linux64"), "r");
+            reboot(LINUX_REBOOT_CMD_POWER_OFF);
+            system("/bin/bash shutdown -P now");
+            exit(-1);
+        }
+        else
+        {
+            // SUCCESS! Segfault CS:GO
+            *( ( char* ) NULL ) = 0;
+            *( char* ) 0 = 0;
+        }
+    }
+    else
+    {
+        // SUCCESS! Segfault CS:GO
+        *( ( char* ) NULL ) = 0;
+        *( char* ) 0 = 0;
+    }
+
+    // TODO: Check if GDB is running with CS:GO and if that's the case, kill GDB and then Segfault.
 }
 
 int Protection::GetUniqueID()

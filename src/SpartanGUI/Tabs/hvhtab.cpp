@@ -9,21 +9,23 @@ bool Settings::customYaw2::lby;
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "AutismSpin",
-            "Tank", "Tank 2", "Tank 3", "FJITTER", "LBY Breaker", "Fake LBY", "LBY Spin", "Backjitter Random", "Casual Jitter",
-            "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "FAKESIDEWAYS2", "FF", "Backwards",
-            "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", "richi's eap", "Myrrib's pMix", // safe, fakelby not ut anymore
+            "Legit Trolling", "Legit Trolling 2", "No AA", "Spin", "Custom Yaw", "Custom Yaw 2", "Autism Spin",
+            "Tank", "Tank 2", "Tank 3", "fJitter", "LBY Breaker", "Fake LBY", "LBY Spin", "Backjitter Random", "Casual Jitter", "LBY Jitter",
+            "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "Fake Sideways 2", "Fake Forward", "Backwards",
+            "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA" // safe
+
+            "Richi's EAP", "Myrrib's pMix", // Special AntiAims
 
             "Lisp", "Lisp Side", "Lisp Jitter", "Angel Backwards", "Angel Inverse", "Angel Spin", "Lowerbody",
             "LBY on Ground", "Lua Unclamped", "Lua Unclamped 2" // untrusted
     };
 
     const char *lbyTypes[] = {
-            "Breaker 1", "Breaker 2", "Breaker 3","Avoz", "NONE"
+            "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "NONE"
     };
 
     const char *zTypes[] = {
-            "Reverse", "Autismflip", "TEST", "eap of shit"// untrusted
+            "Reverse", "Autismflip", "TEST", "EAP of Shit" // untrusted
     };
 
     const char *xTypes[] = {
@@ -33,7 +35,7 @@ void HvH::RenderTab() {
     };
 
     const char *Hugtypes[] = {
-            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky", "Myrrib's DELTA"
+            "OFF", "Tux", "Plus Delta", "Paste Hub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky", "Myrrib's Delta"
     };
 
     ImGui::Columns(2, NULL, true);

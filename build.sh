@@ -48,6 +48,21 @@ if [ -d ".git" ]; then
         echo -e "$prefix Successfully detected $(curlpp-config --version)."
     fi
 
+    search="#define IS_DEVELOPMENT_PREVIEW true"
+    replace="#define IS_DEVELOPMENT_PREVIEW false"
+    if [ "$target" == "DEBUG" ]; then
+        replace="#define IS_DEVELOPMENT_PREVIEW true"
+        echo -e "$prefix Enabling developer mode for the build."
+    else
+        echo -e "$prefix Disabling developer mode for this build."
+    fi
+
+    sed -i "s/$search/$replace/g" "./src/Protection/Protection.h"
+    if [ $? -ne 0 ]; then
+        echo -e "$error_prefix Failed to enable/disable developer mode."
+        exit -1
+    fi
+
     cmake -DCMAKE_BUILD_TYPE="$target" .
     if [ $? -ne 0 ]; then
         echo -e "$error_prefix Failed to create CMake files."
@@ -60,7 +75,13 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
-    if [ target != "DEBUG" ]; then
+    sed -i "s/$replace/$search/g" "./src/Protection/Protection.h"
+    if [ $? -ne 0 ]; then
+        echo -e "$error_prefix Failed to re-enable developer mode after successfully building."
+        exit -1
+    fi
+
+    if [ "$target" != "DEBUG" ]; then
         strip -s libSpartan.so
         if [ $? -ne 0 ]; then
             echo -e "$error_prefix Failed to strip symbols from Spartan library file."
@@ -72,6 +93,13 @@ if [ -d ".git" ]; then
     if [ $? -ne 0 ]; then
         echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m. Please move manually."
         exit -1
+    fi
+
+    if [ "$target" == "DEBUG" ]; then
+        echo -e "\e[91mWarning: Developer Mode (-d flag) has been passed with this script.\e[0m"
+        echo -e "\e[91m------------------------------------------\e[0m"
+        echo -e "\e[91mBUILT WITH DEBUG SYMBOLS AND NO LEAK-PROTECTION, DON'T SHIP LIKE THIS!!!"
+        echo -e "\e[91m------------------------------------------\e[0m"
     fi
 
     echo -e "$success_prefix Successfully built Project Spartan with target \e[2m$target\e[0m."

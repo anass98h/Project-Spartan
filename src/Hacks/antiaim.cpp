@@ -25,6 +25,7 @@ bool Settings::AntiAim::SwitchAA::enabled = false;
 ButtonCode_t Settings::AntiAim::SwitchAA::key = ButtonCode_t::KEY_DOWN;
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
+float AntiAim::lastPitch = 0.0f;
 bool AntiAim::isAntiAiming = false;
 
 
@@ -1435,6 +1436,7 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
             break;
     }
     lastAngleX = angle.x;
+    AntiAim::lastPitch = lastAngleX;
 }
 
 static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp) {

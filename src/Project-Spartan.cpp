@@ -169,7 +169,6 @@ int __attribute__ ((constructor)) Startup() {
 void __attribute__ ((destructor)) Shutdown() {
     isShuttingDown = true;
     cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
-    cvar->FindVar(XORSTR("cl_interp"))->SetValue(0.007812f);
 
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();

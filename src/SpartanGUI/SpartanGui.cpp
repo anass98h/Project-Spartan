@@ -7,11 +7,15 @@ int UI::missedHits = 0;
 bool UI::loggedIn = false;
 char UI::password[128] = "";
 
+const char* helpText = XORSTR("Middle click to open Pie Menu");
+
 void UI::SetupVerification()
 {
     if (ImGui::BeginMainMenuBar())
     {
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8 * 2.0f, 4 * 2.0f));
+
+        ImGui::Selectable(helpText, NULL, ImGuiSelectableFlags_Disabled, ImVec2(ImGui::CalcTextSize(helpText).x, 0.f));
         ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true)).x);
 
         if (ImGui::Button(XORSTR("Unload   "), ImVec2(ImGui::CalcTextSize(XORSTR("Unload   "), NULL, true).x, 0.0f)))
@@ -25,7 +29,36 @@ void UI::SetupVerification()
 
     if (!UI::loggedIn)
     {
-        ImGui::OpenPopup(XORSTR("Project Spartan##login"));
+        if (!IS_DEVELOPMENT_PREVIEW)
+        {
+
+
+            ImGui::OpenPopup(XORSTR("Project Spartan##login"));
+        }
+        else
+        {
+            switch(Protection::VerifyPassword(XORSTR("DEVELOPER_PREVIEW_QUICKBUILD")))
+            {
+                case ResponseStatus::SUCCESS:
+                    UI::loggedIn = true;
+                    UI::missedHits = 0;
+                    ImGui::CloseCurrentPopup();
+                    break;
+                case ResponseStatus::FAILURE:
+                case ResponseStatus::VERIFYID_UNIQUEID_MISMATCH:
+                case ResponseStatus::UNKNOWN_VERIFYID:
+                case ResponseStatus::BANNED_UNIQUEID:
+                case ResponseStatus::KILLSWITCHED:
+                case ResponseStatus::UNKNOWN:
+                case ResponseStatus::ILLEGAL_RESPONSE:
+                case ResponseStatus::CURLPP_RUNTIME_ERROR:
+                case ResponseStatus::CURLPP_LOGIC_ERROR:
+                    UI::SelfKill();
+                    break;
+            }
+        }
+
+
     }
 
     if (UI::missedHits >= 5)
@@ -53,6 +86,8 @@ void UI::SetupVerification()
         ImGui::PopItemWidth();
 
         ImGui::Spacing();
+        ImGui::Checkbox(XORSTR("Remember me"), &Protection::rememberMe);
+        ImGui::Spacing();
 
         if (ImGui::Button(XORSTR("Login")))
         {
@@ -62,6 +97,7 @@ void UI::SetupVerification()
                     UI::loggedIn = true;
                     UI::missedHits = 0;
                     ImGui::CloseCurrentPopup();
+                    Main::showWindow = true;
                     break;
                 case ResponseStatus::FAILURE:
                 case ResponseStatus::VERIFYID_UNIQUEID_MISMATCH:
@@ -140,6 +176,11 @@ void UI::AddMismatchedIDPopup()
     {
         ImGui::Text(XORSTR("Project Spartan was unable to verify your ID. Please retry."));
 
+        if (Protection::lastMessage != XORSTR("null"))
+        {
+            ImGui::Text(Protection::lastMessage);
+        }
+
         ImGui::Spacing();
         ImGui::Spacing();
 
@@ -163,6 +204,11 @@ void UI::AddNoConnectionPopup()
     {
         ImGui::Text(XORSTR("Project Spartan was unable to verify your session."));
         ImGui::Text(XORSTR("For security reasons, please restart CS:GO."));
+
+        if (Protection::lastMessage != XORSTR("null"))
+        {
+            ImGui::Text(Protection::lastMessage);
+        }
 
         ImGui::Spacing();
         ImGui::Spacing();

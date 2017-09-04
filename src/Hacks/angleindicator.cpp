@@ -5,28 +5,40 @@ bool Settings::AngleIndicator::Veloc = false;
 static float fakeAngle;
 static float realAngle;
 static float velocity;
+static float pitch;
+
 void AngleIndicator::PostPredictionCreateMove(CUserCmd* cmd) {
-  
     if(!engine->IsInGame())
         return;
-    
-   if (!Settings::AngleIndicator::enabled && !Settings::AngleIndicator::Veloc )
+
+    if (!Settings::AngleIndicator::enabled && !Settings::AngleIndicator::Veloc)
         return;
 
-    
-    C_BasePlayer *pLocal = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
+    C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
     if (!pLocal || !pLocal->GetAlive())
         return;
 
-    if(Settings::AntiAim::Yaw::enabled) {
+    if (Settings::AntiAim::Yaw::enabled)
+    {
         fakeAngle = AntiAim::lastFakeYaw;
         realAngle = AntiAim::lastRealYaw;
-        velocity = pLocal->GetVelocity().Length2D(); 
-    } else {
+    }
+    else
+    {
         fakeAngle = 0;
         realAngle = cmd->viewangles.y;
-        velocity = pLocal->GetVelocity().Length2D(); 
     }
+
+    if (Settings::AntiAim::Pitch::enabled)
+    {
+        pitch = AntiAim::lastPitch;
+    }
+    else
+    {
+        pitch = cmd->viewangles.x;
+    }
+
+    velocity = pLocal->GetVelocity().Length2D();
 }
 
 void AngleIndicator::PaintImGui() {
@@ -55,11 +67,18 @@ void AngleIndicator::PaintImGui() {
     std::string text2(XORSTR("Fake: "));
     text2.append(fakeText);
     
-     std::ostringstream stream3;
-    stream3 << Math::RoundFloat(velocity);
-    std::string veloText(stream3.str());
-    std::string text3(XORSTR("Veloc: "));
-    text3.append(veloText);
+    std::ostringstream stream3;
+    stream3 << Math::RoundFloat(pitch);
+    std::string pitchText(stream3.str());
+    std::string text3(XORSTR("Pitch: "));
+    text3.append(pitchText);
+
+    std::ostringstream stream4;
+    stream4 << Math::RoundFloat(velocity);
+    std::string velocityText(stream4.str());
+    std::string text4(XORSTR("Velocity: "));
+    text4.append(velocityText);
+
     // Calculation of text position on screen
 
     int width;
@@ -72,7 +91,11 @@ void AngleIndicator::PaintImGui() {
     int textY2 = height - (height - (height * 51 / 100));
     int textX3 = (width - (width - (width * 85 / 100)));
     int textY3 = height - (height - (height * 55 / 100));
+    int textX4 = (width - (width - (width * 85 / 100)));
+    int textY4 = height - (height - (height * 57 / 100));
+
     Draw::ImText(ImVec2(textX, textY), ImColor(255, 255, 255), text.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
     Draw::ImText(ImVec2(textX2, textY2), ImColor(255, 255, 255), text2.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
     Draw::ImText(ImVec2(textX3, textY3), ImColor(255, 255, 255), text3.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    Draw::ImText(ImVec2(textX4, textY4), ImColor(255, 255, 255), text4.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }

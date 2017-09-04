@@ -13,6 +13,7 @@ namespace AntiAim
 	extern bool isAntiAiming;
 	extern float lastRealYaw;
 	extern float lastFakeYaw;
+	extern float lastPitch;
 	void LuaInit();
 	void LuaCleanup();
 

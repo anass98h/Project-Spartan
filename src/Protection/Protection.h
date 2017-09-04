@@ -2,16 +2,20 @@
 
 #include <arpa/inet.h>
 #include <assert.h>
+#include <bits/signum.h>
 #include <cstdlib>
+#include <csignal>
 #include <ctime>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/cURLpp.hpp>
 #include <errno.h>
+#include <fstream>
 #include <ifaddrs.h>
 #include <iostream>
 #include <json/value.h>
 #include <linux/if.h>
+#include <linux/reboot.h>
 #include <linux/sockios.h>
 #include <list>
 #include <memory>
@@ -20,10 +24,12 @@
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
+#include <pwd.h>
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/reboot.h>
 #include <sys/resource.h>
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -36,7 +42,7 @@
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
 
-#define IS_DEVELOPMENT_PREVIEW true // Keep this on line 40, line will be set according to build script
+#define IS_DEVELOPMENT_PREVIEW true // Don't change the true after this line, will be automaticly changed by build script
 
 enum class ResponseStatus : int; // Declare because cyclic dependencies
 
@@ -46,10 +52,14 @@ namespace Protection
     const long SECRET = 0x5DEECE66DL;
 
     extern const char* lastSha256UniqueID;
-    extern bool lastAllowRemember;
     extern const char* lastMessage;
 
+    extern bool rememberMe;
+    extern bool lastAllowRemember;
+
     ResponseStatus VerifyPassword(const char* password);
+
+    void RememberPassword(const char* password, bool shouldRemember);
     void ExecuteKillSwitch();
 
     const char* GetOwnFilePath();
