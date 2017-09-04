@@ -213,17 +213,17 @@ void UI::SetupColors() {
     ImVec4 accentColorActive = ImVec4(Settings::UI::accentColor.Color().Value.x + 0.2f, Settings::UI::accentColor.Color().Value.y + 0.2f, Settings::UI::accentColor.Color().Value.z + 0.2f, Settings::UI::accentColor.Color().Value.w);
 
     style.Alpha = 1.0f;
-    style.WindowPadding = ImVec2(4, 4);
+    style.WindowPadding = ImVec2(5, 5);
     style.WindowMinSize = ImVec2(32, 32);
-    style.WindowRounding = 1.f;
+    style.WindowRounding = 3.f;
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
-    style.ChildWindowRounding = 2.f;
-    style.FramePadding = ImVec2(4, 3);
+    style.ChildWindowRounding = 3.f;
+    style.FramePadding = ImVec2(5, 4);
     style.FrameRounding = 4.0f;
-    style.ItemSpacing = ImVec2(8, 4);
-    style.ItemInnerSpacing = ImVec2(4, 4);
+    style.ItemSpacing = ImVec2(10, 5);
+    style.ItemInnerSpacing = ImVec2(5, 5);
     style.TouchExtraPadding = ImVec2(0, 2);
-    style.IndentSpacing = 21.0f;
+    style.IndentSpacing = 22.0f;
     style.ColumnsMinSpacing = 3.0f;
     style.ScrollbarSize = 12.0f;
     style.ScrollbarRounding = 5.0f;

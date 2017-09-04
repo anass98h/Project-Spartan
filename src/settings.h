@@ -48,52 +48,27 @@ enum class AutostrafeType : int {
     AS_RIGHTSIDEWAYS,
     AS_RAGE,
 };
-
 enum class AntiAimType_Y : int {
-    LEGITTROLLING,
-    LEGITTROLLING2,
     NOAA,
+    BACKWARDS,
+    FORWARDS,
+    FAKESIDEWAYS,
     SPIN,
-    CUSTOM,
-    CUSTOM2,
-    APOSTROPHE,
-    Tank,
-    TANK2,
-    TANK3,
+    BACKJITTER,
     FJITTER,
+    TANK1,
+    TANK2,
+    richieap,
+    MYRRIB,
     LBYBREAK,
     FAKELBY, //Right order now
     LBYSPIN,
-    RANDOMBACKJITTER,
-    CASUALJITTER,
     LBYJITTER,
-    JITTER,
-    BACKJITTER,
-    SIDEWAYSRIGHT,
-    SIDEWAYSLEFT,
-    FAKESIDEWAYS,
-    FAKESIDEWAYS2,
-    FAKEFRONT,
-    BACKWARDS,
-    FORWARDS,
-    STATICAA,
-    STATICJITTER,
-    STATICSMALLJITTER,
-    LUA1, // ImGui stole the name of LUA
-    LUA2, // Alternate LUA if you want a separate one for Fake.
-    CASUAL,
-    EXPERIMENTAL,
-    MYRRIB,
-    LISP,
-    LISP_SIDE,
-    LISP_JITTER,
-    ANGEL_BACKWARD,
-    ANGEL_INVERSE,
-    ANGEL_SPIN,
     LOWERBODY,
-    LBYONGROUND,
-    LUA_UNCLAMPED,
-    LUA_UNCLAMPED2,
+    LEGITTROLLING,
+    LEGITTROLLING2,
+    CUSTOM,
+    CUSTOM2,
 };
 
 enum class AntiAimType_LBY : int {
@@ -105,25 +80,14 @@ enum class AntiAimType_LBY : int {
 };
 
 enum class AntiAimType_Z : int {
-    REVERSE,
-    AUTISMFLIP,
     TEST,
-    LOLEAP,
+
 };
 
 enum class AntiAimType_X : int {
     STATIC_UP,
     FLIP,
     STATIC_DOWN,
-    DANCE,
-    FRONT,
-    LUA1,
-    STATIC_UP_FAKE,
-    STATIC_DOWN_FAKE,
-    LISP_DOWN,
-    ANGEL_DOWN,
-    ANGEL_UP,
-    LUA_UNCLAMPED,
 };
 
 enum class ChamsType : int {

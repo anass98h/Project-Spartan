@@ -115,7 +115,6 @@ void MainThread() {
 
     srand(time(NULL)); // Seed random # Generator so we can call rand() later
 
-    AntiAim::LuaInit();
 
     /*
 
@@ -177,7 +176,6 @@ void __attribute__ ((destructor)) Shutdown() {
         ImGui::Shutdown();
     }
 
-    AntiAim::LuaCleanup();
     Aimbot::XDOCleanup();
     NoSmoke::Cleanup();
 
