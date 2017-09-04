@@ -10,6 +10,7 @@
 #include <locale>
 #include <codecvt>
 #include <sstream>
+#include <fstream>
 #include <ctime>
 #include <iostream>
 #include <fstream>
@@ -54,9 +55,9 @@ namespace Util
 	K MapReverseSearchOrDefault(std::map<K, V> const* _map, V value, K fallback)
 	{
 		auto _pair = std::find_if(_map->begin(), _map->end(),
-				[value](const std::pair<K, V>& pair) {
-					return pair.second == value;
-				});
+								  [value](const std::pair<K, V>& pair) {
+									  return pair.second == value;
+								  });
 
 		if (_pair == _map->end())
 			return fallback;

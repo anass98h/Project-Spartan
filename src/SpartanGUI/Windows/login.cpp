@@ -8,7 +8,7 @@ void Login::RenderWindow() {
         return;
 
 
-    ImGui::SetNextWindowSize(ImVec2(880, 500), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(880, 500), ImGuiCond_Always);
     if (ImGui::Begin(XORSTR("Login"), &Login::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove)) {
 
         ImGui::Spacing();

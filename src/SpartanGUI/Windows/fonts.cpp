@@ -44,7 +44,7 @@ void Fonts::RenderWindow() {
 
             static int fontSelected = 0;
      */
-    ImGui::SetNextWindowSize(ImVec2(540, 325), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(540, 325), ImGuiCond_Always);
     if (ImGui::Begin("Fonts", &Fonts::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoResize)) {
         ImGui::Columns(2, NULL, true);
         {

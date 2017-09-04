@@ -670,7 +670,7 @@ static void DrawBacktrackIndicator(C_BasePlayer *player)
 {
     // Like footprints but for the head xDDDDD D DD D D D DD D D
     Vector headprints2D[Backtracking::MAX_QUEUE_SIZE+1];
-    for( int i = 1; i < Backtracking::lagRecords[player->GetIndex()].size(); i++ ){
+    for( unsigned int i = 1; i < Backtracking::lagRecords[player->GetIndex()].size(); i++ ){
         debugOverlay->ScreenPosition(Vector(Backtracking::lagRecords[player->GetIndex()][i].headPos.x,
                                             Backtracking::lagRecords[player->GetIndex()][i].headPos.y,
                                             Backtracking::lagRecords[player->GetIndex()][i].headPos.z), headprints2D[i]);

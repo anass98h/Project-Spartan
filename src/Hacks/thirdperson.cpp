@@ -2,7 +2,7 @@
 
 bool Settings::ThirdPerson::enabled = false;
 float Settings::ThirdPerson::distance = 30.f;
-ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_N;
+ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_DELETE;
 long millisSinceLastPress = 0;
 
 void ThirdPerson::BeginFrame()

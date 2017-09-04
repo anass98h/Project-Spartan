@@ -25,14 +25,14 @@ void SDL2::SwapWindow(SDL_Window* window) {
          */
 
         ImWchar arial_ranges[] = {
-            0x0020, 0x007E, // Basic Latin
-            0x00A0, 0x00FF, // Latin-1 Supplement
-            0x0100, 0x017F, // Latin Extended-A
-            0x0180, 0x024F, // Latin Extended-B
-            0x0370, 0x03FF, // Greek and Coptic
-            0x0400, 0x04FF, // Cyrillic
-            0x0500, 0x052F, // Cyrillic Supplementary
-            0
+                0x0020, 0x007E, // Basic Latin
+                0x00A0, 0x00FF, // Latin-1 Supplement
+                0x0100, 0x017F, // Latin Extended-A
+                0x0180, 0x024F, // Latin Extended-B
+                0x0370, 0x03FF, // Greek and Coptic
+                0x0400, 0x04FF, // Cyrillic
+                0x0500, 0x052F, // Cyrillic Supplementary
+                0
         };
 
         /*
@@ -113,6 +113,7 @@ void SDL2::SwapWindow(SDL_Window* window) {
 }
 
 void SDL2::UnhookWindow() {
+    IMG_Quit();
     *swapWindowJumpAddress = oSwapWindow;
 
     SDL_GL_DeleteContext(context);
