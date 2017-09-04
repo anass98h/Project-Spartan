@@ -65,6 +65,7 @@ enum class AntiAimType_Y : int {
     LBYSPIN,
     LBYJITTER,
     LOWERBODY,
+    LBY180,
     LEGITTROLLING,
     LEGITTROLLING2,
     CUSTOM,
@@ -88,6 +89,8 @@ enum class AntiAimType_X : int {
     STATIC_UP,
     FLIP,
     STATIC_DOWN,
+    FAKEZERO,
+    FAKEUP,
 };
 
 enum class ChamsType : int {
