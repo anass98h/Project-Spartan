@@ -29,8 +29,6 @@
           <in>hitmarkers.cpp</in>
           <in>jumpthrow.cpp</in>
           <in>lbyindicator.cpp</in>
-          <in>models.cpp</in>
-          <in>models.h</in>
           <in>namechanger.cpp</in>
           <in>namestealer.cpp</in>
           <in>noflash.cpp</in>
@@ -280,10 +278,6 @@
       <item path="src/Hacks/lbyindicator.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
-      </item>
-      <item path="src/Hacks/models.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Hacks/models.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Hacks/namechanger.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
