@@ -10,10 +10,12 @@
 
 namespace AntiAim
 {
-	extern bool isAntiAiming;
-	extern float lastRealYaw;
-	extern float lastFakeYaw;
+    extern bool isAntiAiming;
+    extern float lastRealYaw;
+    extern float lastFakeYaw;
+    void LuaInit();
+    void LuaCleanup();
 
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+    //Hooks
+    void CreateMove(CUserCmd* cmd);
 }

@@ -1,3 +1,4 @@
+
 #include "antiaim.h"
 
 bool Settings::AntiAim::allowUntrustedAngles = false;
@@ -17,12 +18,24 @@ float Settings::AntiAim::HeadEdge::distance = 25.0f;
 bool Settings::AntiAim::AutoDisable::noEnemy = false;
 bool Settings::AntiAim::AutoDisable::knifeHeld = false;
 bool Settings::AntiAim::AutoDisable::bombHeld = false;
+bool Settings::AntiAim::Lua::debugMode = true;
+char Settings::AntiAim::Lua::scriptX[512];
+char Settings::AntiAim::Lua::scriptY[512];
+char Settings::AntiAim::Lua::scriptY2[512];
 bool Settings::AntiAim::SwitchAA::enabled = false;
 ButtonCode_t Settings::AntiAim::SwitchAA::key = ButtonCode_t::KEY_DOWN;
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
 
+
+// if the script is the same, we can skip some initialization.
+char luaLastX[sizeof (Settings::AntiAim::Lua::scriptX)];
+char luaLastY[sizeof (Settings::AntiAim::Lua::scriptY)];
+char luaLastY2[sizeof (Settings::AntiAim::Lua::scriptY2)];
+float luaRetX, luaRetY, luaRetY2; // Pop the Lua stack off into these and then return them.
+
+lua_State *LuaX, *LuaY, *LuaY2; // 1 instance of Lua for each Script.
 
 static float Distance(Vector a, Vector b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2));
@@ -59,7 +72,345 @@ static bool GetBestHeadAngle(QAngle& angle) {
     return closest_distance < Settings::AntiAim::HeadEdge::distance;
 }
 
+void AntiAim::LuaInit() // commence nigg riggin'
+{
+    // Fill out the structure of the Lua scripts
+    Settings::AntiAim::Lua::scriptX[0] = 'f';
+    Settings::AntiAim::Lua::scriptX[1] = 'u';
+    Settings::AntiAim::Lua::scriptX[2] = 'n';
+    Settings::AntiAim::Lua::scriptX[3] = 'c';
+    Settings::AntiAim::Lua::scriptX[4] = 't';
+    Settings::AntiAim::Lua::scriptX[5] = 'i';
+    Settings::AntiAim::Lua::scriptX[6] = 'o';
+    Settings::AntiAim::Lua::scriptX[7] = 'n';
+    Settings::AntiAim::Lua::scriptX[8] = ' ';
+    Settings::AntiAim::Lua::scriptX[9] = 'a';
+    Settings::AntiAim::Lua::scriptX[10] = 'n';
+    Settings::AntiAim::Lua::scriptX[11] = 'g';
+    Settings::AntiAim::Lua::scriptX[12] = 'l';
+    Settings::AntiAim::Lua::scriptX[13] = 'e';
+    Settings::AntiAim::Lua::scriptX[14] = 'X';
+    Settings::AntiAim::Lua::scriptX[15] = '(';
+    Settings::AntiAim::Lua::scriptX[16] = 'l';
+    Settings::AntiAim::Lua::scriptX[17] = 'a';
+    Settings::AntiAim::Lua::scriptX[18] = 's';
+    Settings::AntiAim::Lua::scriptX[19] = 't';
+    Settings::AntiAim::Lua::scriptX[20] = 'A';
+    Settings::AntiAim::Lua::scriptX[21] = 'n';
+    Settings::AntiAim::Lua::scriptX[22] = 'g';
+    Settings::AntiAim::Lua::scriptX[23] = 'l';
+    Settings::AntiAim::Lua::scriptX[24] = 'e';
+    Settings::AntiAim::Lua::scriptX[25] = ',';
+    Settings::AntiAim::Lua::scriptX[26] = ' ';
+    Settings::AntiAim::Lua::scriptX[27] = 'a';
+    Settings::AntiAim::Lua::scriptX[28] = 'n';
+    Settings::AntiAim::Lua::scriptX[29] = 'g';
+    Settings::AntiAim::Lua::scriptX[30] = 'l';
+    Settings::AntiAim::Lua::scriptX[31] = 'e';
+    Settings::AntiAim::Lua::scriptX[32] = ')';
+    Settings::AntiAim::Lua::scriptX[33] = '\n';
+    Settings::AntiAim::Lua::scriptX[34] = '\n';
+    Settings::AntiAim::Lua::scriptX[35] = 'r';
+    Settings::AntiAim::Lua::scriptX[36] = 'e';
+    Settings::AntiAim::Lua::scriptX[37] = 't';
+    Settings::AntiAim::Lua::scriptX[38] = 'u';
+    Settings::AntiAim::Lua::scriptX[39] = 'r';
+    Settings::AntiAim::Lua::scriptX[40] = 'n';
+    Settings::AntiAim::Lua::scriptX[41] = ' ';
+    Settings::AntiAim::Lua::scriptX[42] = 'a';
+    Settings::AntiAim::Lua::scriptX[43] = 'n';
+    Settings::AntiAim::Lua::scriptX[44] = 'g';
+    Settings::AntiAim::Lua::scriptX[45] = 'l';
+    Settings::AntiAim::Lua::scriptX[46] = 'e';
+    Settings::AntiAim::Lua::scriptX[47] = ';';
+    Settings::AntiAim::Lua::scriptX[48] = '\n';
+    Settings::AntiAim::Lua::scriptX[49] = 'e';
+    Settings::AntiAim::Lua::scriptX[50] = 'n';
+    Settings::AntiAim::Lua::scriptX[51] = 'd';
+    Settings::AntiAim::Lua::scriptX[sizeof (Settings::AntiAim::Lua::scriptX) - 1] = '\0';
 
+    Settings::AntiAim::Lua::scriptY[0] = 'f';
+    Settings::AntiAim::Lua::scriptY[1] = 'u';
+    Settings::AntiAim::Lua::scriptY[2] = 'n';
+    Settings::AntiAim::Lua::scriptY[3] = 'c';
+    Settings::AntiAim::Lua::scriptY[4] = 't';
+    Settings::AntiAim::Lua::scriptY[5] = 'i';
+    Settings::AntiAim::Lua::scriptY[6] = 'o';
+    Settings::AntiAim::Lua::scriptY[7] = 'n';
+    Settings::AntiAim::Lua::scriptY[8] = ' ';
+    Settings::AntiAim::Lua::scriptY[9] = 'a';
+    Settings::AntiAim::Lua::scriptY[10] = 'n';
+    Settings::AntiAim::Lua::scriptY[11] = 'g';
+    Settings::AntiAim::Lua::scriptY[12] = 'l';
+    Settings::AntiAim::Lua::scriptY[13] = 'e';
+    Settings::AntiAim::Lua::scriptY[14] = 'Y';
+    Settings::AntiAim::Lua::scriptY[15] = '(';
+    Settings::AntiAim::Lua::scriptY[16] = 'l';
+    Settings::AntiAim::Lua::scriptY[17] = 'a';
+    Settings::AntiAim::Lua::scriptY[18] = 's';
+    Settings::AntiAim::Lua::scriptY[19] = 't';
+    Settings::AntiAim::Lua::scriptY[20] = 'A';
+    Settings::AntiAim::Lua::scriptY[21] = 'n';
+    Settings::AntiAim::Lua::scriptY[22] = 'g';
+    Settings::AntiAim::Lua::scriptY[23] = 'l';
+    Settings::AntiAim::Lua::scriptY[24] = 'e';
+    Settings::AntiAim::Lua::scriptY[25] = ',';
+    Settings::AntiAim::Lua::scriptY[26] = ' ';
+    Settings::AntiAim::Lua::scriptY[27] = 'a';
+    Settings::AntiAim::Lua::scriptY[28] = 'n';
+    Settings::AntiAim::Lua::scriptY[29] = 'g';
+    Settings::AntiAim::Lua::scriptY[30] = 'l';
+    Settings::AntiAim::Lua::scriptY[31] = 'e';
+    Settings::AntiAim::Lua::scriptY[32] = ')';
+    Settings::AntiAim::Lua::scriptY[33] = '\n';
+    Settings::AntiAim::Lua::scriptY[34] = '\n';
+    Settings::AntiAim::Lua::scriptY[35] = 'r';
+    Settings::AntiAim::Lua::scriptY[36] = 'e';
+    Settings::AntiAim::Lua::scriptY[37] = 't';
+    Settings::AntiAim::Lua::scriptY[38] = 'u';
+    Settings::AntiAim::Lua::scriptY[39] = 'r';
+    Settings::AntiAim::Lua::scriptY[40] = 'n';
+    Settings::AntiAim::Lua::scriptY[41] = ' ';
+    Settings::AntiAim::Lua::scriptY[42] = 'a';
+    Settings::AntiAim::Lua::scriptY[43] = 'n';
+    Settings::AntiAim::Lua::scriptY[44] = 'g';
+    Settings::AntiAim::Lua::scriptY[45] = 'l';
+    Settings::AntiAim::Lua::scriptY[46] = 'e';
+    Settings::AntiAim::Lua::scriptY[47] = ';';
+    Settings::AntiAim::Lua::scriptY[48] = '\n';
+    Settings::AntiAim::Lua::scriptY[49] = 'e';
+    Settings::AntiAim::Lua::scriptY[50] = 'n';
+    Settings::AntiAim::Lua::scriptY[51] = 'd';
+    Settings::AntiAim::Lua::scriptY[sizeof (Settings::AntiAim::Lua::scriptY) - 1] = '\0';
+
+    Settings::AntiAim::Lua::scriptY2[0] = 'f';
+    Settings::AntiAim::Lua::scriptY2[1] = 'u';
+    Settings::AntiAim::Lua::scriptY2[2] = 'n';
+    Settings::AntiAim::Lua::scriptY2[3] = 'c';
+    Settings::AntiAim::Lua::scriptY2[4] = 't';
+    Settings::AntiAim::Lua::scriptY2[5] = 'i';
+    Settings::AntiAim::Lua::scriptY2[6] = 'o';
+    Settings::AntiAim::Lua::scriptY2[7] = 'n';
+    Settings::AntiAim::Lua::scriptY2[8] = ' ';
+    Settings::AntiAim::Lua::scriptY2[9] = 'a';
+    Settings::AntiAim::Lua::scriptY2[10] = 'n';
+    Settings::AntiAim::Lua::scriptY2[11] = 'g';
+    Settings::AntiAim::Lua::scriptY2[12] = 'l';
+    Settings::AntiAim::Lua::scriptY2[13] = 'e';
+    Settings::AntiAim::Lua::scriptY2[14] = 'Y';
+    Settings::AntiAim::Lua::scriptY2[15] = '2';
+    Settings::AntiAim::Lua::scriptY2[16] = '(';
+    Settings::AntiAim::Lua::scriptY2[17] = 'l';
+    Settings::AntiAim::Lua::scriptY2[18] = 'a';
+    Settings::AntiAim::Lua::scriptY2[19] = 's';
+    Settings::AntiAim::Lua::scriptY2[20] = 't';
+    Settings::AntiAim::Lua::scriptY2[21] = 'A';
+    Settings::AntiAim::Lua::scriptY2[22] = 'n';
+    Settings::AntiAim::Lua::scriptY2[23] = 'g';
+    Settings::AntiAim::Lua::scriptY2[24] = 'l';
+    Settings::AntiAim::Lua::scriptY2[25] = 'e';
+    Settings::AntiAim::Lua::scriptY2[26] = ',';
+    Settings::AntiAim::Lua::scriptY2[27] = ' ';
+    Settings::AntiAim::Lua::scriptY2[28] = 'a';
+    Settings::AntiAim::Lua::scriptY2[29] = 'n';
+    Settings::AntiAim::Lua::scriptY2[30] = 'g';
+    Settings::AntiAim::Lua::scriptY2[31] = 'l';
+    Settings::AntiAim::Lua::scriptY2[32] = 'e';
+    Settings::AntiAim::Lua::scriptY2[33] = ')';
+    Settings::AntiAim::Lua::scriptY2[34] = '\n';
+    Settings::AntiAim::Lua::scriptY2[35] = '\n';
+    Settings::AntiAim::Lua::scriptY2[36] = 'r';
+    Settings::AntiAim::Lua::scriptY2[37] = 'e';
+    Settings::AntiAim::Lua::scriptY2[38] = 't';
+    Settings::AntiAim::Lua::scriptY2[39] = 'u';
+    Settings::AntiAim::Lua::scriptY2[40] = 'r';
+    Settings::AntiAim::Lua::scriptY2[41] = 'n';
+    Settings::AntiAim::Lua::scriptY2[42] = ' ';
+    Settings::AntiAim::Lua::scriptY2[43] = 'a';
+    Settings::AntiAim::Lua::scriptY2[44] = 'n';
+    Settings::AntiAim::Lua::scriptY2[45] = 'g';
+    Settings::AntiAim::Lua::scriptY2[46] = 'l';
+    Settings::AntiAim::Lua::scriptY2[47] = 'e';
+    Settings::AntiAim::Lua::scriptY2[48] = ';';
+    Settings::AntiAim::Lua::scriptY2[49] = '\n';
+    Settings::AntiAim::Lua::scriptY2[50] = 'e';
+    Settings::AntiAim::Lua::scriptY2[51] = 'n';
+    Settings::AntiAim::Lua::scriptY2[52] = 'd';
+    Settings::AntiAim::Lua::scriptY2[sizeof (Settings::AntiAim::Lua::scriptY2) - 1] = '\0';
+
+    luaLastX[sizeof (luaLastX) - 1] = '\0';
+    luaLastY[sizeof (luaLastY) - 1] = '\0';
+    luaLastY2[sizeof (luaLastY2) - 1] = '\0';
+
+    LuaX = luaL_newstate();
+    luaL_openlibs(LuaX);
+
+    LuaY = luaL_newstate();
+    luaL_openlibs(LuaY);
+
+    LuaY2 = luaL_newstate();
+    luaL_openlibs(LuaY2);
+
+}
+
+void AntiAim::LuaCleanup() {
+    lua_close(LuaX);
+    lua_close(LuaY);
+    lua_close(LuaY2);
+}
+
+static void LuaError(int errorCode, lua_State *luaInstance) {
+    switch (errorCode) { // defined in lua.h
+        case 2: // Runtime Error.
+            cvar->ConsoleDPrintf(XORSTR("LUA: Runtime Error: %s\n"), lua_tostring(luaInstance, -1));
+            break;
+        case 3: // Syntax error.
+            cvar->ConsoleDPrintf(XORSTR("LUA: Syntax Error: %s\n"), lua_tostring(luaInstance, -1));
+            break;
+        case 4: // Memory Allocation error.
+            cvar->ConsoleDPrintf(XORSTR("LUA: Memory Alloc Error: %s\n"), lua_tostring(luaInstance, -1));
+            break;
+        case 6: // Error while returning Error Code
+            cvar->ConsoleDPrintf(XORSTR("LUA: Error returning Error: %s\n"), lua_tostring(luaInstance, -1));
+            break;
+        default: // Unknown.
+            cvar->ConsoleDPrintf(XORSTR("LUA: Unknown Error: %s\n"), lua_tostring(luaInstance, -1));
+            break;
+    }
+}
+
+static inline float LuaScriptX(const float lastAngle, const float angle) {
+    if (Settings::AntiAim::Lua::debugMode) {
+        if (strcmp(Settings::AntiAim::Lua::scriptX, luaLastX) != 0) {
+            int load_status = luaL_loadbuffer(LuaX, Settings::AntiAim::Lua::scriptX, strlen(Settings::AntiAim::Lua::scriptX), Settings::AntiAim::Lua::scriptX);
+            if (load_status != 0) {
+                cvar->ConsoleDPrintf(XORSTR("LUA: Error Loading Buffer\n"));
+                LuaError(load_status, LuaX);
+                return angle;
+            }
+            lua_pcall(LuaX, 0, 0, 0); // load the script with no args for function setup.
+            cvar->ConsoleDPrintf(XORSTR("Updating ScriptX\n"));
+            strncpy(luaLastX, Settings::AntiAim::Lua::scriptX, sizeof (luaLastX));
+        }
+        lua_getglobal(LuaX, XORSTR("angleX"));
+        lua_pushnumber(LuaX, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaX, angle); // give current Angle to Lua.
+        int run_status = lua_pcall(LuaX, 2, 1, 0); // pcall :^)
+        if (run_status != 0) {
+            LuaError(run_status, LuaX);
+            return angle;
+        }
+        if (!lua_isnumber(LuaX, -1)) {
+            cvar->ConsoleDPrintf(XORSTR("LUA: Your LUA script must return a Number!\n"));
+            return angle;
+        }
+        luaRetX = (float) lua_tonumber(LuaX, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaX, 1); // pop the returned value off of the stack.
+        return luaRetX;
+    } else {
+        if (strcmp(Settings::AntiAim::Lua::scriptX, luaLastX) != 0) {
+            luaL_loadbuffer(LuaX, Settings::AntiAim::Lua::scriptX, strlen(Settings::AntiAim::Lua::scriptX), Settings::AntiAim::Lua::scriptX);
+            lua_pcall(LuaX, 0, 0, 0);
+            strncpy(luaLastX, Settings::AntiAim::Lua::scriptX, sizeof (luaLastX));
+        }
+        lua_getglobal(LuaX, XORSTR("angleX"));
+        lua_pushnumber(LuaX, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaX, angle); // give current Angle to Lua.
+        lua_pcall(LuaX, 2, 1, 0);
+        luaRetX = (float) lua_tonumber(LuaX, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaX, 1); // pop the returned value off of the stack.
+        return luaRetX;
+    }
+
+}
+
+static inline float LuaScriptY(const float lastAngle, const float angle) {
+    if (Settings::AntiAim::Lua::debugMode) {
+        if (strcmp(Settings::AntiAim::Lua::scriptY, luaLastY) != 0) {
+            int load_status = luaL_loadbuffer(LuaY, Settings::AntiAim::Lua::scriptY, strlen(Settings::AntiAim::Lua::scriptY), Settings::AntiAim::Lua::scriptY);
+            if (load_status != 0) {
+                cvar->ConsoleDPrintf(XORSTR("LUA: Error Loading Buffer\n"));
+                LuaError(load_status, LuaY);
+                return angle;
+            }
+            lua_pcall(LuaY, 0, 0, 0); // load the script with no args for function setup.
+            cvar->ConsoleDPrintf(XORSTR("Updating ScriptY\n"));
+            strncpy(luaLastY, Settings::AntiAim::Lua::scriptY, sizeof (luaLastY));
+        }
+        lua_getglobal(LuaY, XORSTR("angleY"));
+        lua_pushnumber(LuaY, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaY, angle); // give current Angle to Lua.
+        int run_status = lua_pcall(LuaY, 2, 1, 0); // pcall :^)
+        if (run_status != 0) {
+            LuaError(run_status, LuaY);
+            return angle;
+        }
+        if (!lua_isnumber(LuaY, -1)) {
+            cvar->ConsoleDPrintf(XORSTR("LUA: Your LUA script must return a Number!\n"));
+            return angle;
+        }
+        luaRetY = (float) lua_tonumber(LuaY, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaY, 1); // pop the returned value off of the stack.
+        return luaRetY;
+    } else {
+        if (strcmp(Settings::AntiAim::Lua::scriptY, luaLastY) != 0) {
+            luaL_loadbuffer(LuaY, Settings::AntiAim::Lua::scriptY, strlen(Settings::AntiAim::Lua::scriptY), Settings::AntiAim::Lua::scriptY);
+            lua_pcall(LuaY, 0, 0, 0);
+            strncpy(luaLastY, Settings::AntiAim::Lua::scriptY, sizeof (luaLastY));
+        }
+        lua_getglobal(LuaY, XORSTR("angleY"));
+        lua_pushnumber(LuaY, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaY, angle); // give current Angle to Lua.
+        lua_pcall(LuaY, 2, 1, 0);
+        luaRetY = (float) lua_tonumber(LuaY, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaY, 1); // pop the returned value off of the stack.
+        return luaRetY;
+    }
+}
+
+static inline float LuaScriptY2(const float lastAngle, const float angle) {
+    if (Settings::AntiAim::Lua::debugMode) {
+        if (strcmp(Settings::AntiAim::Lua::scriptY2, luaLastY2) != 0) {
+            int load_status = luaL_loadbuffer(LuaY2, Settings::AntiAim::Lua::scriptY2, strlen(Settings::AntiAim::Lua::scriptY2), Settings::AntiAim::Lua::scriptY2);
+            if (load_status != 0) {
+                cvar->ConsoleDPrintf(XORSTR("LUA: Error Loading Buffer\n"));
+                LuaError(load_status, LuaY2);
+                return angle;
+            }
+            lua_pcall(LuaY2, 0, 0, 0); // load the script with no args for function setup.
+            cvar->ConsoleDPrintf(XORSTR("Updating ScriptY2\n"));
+            strncpy(luaLastY2, Settings::AntiAim::Lua::scriptY2, sizeof (luaLastY2));
+        }
+        lua_getglobal(LuaY2, XORSTR("angleY2"));
+        lua_pushnumber(LuaY2, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaY2, angle); // give current Angle to Lua.
+        int run_status = lua_pcall(LuaY2, 2, 1, 0); // pcall :^)
+        if (run_status != 0) {
+            LuaError(run_status, LuaY2);
+            return angle;
+        }
+        if (!lua_isnumber(LuaY2, -1)) {
+            cvar->ConsoleDPrintf(XORSTR("LUA: Your LUA script must return a Number!\n"));
+            return angle;
+        }
+        luaRetY2 = (float) lua_tonumber(LuaY2, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaY2, 1); // pop the returned value off of the stack.
+        return luaRetY2;
+    } else {
+        if (strcmp(Settings::AntiAim::Lua::scriptY2, luaLastY2) != 0) {
+            luaL_loadbuffer(LuaY2, Settings::AntiAim::Lua::scriptY2, strlen(Settings::AntiAim::Lua::scriptY2), Settings::AntiAim::Lua::scriptY2);
+            lua_pcall(LuaY2, 0, 0, 0);
+            strncpy(luaLastY2, Settings::AntiAim::Lua::scriptY2, sizeof (luaLastY2));
+        }
+        lua_getglobal(LuaY2, XORSTR("angleY2"));
+        lua_pushnumber(LuaY2, lastAngle); // give Angle from last tick to Lua.
+        lua_pushnumber(LuaY2, angle); // give current Angle to Lua.
+        lua_pcall(LuaY2, 2, 1, 0);
+        float temp = (float) lua_tonumber(LuaY2, -1); // By default lua_number is a double, can be changed in luaconf.h
+        lua_pop(LuaY2, 1); // pop the returned value off of the stack.
+        return temp;
+    }
+}
 
 static bool HasViableEnemy() {
     C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
@@ -68,10 +419,10 @@ static bool HasViableEnemy() {
         C_BasePlayer* entity = (C_BasePlayer*) entityList->GetClientEntity(i);
 
         if (!entity
-                || entity == localplayer
-                || entity->GetDormant()
-                || !entity->GetAlive()
-                || entity->GetImmune())
+            || entity == localplayer
+            || entity->GetDormant()
+            || !entity->GetAlive()
+            || entity->GetImmune())
             continue;
 
         if (!Aimbot::friends.empty()) // check for friends, if any
@@ -91,7 +442,7 @@ static bool HasViableEnemy() {
 }
 
 static float DoAAatTarget()
- {
+{
 
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
     static float Angle = 0.0f;
@@ -103,11 +454,11 @@ static float DoAAatTarget()
                 C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(i);
 
                 if (!target
-                        || target == pLocal
-                        || target->GetDormant()
-                        || !target->GetAlive()
-                        || target->GetImmune()
-                        || target->GetTeam() == pLocal->GetTeam())
+                    || target == pLocal
+                    || target->GetDormant()
+                    || !target->GetAlive()
+                    || target->GetImmune()
+                    || target->GetTeam() == pLocal->GetTeam())
                     continue;
 
                 Vector eye_pos = pLocal->GetEyePosition();
@@ -117,8 +468,8 @@ static float DoAAatTarget()
 
                 if (bestDist > tempDist) {
                     bestDist = tempDist;
-                    	Angle = Math::CalcAngle(eye_pos, target_pos).y;
-                       return Angle;
+                    Angle = Math::CalcAngle(eye_pos, target_pos).y;
+                    return Angle;
 
                 }
             }
@@ -134,57 +485,57 @@ static void SwapAA()
     if(inputSystem->IsButtonDown(KEY_DOWN)) {
         count++;
         //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Swap AA Count: %i\n", count);
-    } else{ 
-    if (count > 0) {
-        static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
-        static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
-        fake = Settings::AntiAim::Yaw::typeFake;
-        real = Settings::AntiAim::Yaw::type;
-        Settings::AntiAim::Yaw::type = fake;
-        Settings::AntiAim::Yaw::typeFake = real;
-        count = 0;
+    } else{
+        if (count > 0) {
+            static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
+            static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
+            fake = Settings::AntiAim::Yaw::typeFake;
+            real = Settings::AntiAim::Yaw::type;
+            Settings::AntiAim::Yaw::type = fake;
+            Settings::AntiAim::Yaw::typeFake = real;
+            count = 0;
+        }
     }
-}
 }
 
 float GetLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float Latency = nci->GetAvgLatency(FLOW_OUTGOING) + nci->GetAvgLatency(FLOW_INCOMING);
-		return Latency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float Latency = nci->GetAvgLatency(FLOW_OUTGOING) + nci->GetAvgLatency(FLOW_INCOMING);
+        return Latency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float GetOutgoingLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float OutgoingLatency = nci->GetAvgLatency(FLOW_OUTGOING);
-		return OutgoingLatency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float OutgoingLatency = nci->GetAvgLatency(FLOW_OUTGOING);
+        return OutgoingLatency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float GetIncomingLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float IncomingLatency = nci->GetAvgLatency(FLOW_INCOMING);
-		return IncomingLatency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float IncomingLatency = nci->GetAvgLatency(FLOW_INCOMING);
+        return IncomingLatency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float OldLBY;
 float LBYBreakerTimer;
@@ -192,40 +543,41 @@ float LastLBYUpdateTime;
 bool bSwitch;
 float CurrentVelocity(C_BasePlayer* LocalPlayer)
 {
-	int vel = LocalPlayer->GetVelocity().Length2D();
-	return vel;
+    int vel = LocalPlayer->GetVelocity().Length2D();
+    return vel;
 }
 bool NextLBYUpdate()
 {
-	C_BasePlayer* LocalPlayer =  (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+    C_BasePlayer* LocalPlayer =  (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
-	float flServerTime = (float)(LocalPlayer->GetTickBase()  * globalVars->interval_per_tick);
+    float flServerTime = (float)(LocalPlayer->GetTickBase()  * globalVars->interval_per_tick);
 
 
-	if (OldLBY != *LocalPlayer->GetLowerBodyYawTarget())
-	{
-		LBYBreakerTimer++;
-		OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
-		bSwitch = !bSwitch;
-		LastLBYUpdateTime = flServerTime;
-	}
+    if (OldLBY != *LocalPlayer->GetLowerBodyYawTarget())
+    {
+        LBYBreakerTimer++;
+        OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
+        bSwitch = !bSwitch;
+        LastLBYUpdateTime = flServerTime;
+    }
 
-	if (CurrentVelocity(LocalPlayer) > 0.5)
-	{
-		LastLBYUpdateTime = flServerTime;
-		return false;
-	}
+    if (CurrentVelocity(LocalPlayer) > 0.5)
+    {
+        LastLBYUpdateTime = flServerTime;
+        return false;
+    }
 
-	if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
-	{
-		if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime)
-		{
-			LastLBYUpdateTime += 1.1;
-		}
-		return true;
-	}
-	return false;
+    if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
+    {
+        if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime)
+        {
+            LastLBYUpdateTime += 1.1;
+        }
+        return true;
+    }
+    return false;
 }
+
 
 
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
@@ -265,9 +617,9 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(Settings::customYaw::lby)
             {
                 if(Settings::customYaw::value > 0)
-                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw::value);
+                    angle.y += *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + (Settings::customYaw::value);
                 else
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw::value);
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - (Settings::customYaw::value);
 
             }
             else
@@ -282,9 +634,9 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(Settings::customYaw2::lby)
             {
                 if(Settings::customYaw2::value > 0)
-                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
+                    angle.y += *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
                 else
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
             }
             else
             {
@@ -302,16 +654,16 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 random = rand() % 4;
                 switch (random) {
                     case 0:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 220;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 220;
                         break;
                     case 1:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - 97;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 97;
                         break;
                     case 2:
                         yFlip ? angle.y += 97 : angle.y -= 97;
                         break;
                     case 3:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - rand() + 97;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - rand() + 97;
                         break;
                 }
                 CreateMove::sendPacket = false;
@@ -321,25 +673,25 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 psilent = rand() % 6;
                 switch (psilent) {
                     case 0:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + 88;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88;
                         break;
                     case 1:
                         angle.y = bSendPacket ? 118 : 270;
                         break;
                     case 2:
-                        yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 97 : angle.y =
-                                                                                          *pLocal->GetLowerBodyYawTarget() -
+                        yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97 : angle.y =
+                                                                                          *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -
                                                                                           rand() % 97;
                         break;
                     case 3:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - rand();
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - rand();
                         break;
                     case 4:
                         angle.y -= 97;
                         break;
                     case 5:
-                        yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 112 : angle.y =
-                                                                                                    *pLocal->GetLowerBodyYawTarget() -
+                        yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 112 : angle.y =
+                                                                                                    *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -
                                                                                                     rand() % 66;
                         break;
 
@@ -354,7 +706,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(bSendPacket) {
                 random = rand() % 4; 
                 switch (random) { 
-                    case 1: angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+                    case 1: angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 35 + 165;
                     break; 
                     case 2: yFlip ? angle.y -= 160 : angle.y += 160;
                     break; 
@@ -380,8 +732,8 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
                 } 
             }
-            if (angle.y == *pLocal->GetLowerBodyYawTarget()){
-                angle.y = *pLocal->GetLowerBodyYawTarget() + 90;
+            if (angle.y == *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget()){
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 90;
 
             }
             
@@ -401,7 +753,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             {
               if(CreateMove::sendPacket)
               {
-                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 97 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 97;
+                yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97 : angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97;
 
                 CreateMove::sendPacket = false;
               }
@@ -409,20 +761,20 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
               {
                 if (lbyflip)
                 {
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 120;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 120;
                 }
                 else
                 {
-                  yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 88 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 88;
+                  yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88 : angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88;
                 }
                 if(lbyflip2)
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 45;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 45;
                 else
-                  *pLocal->GetLowerBodyYawTarget() + 180;
+                  *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180;
                 if(lbyflip3)
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 360;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() + 360;
                 else
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 97;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97;
 
               }
 
@@ -435,12 +787,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         case AntiAimType_Y::LBYSPIN:
             factor = 360.0 / M_PHI;
             factor *= Settings::spinFactor::value;
-            angle.y = *pLocal->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
+            angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
             break;
         case AntiAimType_Y::LBYJITTER:
 
             if (pLocal->GetFlags() & FL_ONGROUND)
-                angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 35 + 165;
             else {
                 random = rand() % 4;
                 switch (random) {
@@ -484,7 +836,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             angle.y -= 0.0f;
             break;
         case AntiAimType_Y::LOWERBODY:
-            angle.y = *pLocal->GetLowerBodyYawTarget();
+            angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
             break;
         case AntiAimType_Y::FJITTER:
         {
@@ -514,12 +866,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             besteap = !besteap;
             if (besteap)
                 {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 180.f;
                     CreateMove::sendPacket = false;
                 }
                 else
                 {
-                    angle.y = *pLocal->GetLowerBodyYawTarget();
+                    angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 }
         }
         else
@@ -535,7 +887,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     CreateMove::sendPacket = false;
                 }
                 else {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() + 45.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 45.f;
                     CreateMove::sendPacket = false;
                 }
             }
@@ -547,7 +899,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     CreateMove::sendPacket = true;
                 }
                 else {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 180.f;
                     CreateMove::sendPacket = true;
                 }
             }
@@ -584,6 +936,7 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
         case AntiAimType_X::STATIC_DOWN:
             angle.x = 89.0f;
             break;
+
     }
 }
 
@@ -611,21 +964,21 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
 
         case AntiAimType_LBY::ONE:
             static bool flip1 = false;
-            static float prevLBY1 = *pLocal->GetLowerBodyYawTarget();
+            static float prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
             if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) 
             {
 
-                if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
+                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip1 = false;
-                if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
+                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip1 = true;
                 if (flip1)
                     angle.y += 120.f;
                 else
                     angle.y -= 120.f;
 
-                prevLBY1 = *pLocal->GetLowerBodyYawTarget();
+                prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
             }
             else
             {
@@ -634,11 +987,11 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
             break;
         case AntiAimType_LBY::TWO:
             static bool flip2 = false;
-            static float prevLBY2 = *pLocal->GetLowerBodyYawTarget();
+            static float prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
             if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
-                if (prevLBY2 != *pLocal->GetLowerBodyYawTarget())
+                if (prevLBY2 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip2 = !flip2;
 
                 if (flip2)
@@ -646,7 +999,7 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
                 else
                     angle.y -= 90.f;
 
-                prevLBY2 = *pLocal->GetLowerBodyYawTarget();
+                prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
             } else   
                 angle.y -= 0.0f;
             break;
@@ -790,14 +1143,13 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     {
         static bool antiResolverFlip = false;
 
-        static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
         if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
         {
             if (antiResolverFlip)
-                cmd->viewangles.y += *pLocal->GetLowerBodyYawTarget() + 90;
+                cmd->viewangles.y += + 90;
             else
-                cmd->viewangles.y -= *pLocal->GetLowerBodyYawTarget() + 90;
+                cmd->viewangles.y -= + 90;
 
             antiResolverFlip = !antiResolverFlip;
 
