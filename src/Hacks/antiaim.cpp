@@ -904,20 +904,26 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 }
             }
             break;
+	case AntiAimType_Y::LBY180:
+            if (CreateMove::sendPacket)
+            {
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
+                CreateMove::sendPacket = false;
+            }
+            else {
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
+                CreateMove::sendPacket = true;
+            }
+            break;
     }
 }
 
 static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
-
-
-
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
     AntiAimType_X aa_type = Settings::AntiAim::Pitch::type;
 
-
-
-
+	
 
     switch (aa_type) {
         case AntiAimType_X::STATIC_UP:
@@ -936,7 +942,18 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
         case AntiAimType_X::STATIC_DOWN:
             angle.x = 89.0f;
             break;
-
+	case AntiAimType_X::FAKEZERO:
+            static bool fakezeroS = false;
+            fakezeroS = !fakezeroS;
+            CreateMove::sendPacket = fakezeroS;
+            angle.x = fakezeroS ? 0 : 89;
+            break;
+        case AntiAimType_X ::FAKEUP:
+            static bool fakeupS = false;
+            fakeupS = !fakeupS;
+            CreateMove::sendPacket = fakeupS;
+            angle.x = fakeupS ? -89 : 89;
+            break;
     }
 }
 
