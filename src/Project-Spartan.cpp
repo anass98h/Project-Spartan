@@ -102,7 +102,6 @@ int __attribute__ ((constructor)) Startup() {
 
     srand(time(NULL)); // Seed random # Generator so we can call rand() later
 
-    AntiAim::LuaInit();
 
     engine->ExecuteClientCmd("clear;");
     cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
@@ -131,7 +130,6 @@ void __attribute__ ((destructor)) Shutdown() {
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();
 
-    AntiAim::LuaCleanup();
     Aimbot::XDOCleanup();
     NoSmoke::Cleanup();
 

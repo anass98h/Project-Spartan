@@ -5,17 +5,11 @@ int Settings::customYaw::value = 1;
 int Settings::customYaw2::value = 1;
 bool Settings::customYaw::lby;
 bool Settings::customYaw2::lby;
-
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "Legit Trolling", "Legit Trolling 2", "No AA", "Spinbot", "Custom Yaw", "Custom Yaw 2", "AutismSpin",
-            "Tank", "Tank 2", "Tank 3", "FJITTER", "LBY Breaker", "Fake LBY", "LBY Spin",  "Backjitter Random", "Casual Jitter",
-            "Lby Jitter", "Jitter", "Backjitter", "Sideways Right", "Sideways Left", "Fake Sideways", "FAKESIDEWAYS2", "FF", "Backwards",
-            "Forwards", "Static", "Static Jitter", "Static small Jitter", "Lua", "Lua 2", "Casual AA", "richi's eap", "Myrrib's pMix", // safe, fakelby not ut anymore
-
-            "Lisp", "Lisp Side", "Lisp Jitter", "Angel Backwards", "Angel Inverse", "Angel Spin", "Lowerbody",
-            "LBY on Ground", "Lua Unclamped", "Lua Unclamped 2" // untrusted
+            "no aa", "Backwards", "Forwards", "FakeSideWays", "Spin", "Backjitter", "FJitter", "Tank1", "Tank2", "richi's eap", "myrrib's eap",
+            "lbyBreaker", "FakeLBY", "lbySpin", "LBYjitter", "LBY", "LEGITTROLLING", "LEGITTROLLING2", "Custom", "Custom2" // safe
     };
 
     const char *lbyTypes[] = {
@@ -23,18 +17,17 @@ void HvH::RenderTab() {
     };
 
     const char *zTypes[] = {
-            "Reverse", "Autismflip", "TEST", "eap of shit"// untrusted
+            "TEST", // not so untrusted
     };
 
     const char *xTypes[] = {
-            "Up", "Flip", "Down", "Dance", "Front", "Lua", // safe
-
-            "Fake Up", "Fake Down", "Lisp Down", "Angel Down", "Angel Up", "Lua Unclamped" // untrusted
+            "up", "flip", "down",
     };
 
     const char *Hugtypes[] = {
             "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky", "Myrrib's DELTA"
     };
+
 
     ImGui::Columns(2, NULL, true);
     {
@@ -44,7 +37,7 @@ void HvH::RenderTab() {
             ImGui::BeginChild(XORSTR("##ANTIAIM"), ImVec2(0, 0), true);
             {
                 ImGui::Checkbox(XORSTR("Yaw"), &Settings::AntiAim::Yaw::enabled);
-                
+
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
@@ -62,8 +55,8 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##YFAKETYPE"), (int *) &Settings::AntiAim::Yaw::typeFake, yTypes,
                                      IM_ARRAYSIZE(yTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                                !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP) {
+                            !Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM) {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
 
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
@@ -75,8 +68,8 @@ void HvH::RenderTab() {
                             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
                         }
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                                !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP) {
+                            !Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Yaw::type >= AntiAimType_Y::CUSTOM) {
                             Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
@@ -100,8 +93,8 @@ void HvH::RenderTab() {
                 ImGui::Separator();
                 ImGui::Columns(2, NULL, true);
                 {
-                      ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
-                   
+                    ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
+
                 }
                 ImGui::NextColumn();
                 {
@@ -109,8 +102,8 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##ZTYPE"), (int *) &Settings::AntiAim::Roll::type, zTypes,
                                      IM_ARRAYSIZE(zTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                                !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Roll::type >= AntiAimType_Z::REVERSE) {
+                            !Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Roll::type >= AntiAimType_Z::TEST) {
 
 
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
@@ -133,8 +126,8 @@ void HvH::RenderTab() {
                     if (ImGui::Combo(XORSTR("##XTYPE"), (int *) &Settings::AntiAim::Pitch::type, xTypes,
                                      IM_ARRAYSIZE(xTypes))) {
                         if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                                !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE) {
+                            !Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP) {
                             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
@@ -223,7 +216,7 @@ void HvH::RenderTab() {
 
             ImGui::Checkbox(XORSTR("Kisak Earnhardt Jr."), &Settings::SpeedIndicator::enabled);
             SetTooltip(XORSTR("Get ready to Rumble"));
-            ImGui::Separator();
+            ImGui::Separator()
 
             ImGui::Text(XORSTR("Movement"));
             ImGui::Separator();
@@ -238,8 +231,8 @@ void HvH::RenderTab() {
                 UI::KeyBindButton(&Settings::Fakewalk::key);
                 UI::KeyBindButton(&Settings::CircleStrafe::key);
             }
-           
-            
+
+
             ImGui::Columns(1);
             ImGui::Separator();
             ImGui::Text(XORSTR("Miscellaneous"));
@@ -259,8 +252,8 @@ void HvH::RenderTab() {
             ImGui::Separator();
 
             ImGui::Checkbox(XORSTR("Lua Debug Mode"), &Settings::AntiAim::Lua::debugMode);
-            if (Settings::AntiAim::Pitch::type == AntiAimType_X::LUA1 ||
-                Settings::AntiAim::Pitch::type == AntiAimType_X::LUA_UNCLAMPED) {
+            if (Settings::AntiAim::Pitch::type == AntiAimType_X::STATIC_UP ||
+                Settings::AntiAim::Pitch::type == AntiAimType_X::STATIC_UP) {
                 ImGui::Text(XORSTR("Lua AntiAim Editor -- X Axis"));
                 ImGui::InputTextMultiline(XORSTR("##LUAX"), Settings::AntiAim::Lua::scriptX,
                                           sizeof(Settings::AntiAim::Lua::scriptX));
@@ -269,24 +262,24 @@ void HvH::RenderTab() {
 
             if (((Settings::AntiAim::Yaw::type == Settings::AntiAim::Yaw::typeFake) &&
                  // if they are equal to each other and a LUA type
-                 (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 ||
-                  Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 ||
-                  Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED ||
-                  Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2))
+                 (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                  Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                  Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
+                  Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2))
                 || // OR
-                ((Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 && Settings::AntiAim::Yaw::typeFake ==
-                                                                         AntiAimType_Y::LUA_UNCLAMPED)// Any LUA types that use the same underlying script.
-                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 &&
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2)
-                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED &&
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1)
-                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2 &&
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2)
+                ((Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 && Settings::AntiAim::Yaw::typeFake ==
+                                                                         AntiAimType_Y::CUSTOM2)// Any LUA types that use the same underlying script.
+                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM &&
+                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM)
+                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM &&
+                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM)
+                 || (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM &&
+                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM)
                 )
                     ) {
                 ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(BOTH)"));
-                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 ||
-                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED) {
+                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM) {
                     ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY,
                                               sizeof(Settings::AntiAim::Lua::scriptY));
                 } else {
@@ -294,25 +287,25 @@ void HvH::RenderTab() {
                                               sizeof(Settings::AntiAim::Lua::scriptY2));
                 }
             } else {
-                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA1 ||
-                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED) {
+                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM) {
                     ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(ACTUAL)"));
                     ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY,
                                               sizeof(Settings::AntiAim::Lua::scriptY));
-                } else if (Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA2 ||
-                           Settings::AntiAim::Yaw::type == AntiAimType_Y::LUA_UNCLAMPED2) {
+                } else if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                           Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM) {
                     ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis(ACTUAL)"));
                     ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2,
                                               sizeof(Settings::AntiAim::Lua::scriptY2));
                 }
                 ImGui::Separator();
-                if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA1 ||
-                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED) {
+                if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM) {
                     ImGui::Text(XORSTR("Lua AntiAim Editor -- Y Axis(FAKE)"));
                     ImGui::InputTextMultiline(XORSTR("##LUAY"), Settings::AntiAim::Lua::scriptY,
                                               sizeof(Settings::AntiAim::Lua::scriptY));
-                } else if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA2 ||
-                           Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LUA_UNCLAMPED2) {
+                } else if (Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ||
+                           Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM) {
                     ImGui::Text(XORSTR("Lua AntiAim Editor -- Y2 Axis (FAKE)"));
                     ImGui::InputTextMultiline(XORSTR("##LUAY2"), Settings::AntiAim::Lua::scriptY2,
                                               sizeof(Settings::AntiAim::Lua::scriptY2));

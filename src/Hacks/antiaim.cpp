@@ -1,9 +1,10 @@
+
 #include "antiaim.h"
 
 bool Settings::AntiAim::allowUntrustedAngles = false;
 bool Settings::AntiAim::Yaw::dynamicAA = false;
 bool Settings::AntiAim::Roll::enabled = false;
-AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::REVERSE; // Dank Roll
+AntiAimType_Z Settings::AntiAim::Roll::type = AntiAimType_Z::TEST; // Dank Roll
 bool Settings::AntiAim::Yaw::enabled = false;
 bool Settings::AntiAim::Pitch::enabled = false;
 bool Settings::AntiAim::Lby::enabled = false;
@@ -418,10 +419,10 @@ static bool HasViableEnemy() {
         C_BasePlayer* entity = (C_BasePlayer*) entityList->GetClientEntity(i);
 
         if (!entity
-                || entity == localplayer
-                || entity->GetDormant()
-                || !entity->GetAlive()
-                || entity->GetImmune())
+            || entity == localplayer
+            || entity->GetDormant()
+            || !entity->GetAlive()
+            || entity->GetImmune())
             continue;
 
         if (!Aimbot::friends.empty()) // check for friends, if any
@@ -441,7 +442,7 @@ static bool HasViableEnemy() {
 }
 
 static float DoAAatTarget()
- {
+{
 
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
     static float Angle = 0.0f;
@@ -453,11 +454,11 @@ static float DoAAatTarget()
                 C_BasePlayer* target = (C_BasePlayer*) entityList->GetClientEntity(i);
 
                 if (!target
-                        || target == pLocal
-                        || target->GetDormant()
-                        || !target->GetAlive()
-                        || target->GetImmune()
-                        || target->GetTeam() == pLocal->GetTeam())
+                    || target == pLocal
+                    || target->GetDormant()
+                    || !target->GetAlive()
+                    || target->GetImmune()
+                    || target->GetTeam() == pLocal->GetTeam())
                     continue;
 
                 Vector eye_pos = pLocal->GetEyePosition();
@@ -467,8 +468,8 @@ static float DoAAatTarget()
 
                 if (bestDist > tempDist) {
                     bestDist = tempDist;
-                    	Angle = Math::CalcAngle(eye_pos, target_pos).y;
-                       return Angle;
+                    Angle = Math::CalcAngle(eye_pos, target_pos).y;
+                    return Angle;
 
                 }
             }
@@ -484,57 +485,57 @@ static void SwapAA()
     if(inputSystem->IsButtonDown(KEY_DOWN)) {
         count++;
         //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Swap AA Count: %i\n", count);
-    } else{ 
-    if (count > 0) {
-        static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
-        static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
-        fake = Settings::AntiAim::Yaw::typeFake;
-        real = Settings::AntiAim::Yaw::type;
-        Settings::AntiAim::Yaw::type = fake;
-        Settings::AntiAim::Yaw::typeFake = real;
-        count = 0;
+    } else{
+        if (count > 0) {
+            static AntiAimType_Y fake = Settings::AntiAim::Yaw::typeFake;
+            static AntiAimType_Y real = Settings::AntiAim::Yaw::type;
+            fake = Settings::AntiAim::Yaw::typeFake;
+            real = Settings::AntiAim::Yaw::type;
+            Settings::AntiAim::Yaw::type = fake;
+            Settings::AntiAim::Yaw::typeFake = real;
+            count = 0;
+        }
     }
-}
 }
 
 float GetLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float Latency = nci->GetAvgLatency(FLOW_OUTGOING) + nci->GetAvgLatency(FLOW_INCOMING);
-		return Latency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float Latency = nci->GetAvgLatency(FLOW_OUTGOING) + nci->GetAvgLatency(FLOW_INCOMING);
+        return Latency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float GetOutgoingLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float OutgoingLatency = nci->GetAvgLatency(FLOW_OUTGOING);
-		return OutgoingLatency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float OutgoingLatency = nci->GetAvgLatency(FLOW_OUTGOING);
+        return OutgoingLatency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float GetIncomingLatency()
 {
-	INetChannelInfo *nci = engine->GetNetChannelInfo();
-	if (nci)
-	{
-		float IncomingLatency = nci->GetAvgLatency(FLOW_INCOMING);
-		return IncomingLatency;
-	}
-	else
-	{
-		return 0.0f;
-	}
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
+    if (nci)
+    {
+        float IncomingLatency = nci->GetAvgLatency(FLOW_INCOMING);
+        return IncomingLatency;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 float OldLBY;
 float LBYBreakerTimer;
@@ -542,67 +543,61 @@ float LastLBYUpdateTime;
 bool bSwitch;
 float CurrentVelocity(C_BasePlayer* LocalPlayer)
 {
-	int vel = LocalPlayer->GetVelocity().Length2D();
-	return vel;
+    int vel = LocalPlayer->GetVelocity().Length2D();
+    return vel;
 }
 bool NextLBYUpdate()
 {
-	C_BasePlayer* LocalPlayer =  (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
+    C_BasePlayer* LocalPlayer =  (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
-	float flServerTime = (float)(LocalPlayer->GetTickBase()  * globalVars->interval_per_tick);
+    float flServerTime = (float)(LocalPlayer->GetTickBase()  * globalVars->interval_per_tick);
 
 
-	if (OldLBY != *LocalPlayer->GetLowerBodyYawTarget())
-	{
-		LBYBreakerTimer++;
-		OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
-		bSwitch = !bSwitch;
-		LastLBYUpdateTime = flServerTime;
-	}
+    if (OldLBY != *LocalPlayer->GetLowerBodyYawTarget())
+    {
+        LBYBreakerTimer++;
+        OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
+        bSwitch = !bSwitch;
+        LastLBYUpdateTime = flServerTime;
+    }
 
-	if (CurrentVelocity(LocalPlayer) > 0.5)
-	{
-		LastLBYUpdateTime = flServerTime;
-		return false;
-	}
+    if (CurrentVelocity(LocalPlayer) > 0.5)
+    {
+        LastLBYUpdateTime = flServerTime;
+        return false;
+    }
 
-	if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
-	{
-		if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime)
-		{
-			LastLBYUpdateTime += 1.1;
-		}
-		return true;
-	}
-	return false;
+    if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
+    {
+        if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime)
+        {
+            LastLBYUpdateTime += 1.1;
+        }
+        return true;
+    }
+    return false;
 }
+
 
 
 static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp) {
     AntiAimType_Y aa_type = bFlip ? Settings::AntiAim::Yaw::typeFake : Settings::AntiAim::Yaw::type;
 
     static bool yFlip;
-    float temp;
     double factor;
-    static float trigger;
-    QAngle temp_qangle;
+
     int random;
-    int maxJitter;
-    int spinval = rand() % 80;
     int ticks = 0;
     int jitterticks = 0;
-  	float Base;
-  	bool fakeantiaim;
     static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
-    static float lastAngleY, lastAngleY2; // angle we had last frame
 
     yFlip = bFlip != yFlip;
 
     switch (aa_type) {
         case AntiAimType_Y::LEGITTROLLING:
             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
-            angle.y = 180.f;
+            angle.y -= 180.f;
             //Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
             break;
         case AntiAimType_Y::LEGITTROLLING2:
@@ -622,9 +617,9 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(Settings::customYaw::lby)
             {
                 if(Settings::customYaw::value > 0)
-                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw::value);
+                    angle.y += *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + (Settings::customYaw::value);
                 else
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw::value);
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - (Settings::customYaw::value);
 
             }
             else
@@ -639,165 +634,17 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(Settings::customYaw2::lby)
             {
                 if(Settings::customYaw2::value > 0)
-                    angle.y += *pLocal->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
+                    angle.y += *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + (Settings::customYaw2::value);
                 else
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - (Settings::customYaw2::value);
             }
             else
             {
                 angle.y += Settings::customYaw2::value;
             }
             break;
-        case AntiAimType_Y::APOSTROPHE:
-        {
-            if (CreateMove::sendPacket) {
-              int n = 0;
-              if (n == 0) {
-                  factor = 360.0 / M_PHI;
-                  factor *= 25;
-                  angle.y = fmodf(globalVars->curtime * factor, 360.0);
-                  n = 1;
-
-              } else if (n == 1) {
-                  factor = 660.0 / M_PHI;
-                  factor *= 65;
-                  angle.y = fmodf(globalVars->curtime * factor, 660.0);
-                  n = 2;
-              } else if (n == 2) {
-                  factor = 1360.0 / M_PHI;
-                  factor *= 125;
-                  angle.y = fmodf(globalVars->curtime * factor, 1360.0);
-                  n = 3;
-              } else if (n == 3) {
-
-                  factor = 187.0 / M_PHI;
-                  factor *= 88;
-                  angle.y = fmodf(globalVars->curtime * factor, 187.0);
-                  n = 4;
-              } else if (n == 4) {
-
-
-                  factor = 107.0 / M_PHI;
-                  factor *= 108;
-                  angle.y = fmodf(globalVars->curtime * factor, 107.0);
-                  n = 5;
-
-              } else if (n == 5) {
-
-
-                  factor = 687.0 / M_PHI;
-                  factor *= 188;
-                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                  n = 6;
-              } else if (n == 6) {
-
-
-                  factor = 387.0 / M_PHI;
-                  factor *= 288;
-                  angle.y = fmodf(globalVars->curtime * factor, 387.0);
-                  n = 7;
-              } else if (n == 7) {
-
-
-                  factor = 487.0 / M_PHI;
-                  factor *= 198;
-                  angle.y = fmodf(globalVars->curtime * factor, 487.0);
-                  n = 8;
-              } else if (n == 8) {
-
-
-                  factor = 287.0 / M_PHI;
-                  factor *= 388;
-                  angle.y = fmodf(globalVars->curtime * factor, 287.0);
-                  n = 9;
-              } else if (n == 9) {
-
-
-                  factor = 1187.0 / M_PHI;
-                  factor *= 588;
-                  angle.y = fmodf(globalVars->curtime * factor, 1187.0);
-                  n = 10;
-              } else if (n == 10) {
-
-
-                  factor = 1687.0 / M_PHI;
-                  factor *= 888;
-                  angle.y = fmodf(globalVars->curtime * factor, 1687.0);
-                  n = 11;
-              } else if (n == 11) {
-
-
-                  factor = 987.0 / M_PHI;
-                  factor *= 248;
-                  angle.y = fmodf(globalVars->curtime * factor, 987.0);
-                  n = 12;
-              } else if (n == 12) {
-
-
-                  factor = 687.0 / M_PHI;
-                  factor *= 188;
-                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                  n = 13;
-              } else if (n == 13) {
-
-
-                  factor = 487.0 / M_PHI;
-                  factor *= 168;
-                  angle.y = fmodf(globalVars->curtime * factor, 487.0);
-                  n = 14;
-              } else if (n == 14) {
-
-
-                  factor = 687.0 / M_PHI;
-                  factor *= 188;
-                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                  n = 15;
-              } else if (n == 15) {
-
-
-                  factor = 687.0 / M_PHI;
-                  factor *= 1868;
-                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                  n = 16;
-              } else if (n == 16) {
-
-
-                  factor = 6287.0 / M_PHI;
-                  factor *= 188;
-                  angle.y = fmodf(globalVars->curtime * factor, 6287.0);
-                  n = 17;
-              } else if (n == 17) {
-
-
-                  factor = 587.0 / M_PHI;
-                  factor *= 168;
-                  angle.y = fmodf(globalVars->curtime * factor, 587.0);
-                  n = 18;
-              } else if (n == 18) {
-
-
-                  factor = 687.0 / M_PHI;
-                  factor *= 1868;
-                  angle.y = fmodf(globalVars->curtime * factor, 687.0);
-                  n = 19;
-              }
-              else {
-                  factor = 420.0;
-                  factor *= 50;
-                  angle.y = fmodf(globalVars->curtime * factor, 420);
-                  n = 0;
-
-              }
-              CreateMove::sendPacket = false;
-            } else {
-                angle.y -= 180;
-                CreateMove::sendPacket = true;
-
-            }
-            break;
-        }
        
-       case AntiAimType_Y::Tank:
+       case AntiAimType_Y::TANK1:
             if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f))
                 yFlip ? angle.y -= 165 : angle.y += 195;
             if (!(pLocal->GetFlags() & FL_ONGROUND))
@@ -807,16 +654,16 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 random = rand() % 4;
                 switch (random) {
                     case 0:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 220;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 220;
                         break;
                     case 1:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - 97;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 97;
                         break;
                     case 2:
                         yFlip ? angle.y += 97 : angle.y -= 97;
                         break;
                     case 3:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - rand() + 97;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - rand() + 97;
                         break;
                 }
                 CreateMove::sendPacket = false;
@@ -826,25 +673,25 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 psilent = rand() % 6;
                 switch (psilent) {
                     case 0:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + 88;
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88;
                         break;
                     case 1:
                         angle.y = bSendPacket ? 118 : 270;
                         break;
                     case 2:
-                        yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 97 : angle.y =
-                                                                                          *pLocal->GetLowerBodyYawTarget() -
+                        yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97 : angle.y =
+                                                                                          *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -
                                                                                           rand() % 97;
                         break;
                     case 3:
-                        angle.y = *pLocal->GetLowerBodyYawTarget() - rand();
+                        angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - rand();
                         break;
                     case 4:
                         angle.y -= 97;
                         break;
                     case 5:
-                        yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 112 : angle.y =
-                                                                                                    *pLocal->GetLowerBodyYawTarget() -
+                        yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 112 : angle.y =
+                                                                                                    *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -
                                                                                                     rand() % 66;
                         break;
 
@@ -859,7 +706,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             if(bSendPacket) {
                 random = rand() % 4; 
                 switch (random) { 
-                    case 1: angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165; 
+                    case 1: angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 35 + 165;
                     break; 
                     case 2: yFlip ? angle.y -= 160 : angle.y += 160;
                     break; 
@@ -885,126 +732,28 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
 
                 } 
             }
-            if (angle.y == *(pLocal->GetLowerBodyYawTarget())){
-                angle.y = *pLocal->GetLowerBodyYawTarget() + 90;
+            if (angle.y == *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget()){
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 90;
 
             }
             
             break;
-        case AntiAimType_Y::TANK3:
-            static bool uff = false;
-            static bool uff2 = false;
-            static bool uff3 = false;
-            static int uff4 = 0;
-
-            if (pLocal->GetVelocity().Length2D() < 0.1f) {
-                if (CreateMove::sendPacket) {
-
-                    if (pLocal->GetFlags() & FL_ONGROUND)
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 90 + 99;
-                    else {
-                        random = rand() % 4;
-                        switch (random) {
-                            case 1:
-                                yFlip ? angle.y += 90.f : angle.y -= 90.0f;
-                                break;
-                            case 2:
-                                yFlip ? angle.y -= 120.0f : angle.y -= 120.0f;
-                                break;
-                            case 3:
-                                factor = 360.0 / M_PHI;
-                                factor *= 25;
-                                angle.y = fmodf(globalVars->curtime * factor, 360.0);
-                                break;
-                            default:
-                                angle.y -= 180.0f;
-                        }
-                    }
-                    CreateMove::sendPacket = false;
-                } else {
-
-                    {
-
-                        if (uff) {
-
-                            angle.y = *pLocal->GetLowerBodyYawTarget() + 97.0f;
-                            uff = false;
-
-                        } else {
-                            angle.y -= *pLocal->GetLowerBodyYawTarget() + 97.f;
-                            uff = true;
-                        }
-
-                        if (uff2) {
-
-                            if (uff4 > 0) {
-
-                                uff4 = 1000;
-                                angle.y += 1888 + uff4 / rand();
-                                uff4 = 88000;
-                            } else {
-                                angle.y = *pLocal->GetLowerBodyYawTarget() + uff4;
-                                uff4 = rand();
-                            }
-
-                            uff2 = false;
-                        }
-                        else {
-
-                            angle.y = rand() * rand();
-                            uff2 = true;
-
-                        }
-
-
-                        if (uff3) {
-                            angle.y = -97.f;
-                            uff3 = false;
-                        } else {
-                            angle.y = *pLocal->GetLowerBodyYawTarget() + 97.f;
-                            uff3 = true;
-
-
-                        }
-                    }
-
-                    CreateMove::sendPacket = true;
-
-                }
-            } else {
-
-                yFlip ? angle.y -= 170 : angle.y += 170;
-
-            }
-            break;
         case AntiAimType_Y::LBYBREAK:
-           //Placeholder :/
-            // Someone should fix this probably  ._.
+           //Placeholder
             break;
         case AntiAimType_Y::FAKELBY:
             static bool lbyflip = false;
             static bool lbyflip2 = false;
             static bool lbyflip3 = false;
             clamp = false;
-            if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f)) {
-              if(CreateMove::sendPacket)
-              {
+            if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f))
                 
                 yFlip ? angle.y -= 170.f : angle.y -= 190.f;
-                
-              }
-              else
-                { 
-                    CreateMove::sendPacket = true;
-                    yFlip ? angle.y -= 120 : angle.y += 120;
-                    CreateMove::sendPacket = false;
-                }
-            }
             else
             {
               if(CreateMove::sendPacket)
               {
-                yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 97 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 97;
+                yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97 : angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97;
 
                 CreateMove::sendPacket = false;
               }
@@ -1012,20 +761,20 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
               {
                 if (lbyflip)
                 {
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 120;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 120;
                 }
                 else
                 {
-                  yFlip ? angle.y = *pLocal->GetLowerBodyYawTarget() + 88 : angle.y -= *pLocal->GetLowerBodyYawTarget() + 88;
+                  yFlip ? angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88 : angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 88;
                 }
                 if(lbyflip2)
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 45;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 45;
                 else
-                  *pLocal->GetLowerBodyYawTarget() + 180;
+                  *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180;
                 if(lbyflip3)
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + rand() + 360;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() + 360;
                 else
-                  angle.y = *pLocal->GetLowerBodyYawTarget() + 97;
+                  angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 97;
 
               }
 
@@ -1038,28 +787,12 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         case AntiAimType_Y::LBYSPIN:
             factor = 360.0 / M_PHI;
             factor *= Settings::spinFactor::value;
-            angle.y = *pLocal->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
-            break;
-        case AntiAimType_Y::RANDOMBACKJITTER:
-            angle.y -= 180;
-            random = rand() % 100;
-            maxJitter = rand() % (85 - 70 + 1) + 70;
-            temp = maxJitter - (rand() % maxJitter);
-            if (random < 35 + (rand() % 15))
-                angle.y -= temp;
-            else if (random < 85 + (rand() % 15))
-                angle.y += temp;
-            break;
-
-
-
-        case AntiAimType_Y::CASUALJITTER:
-            yFlip ? angle.y -= 35.0f : angle.y += 35.0f;
+            angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + fmodf(globalVars->curtime * factor, 360.0);
             break;
         case AntiAimType_Y::LBYJITTER:
 
             if (pLocal->GetFlags() & FL_ONGROUND)
-                angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+                angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 35 + 165;
             else {
                 random = rand() % 4;
                 switch (random) {
@@ -1081,49 +814,11 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
             break;
         case AntiAimType_Y::NOAA:
             break;
-        case AntiAimType_Y::JITTER:
-            yFlip ? angle.y -= 90.0f : angle.y -= 270.0f;
-            break;
         case AntiAimType_Y::BACKJITTER:
-            angle.y -= 180;
-            random = rand() % 100;
-            maxJitter = rand() % (85 - 70 + 1) + 70;
-            temp = maxJitter - (rand() % maxJitter);
-            if (random < 35 + (rand() % 15))
-                angle.y -= temp;
-            else if (random < 85 + (rand() % 15))
-                angle.y += temp;
+            static int random = rand() % 16;
+            yFlip ? angle.y -= 180.f + random : angle.y += 180.f + random;
             break;
-
-        case AntiAimType_Y::SIDEWAYSRIGHT:
-        angle.y += 90;
-            break;
-        case AntiAimType_Y::SIDEWAYSLEFT:
-	        if(Settings::AntiAim::Yaw::dynamicAA)
-	        {
-
-		         Base = DoAAatTarget();
-            	if(Base > 0)
-            		angle.y = Base + 90;
-            	else
-            		angle.y = Base - 90;
-
-	        }
-	        else
-           	 angle.y -= 90.0f;
-            break;
-        case AntiAimType_Y::FAKESIDEWAYS:
-
-             if (CreateMove::sendPacket) {
-                angle.y = 90.f;
-                CreateMove::sendPacket = false;
-            } else {
-                angle.y -= 120.0f;
-                CreateMove::sendPacket = true;
-            }
-
-            break;
-            case AntiAimType_Y::FAKESIDEWAYS2:
+            case AntiAimType_Y::FAKESIDEWAYS:
 
             if (CreateMove::sendPacket) {
                 angle.y -= 90.f;
@@ -1132,7 +827,6 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 angle.y = 120.0f;
                 CreateMove::sendPacket = true;
             }
-
             break;
         case AntiAimType_Y::BACKWARDS:
             angle.y -= 180.0f;
@@ -1141,117 +835,9 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
         case AntiAimType_Y::FORWARDS:
             angle.y -= 0.0f;
             break;
-
-        case AntiAimType_Y::STATICAA:
-            angle.y = 0.0f;
-            break;
-        case AntiAimType_Y::STATICJITTER:
-            trigger += 15.0f;
-            angle.y = trigger > 50.0f ? 150.0f : -150.0f;
-
-            if (trigger > 100.0f)
-                trigger = 0.0f;
-            break;
-        case AntiAimType_Y::STATICSMALLJITTER:
-            trigger += 15.0f;
-            angle.y = trigger > 50.0f ? -30.0f : 30.0f;
-
-            if (trigger > 100.0f)
-                trigger = 0.0f;
-            break;
-        case AntiAimType_Y::LUA1:
-            angle.y = LuaScriptY(lastAngleY, angle.y);
-            break;
-        case AntiAimType_Y::LUA2:
-            angle.y = LuaScriptY2(lastAngleY2, angle.y);
-            break;
-        case AntiAimType_Y::LISP:
-            clamp = false;
-
-            yFlip ? angle.y += 323210000.0f : angle.y -= 323210000.0f;
-
-
-            break;
-        case AntiAimType_Y::LISP_SIDE:
-            clamp = false;
-            temp = angle.y + 90.0f;
-            temp_qangle = QAngle(0.0f, temp, 0.0f);
-            if(!Settings::AntiAim::allowUntrustedAngles)
-                Math::NormalizeAngles(temp_qangle);
-            temp = temp_qangle.y;
-
-            if (temp > -45.0f)
-                temp < 0.0f ? temp = -90.0f : temp < 45.0f ? temp = 90.0f : temp = temp;
-
-            temp += 1800000.0f;
-            angle.y = temp;
-            break;
-        case AntiAimType_Y::LISP_JITTER:
-            clamp = false;
-            static int jittertimer = -1;
-            temp = angle.y - 155.0f;
-
-            if (jittertimer == 1) {
-                temp = angle.y + 58.0f;
-                temp += 1800000.0f;
-            }
-
-            if (bSendPacket) {
-                if (jittertimer >= 1)
-                    jittertimer = -1;
-                jittertimer++;
-            }
-            angle.y = temp;
-            break;
-        case AntiAimType_Y::ANGEL_BACKWARD:
-            clamp = false;
-            angle.y += 36000180.0f;
-            break;
-        case AntiAimType_Y::ANGEL_INVERSE:
-            clamp = false;
-            angle.y = 36000180.0f;
-            break;
         case AntiAimType_Y::LOWERBODY:
-            angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
+            angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
             break;
-
-        case AntiAimType_Y::ANGEL_SPIN:
-            clamp = false;
-            factor = (globalVars->curtime * 5000.0f);
-            angle.y = factor + 36000000.0f;
-            break;
-        case AntiAimType_Y::CASUAL:
-            yFlip ? angle.y -= 35.0f : angle.y += 35.0f;
-            break;
-        case AntiAimType_Y::LUA_UNCLAMPED:
-            clamp = false;
-            angle.y = LuaScriptY(lastAngleY, angle.y);
-            break;
-        case AntiAimType_Y::LUA_UNCLAMPED2:
-            clamp = false;
-            angle.y = LuaScriptY2(lastAngleY2, angle.y);
-            break;
-        case AntiAimType_Y::LBYONGROUND:
-            if (pLocal->GetFlags() & FL_ONGROUND)
-                angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
-            else {
-                static int aimType = rand() % 4;
-                switch (aimType) {
-                    case 1:
-                        yFlip ? angle.y += 90.f : angle.y -= 90.0f;
-                        break;
-                    case 2:
-                        yFlip ? angle.y -= 120.0f : angle.y -= 210.0f;
-                        break;
-                    case 3:
-                        factor = 360.0 / M_PHI;
-                        factor *= 25;
-                        angle.y = fmodf(globalVars->curtime * factor, 360.0);
-                        break;
-                    default:
-                        angle.y -= 180.0f;
-                }
-            }
         case AntiAimType_Y::FJITTER:
         {
         if (CreateMove::sendPacket)
@@ -1262,44 +848,35 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                         }
                     int add = 0;
                     if (jitterticks == 0)
-                        add = 130;
+                        add += 130;
                     if (jitterticks == 1)
-                        add = -145;
+                        add -= 145;
                     if (ticks > 0 || !CreateMove::sendPacket)
                         {
                             add = -add;
                             CreateMove::sendPacket = false;
                         }
-                    angle.y = + add;
+                    angle.y += add;
                         }
             break;
-        case AntiAimType_Y::EXPERIMENTAL:
-        static bool besteap;
+        case AntiAimType_Y::richieap:
+        static bool besteap = false;
         if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) 
         {
-                if (CreateMove::sendPacket) 
+            besteap = !besteap;
+            if (besteap)
                 {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 90.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 180.f;
                     CreateMove::sendPacket = false;
                 }
-                else 
+                else
                 {
-                    angle.y = *pLocal->GetLowerBodyYawTarget() + 120.0f;
-                    CreateMove::sendPacket = true;
+                    angle.y = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 }
         }
         else
         {
-            if (CreateMove::sendPacket)
-            {
-                angle.y = 180.0f;
-                CreateMove::sendPacket = false;
-            }
-            else
-            {
-                yFlip ? angle.y -= 174.0f : angle.y -= 186.0f;
-                CreateMove::sendPacket = true;
-            }
+            angle.y -= 180.f;
         }
 	case AntiAimType_Y::MYRRIB:
             if (CreateMove::sendPacket)
@@ -1310,7 +887,7 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     CreateMove::sendPacket = false;
                 }
                 else {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() + 45.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 45.f;
                     CreateMove::sendPacket = false;
                 }
             }
@@ -1322,37 +899,19 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     CreateMove::sendPacket = true;
                 }
                 else {
-                    angle.y -= *pLocal->GetLowerBodyYawTarget() - 180.f;
+                    angle.y -= *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 180.f;
                     CreateMove::sendPacket = true;
                 }
             }
             break;
-        case AntiAimType_Y::FAKEFRONT:
-             if (CreateMove::sendPacket) {
-                angle.y -= 0.f;
-                CreateMove::sendPacket = false;
-            } else {
-                angle.y = 180.0f;
-                CreateMove::sendPacket = true;
-            }
-
-            break;
-        default:
-            angle.y -= 0.0f;
-            break;
     }
-    lastAngleY = angle.y;
-    lastAngleY2 = angle.y;
 }
 
 static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
-    static float pDance = 0.0f;
-    static float lastAngleX;
-
-    static float prape = 0.0f;
 
 
 
+    static C_BasePlayer* pLocal = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
 
     AntiAimType_X aa_type = Settings::AntiAim::Pitch::type;
 
@@ -1365,89 +924,31 @@ static void DoAntiAimX(QAngle& angle, bool bFlip, bool& clamp) {
             angle.x = -89.0f;
             break;
         case AntiAimType_X::FLIP:
-            angle.x = bFlip ? -55.0f : 40.0f;
+            if (fabsf(pLocal->GetVelocity().x) != 0)
+            {
+                angle.x = bFlip ? -55.0f : 40.0f;
+            }
+            else
+            {
+                angle.x = 50.0f;
+            }
             break;
         case AntiAimType_X::STATIC_DOWN:
             angle.x = 89.0f;
             break;
 
-        case AntiAimType_X::DANCE:
-            pDance += 45.0f;
-            if (pDance > 100)
-                pDance = 0.0f;
-            else if (pDance > 75.f)
-                angle.x = -89.f;
-            else if (pDance < 75.f)
-                angle.x = 89.f;
-            break;
-        case AntiAimType_X::FRONT:
-            angle.x = 0.0f;
-            break;
-        case AntiAimType_X::STATIC_UP_FAKE:
-            if (CreateMove::sendPacket) 
-            {
-                angle.x -= 89.0f;
-                CreateMove::sendPacket = false;
-            } else 
-            {
-                angle.x = 89.0f;
-                CreateMove::sendPacket = true;
-            }
-            break;
-        case AntiAimType_X::STATIC_DOWN_FAKE:
-            if (CreateMove::sendPacket) {
-                angle.x = -89.0f;
-                CreateMove::sendPacket = false;
-            } else {
-                angle.x = 89.0f;
-                CreateMove::sendPacket = true;
-            }
-
-            break;
-        case AntiAimType_X::LUA1:
-            angle.x = LuaScriptX(lastAngleX, angle.x);
-            break;
-        case AntiAimType_X::LISP_DOWN:
-            clamp = false;
-            angle.x = 1800089.0f;
-            break;
-        case AntiAimType_X::ANGEL_DOWN:
-            clamp = false;
-            angle.x = 36000088.0f;
-            break;
-        case AntiAimType_X::ANGEL_UP:
-            clamp = false;
-            angle.x = 35999912.0f;
-            break;
-        case AntiAimType_X::LUA_UNCLAMPED:
-            clamp = false;
-            angle.x = LuaScriptX(lastAngleX, angle.x);
-            break;
-        default:
-            angle.x -= 0.0f;
-            break;
     }
-    lastAngleX = angle.x;
 }
 
 static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp) {
-    static float pDance = 0.0f;
     AntiAimType_Z aa_type = Settings::AntiAim::Roll::type;
 
     switch (aa_type) {
-        case AntiAimType_Z::REVERSE:
-            angle.z = -50.0f;
-            break;
-        case AntiAimType_Z::AUTISMFLIP:
-            angle.z = bSendPacket ? -50.0f : 45.0f;
-            break;
         case AntiAimType_Z::TEST:
 
             angle.z = 180.0f;
             break;
-        case AntiAimType_Z::LOLEAP:
-            angle.z = 200.0f;
-            break;
+
     }
 }
 
@@ -1463,29 +964,34 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
 
         case AntiAimType_LBY::ONE:
             static bool flip1 = false;
-            static float prevLBY1 = *pLocal->GetLowerBodyYawTarget();
+            static float prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
-            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
+            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) 
+            {
 
-                if (prevLBY1 != *pLocal->GetLowerBodyYawTarget())
-                    flip1 = !flip1;
-
+                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                    flip1 = false;
+                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                    flip1 = true;
                 if (flip1)
-                    angle.y += 110.f;
+                    angle.y += 120.f;
                 else
-                    angle.y -= 110.f;
+                    angle.y -= 120.f;
 
-                prevLBY1 = *pLocal->GetLowerBodyYawTarget();
-            } else
+                prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            }
+            else
+            {
                 angle.y -= 0;
+            }
             break;
         case AntiAimType_LBY::TWO:
             static bool flip2 = false;
-            static float prevLBY2 = *pLocal->GetLowerBodyYawTarget();
+            static float prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
             if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
-                if (prevLBY2 != *pLocal->GetLowerBodyYawTarget())
+                if (prevLBY2 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip2 = !flip2;
 
                 if (flip2)
@@ -1493,8 +999,8 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
                 else
                     angle.y -= 90.f;
 
-                prevLBY2 = *pLocal->GetLowerBodyYawTarget();
-            } else
+                prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            } else   
                 angle.y -= 0.0f;
             break;
         case AntiAimType_LBY::THREE:
@@ -1520,7 +1026,9 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
 
 
 void AntiAim::CreateMove(CUserCmd* cmd) {
-	isAntiAiming = false;
+
+
+    isAntiAiming = false;
     if (!Settings::AntiAim::Yaw::enabled && !Settings::AntiAim::Pitch::enabled)
 	{
 		if(Settings::FakeLag::enabled)
@@ -1581,13 +1089,13 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     bool should_clamp = !Settings::AntiAim::allowUntrustedAngles;
 
     if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS() && should_clamp) {
-        if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
-            Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
+        if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::CUSTOM)
+            Settings::AntiAim::Yaw::type = AntiAimType_Y::CUSTOM;
 
-        if (Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::LISP)
-            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
+        if (Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM)
+            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::CUSTOM;
 
-        if (Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE)
+        if (Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP)
             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
     }
 
@@ -1634,12 +1142,14 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
     if (Settings::AntiAim::Yaw::antiResolver)
     {
         static bool antiResolverFlip = false;
+
+
         if (cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget())
         {
             if (antiResolverFlip)
-                cmd->viewangles.y += *localplayer->GetLowerBodyYawTarget() + 90;
+                cmd->viewangles.y += + 90;
             else
-                cmd->viewangles.y -= *localplayer->GetLowerBodyYawTarget() + 90;
+                cmd->viewangles.y -= + 90;
 
             antiResolverFlip = !antiResolverFlip;
 

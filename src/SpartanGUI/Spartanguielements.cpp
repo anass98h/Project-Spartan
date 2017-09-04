@@ -32,32 +32,32 @@ bool UI::ColorPicker(float* col, bool alphabar) {
     ImGui::ColorConvertRGBtoHSV(color.Value.x, color.Value.y, color.Value.z, hue, saturation, value);
 
     ImColor colors[] = {
-        ImColor(255, 0, 0),
-        ImColor(255, 255, 0),
-        ImColor(0, 255, 0),
-        ImColor(0, 255, 255),
-        ImColor(0, 0, 255),
-        ImColor(255, 0, 255),
-        ImColor(255, 0, 0)
+            ImColor(255, 0, 0),
+            ImColor(255, 255, 0),
+            ImColor(0, 255, 0),
+            ImColor(0, 255, 255),
+            ImColor(0, 0, 255),
+            ImColor(255, 0, 255),
+            ImColor(255, 0, 0)
     };
 
     for (int i = 0; i < 6; i++) {
         draw_list->AddRectFilledMultiColor(
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + SPACING, picker_pos.y + i * (SV_PICKER_SIZE.y / 6)),
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + SPACING + HUE_PICKER_WIDTH,
-                picker_pos.y + (i + 1) * (SV_PICKER_SIZE.y / 6)),
+                       picker_pos.y + (i + 1) * (SV_PICKER_SIZE.y / 6)),
                 colors[i],
                 colors[i],
                 colors[i + 1],
                 colors[i + 1]
-                );
+        );
     }
 
     draw_list->AddLine(
             ImVec2(picker_pos.x + SV_PICKER_SIZE.x + SPACING - 2, picker_pos.y + hue * SV_PICKER_SIZE.y),
             ImVec2(picker_pos.x + SV_PICKER_SIZE.x + SPACING + 2 + HUE_PICKER_WIDTH, picker_pos.y + hue * SV_PICKER_SIZE.y),
             ImColor(255, 255, 255)
-            );
+    );
 
     if (alphabar) {
         float alpha = col[3];
@@ -66,13 +66,13 @@ bool UI::ColorPicker(float* col, bool alphabar) {
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + 2 * SPACING + HUE_PICKER_WIDTH, picker_pos.y),
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + 2 * SPACING + 2 * HUE_PICKER_WIDTH, picker_pos.y + SV_PICKER_SIZE.y),
                 ImColor(0, 0, 0), ImColor(0, 0, 0), ImColor(255, 255, 255), ImColor(255, 255, 255)
-                );
+        );
 
         draw_list->AddLine(
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + 2 * (SPACING - 2) + HUE_PICKER_WIDTH, picker_pos.y + alpha * SV_PICKER_SIZE.y),
                 ImVec2(picker_pos.x + SV_PICKER_SIZE.x + 2 * (SPACING + 2) + 2 * HUE_PICKER_WIDTH, picker_pos.y + alpha * SV_PICKER_SIZE.y),
                 ImColor(255.f - alpha, 255.f, 255.f)
-                );
+        );
     }
 
     const ImU32 c_oColorBlack = ImGui::ColorConvertFloat4ToU32(ImVec4(0.f, 0.f, 0.f, 1.f));
@@ -90,7 +90,7 @@ bool UI::ColorPicker(float* col, bool alphabar) {
             oHueColor,
             oHueColor,
             c_oColorWhite
-            );
+    );
 
     draw_list->AddRectFilledMultiColor(
             ImVec2(picker_pos.x, picker_pos.y),
@@ -99,7 +99,7 @@ bool UI::ColorPicker(float* col, bool alphabar) {
             c_oColorBlackTransparent,
             c_oColorBlack,
             c_oColorBlack
-            );
+    );
 
     float x = saturation * SV_PICKER_SIZE.x;
     float y = (1 - value) * SV_PICKER_SIZE.y;
@@ -202,15 +202,33 @@ bool UI::ColorPicker4(float col[4]) {
 }
 
 void UI::SetupColors() {
-    ImGuiStyle& style = ImGui::GetStyle();
+    ImGuiStyle &style = ImGui::GetStyle();
 
-    ImVec4 mainColorHovered = ImVec4(Settings::UI::mainColor.Color().Value.x + 0.1f, Settings::UI::mainColor.Color().Value.y + 0.1f, Settings::UI::mainColor.Color().Value.z + 0.1f, Settings::UI::mainColor.Color().Value.w);
-    ImVec4 mainColorActive = ImVec4(Settings::UI::mainColor.Color().Value.x + 0.2f, Settings::UI::mainColor.Color().Value.y + 0.2f, Settings::UI::mainColor.Color().Value.z + 0.2f, Settings::UI::mainColor.Color().Value.w);
-    ImVec4 menubarColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y, Settings::UI::bodyColor.Color().Value.z, Settings::UI::bodyColor.Color().Value.w - 0.8f);
-    ImVec4 frameBgColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y, Settings::UI::bodyColor.Color().Value.z, Settings::UI::bodyColor.Color().Value.w + .1f);
-    ImVec4 tooltipBgColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y, Settings::UI::bodyColor.Color().Value.z, Settings::UI::bodyColor.Color().Value.w + .05f);
-    ImVec4 accentColorHovered = ImVec4(Settings::UI::accentColor.Color().Value.x + 0.1f, Settings::UI::accentColor.Color().Value.y + 0.1f, Settings::UI::accentColor.Color().Value.z + 0.1f, Settings::UI::accentColor.Color().Value.w);
-    ImVec4 accentColorActive = ImVec4(Settings::UI::accentColor.Color().Value.x + 0.2f, Settings::UI::accentColor.Color().Value.y + 0.2f, Settings::UI::accentColor.Color().Value.z + 0.2f, Settings::UI::accentColor.Color().Value.w);
+    ImVec4 mainColorHovered = ImVec4(Settings::UI::mainColor.Color().Value.x + 0.1f,
+                                     Settings::UI::mainColor.Color().Value.y + 0.1f,
+                                     Settings::UI::mainColor.Color().Value.z + 0.1f,
+                                     Settings::UI::mainColor.Color().Value.w);
+    ImVec4 mainColorActive = ImVec4(Settings::UI::mainColor.Color().Value.x + 0.2f,
+                                    Settings::UI::mainColor.Color().Value.y + 0.2f,
+                                    Settings::UI::mainColor.Color().Value.z + 0.2f,
+                                    Settings::UI::mainColor.Color().Value.w);
+    ImVec4 menubarColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y,
+                                 Settings::UI::bodyColor.Color().Value.z,
+                                 Settings::UI::bodyColor.Color().Value.w - 0.8f);
+    ImVec4 frameBgColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y,
+                                 Settings::UI::bodyColor.Color().Value.z,
+                                 Settings::UI::bodyColor.Color().Value.w + .1f);
+    ImVec4 tooltipBgColor = ImVec4(Settings::UI::bodyColor.Color().Value.x, Settings::UI::bodyColor.Color().Value.y,
+                                   Settings::UI::bodyColor.Color().Value.z,
+                                   Settings::UI::bodyColor.Color().Value.w + .05f);
+    ImVec4 accentColorHovered = ImVec4(Settings::UI::accentColor.Color().Value.x + 0.1f,
+                                       Settings::UI::accentColor.Color().Value.y + 0.1f,
+                                       Settings::UI::accentColor.Color().Value.z + 0.1f,
+                                       Settings::UI::accentColor.Color().Value.w);
+    ImVec4 accentColorActive = ImVec4(Settings::UI::accentColor.Color().Value.x + 0.2f,
+                                      Settings::UI::accentColor.Color().Value.y + 0.2f,
+                                      Settings::UI::accentColor.Color().Value.z + 0.2f,
+                                      Settings::UI::accentColor.Color().Value.w);
 
     style.Alpha = 1.0f;
     style.WindowPadding = ImVec2(4, 4);
@@ -250,7 +268,8 @@ void UI::SetupColors() {
     style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
     style.Colors[ImGuiCol_TitleBgActive] = Settings::UI::mainColor.Color();
     style.Colors[ImGuiCol_MenuBarBg] = menubarColor;
-    style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(frameBgColor.x + .05f, frameBgColor.y + .05f, frameBgColor.z + .05f, frameBgColor.w);
+    style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(frameBgColor.x + .05f, frameBgColor.y + .05f, frameBgColor.z + .05f,
+                                                frameBgColor.w);
     style.Colors[ImGuiCol_ScrollbarGrab] = Settings::UI::accentColor.Color();
     style.Colors[ImGuiCol_ScrollbarGrabHovered] = accentColorHovered;
     style.Colors[ImGuiCol_ScrollbarGrabActive] = accentColorActive;
