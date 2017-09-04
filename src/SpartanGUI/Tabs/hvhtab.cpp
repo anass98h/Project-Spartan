@@ -9,7 +9,7 @@ void HvH::RenderTab() {
 
     const char *yTypes[] = {
             "no aa", "Backwards", "Forwards", "FakeSideWays", "Spin", "Backjitter", "FJitter", "Tank1", "Tank2", "richi's eap", "myrrib's eap",
-            "lbyBreaker", "FakeLBY", "lbySpin", "LBYjitter", "LBY", "LEGITTROLLING", "LEGITTROLLING2", "Custom", "Custom2" // safe
+            "lbyBreaker", "FakeLBY", "lbySpin", "LBYjitter", "LBY", "LBY + 180", "LEGITTROLLING", "LEGITTROLLING2", "Custom", "Custom2" // safe
     };
 
     const char *lbyTypes[] = {
@@ -21,7 +21,7 @@ void HvH::RenderTab() {
     };
 
     const char *xTypes[] = {
-            "up", "flip", "down",
+            "Up", "Flip", "Down", "Fake Zer0", "Fake Up",
     };
 
     const char *Hugtypes[] = {
