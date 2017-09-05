@@ -54,23 +54,15 @@ void HvH::RenderTab() {
                     ImGui::PushItemWidth(-3);
                     if (ImGui::Combo(XORSTR("##YFAKETYPE"), (int *) &Settings::AntiAim::Yaw::typeFake, yTypes,
                                      IM_ARRAYSIZE(yTypes))) {
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                            !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM) {
-                            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::SPIN;
-
+                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM2) {
+                            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
                     if (ImGui::Combo(XORSTR("##YACTUALTYPE"), (int *) &Settings::AntiAim::Yaw::type, yTypes,
                                      IM_ARRAYSIZE(yTypes))) {
-                        if (Settings::AntiAim::Yaw::type <= AntiAimType_Y::LEGITTROLLING2) {
-                            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::NOAA;
-                        }
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                            !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Yaw::type >= AntiAimType_Y::CUSTOM) {
-                            Settings::AntiAim::Yaw::type = AntiAimType_Y::SPIN;
+                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Yaw::type >= AntiAimType_Y::CUSTOM2) {
+                            Settings::AntiAim::Yaw::type = AntiAimType_Y::NOAA;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
@@ -101,11 +93,8 @@ void HvH::RenderTab() {
                     ImGui::PushItemWidth(-1);
                     if (ImGui::Combo(XORSTR("##ZTYPE"), (int *) &Settings::AntiAim::Roll::type, zTypes,
                                      IM_ARRAYSIZE(zTypes))) {
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                            !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Roll::type >= AntiAimType_Z::TEST) {
-
-
+                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Roll::type >= AntiAimType_Z::TEST) {
+                            Settings::AntiAim::Roll::enabled = false;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
@@ -125,10 +114,8 @@ void HvH::RenderTab() {
                     ImGui::PushItemWidth(-1);
                     if (ImGui::Combo(XORSTR("##XTYPE"), (int *) &Settings::AntiAim::Pitch::type, xTypes,
                                      IM_ARRAYSIZE(xTypes))) {
-                        if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) &&
-                            !Settings::AntiAim::allowUntrustedAngles &&
-                            Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP) {
-                            Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
+                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_DOWN) {
+                            Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
@@ -174,9 +161,9 @@ void HvH::RenderTab() {
                 ImGui::Columns(1);
                 ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 85));
                 if (ImGui::BeginPopupModal(XORSTR("Error###UNTRUSTED_AA"))) {
-                    ImGui::Text(XORSTR("You cannot use this antiaim type on a VALVE server."));
+                    ImGui::Text(XORSTR("Your selected feature is Untrusted."));
 
-                    ImGui::Checkbox(XORSTR("This is not a VALVE server"), &ValveDSCheck::forceUT);
+                    ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
                     if (ImGui::Button(XORSTR("OK")))
                         ImGui::CloseCurrentPopup();
