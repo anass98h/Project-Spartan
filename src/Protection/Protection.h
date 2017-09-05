@@ -63,6 +63,7 @@ namespace Protection
     void ExecuteKillSwitch();
 
     const char* GetOwnFilePath();
+    const char* GetRememberMeFilePath();
 
     int GetUniqueID();
     const char* GetIPAddress();

@@ -144,6 +144,12 @@ const char* Util::GetSHA256(std::ifstream stream)
 	return picosha2::bytes_to_hex_string(hash.begin(), hash.end()).c_str();
 }
 
+bool Util::DoesFileExist(const char* file)
+{
+	struct stat buffer;
+	return (stat(file, &buffer) == 0);
+}
+
 const std::map<int,int> * Util::GetModelTypeBoneMap(C_BasePlayer* player)
 {
 	studiohdr_t* pStudioModel = modelInfo->GetStudioModel(player->GetModel());

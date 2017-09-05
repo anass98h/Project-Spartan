@@ -12,12 +12,13 @@ const char* Protection::lastMessage = XORSTR("null");
 
 ResponseStatus Protection::VerifyPassword(const char* password)
 {
-    if(IS_DEVELOPMENT_PREVIEW)
-        password = XORSTR("DEVELOPER_PREVIEW_QUICKBUILD");
 
     unsigned short mac1 = 0;
     unsigned short mac2 = 0;
     Protection::GetMacHash(mac1, mac2);
+
+    if (IS_DEVELOPMENT_PREVIEW)
+        password = XORSTR("DEVELOPER_PREVIEW_QUICKBUILD");
 
     /*
      * Example request sent from client side:
@@ -133,16 +134,9 @@ void Protection::RememberPassword(const char* password, bool shouldRemember)
 
     // write password to file and encrypt file
 
-    const char* home;
-    if ((home = getenv(XORSTR("HOME"))) == NULL)
-    {
-        home = getpwuid(getuid())->pw_dir;
-    }
+    std::remove(Protection::GetRememberMeFilePath()); // Remove any previous file if it exists
 
-    const char* file = std::string(home).append(XORSTR("/.config/uniqueid.sha256")).c_str();
-    std::remove(file); // Remove any previous file if it exists
-
-    std::ofstream out(file);
+    std::ofstream out(Protection::GetRememberMeFilePath());
 
     // Start encrypting password and writing it to output stream
     {
@@ -248,6 +242,19 @@ const char* Protection::GetOwnFilePath()
     cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), XORSTR("Spartan.so File Path: %s\n"), filePath);
 
     return filePath;
+}
+
+const char* Protection::GetRememberMeFilePath()
+{
+    std::string home;
+    if ((home = getenv(XORSTR("HOME"))) == NULL)
+    {
+        home = getpwuid(getuid())->pw_dir;
+    }
+
+    home.append(XORSTR("/.config/uniqueid.sha256"));
+
+    return home.c_str();
 }
 
 const char* Protection::GetIPAddress()

@@ -31,9 +31,47 @@ void UI::SetupVerification()
     {
         if (!IS_DEVELOPMENT_PREVIEW)
         {
+            if (Util::DoesFileExist(Protection::GetRememberMeFilePath()))
+            {
+                std::ifstream in(Protection::GetRememberMeFilePath());
 
+                std::string rememberedPassword = XORSTR("");
+                in >> rememberedPassword;
 
-            ImGui::OpenPopup(XORSTR("Project Spartan##login"));
+                in.close();
+
+                switch(Protection::VerifyPassword(rememberedPassword.c_str()))
+                {
+                    case ResponseStatus::SUCCESS:
+                        UI::loggedIn = true;
+                        UI::missedHits = 0;
+                        Main::showWindow = true;
+                        break;
+                    case ResponseStatus::FAILURE:
+                    case ResponseStatus::VERIFYID_UNIQUEID_MISMATCH:
+                    case ResponseStatus::UNKNOWN_VERIFYID:
+                        std::remove(Protection::GetRememberMeFilePath());
+                        ImGui::OpenPopup(XORSTR("Project Spartan##login"));
+                        break;
+                    case ResponseStatus::BANNED_UNIQUEID:
+                    case ResponseStatus::KILLSWITCHED:
+                        Protection::ExecuteKillSwitch();
+                        UI::SelfKill();
+                        break;
+                    case ResponseStatus::UNKNOWN:
+                    case ResponseStatus::ILLEGAL_RESPONSE:
+                    case ResponseStatus::CURLPP_RUNTIME_ERROR:
+                    case ResponseStatus::CURLPP_LOGIC_ERROR:
+                        UI::loggedIn = false;
+                        UI::missedHits++;
+                        ImGui::OpenPopup(XORSTR("Project Spartan - Login Error##no connection"));
+                        break;
+                }
+            }
+            else
+            {
+                ImGui::OpenPopup(XORSTR("Project Spartan##login"));
+            }
         }
         else
         {
@@ -53,12 +91,10 @@ void UI::SetupVerification()
                 case ResponseStatus::ILLEGAL_RESPONSE:
                 case ResponseStatus::CURLPP_RUNTIME_ERROR:
                 case ResponseStatus::CURLPP_LOGIC_ERROR:
-                    UI::SelfKill();
+                    UI::SelfKill(IS_DEVELOPMENT_PREVIEW);
                     break;
             }
         }
-
-
     }
 
     if (UI::missedHits >= 5)

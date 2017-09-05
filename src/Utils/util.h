@@ -2,6 +2,7 @@
 
 #include <string>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <zconf.h>
 #include <vector>
 #include <map>
@@ -37,6 +38,8 @@ namespace Util
 	const char* GetCurrentTimeAsISO8601Timestamp();
 	const char* GetSHA256(const char* input);
 	const char* GetSHA256(std::ifstream stream);
+
+	bool DoesFileExist(const char* file);
   
 	const std::map<int,int> * GetModelTypeBoneMap(C_BasePlayer* player);
 	ModelType GetModelTypeID(C_BasePlayer* player);
