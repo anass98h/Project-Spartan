@@ -1138,8 +1138,8 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
         if (Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM)
             Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::CUSTOM;
 
-        if (Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP)
-            Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_UP;
+        if (Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN)
+            Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
     }
 
     if (Settings::AntiAim::Yaw::enabled) {
