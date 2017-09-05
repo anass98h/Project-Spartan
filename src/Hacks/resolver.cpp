@@ -295,7 +295,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
             bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
             float curTime = globalVars->curtime;
-            float LBY = Circlebian->GetLowerBodyYawTarget;
+            float LBY = *Circlebian->GetLowerBodyYawTarget();
 
             static float nextUpdate = 0.f;
 
