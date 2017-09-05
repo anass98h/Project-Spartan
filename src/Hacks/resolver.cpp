@@ -294,12 +294,12 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
             static bool firstLBYupdate = false;
 
             bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
-            float curTime = globalVars->curtime();
-            float LBY = Circlebian->GetLowerBodyYawTarget();
+            float curTime = globalVars->curtime;
+            float LBY = Circlebian->GetLowerBodyYawTarget;
 
             static float nextUpdate = 0.f;
 
-            if (onGround && fabsf(Circlebian->GetVelocity().x()) > 1)
+            if (onGround && fabsf(Circlebian->GetVelocity().x) > 1)
             {
                 isMoving = true;
             }
