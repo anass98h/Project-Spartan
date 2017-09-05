@@ -8,7 +8,7 @@ bool Settings::customYaw2::lby;
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "no aa", "Backwards", "Forwards", "FakeSideWays", "Spin", "Backjitter", "FJitter", "Tank1", "Tank2", "richi's eap", "myrrib's eap",
+            "no aa", "Backwards", "Forwards", "FakeSideWays", "Spin", "Backjitter", "FJitter", "TJITTER", "Tank1", "Tank2", "richi's eap", "myrrib's eap",
             "lbyBreaker", "FakeLBY", "lbySpin", "LBYjitter", "LBY", "LBY + 180", "LEGITTROLLING", "LEGITTROLLING2", "Custom", "Custom2" // safe
     };
 

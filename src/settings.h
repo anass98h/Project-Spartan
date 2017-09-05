@@ -56,6 +56,7 @@ enum class AntiAimType_Y : int {
     SPIN,
     BACKJITTER,
     FJITTER,
+    TJITTER,
     TANK1,
     TANK2,
     richieap,
