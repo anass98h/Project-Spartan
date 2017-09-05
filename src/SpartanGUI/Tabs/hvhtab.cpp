@@ -114,7 +114,7 @@ void HvH::RenderTab() {
                     ImGui::PushItemWidth(-1);
                     if (ImGui::Combo(XORSTR("##XTYPE"), (int *) &Settings::AntiAim::Pitch::type, xTypes,
                                      IM_ARRAYSIZE(xTypes))) {
-                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_DOWN) {
+                        if (!Settings::AntiAim::allowUntrustedAngles && Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN) {
                             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
                             ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
