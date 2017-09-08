@@ -165,7 +165,7 @@ enum class SpammerType : int {
     SPAMMER_POSITIONS,
 };
 
-enum class ResolverType : int {
+enum class Resolvertype : int {
     OFF,
     ON,
 };
@@ -564,7 +564,7 @@ namespace Settings {
         extern bool enabled;
         extern float ticks;
         extern float modulo;
-        extern ResolverType Type;
+        extern Resolvertype type;
    
     }
     namespace lbyindicator {

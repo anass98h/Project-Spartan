@@ -24,7 +24,7 @@ void HvH::RenderTab() {
             "Up", "Flip", "Down", "Fake Zer0", "Fake Up",
     };
 
-    const char *ResolverTypes[] = {
+    const char *Resolvertypes[] = {
             "OFF","ON",
     };
 
@@ -184,12 +184,12 @@ void HvH::RenderTab() {
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
     
-                if(ImGui::Combo(XORSTR("##TYPE"), (int *) &Settings::Resolver::Type, ResolverTypes, IM_ARRAYSIZE(ResolverTypes)))
+                if(ImGui::Combo(XORSTR("##TYPE"), (int *) &Settings::Resolver::type, Resolvertypes, IM_ARRAYSIZE(Resolvertypes)))
                 {
-                    if(Settings::Resolver::Type == ResolverType::ON)
+                    if(Settings::Resolver::type == Resolvertype::ON)
                         Settings::Resolver::enabled = true ;
                     
-                    if(Settings::Resolver::Type == ResolverType::OFF)
+                    if(Settings::Resolver::type == Resolvertype::OFF)
                         Settings::Resolver::enabled = false;
                 
                 }
