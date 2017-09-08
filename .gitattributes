@@ -2,7 +2,12 @@
 src/ImGui/* linguist-vendored
 
 # Normalize specified C Files to C++ files
-src/SDK/checksum_md5.h linguist-language=C++
+src/SDK/checksum_md5.h linguist-language=cpp
+src/SpartanGUI/SegoeUI.h linguist-language=cpp
+src/SpartanGUI/arial.h linguist-language=cpp
+
+# Mark UserHalp as documentation
+UserHalp/* linguist-documentation
 
 # Source Files
 *.c text
