@@ -24,8 +24,8 @@ void HvH::RenderTab() {
             "Up", "Flip", "Down", "Fake Zer0", "Fake Up",
     };
 
-    const char *Hugtypes[] = {
-            "OFF", "Tux", "Plus Delta", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "I'm feeling Lucky", "Myrrib's DELTA"
+    const char *types[] = {
+            "OFF","ON",
     };
 
 
@@ -183,13 +183,20 @@ void HvH::RenderTab() {
         {
             ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
-            ImGui::Checkbox(XORSTR("Enable"), &Settings::Resolver::enabled);
-            if (Settings::Resolver::enabled) {
-                ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes, IM_ARRAYSIZE(Hugtypes));
+    
+                if(ImGui::Combo(XORSTR("##TYPE"), (int *) &Settings::Resolver::type, types, IM_ARRAYSIZE(types)))
+                {
+                    if(Settings::Resolver::type == Resolvertype::ON)
+                        Settings::Resolver::enabled = true ;
+                    
+                    if(Settings::Resolver::type == Resolvertype::OFF)
+                        Settings::Resolver::enabled = false;
+                
+                }
                 ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50, XORSTR("Ticks: %0.f"));
                 ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50, XORSTR("Modulo: %0.f"));
                 ImGui::Checkbox(XORSTR("crash game"), &Settings::Resolver::LagComp);
-            }
+            
 
             ImGui::Separator();
 

@@ -37,7 +37,7 @@ namespace Resolver
 	extern std::vector<int64_t> playerAngleLogs;
 	extern std::array<CResolveInfo, 32> m_arrInfos;
 
-	void Hug(C_BasePlayer* Circlebian);
+	void Resolve(C_BasePlayer* target);
 	void FrameStageNotify(ClientFrameStage_t stage);
 	void PostFrameStageNotify(ClientFrameStage_t stage);
 	void FireGameEvent(IGameEvent* event);
@@ -54,11 +54,11 @@ namespace Resolver
     float GetDeltaByComparingTicks(const std::deque<CTickRecord>& l);
     bool DeltaKeepsChanging(const std::deque<CTickRecord>& cur, float tolerance = 15.f);
     bool LBYKeepsChanging(const std::deque<CTickRecord>& cur, float tolerance = 15.f);
-    bool IsEntityMoving(C_BasePlayer* Circlebian);
-	bool& LowerBodyYawChanged(C_BasePlayer* Circlebian);
-	void StoreVars(C_BasePlayer* Circlebian);
-	void StoreVars(C_BasePlayer* Circlebian, QAngle ang, float lby, float simtime, float tick);
-	bool& BacktrackThisTick(C_BasePlayer* Circlebian);
+    bool IsEntityMoving(C_BasePlayer* target);
+	bool& LowerBodyYawChanged(C_BasePlayer* target);
+	void StoreVars(C_BasePlayer* target);
+	void StoreVars(C_BasePlayer* target, QAngle ang, float lby, float simtime, float tick);
+	bool& BacktrackThisTick(C_BasePlayer* target);
 }
 
 const inline float GetDelta(float a, float b) {

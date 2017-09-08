@@ -93,7 +93,7 @@ int __attribute__ ((constructor)) Startup() {
     if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
         SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
 
-    NetVarManager::DumpNetvars();
+   // NetVarManager::DumpNetvars();
     Offsets::GetOffsets();
 
     Fonts::SetupFonts();
