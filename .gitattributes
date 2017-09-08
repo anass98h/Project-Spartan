@@ -1,5 +1,4 @@
 # Don't include ImGui in the linguist language percentage
-src/ImGui/* linguist-vendored
 src/ImGui/**/* linguist-vendored
 
 # Normalize specified C Files to C++ files
