@@ -338,71 +338,62 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                 if (staticAngle)
                 {
                     if (Circlebian->GetEyeAngles()->y == LBY){
-                        if (Shotsmissed > 1)
+                        int a = Shotsmissed % 10;
+                        switch (a)
                         {
-                            Circlebian->GetEyeAngles()->y = LBY + 180;
-                        }
-                        else if (Shotsmissed > 2)
-                        {
-                            if (Shotsmissed > 3)
-                            {
-                                int n = Shotsmissed % 11;
-                                int rng = rand() % 180 + 1;
-                                switch (n)
-                                {
-                                    case 0: Circlebian->GetEyeAngles()->y = LBY; break; // This should not even be used
-                                    case 1: Circlebian->GetEyeAngles()->y += 180.f; break;
-                                    case 2: Circlebian->GetEyeAngles()->y = LBY + 180.f; break; // This is where it will start
-                                    case 3: Circlebian->GetEyeAngles()->y += 90.f; break;
-                                    case 4: Circlebian->GetEyeAngles()->y += 135.f; break;
-                                    case 5: Circlebian->GetEyeAngles()->y -= 90.f; break;
-                                    case 6: Circlebian->GetEyeAngles()->y += 45.f; break;
-                                    case 7: Circlebian->GetEyeAngles()->y -= 135.f; break;
-                                    case 8: Circlebian->GetEyeAngles()->y -= 45.f; break;
-                                    case 9: Circlebian->GetEyeAngles()->y += rng; break;
-                                    case 10: Circlebian->GetEyeAngles()->y -= rng; break;
-                                }
-                            }
-                            else
-                            {
-                                Circlebian->GetEyeAngles()->y = LBY;
-                            }
-                        }
-                        else
-                        {
-                            Circlebian->GetEyeAngles()->y = LBY;
+                            case 0: Circlebian->GetEyeAngles()->y = LBY; break;
+                            case 1: Circlebian->GetEyeAngles()->y = LBY + 180; break;
+                            case 2: Circlebian->GetEyeAngles()->y = LBY + 90; break;
+                            case 3: Circlebian->GetEyeAngles()->y = LBY + 135; break;
+                            case 4: Circlebian->GetEyeAngles()->y = LBY - 90; break;
+                            case 5: Circlebian->GetEyeAngles()->y = LBY + 45; break;
+                            case 6: Circlebian->GetEyeAngles()->y = LBY - 45; break;
+                            case 7: Circlebian->GetEyeAngles()->y = LBY - 135; break;
+                            case 8: Circlebian->GetEyeAngles()->y = LBY + 100; break;
+                            case 9: Circlebian->GetEyeAngles()->y = LBY - 100; break;
+                            default: Circlebian->GetEyeAngles()->y = LBY; break;
                         }
                     }
-
+                    else {
+                        int b = Shotsmissed % 10;
+                        switch (b)
+                        {
+                            case 0: Circlebian->GetEyeAngles()->y = LBY; break;
+                            case 1: Circlebian->GetEyeAngles()->y += 180; break;
+                            case 2: Circlebian->GetEyeAngles()->y -= 90; break;
+                            case 3: Circlebian->GetEyeAngles()->y += 135; break;
+                            case 4: Circlebian->GetEyeAngles()->y += 90; break;
+                            case 5: Circlebian->GetEyeAngles()->y -= 45; break;
+                            case 6: Circlebian->GetEyeAngles()->y += 45; break;
+                            case 7: Circlebian->GetEyeAngles()->y -= 135; break;
+                            case 8: Circlebian->GetEyeAngles()->y -= 100; break;
+                            case 9: Circlebian->GetEyeAngles()->y += 100; break;
+                            default: Circlebian->GetEyeAngles()->y = LBY; break;
+                        }
+                    }
                 }
                 else
                 {
-                    if (Shotsmissed > 1)
-                    {   
-                        int n = Shotsmissed % 11;
-                        int rng = rand() % 180 + 1;
-                        switch (n)
-                        {
-                            case 0: Circlebian->GetEyeAngles()->y = LBY; break; // This should not even be used
-                            case 1: Circlebian->GetEyeAngles()->y += 180.f; break;
-                            case 2: Circlebian->GetEyeAngles()->y = LBY + 180.f; break; // This is where it will start
-                            case 3: Circlebian->GetEyeAngles()->y = LBY + 90.f; break;
-                            case 4: Circlebian->GetEyeAngles()->y = LBY + 135.f; break;
-                            case 5: Circlebian->GetEyeAngles()->y = LBY - 90.f; break;
-                            case 6: Circlebian->GetEyeAngles()->y = LBY + 45.f; break;
-                            case 7: Circlebian->GetEyeAngles()->y = LBY - 135.f; break;
-                            case 8: Circlebian->GetEyeAngles()->y = LBY - 45.f; break;
-                            case 9: Circlebian->GetEyeAngles()->y = LBY + rng; break;
-                            case 10: Circlebian->GetEyeAngles()->y = LBY - rng; break;
-                        }
-                    }
-                    else
+                    int c = Shotsmissed % 11;
+                    int rng = rand() % 180 + 1;
+                    switch (c)
                     {
-                        Circlebian->GetEyeAngles()->y = LBY;
+                        case 0: Circlebian->GetEyeAngles()->y = LBY; break; // This should not even be used
+                        case 1: Circlebian->GetEyeAngles()->y += 180.f; break;
+                        case 2: Circlebian->GetEyeAngles()->y = LBY + 180.f; break; // This is where it will start
+                        case 3: Circlebian->GetEyeAngles()->y = LBY + 90.f; break;
+                        case 4: Circlebian->GetEyeAngles()->y = LBY + 135.f; break;
+                        case 5: Circlebian->GetEyeAngles()->y = LBY - 90.f; break;
+                        case 6: Circlebian->GetEyeAngles()->y = LBY + 45.f; break;
+                        case 7: Circlebian->GetEyeAngles()->y = LBY - 135.f; break;
+                        case 8: Circlebian->GetEyeAngles()->y = LBY - 45.f; break;
+                        case 9: Circlebian->GetEyeAngles()->y = LBY + rng; break;
+                        case 10: Circlebian->GetEyeAngles()->y = LBY - rng; break;
+                        default: Circlebian->GetEyeAngles()->y = LBY; break;
                     }
                 }
+	        }
 	    }
-	}
         case ResolverHugtype::OFF:break;
     }
 }
