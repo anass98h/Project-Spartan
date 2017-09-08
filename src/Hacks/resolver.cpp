@@ -4,7 +4,7 @@ bool Settings::Resolver::enabled = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
 bool Settings::Resolver::LagComp = false;
-Resolvertype Settings::Resolver::type = Resolvertype::OFF;
+ResolverType Settings::Resolver::Type = ResolverType::OFF;
 
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
@@ -36,9 +36,9 @@ void Resolver::Resolve(C_BasePlayer* target) {
     static float bodyeyedelta = target->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 
 
-    switch (Settings::Resolver::type) {
+    switch (Settings::Resolver::Type) {
        
-	case Resolvertype::ON:
+	case ResolverType::ON:
         {
             // 1. Check if LBY is updated
             // 2. If yes -> LBY, If not -> 3.
@@ -151,7 +151,7 @@ void Resolver::Resolve(C_BasePlayer* target) {
                 }
 	        }
 	    }
-        case Resolvertype::OFF:break;
+        case ResolverType::OFF:break;
     }
 }
 

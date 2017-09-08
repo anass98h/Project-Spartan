@@ -197,7 +197,7 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     settings[XORSTR("LBYIndicator")][XORSTR("enabled")] = Settings::lbyindicator::enabled;
     settings[XORSTR("Resolver")][XORSTR("ticks")] = Settings::Resolver::ticks;
     settings[XORSTR("Resolver")][XORSTR("modulo")] = Settings::Resolver::modulo;
-    settings[XORSTR("Resolver")][XORSTR("type")] = (int) Settings::Resolver::type;
+    settings[XORSTR("Resolver")][XORSTR("Type")] = (int) Settings::Resolver::Type;
     settings[XORSTR("Resolver")][XORSTR("enabled")] = (int) Settings::Resolver::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("enabled")] = Settings::Triggerbot::enabled;
     settings[XORSTR("Triggerbot")][XORSTR("key")] = Util::GetButtonName(Settings::Triggerbot::key);
@@ -648,7 +648,7 @@ void Settings::LoadConfig(std::string path) {
 
     GetVal(settings[XORSTR("Resolver")][XORSTR("ticks")], &Settings::Resolver::ticks);
     GetVal(settings[XORSTR("Resolver")][XORSTR("modulo")], &Settings::Resolver::modulo);
-    GetVal(settings[XORSTR("Resolver")][XORSTR("type")], (int*) &Settings::Resolver::type);
+    GetVal(settings[XORSTR("Resolver")][XORSTR("Type")], (int*) &Settings::Resolver::Type);
     GetVal(settings[XORSTR("Resolver")][XORSTR("enabled")], (int*) &Settings::Resolver::enabled);
 
     GetVal(settings[XORSTR("AngleIndicator")][XORSTR("enabled")], &Settings::AngleIndicator::enabled);

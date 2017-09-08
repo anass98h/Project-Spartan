@@ -82,7 +82,7 @@ void NameChanger::BeginFrame(float frameTime) {
     if (changes >= 5) {
         switch (NameChanger::type) {
             case NC_Type::NC_NORMAL:
-                SetName(Util::PadStringRight(XORSTR("\230\rProject Spartan"), strlen(XORSTR("\230\rProject Spartan")) + Util::RandomInt(10, 50)));
+                SetName(Util::PadStringRight(XORSTR("\230\nProject Spartan"), strlen(XORSTR("\230\nProject Spartan")) + Util::RandomInt(10, 50)));
                 break;
             case NC_Type::NC_RAINBOW:
                 AyywareCrash();
@@ -97,5 +97,5 @@ void NameChanger::BeginFrame(float frameTime) {
         return;
     }
 
-    SetName(Util::PadStringRight(XORSTR("\rProject Spartan"), strlen(XORSTR("\rProject Spartan")) + changes)); //THis cheat needs a website :^)
+    SetName(Util::PadStringRight(XORSTR("\nProject Spartan"), strlen(XORSTR("\nProject Spartan")) + changes)); // .y.
 }
