@@ -1,5 +1,9 @@
 # Don't include ImGui in the linguist language percentage
 src/ImGui/* linguist-vendored
+src/ImGui/examples/* linguist-vendored
+src/ImGui/extra_fonts/* linguist-vendored
+src/ImGui/fonts/* linguist-vendored
+src/ImGui/IconsFontAmazing/* linguist-vendored
 
 # Normalize specified C Files to C++ files
 src/SDK/checksum_md5.h linguist-language=cpp
