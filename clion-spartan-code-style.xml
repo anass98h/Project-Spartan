@@ -10,6 +10,7 @@
     <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
     <option name="SPACE_BEFORE_REFERENCE_IN_DECLARATION" value="false" />
     <option name="SPACE_AFTER_REFERENCE_IN_DECLARATION" value="true" />
+    <option name="SPACE_BETWEEN_ADJACENT_BRACKETS" value="true" />
   </Objective-C>
   <Objective-C-extensions>
     <file>
