@@ -978,10 +978,8 @@ static void DoAntiAimZ(QAngle& angle, int command_number, bool& clamp) {
 
     switch (aa_type) {
         case AntiAimType_Z::TEST:
-
             angle.z = 180.0f;
             break;
-
     }
 }
 
@@ -996,35 +994,40 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
     switch (aa_type) {
 
         case AntiAimType_LBY::ONE:
+        {
             static bool flip1 = false;
-            static float prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            static float prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
+                    engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
-            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) 
-            {
+            if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
-                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                if (prevLBY1 !=
+                    *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip1 = false;
-                if (prevLBY1 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                if (prevLBY1 !=
+                    *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip1 = true;
                 if (flip1)
                     angle.y += 108.f;
                 else
                     angle.y -= 109.f;
 
-                prevLBY1 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
-            }
-            else
-            {
+                prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            } else {
                 angle.y -= 0;
             }
+        }
             break;
         case AntiAimType_LBY::TWO:
+        {
             static bool flip2 = false;
-            static float prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            static float prevLBY2 = *((C_BasePlayer *) entityList->GetClientEntity(
+                    engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
             if (pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f) {
 
-                if (prevLBY2 != *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                if (prevLBY2 !=
+                    *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
                     flip2 = !flip2;
 
                 if (flip2)
@@ -1032,38 +1035,53 @@ static void DoAntiAimLBY(QAngle& angle, int command_number, bool bFlip, bool& cl
                 else
                     angle.y -= 90.f;
 
-                prevLBY2 = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
-            } else   
+                prevLBY2 = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+            } else
                 angle.y -= 0.0f;
+        }
             break;
         case AntiAimType_LBY::THREE:
-                static bool LBYflip = true;
-                static float nextUpdate = globalVars->curtime + 1.1f;
-                int cuck = prevLBY1 + 108;
-                LBYflip = !LBYflip;
-                if (LBYflip)
-                {
-                    if (fabsf(pLocal->GetVelocity().x) != 0) 
-                    {
-                        angle.y += 180.f;
+        {
+            static bool LBYflip = true;
+            static float prevLBY1;
+            static int cuck = 0;
+            static float nextUpdate = globalVars->curtime + 1.1f;
+            cuck = prevLBY1 + 108;
+            LBYflip = !LBYflip;
+            if (LBYflip) {
+                if (fabsf(pLocal->GetVelocity().x) != 0) {
+                    angle.y += 180.f;
+                    CreateMove::sendPacket = false;
+                } else {
+                    if (globalVars->curtime > nextUpdate) {
+
+                        angle.y += cuck;
                         CreateMove::sendPacket = false;
-                    }
-                    else 
-                    {
-                        if (globalVars->curtime > nextUpdate){
-                            
-                            angle.y += cuck;
-                            CreateMove::sendPacket = false;
-                            nextUpdate = globalVars->curtime + 1.1f;
-                    }
+                        nextUpdate = globalVars->curtime + 1.1f;
                     }
                 }
-                else 
-                {
-                    angle.y += *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 90.f;
-                    CreateMove::sendPacket = true;
-                }
+            } else {
+                angle.y += *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 90.f;
+                CreateMove::sendPacket = true;
+            }
+        }
             break;
+        case AntiAimType_LBY::MYRRIB:
+        {
+            static bool LBYflipM = false;
+            LBYflipM = !LBYflipM;
+            if (LBYflipM)
+            {
+                angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                CreateMove::sendPacket = true;
+            }
+            else
+            {
+                angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
+                CreateMove::sendPacket = false;
+            }
+        }
+        break;
     }
 }
 
