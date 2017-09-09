@@ -299,48 +299,49 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
             static float nextUpdate = 0.f;
 
-            if (onGround && fabsf(Circlebian->GetVelocity().x) > 1)
-            {
+            static int shotsmissedSave = 0;
+            static float shotsmissedTime = 0.f;
+
+            if ( Shotsmissed > 0 && Shotsmissed != shotsmissedSave ) {
+                shotsmissedTime = curTime + 4.f;
+                shotsmissedSave = Shotsmissed;
+            }
+            else if ( shotsmissedTime > curTime && Shotsmissed == 0 ) {
+                shotsmissedSave = 0;
+            }
+
+            if ( onGround && fabsf(Circlebian->GetVelocity().x) > 1 ) {
                 isMoving = true;
             }
-            else
-            {
+            else {
                 isMoving = false;
             }
 
-            if (firstLBYupdate && curTime > nextUpdate && onGround && fabsf(bodyeyedelta) > 35.f)
-            {
+            if ( firstLBYupdate && curTime > nextUpdate && onGround && fabsf(bodyeyedelta) > 35.f ) {
                 isLBYupdated = true;
                 nextUpdate = curTime + 1.1f;
             }
-            else
-            {
+            else {
                 isLBYupdated = false;
             }
 
-            if (HasStaticRealAngle(cur))
-            {
+            if ( HasStaticRealAngle(cur) ) {
                 staticAngle = true;
             }
-            else
-            {
+            else {
                 staticAngle = false;
             }
 
-            if (isMoving || isLBYupdated || fabsf(bodyeyedelta) < 35.f)
-            {
+            if ( isMoving || isLBYupdated || fabsf(bodyeyedelta) < 35.f ) {
                 firstLBYupdate = true;
                 Circlebian->GetEyeAngles()->y = LBY;
             }
-            else
-            {
+            else {
                 // LBY is NOT updated
-                if (staticAngle)
-                {
-                    if (Circlebian->GetEyeAngles()->y == LBY){
-                        int a = Shotsmissed % 10;
-                        switch (a)
-                        {
+                if ( staticAngle ) {
+                    if ( Circlebian->GetEyeAngles()->y == LBY ) {
+                        int a = shotsmissedSave % 10;
+                        switch ( a ) {
                             case 0: Circlebian->GetEyeAngles()->y = LBY; break;
                             case 1: Circlebian->GetEyeAngles()->y = LBY + 180; break;
                             case 2: Circlebian->GetEyeAngles()->y = LBY + 90; break;
@@ -355,9 +356,8 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                         }
                     }
                     else {
-                        int b = Shotsmissed % 10;
-                        switch (b)
-                        {
+                        int b = shotsmissedSave % 10;
+                        switch ( b ) {
                             case 0: Circlebian->GetEyeAngles()->y = LBY; break;
                             case 1: Circlebian->GetEyeAngles()->y += 180; break;
                             case 2: Circlebian->GetEyeAngles()->y -= 90; break;
@@ -372,12 +372,10 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
                         }
                     }
                 }
-                else
-                {
-                    int c = Shotsmissed % 11;
+                else {
+                    int c = shotsmissedSave % 11;
                     int rng = rand() % 180 + 1;
-                    switch (c)
-                    {
+                    switch ( c ) {
                         case 0: Circlebian->GetEyeAngles()->y = LBY; break; // This should not even be used
                         case 1: Circlebian->GetEyeAngles()->y += 180.f; break;
                         case 2: Circlebian->GetEyeAngles()->y = LBY + 180.f; break; // This is where it will start
