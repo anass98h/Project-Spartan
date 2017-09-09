@@ -850,8 +850,15 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                     angle.y -= 0.0f;
                 break;
                 case AntiAimType_Y::LOWERBODY:
-                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                    if (CreateMove::sendPacket) {
+                        angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                        CreateMove::sendPacket = false;
+                    }
+                    else
+                    {
+                        angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                        CreateMove::sendPacket = true;
+                    }
                 break;
                 case AntiAimType_Y::FJITTER: {
                     if (CreateMove::sendPacket) {
@@ -915,12 +922,10 @@ static void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clam
                 break;
                 case AntiAimType_Y::LBY180:
                     if (CreateMove::sendPacket) {
-                        angle.y -= *((C_BasePlayer *) entityList->GetClientEntity(
-                                engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
+                        angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
                         CreateMove::sendPacket = false;
                     } else {
-                        angle.y -= *((C_BasePlayer *) entityList->GetClientEntity(
-                                engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
+                        angle.y = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 180.f;
                         CreateMove::sendPacket = true;
                     }
                 case AntiAimType_Y::TJITTER:
