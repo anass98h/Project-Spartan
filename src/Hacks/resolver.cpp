@@ -319,7 +319,6 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
             if ( firstLBYupdate && curTime > nextUpdate && onGround && fabsf(bodyeyedelta) > 35.f ) {
                 isLBYupdated = true;
-                nextUpdate = curTime + 1.1f;
             }
             else {
                 isLBYupdated = false;
@@ -334,6 +333,7 @@ void Resolver::Hug(C_BasePlayer* Circlebian) {
 
             if ( isMoving || isLBYupdated || fabsf(bodyeyedelta) < 35.f ) {
                 firstLBYupdate = true;
+		nextUpdate = curTime + 1.1f;
                 Circlebian->GetEyeAngles()->y = LBY;
             }
             else {
