@@ -166,16 +166,9 @@ enum class SpammerType : int {
     SPAMMER_POSITIONS,
 };
 
-enum class ResolverHugtype : int {
+enum class Resolvertype : int {
     OFF,
-    AIMTUX,
-    PLUSDELTA,
-    PASTEHUB,
-    BRUTEHIV,
-    BRUTE1,
-    AUTISM,
-    LUCKY,
-    MYRRIBDELTA,
+    ON,
 };
 
 struct AimbotWeapon_t {
@@ -572,8 +565,8 @@ namespace Settings {
         extern bool enabled;
         extern float ticks;
         extern float modulo;
-        extern ResolverHugtype Hugtype;
-        extern bool pitch;
+        extern Resolvertype type;
+   
     }
     namespace lbyindicator {
         extern bool enabled;
