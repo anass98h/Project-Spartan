@@ -1,24 +1,24 @@
 #include "Spartangui.h"
+//#include "Windows/fonts.h"
 
 static int miss = 0;
 bool UI::isVisible = false;
 bool ShowMainWindow = false;
 bool Settings::ScreenshotCleaner::enabled = false;
-bool Settings::UI::oldMenu = false;
-bool Settings::UI::otherMenu = false;
-bool Settings::UI::combinedMenu = false;
 bool Settings::UI::Pie = false;
 bool toggled = false;
-ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 255);
-ColorVar Settings::UI::bodyColor = ImColor(0, 0, 0, 255);
-ColorVar Settings::UI::fontColor = ImColor(255, 255, 255, 225);
-ColorVar Settings::UI::accentColor = ImColor(244, 66, 83, 255);
+ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 246);      //    |-»
+ColorVar Settings::UI::bodyColor = ImColor(13, 13, 13,
+                                           246);      //    |-»   these new colors look p and the old ones where shit,
+ColorVar Settings::UI::fontColor = ImColor(90, 178, 255, 255);    //    |-»   get over it /savage
+ColorVar Settings::UI::accentColor = ImColor(43, 115, 178, 74);  //    |-»
 bool LoggedIn = false;
 static char Pass[256] = "";
 std::string data;
 std::string contents;
-
-// denied
+bool Settings::UI::middle = true;
+bool Settings::UI::right = false;
+ImVec2 center = {100, 100};
 
 static void ccc() {
     ImGui::CloseCurrentPopup();
@@ -45,7 +45,9 @@ void SetupMainMenuBar() {
 
 
     if (ImGui::Begin("Logout", &ShowMainWindow, ImGuiWindowFlags_AlwaysAutoResize |
-            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+                                                ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+                                                ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                                                ImGuiWindowFlags_NoTitleBar)) {
 
         if (!LoggedIn) {
             if (protection::isVerified()) {
@@ -80,7 +82,6 @@ void SetupMainMenuBar() {
         }
 
 
-
         ImGui::Columns(1);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 170));
 
@@ -89,14 +90,18 @@ void SetupMainMenuBar() {
             ImGui::Text(
                     XORSTR("Welcome to Project Spartan. \nPlease enter your Verification ID: ")
             );
-            ImGui::SameLine();if(ImGui::Button(" ",ImVec2(1,1))){LoggedIn=true;ImGui::CloseCurrentPopup();}
+            ImGui::SameLine();
+            if (ImGui::Button(" ", ImVec2(1, 1))) {
+                LoggedIn = true;
+                ImGui::CloseCurrentPopup();
+            }
             ImGui::Spacing();
             ImGui::BulletText(" Verification-ID ");
             ImGui::Separator();
             ImGui::PushItemWidth(440);
             ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass),
-                    ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
-                    ImGuiInputTextFlags_AutoSelectAll);
+                             ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
+                             ImGuiInputTextFlags_AutoSelectAll);
             ImGui::PopItemWidth();
             ImGui::Separator();
             if (ImGui::Button(XORSTR("Login"))) {
@@ -110,7 +115,7 @@ void SetupMainMenuBar() {
                     miss += 1;
                     ImGui::CloseCurrentPopup();
 
-                    ImGui::OpenPopup("oops");
+                    ImGui::OpenPopup("whoops");
                 }
 
             }
@@ -128,8 +133,6 @@ void SetupMainMenuBar() {
             Configs::showWindow = false;
 
             UI::isVisible = false;
-            Settings::UI::oldMenu = false;
-            Settings::UI::otherMenu = false;
             Settings::Aimbot::enabled = false;
             Settings::ESP::enabled = false;
         }
@@ -138,63 +141,69 @@ void SetupMainMenuBar() {
         if (ImGui::Button(XORSTR("RQUIT  "), ImVec2(ImGui::CalcTextSize(XORSTR("RQUIT  "), NULL, true).x, 0.0f)))
             projectspartan::SelfShutdown();
 
-
+        ImGui::Separator();
+        if (ImGui::Checkbox("Right click ", &Settings::UI::right))
+            Settings::UI::middle = false;
+        ImGui::Separator();
+        if (ImGui::Checkbox("Middle click ", &Settings::UI::middle))
+            Settings::UI::right = false;
 
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
-        int items_count = sizeof (items) / sizeof (*items);
+        int items_count = sizeof(items) / sizeof(*items);
 
 
+        if (Settings::UI::middle) {
+            if (ImGui::IsMouseClicked(2, true))
+                ImGui::OpenPopup("##piepopup");
 
+            center = ImGui::GetIO().MouseClickedPos[2];
+        } else if (Settings::UI::right) {
 
-        if(ImGui::IsMouseClicked(2,true))
-         ImGui::OpenPopup("##piepopup");
+            if (ImGui::IsMouseClicked(1, true))
+                ImGui::OpenPopup("##piepopup");
 
-          ImVec2 center = ImGui::GetIO().MouseClickedPos[2];
-
+            center = ImGui::GetIO().MouseClickedPos[1];
+        }
 
         int n = PiePopupSelectMenu(center, "##piepopup", items, items_count);
-        switch (n){ // a switch for my love Myrrib
+        switch (n) { // a switch for my love Myrrib
 
 
-            case 1:
-        {
-            Configs::showWindow = !Configs::showWindow;
-            break;
-        } case 0:
-        {
-            Main::showWindow = !Main::showWindow;
-            break;
+            case 1: {
+                Configs::showWindow = !Configs::showWindow;
+                break;
+            }
+            case 0: {
+                Main::showWindow = !Main::showWindow;
+                break;
+            }
+            case 2: {
+                Colors::showWindow = !Colors::showWindow;
+                break;
+            }
+            case 3: {
+                SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
+                break;
+            }
+            case 4: {
+                PlayerList::showWindow = !PlayerList::showWindow;
+                break;
+            }
+            case 5: {
+                Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
+                break;
+            }
+                /*       case 6:
+                       {
+                       Fonts::showWindow = !Fonts::showWindow;    
+                       }*/
         }
-            case 2:
-        {
-            Colors::showWindow = !Colors::showWindow;
-            break;
-        }
-            case 3:
-            {
-            SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
-            break;
-        }
-            case 4:
-            {
-            PlayerList::showWindow = !PlayerList::showWindow;
-            break;
-        }
-            case 5:
-            {
-            Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
-            break;
-         }
-        }
-
 
 
         ImGui::End();
 
 
-
     }
-
 
 
 }
@@ -203,7 +212,6 @@ void SetupMainMenuBar() {
 
 void UI::SwapWindow() {
     if (UI::isVisible) {
-        Draw::ImText(ImVec2(4.f, 4.f), ImColor(0, 180, 12), "Spartan-menu active", NULL, 0.0f, NULL, ImFontFlags_Outline);
         return;
     }
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
@@ -216,13 +224,13 @@ void UI::SwapWindow() {
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, sizeof (buffer), "%T %Z", timeinfo);
+    strftime(buffer, sizeof(buffer), "%T %Z", timeinfo);
     std::string time(buffer);
 
     std::string watermark(XORSTR("Project Spartan | "));
     watermark.append(time);
 
-    Draw::ImText(ImVec2(4.f, 4.f), ImColor(239, 31, 86), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    Draw::ImText(ImVec2(4.f, 4.f), ImColor(26, 104, 173), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }
 
 // This may come in handy if we want to display some good shit in the watermark
@@ -248,27 +256,29 @@ void UI::SetVisible(bool visible) {
 
 void UI::SetupWindows() {
 
-        if (UI::isVisible) {
-            SetupMainMenuBar();
 
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1080, 700));
-            Main::RenderWindow();
+    if (UI::isVisible) {
+        SetupMainMenuBar();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1080, 700));
+        Main::RenderWindow();
+        ImGui::PopStyleVar();
+
+
+        if (ModSupport::current_mod != ModType::CSCO) {
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1050, 645));
+            SkinModelChanger::RenderWindow();
             ImGui::PopStyleVar();
-
-            if (ModSupport::current_mod != ModType::CSCO) {
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1050, 645));
-                SkinModelChanger::RenderWindow();
-                ImGui::PopStyleVar();
-            }
-
-            Configs::RenderWindow();
-            Colors::RenderWindow();
-            PlayerList::RenderWindow();
         }
 
-        ShowSpectators::RenderWindow();
-        Radar::RenderWindow();
+        Configs::RenderWindow();
+        Colors::RenderWindow();
+        PlayerList::RenderWindow();
+        //         Fonts::RenderWindow();
+    }
 
+    ShowSpectators::RenderWindow();
+    Radar::RenderWindow();
 
 
 }
