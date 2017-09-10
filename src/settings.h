@@ -48,6 +48,7 @@ enum class AutostrafeType : int {
     AS_RIGHTSIDEWAYS,
     AS_RAGE,
 };
+
 enum class AntiAimType_Y : int {
     NOAA,
     BACKWARDS,
@@ -176,6 +177,12 @@ enum class ResolverHugtype : int {
     AUTISM,
     LUCKY,
     MYRRIBDELTA,
+};
+
+enum class cFont : int {
+    Arial,
+    SegoeUI,
+
 };
 
 struct AimbotWeapon_t {
@@ -353,12 +360,15 @@ namespace Settings {
         extern ColorVar bodyColor;
         extern ColorVar fontColor;
         extern ColorVar accentColor;
-        extern bool oldMenu;
-        extern bool otherMenu;
-        extern bool combinedMenu;
         extern bool Pie;
-
+        extern bool middle;
+        extern bool right;
         namespace Fonts {
+
+
+            extern cFont font;
+            extern float fontsize;
+
             namespace ESP {
                 extern char* family;
                 extern int size;
@@ -474,8 +484,7 @@ namespace Settings {
             extern float value;
         }
 
-        namespace AutoCockRevolver
-        {
+        namespace AutoCockRevolver {
             extern bool enabled;
         }
 
@@ -852,8 +861,7 @@ namespace Settings {
         extern bool enabled;
         extern ButtonCode_t key;
     }
-    namespace CircleStrafe
-    {
+    namespace CircleStrafe {
         extern bool enabled;
         extern ButtonCode_t key;
     }
@@ -1007,21 +1015,18 @@ namespace Settings {
         extern pstring actMapName;
     }
 
-    namespace TracerEffects
-    {
+    namespace TracerEffects {
         extern bool enabled;
         extern bool serverSide;
         extern TracerEffects_t effect;
         extern int frequency;
 
     }
-    namespace AutoKnife
-    {
+    namespace AutoKnife {
         extern bool enabled;
         extern bool onKey;
- 
-        namespace Filters
-        {
+
+        namespace Filters {
             extern bool enemies;
             extern bool allies;
         }
