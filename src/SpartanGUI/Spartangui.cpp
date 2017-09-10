@@ -8,7 +8,8 @@ bool Settings::ScreenshotCleaner::enabled = false;
 bool Settings::UI::Pie = false;
 bool toggled = false;
 ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 246);      //    |-»
-ColorVar Settings::UI::bodyColor = ImColor(13, 13, 13, 246);      //    |-»   these new colors look p and the old ones where shit,
+ColorVar Settings::UI::bodyColor = ImColor(13, 13, 13,
+                                           246);      //    |-»   these new colors look p and the old ones where shit,
 ColorVar Settings::UI::fontColor = ImColor(90, 178, 255, 255);    //    |-»   get over it /savage
 ColorVar Settings::UI::accentColor = ImColor(43, 115, 178, 74);  //    |-»
 bool LoggedIn = false;
@@ -44,7 +45,9 @@ void SetupMainMenuBar() {
 
 
     if (ImGui::Begin("Logout", &ShowMainWindow, ImGuiWindowFlags_AlwaysAutoResize |
-            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+                                                ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+                                                ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                                                ImGuiWindowFlags_NoTitleBar)) {
 
         if (!LoggedIn) {
             if (protection::isVerified()) {
@@ -62,7 +65,7 @@ void SetupMainMenuBar() {
         if (ImGui::BeginPopupModal(XORSTR("Unique ID"))) {
             ImGui::Text(
                     XORSTR(" Oooops looks like something went wrong \n close this window and open csgo console for more info ")
-                    );
+            );
             ImGui::Spacing();
 
             ImGui::Separator();
@@ -79,7 +82,6 @@ void SetupMainMenuBar() {
         }
 
 
-
         ImGui::Columns(1);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(440, 170));
 
@@ -87,7 +89,7 @@ void SetupMainMenuBar() {
         if (ImGui::BeginPopupModal(XORSTR("Project Spartan"), NULL, ImGuiWindowFlags_NoResize)) {
             ImGui::Text(
                     XORSTR("Welcome to Project Spartan. \nPlease enter your Verification ID: ")
-                    );
+            );
             ImGui::SameLine();
             if (ImGui::Button(" ", ImVec2(1, 1))) {
                 LoggedIn = true;
@@ -98,8 +100,8 @@ void SetupMainMenuBar() {
             ImGui::Separator();
             ImGui::PushItemWidth(440);
             ImGui::InputText("", Pass, IM_ARRAYSIZE(Pass),
-                    ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
-                    ImGuiInputTextFlags_AutoSelectAll);
+                             ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_Password |
+                             ImGuiInputTextFlags_AutoSelectAll);
             ImGui::PopItemWidth();
             ImGui::Separator();
             if (ImGui::Button(XORSTR("Login"))) {
@@ -147,8 +149,7 @@ void SetupMainMenuBar() {
             Settings::UI::right = false;
 
         const char *items[] = {"Main", "Config", "Color", "Skins", "pList", "Specs"};
-        int items_count = sizeof (items) / sizeof (*items);
-
+        int items_count = sizeof(items) / sizeof(*items);
 
 
         if (Settings::UI::middle) {
@@ -168,33 +169,27 @@ void SetupMainMenuBar() {
         switch (n) { // a switch for my love Myrrib
 
 
-            case 1:
-            {
+            case 1: {
                 Configs::showWindow = !Configs::showWindow;
                 break;
             }
-            case 0:
-            {
+            case 0: {
                 Main::showWindow = !Main::showWindow;
                 break;
             }
-            case 2:
-            {
+            case 2: {
                 Colors::showWindow = !Colors::showWindow;
                 break;
             }
-            case 3:
-            {
+            case 3: {
                 SkinModelChanger::showWindow = !SkinModelChanger::showWindow;
                 break;
             }
-            case 4:
-            {
+            case 4: {
                 PlayerList::showWindow = !PlayerList::showWindow;
                 break;
             }
-            case 5:
-            {
+            case 5: {
                 Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
                 break;
             }
@@ -205,23 +200,18 @@ void SetupMainMenuBar() {
         }
 
 
-
         ImGui::End();
 
 
-
     }
-
 
 
 }
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-void UI::SwapWindow()
-{
-    if (UI::isVisible)
-    {
+void UI::SwapWindow() {
+    if (UI::isVisible) {
         return;
     }
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
@@ -234,7 +224,7 @@ void UI::SwapWindow()
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, sizeof (buffer), "%T %Z", timeinfo);
+    strftime(buffer, sizeof(buffer), "%T %Z", timeinfo);
     std::string time(buffer);
 
     std::string watermark(XORSTR("Project Spartan | "));
@@ -245,10 +235,8 @@ void UI::SwapWindow()
 
 // This may come in handy if we want to display some good shit in the watermark
 
-std::string OrdinalNumberPrefix(int day)
-{
-    switch (day)
-    {
+std::string OrdinalNumberPrefix(int day) {
+    switch (day) {
         case 1:
             return std::string(XORSTR("1st"));
         case 2:
@@ -261,14 +249,12 @@ std::string OrdinalNumberPrefix(int day)
     }
 }
 
-void UI::SetVisible(bool visible)
-{
+void UI::SetVisible(bool visible) {
     UI::isVisible = visible;
     cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(!UI::isVisible);
 }
 
-void UI::SetupWindows()
-{
+void UI::SetupWindows() {
 
 
     if (UI::isVisible) {
@@ -293,7 +279,6 @@ void UI::SetupWindows()
 
     ShowSpectators::RenderWindow();
     Radar::RenderWindow();
-
 
 
 }
