@@ -17,7 +17,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-Project Spartan `/ˈspɑrtən/` (or just **Spartan**) is an advanced Counter-Strike:
+[Project Spartan](http://spartan.whatkills.us/ "Website") `/ˈspɑrtən/` (or just **Spartan**) is an advanced Counter-Strike:
 Global Offensive internal multihack. It is based around a invite-only principle
 which requires you to receive a invite to receive access to Spartan.
 Spartan is a HvH orientated cheat, mainly focused on Spread.
@@ -36,9 +36,9 @@ Spartan is a HvH orientated cheat, mainly focused on Spread.
 ## Installation
 
 Download the required dependencies:
-* **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf libsdl2-image-2.0-0`
+* **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
 * **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf sdl2_image`
-* **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf SDL2-devel`
+* **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
 * **Gentoo**: `cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf sdl2-image`
 
 Then execute the following:
@@ -83,12 +83,14 @@ $ git push origin username/reason:username/reason
 Project Spartan is closed source and is licensed under the
 Project Spartan Private License. Visit the `LICENSE.txt` file for more
 informations.
-Big shoutout to Realnigga.Club and his Discord. AimTux, Nyctum and all Linux cheats.
+
+[Spartan Dev Team](http://spartan.whatkills.us/ "Website")
+**Big shoutout to [Realnigga.Club](http://realnigga.club/ "Website") and his [his Discord](http://discord.me/realnigga "Discord"). [AimTux](http://aimtux.net/ "Website"), [Nyctum](http://nyctum.cc/ "Website") and all Linux cheats**.
 GIGA Shoutout to Kisak.
 
 ## Screenshots
 
-![Apostrophe zwingte mich, sorry Rasp Old Img: https://i.imgur.com/KgKGe6Mr.jpg](http://spartan.whatkills.us/i/spartanmenu.png)
+![In-Game Menu](http://spartan.whatkills.us/i/spartanmenu.png)
 
 [0]: https://github.com/anass98h/Project-Spartan
 [1]: https://github.com/anass98h/Project-Spartan
