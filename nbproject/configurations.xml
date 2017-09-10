@@ -6,13 +6,16 @@
         <df name="Hacks">
           <in>aimbot.cpp</in>
           <in>airstuck.cpp</in>
+          <in>angleindicator.cpp</in>
           <in>antiaim.cpp</in>
           <in>asuswalls.cpp</in>
           <in>autoaccept.cpp</in>
           <in>autoblock.cpp</in>
           <in>autodefuse.cpp</in>
+          <in>autoknife.cpp</in>
           <in>autostrafe.cpp</in>
           <in>autowall.cpp</in>
+          <in>backtracking.cpp</in>
           <in>bhop.cpp</in>
           <in>chams.cpp</in>
           <in>circlestrafe.cpp</in>
@@ -43,7 +46,9 @@
           <in>skybox.cpp</in>
           <in>snipercrosshair.cpp</in>
           <in>spammer.cpp</in>
+          <in>speedindicator.cpp</in>
           <in>thirdperson.cpp</in>
+          <in>tracereffect.cpp</in>
           <in>triggerbot.cpp</in>
           <in>valvedscheck.cpp</in>
           <in>view.cpp</in>
@@ -79,9 +84,6 @@
         <df name="json">
           <in>jsoncpp.cpp</in>
         </df>
-        <df name="SDK">
-          <in>INetChannel.h</in>
-        </df>
         <df name="SpartanGUI">
           <df name="Tabs">
             <in>aimbottab.cpp</in>
@@ -107,6 +109,7 @@
         <df name="Utils">
           <in>draw.cpp</in>
           <in>entity.cpp</in>
+          <in>image.cpp</in>
           <in>math.cpp</in>
           <in>netvarmanager.cpp</in>
           <in>patternfinder.cpp</in>
@@ -151,6 +154,8 @@
       </toolsSet>
       <flagsDictionary>
         <element flagsID="0" commonFlags="-O3 -std=c++14 -fPIC"/>
+        <element flagsID="1"
+                 commonFlags="-mtune=generic -march=x86-64 -O3 -std=c++14 -fPIC -fstack-protector-strong"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -160,465 +165,1656 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
-          <ccTool>
-            <incDir>
-              <pElem>/usr/include/lua5.3</pElem>
-              <pElem>.</pElem>
-            </incDir>
-            <preprocessorList>
-              <Elem>LUA</Elem>
-              <Elem>Spartan_EXPORTS</Elem>
-            </preprocessorList>
-          </ccTool>
         </makeTool>
         <preBuild>
           <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
           <preBuildCommand>${CMAKE} -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${IDE_CC} -DCMAKE_CXX_COMPILER=${IDE_CXX} -DCMAKE_C_FLAGS_DEBUG="-g3 -gdwarf-2" -DCMAKE_CXX_FLAGS_DEBUG="-g3 -gdwarf-2" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .</preBuildCommand>
         </preBuild>
       </makefileType>
+      <folder path="0/src/Hooks">
+        <ccTool>
+          <incDir>
+            <pElem>src/Hooks</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/src/json">
+        <ccTool>
+          <incDir>
+            <pElem>src/json</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
       <item path="src/Hacks/aimbot.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/airstuck.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Hacks/angleindicator.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/antiaim.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>/usr/include/lua5.3</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/asuswalls.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/autoaccept.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/autoblock.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/autodefuse.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Hacks/autoknife.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/autostrafe.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/autowall.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Hacks/backtracking.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/bhop.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/chams.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/circlestrafe.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/clantagchanger.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/customglow.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/disablepostprocessing.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/dlights.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/edgejump.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/esp.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/fakelag.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/fakewalk.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/fovchanger.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/grenadehelper.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/hitmarkers.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/jumpthrow.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/lbyindicator.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/namechanger.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/namestealer.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/noflash.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/nosmoke.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/predictionsystem.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/radar.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/recoilcrosshair.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/resolver.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/showranks.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/showspectators.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/skinchanger.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/skybox.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/snipercrosshair.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/spammer.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Hacks/speedindicator.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/thirdperson.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Hacks/tracereffect.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/triggerbot.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/valvedscheck.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hacks/view.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/BeginFrame.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/CreateMove.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/DrawModelExecute.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/EmitSound.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/FireEvent.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/FireEventClientSide.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/FrameStageNotify.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/GetViewModelFOV.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/IN_KeyEvent.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/OnScreenSizeChanged.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/OverrideView.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/Paint.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/PaintTraverse.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/PlaySound.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/PumpWindowsMessageLoop.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/RenderSmokePostViewmodel.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/RenderView.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/SetKeyCodeState.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Hooks/SetMouseCodeState.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/ImGUI/imgui.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/ImGUI/imgui_demo.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/ImGUI/imgui_draw.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/ImGUI/imgui_impl_sdl.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/ImGUI</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>/usr/include/SDL2</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/ImGUI/myfont.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
+          <incDir>
+            <pElem>/usr/include/lua5.3</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>LUA</Elem>
+            <Elem>Spartan_EXPORTS</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/Project-Spartan.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
-      <item path="src/SDK/INetChannel.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/SpartanGUI/Spartangui.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Spartanguielements.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/aimbottab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/hvhtab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/misctab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/modelstab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/skinstab.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/triggerbottab.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Tabs/visualstab.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/colors.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/configs.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/fonts.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/login.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/main.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/playerlist.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/SpartanGUI/Windows/skinmodelchanger.cpp"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SpartanGUI/Windows</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/draw.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>/usr/include/SDL2</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/entity.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="src/Utils/image.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>/usr/include/SDL2</pElem>
+            <pElem>/usr/local/include/SDL2</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/math.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/netvarmanager.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/patternfinder.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/skins.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/SpartanGUI/Tabs</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/util.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/util_items.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/Utils/util_sdk.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/config.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/fonts.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/glhook.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>/usr/include/SDL2</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>src/Hooks</pElem>
+            <pElem>/usr/local/include/SDL2</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/hooker.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/interfaces.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/SDK</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/json/jsoncpp.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/modsupport.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/offsets.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/protection.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/settings.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src/json</pElem>
+            <pElem>src</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/shortcuts.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/SDK</pElem>
+            <pElem>src/Utils</pElem>
+            <pElem>src/json</pElem>
+            <pElem>src/ImGUI</pElem>
+            <pElem>/usr/include/SDL2</pElem>
+            <pElem>src/Hacks</pElem>
+            <pElem>src/SpartanGUI</pElem>
+            <pElem>src/ImGUI/fonts</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
       </item>
     </conf>

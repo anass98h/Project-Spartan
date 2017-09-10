@@ -2,6 +2,9 @@
 
 SDL_GLContext context = nullptr;
 
+cFont Settings::UI::Fonts::font = cFont::Arial;
+float Settings::UI::Fonts::fontsize = 16;
+
 void SDL2::SwapWindow(SDL_Window* window) {
     static SDL_GL_SwapWindow_t oSDL_GL_SwapWindow = reinterpret_cast<SDL_GL_SwapWindow_t> (oSwapWindow);
 
@@ -24,15 +27,15 @@ void SDL2::SwapWindow(SDL_Window* window) {
         };
          */
 
-        ImWchar arial_ranges[] = {
-                0x0020, 0x007E, // Basic Latin
-                0x00A0, 0x00FF, // Latin-1 Supplement
-                0x0100, 0x017F, // Latin Extended-A
-                0x0180, 0x024F, // Latin Extended-B
-                0x0370, 0x03FF, // Greek and Coptic
-                0x0400, 0x04FF, // Cyrillic
-                0x0500, 0x052F, // Cyrillic Supplementary
-                0
+        ImWchar font_ranges[] = {
+            0x0020, 0x007E, // Basic Latin
+            0x00A0, 0x00FF, // Latin-1 Supplement
+            0x0100, 0x017F, // Latin Extended-A
+            0x0180, 0x024F, // Latin Extended-B
+            0x0370, 0x03FF, // Greek and Coptic
+            0x0400, 0x04FF, // Cyrillic
+            0x0500, 0x052F, // Cyrillic Supplementary
+            0
         };
 
         /*
@@ -53,8 +56,10 @@ void SDL2::SwapWindow(SDL_Window* window) {
         ImGuiIO& io = ImGui::GetIO();
         ImFontConfig config;
 
-        // Add SegoeUI as default font
-        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, 17.0f, &config, arial_ranges);
+
+
+        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, Settings::UI::Fonts::fontsize, &config, font_ranges);
+
 
         //not sure if I set this after or before the merge mode 
 

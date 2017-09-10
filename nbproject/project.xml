@@ -6,7 +6,7 @@
             <name>Project-Spartan</name>
             <c-extensions>c,m</c-extensions>
             <cpp-extensions>cpp,cxx,mm</cpp-extensions>
-            <header-extensions>h</header-extensions>
+            <header-extensions>h,txt</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>

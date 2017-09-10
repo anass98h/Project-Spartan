@@ -124,11 +124,12 @@ void Settings::LoadDefaultsOrSave(std::string path) {
     LoadColor(settings[XORSTR("UI")][XORSTR("accentColor")], Settings::UI::accentColor);
     settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("family")] = Settings::UI::Fonts::ESP::family;
     settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("size")] = Settings::UI::Fonts::ESP::size;
-    settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("flags")] = Settings::UI::Fonts::ESP::flags;
-    settings[XORSTR("UI")][XORSTR("oldMenu")] = Settings::UI::oldMenu;
-    settings[XORSTR("UI")][XORSTR("otherMenu")] = Settings::UI::otherMenu;
-    settings[XORSTR("UI")][XORSTR("combinedMenu")] = Settings::UI::combinedMenu;
     settings[XORSTR("UI")][XORSTR("Pie")] = Settings::UI::Pie;
+    settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("font")] = (int) Settings::UI::Fonts::font;
+    settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("fontsize")] = Settings::UI::Fonts::fontsize;
+    settings[XORSTR("UI")][XORSTR("middle")] = Settings::UI::middle;
+    settings[XORSTR("UI")][XORSTR("right")] = Settings::UI::right;
+
 
     for (auto i : Settings::Aimbot::weapons) {
         // TODO this is kind of a hack and i'm too tired to find a better way to do this
@@ -560,13 +561,17 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("family")], &Settings::UI::Fonts::ESP::family);
     GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("size")], &Settings::UI::Fonts::ESP::size);
     GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("ESP")][XORSTR("flags")], &Settings::UI::Fonts::ESP::flags);
+    GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("font")], (int*) &Settings::UI::Fonts::font);
+    GetVal(settings[XORSTR("UI")][XORSTR("Fonts")][XORSTR("fontsize")], &Settings::UI::Fonts::fontsize);
+    GetVal(settings[XORSTR("UI")][XORSTR("middle")], &Settings::UI::middle);
+    GetVal(settings[XORSTR("UI")][XORSTR("right")], &Settings::UI::right);
 
     Fonts::SetupFonts();
 
     Settings::Aimbot::weapons = {
-            { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                                                   SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                   false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
+        { ItemDefinitionIndex::INVALID,{ false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
+                SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
+                false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false}},
     };
 
     for (Json::ValueIterator itr = settings[XORSTR("Aimbot")][XORSTR("weapons")].begin(); itr != settings[XORSTR("Aimbot")][XORSTR("weapons")].end(); itr++) {
@@ -798,7 +803,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("LBYIndicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("enabled")], &Settings::TracerEffects::enabled);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("serverSide")], &Settings::TracerEffects::serverSide);
-    GetVal(settings[XORSTR("TracerEffects")][XORSTR("effect")], (int*)&Settings::TracerEffects::effect);
+    GetVal(settings[XORSTR("TracerEffects")][XORSTR("effect")], (int*) &Settings::TracerEffects::effect);
     GetVal(settings[XORSTR("TracerEffects")][XORSTR("frequency")], &Settings::TracerEffects::frequency);
     GetVal(settings[XORSTR("lbyindicator")][XORSTR("enabled")], &Settings::lbyindicator::enabled);
 
@@ -873,7 +878,7 @@ void Settings::LoadConfig(std::string path) {
     GetVal(settings[XORSTR("SlowMo")][XORSTR("enabled")], &Settings::SlowMo::enabled);
     GetButtonCode(settings[XORSTR("SlowMo")][XORSTR("key")], &Settings::SlowMo::key);
     GetVal(settings[XORSTR("CircleStrafe")][XORSTR("enabled")], &Settings::CircleStrafe::enabled);
-    GetButtonCode(settings[XORSTR("CircleStrafe")][XORSTR("key")], &Settings::CircleStrafe::key );
+    GetButtonCode(settings[XORSTR("CircleStrafe")][XORSTR("key")], &Settings::CircleStrafe::key);
 
     Settings::Skinchanger::Skins::enabled = false;
     Settings::Skinchanger::skinsCT.clear();

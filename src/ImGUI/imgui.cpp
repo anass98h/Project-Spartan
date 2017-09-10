@@ -6812,11 +6812,15 @@ bool ImGui::Checkbox(const char* label, bool* v) {
         *v = !(*v);
 
     RenderFrame(check_bb.Min, check_bb.Max, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), true, style.FrameRounding);
-    if (*v) {
-        const float check_sz = ImMin(check_bb.GetWidth(), check_bb.GetHeight());
-        const float pad = ImMax(1.0f, (float) (int) (check_sz / 6.0f));
-        window->DrawList->AddRectFilled(check_bb.Min + ImVec2(pad, pad), check_bb.Max - ImVec2(pad, pad), GetColorU32(ImGuiCol_CheckMark), style.FrameRounding);
-    }
+    if (*v) { 
+    const float check_sz = ImMin(check_bb.GetWidth(), check_bb.GetHeight()); 
+    const float pad = ImMax(1.0f, (float)(int)(check_sz / 6.0f)); 
+    //window->DrawList->AddRectFilled(check_bb.Min+ImVec2(pad,pad), check_bb.Max-ImVec2(pad,pad), GetColorU32(ImGuiCol_CheckMark), style.FrameRounding); 
+    const ImRect check_mark_bb(check_bb.Min + ImVec2(pad, pad), check_bb.Max - ImVec2(pad, pad)); 
+    const ImVec2 poitns[5] = { ImVec2(check_mark_bb.GetBL()), ImVec2(check_mark_bb.GetTR()), ImVec2(check_mark_bb.GetCenter()) ,ImVec2(check_mark_bb.GetTL()),ImVec2(check_mark_bb.GetBR())  }; 
+    window->DrawList->AddPolyline(poitns, 5, GetColorU32(ImGuiCol_CheckMark), false, 3.0f, true);
+    
+}
 
     if (g.LogEnabled)
         LogRenderedText(text_bb.GetTL(), *v ? "[x]" : "[ ]");
