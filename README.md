@@ -17,9 +17,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-Project Spartan `/ˈspɑrtən/` (or just **Spartan**) is an advanced Counter-Strike:
+[Project Spartan](http://spartan.whatkills.us/ "Website") `/ˈspɑrtən/` (or just **Spartan**) is an advanced Counter-Strike:
 Global Offensive internal multihack. It is based around a invite-only principle
-which requires you to receive a invite and pay to receive access to Spartan.
+which requires you to receive a invite to receive access to Spartan.
 Spartan is a HvH orientated cheat, mainly focused on Spread.
 
 ## Features
@@ -30,17 +30,16 @@ Spartan is a HvH orientated cheat, mainly focused on Spread.
 * Better Resolver
 * Circle Strafer
 * Fakewalk
+* Backtracking
 * ...and much more
 
 ## Installation
 
 Download the required dependencies:
-* **All** http://smc.org.in/downloads/fonts/dyuthi/Dyuthi.ttf &&
-  ftp://195.220.108.108/linux/fedora-secondary/releases/26/Everything/s390x/os/Packages/s/sarai-fonts-1.0-19.fc26.noarch.rpm
 * **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
-* **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf`
+* **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf sdl2_image`
 * **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
-* **Gentoo**: `cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf`
+* **Gentoo**: `cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf sdl2-image`
 
 Then execute the following:
 
@@ -79,15 +78,20 @@ $ git commit -m "I made changes that I'll push into a seperate branch"
 $ git push origin username/reason:username/reason
 ```
 
-## License
+## License & Credits
 
 Project Spartan is closed source and is licensed under the
 Project Spartan Private License. Visit the `LICENSE.txt` file for more
 informations.
 
+[Spartan Dev Team](http://spartan.whatkills.us/ "Website")
+
+**Big shoutout to [Realnigga.Club](http://realnigga.club/ "Website") and his [his Discord](http://discord.me/realnigga "Discord"). [AimTux](http://aimtux.net/ "Website"), [Nyctum](http://nyctum.cc/ "Website") and all Linux cheats**.
+GIGA Shoutout to Kisak.
+
 ## Screenshots
 
-![Apostrophe zwingte mich, sorry Rasp](https://i.imgur.com/KgKGe6Mr.jpg)
+![In-Game Menu](http://spartan.whatkills.us/i/spartanmenu.png)
 
 [0]: https://github.com/anass98h/Project-Spartan
 [1]: https://github.com/anass98h/Project-Spartan
