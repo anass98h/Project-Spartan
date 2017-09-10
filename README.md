@@ -85,6 +85,7 @@ Project Spartan Private License. Visit the `LICENSE.txt` file for more
 informations.
 
 [Spartan Dev Team](http://spartan.whatkills.us/ "Website")
+
 **Big shoutout to [Realnigga.Club](http://realnigga.club/ "Website") and his [his Discord](http://discord.me/realnigga "Discord"). [AimTux](http://aimtux.net/ "Website"), [Nyctum](http://nyctum.cc/ "Website") and all Linux cheats**.
 GIGA Shoutout to Kisak.
 
