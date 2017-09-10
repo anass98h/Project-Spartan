@@ -9792,13 +9792,13 @@ int PiePopupSelectMenu(const ImVec2& center, const char* popup_id, const char** 
             draw_list->PathArcTo(center, RADIUS_MAX - style.ItemInnerSpacing.x, item_ang_min, item_ang_max, arc_segments);
             draw_list->PathArcTo(center, RADIUS_MIN + style.ItemInnerSpacing.x, item_ang_max, item_ang_min, arc_segments);
             //draw_list->PathFill(window->Color(hovered ? ImGuiCol_HeaderHovered : ImGuiCol_FrameBg));
-            draw_list->PathFillConvex(hovered ? ImColor(244, 66, 83) : /* selected ? ImColor(170,170,215) :*/ ImColor(70, 70, 70));
+            draw_list->PathFillConvex(hovered ? ImColor(13, 13, 13) : /* selected ? ImColor(170,170,215) :*/ ImColor(9, 9, 9));
 
             ImVec2 text_size = ImGui::GetWindowFont()->CalcTextSizeA(ImGui::GetWindowFontSize(), FLT_MAX, 0.0f, item_label);
             ImVec2 text_pos = ImVec2(
                     center.x + cosf((item_ang_min + item_ang_max) * 0.5f) * (RADIUS_MIN + RADIUS_MAX) * 0.5f - text_size.x * 0.5f,
                     center.y + sinf((item_ang_min + item_ang_max) * 0.5f) * (RADIUS_MIN + RADIUS_MAX) * 0.5f - text_size.y * 0.5f);
-            draw_list->AddText(text_pos, ImColor(255, 255, 255), item_label);
+            draw_list->AddText(text_pos, ImColor(90, 178, 255), item_label);
 
             if (hovered)
                 item_hovered = item_n;

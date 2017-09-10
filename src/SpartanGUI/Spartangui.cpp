@@ -7,10 +7,10 @@ bool ShowMainWindow = false;
 bool Settings::ScreenshotCleaner::enabled = false;
 bool Settings::UI::Pie = false;
 bool toggled = false;
-ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 255);
-ColorVar Settings::UI::bodyColor = ImColor(0, 0, 0, 255);
-ColorVar Settings::UI::fontColor = ImColor(255, 255, 255, 225);
-ColorVar Settings::UI::accentColor = ImColor(244, 66, 83, 255);
+ColorVar Settings::UI::mainColor = ImColor(13, 13, 13, 246);      //    |-»
+ColorVar Settings::UI::bodyColor = ImColor(13, 13, 13, 246);      //    |-»   these new colors look p and the old ones where shit,
+ColorVar Settings::UI::fontColor = ImColor(90, 178, 255, 255);    //    |-»   get over it /savage
+ColorVar Settings::UI::accentColor = ImColor(43, 115, 178, 74);  //    |-»
 bool LoggedIn = false;
 static char Pass[256] = "";
 std::string data;
@@ -113,7 +113,7 @@ void SetupMainMenuBar() {
                     miss += 1;
                     ImGui::CloseCurrentPopup();
 
-                    ImGui::OpenPopup("oops");
+                    ImGui::OpenPopup("whoops");
                 }
 
             }
@@ -218,9 +218,10 @@ void SetupMainMenuBar() {
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-void UI::SwapWindow() {
-    if (UI::isVisible) {
-        Draw::ImText(ImVec2(4.f, 4.f), ImColor(0, 180, 12), "Spartan-menu active", NULL, 0.0f, NULL, ImFontFlags_Outline);
+void UI::SwapWindow()
+{
+    if (UI::isVisible)
+    {
         return;
     }
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
@@ -239,13 +240,15 @@ void UI::SwapWindow() {
     std::string watermark(XORSTR("Project Spartan | "));
     watermark.append(time);
 
-    Draw::ImText(ImVec2(4.f, 4.f), ImColor(239, 31, 86), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
+    Draw::ImText(ImVec2(4.f, 4.f), ImColor(26, 104, 173), watermark.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
 }
 
 // This may come in handy if we want to display some good shit in the watermark
 
-std::string OrdinalNumberPrefix(int day) {
-    switch (day) {
+std::string OrdinalNumberPrefix(int day)
+{
+    switch (day)
+    {
         case 1:
             return std::string(XORSTR("1st"));
         case 2:
@@ -258,12 +261,15 @@ std::string OrdinalNumberPrefix(int day) {
     }
 }
 
-void UI::SetVisible(bool visible) {
+void UI::SetVisible(bool visible)
+{
     UI::isVisible = visible;
     cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(!UI::isVisible);
 }
 
-void UI::SetupWindows() {
+void UI::SetupWindows()
+{
+
 
     if (UI::isVisible) {
         SetupMainMenuBar();
@@ -271,6 +277,7 @@ void UI::SetupWindows() {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1080, 700));
         Main::RenderWindow();
         ImGui::PopStyleVar();
+
 
         if (ModSupport::current_mod != ModType::CSCO) {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1050, 645));
