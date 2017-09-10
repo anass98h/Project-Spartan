@@ -6,8 +6,7 @@
 #include "../interfaces.h"
 #include "../Utils/entity.h"
 
-namespace SpeedIndicator
-{
+namespace SpeedIndicator {
     //Hooks
     void PaintImGui();
 }

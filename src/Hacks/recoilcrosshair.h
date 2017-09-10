@@ -4,8 +4,7 @@
 #include "../Utils/draw.h"
 #include "../interfaces.h"
 
-namespace Recoilcrosshair
-{
-	//Hooks
-	void Paint();
+namespace Recoilcrosshair {
+    //Hooks
+    void Paint();
 };

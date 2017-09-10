@@ -2,7 +2,6 @@
 
 #include "../Spartangui.h"
 
-namespace Misc
-{
-	void RenderTab();
+namespace Misc {
+    void RenderTab();
 }

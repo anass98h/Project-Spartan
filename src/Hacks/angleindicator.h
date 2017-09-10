@@ -5,11 +5,11 @@
 #include "../Hooks/hooks.h"
 #include "../interfaces.h"
 
-namespace AngleIndicator
-{
+namespace AngleIndicator {
 
     // Hooks
     void PaintImGui();
-    void PostPredictionCreateMove(CUserCmd* cmd);
+
+    void PostPredictionCreateMove( CUserCmd* cmd );
 
 }

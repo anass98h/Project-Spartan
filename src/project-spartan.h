@@ -1,4 +1,5 @@
 #pragma once
+
 #include <thread>
 #include <chrono>
 #include <fcntl.h>
@@ -9,7 +10,6 @@
 #include "Utils/util.h"
 #include "protection.h"
 
-namespace projectspartan
-{
-	void SelfShutdown();
+namespace projectspartan {
+    void SelfShutdown();
 }

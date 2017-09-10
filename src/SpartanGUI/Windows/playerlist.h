@@ -2,9 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace PlayerList
-{
-	extern bool showWindow;
+namespace PlayerList {
+    extern bool showWindow;
 
-	extern void RenderWindow();
+    extern void RenderWindow();
 }

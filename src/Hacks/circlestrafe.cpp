@@ -1,43 +1,44 @@
 #include "circlestrafe.h"
+
 bool Settings::CircleStrafe::enabled;
 ButtonCode_t Settings::CircleStrafe::key = ButtonCode_t::KEY_C;
 
-void CircleStrafe::CreateMove(CUserCmd* cmd) {
-    C_BasePlayer* Spartan = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-    if (!Spartan || !Spartan->GetAlive())
+void CircleStrafe::CreateMove( CUserCmd* cmd ) {
+    C_BasePlayer* Spartan = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !Spartan || !Spartan->GetAlive() )
         return;
 
-    if (Spartan->GetMoveType() == MOVETYPE_LADDER || Spartan->GetMoveType() == MOVETYPE_NOCLIP)
+    if ( Spartan->GetMoveType() == MOVETYPE_LADDER || Spartan->GetMoveType() == MOVETYPE_NOCLIP )
         return;
-    if(!Settings::CircleStrafe::enabled){return;}
-    
-    
+    if ( !Settings::CircleStrafe::enabled ) { return; }
+
+
     QAngle OView = *Spartan->GetVAngles();
     static int Circle = 0;
     Circle++;
-    if (Circle > 361)
+    if ( Circle > 361 )
         Circle = 0;
 
     float rotation = 3.f * Circle - globalVars->interval_per_tick;
-    
+
     QAngle storedview = cmd->viewangles;
 
-    if (inputSystem->IsButtonDown(Settings::CircleStrafe::key)) {
+    if ( inputSystem->IsButtonDown( Settings::CircleStrafe::key ) ) {
         cmd->forwardmove = 450.f;
         cmd->viewangles = OView;
-        
-        
-	rotation = DEG2RAD(rotation);
 
-	float cos_rot = cos(rotation);
-	float sin_rot = sin(rotation);
 
-	float new_forwardmove = (cos_rot * cmd->forwardmove) - (sin_rot * cmd->sidemove);
-	float new_sidemove = (sin_rot * cmd->forwardmove) + (cos_rot * cmd->sidemove);
+        rotation = DEG2RAD( rotation );
 
-	cmd->forwardmove = new_forwardmove;
-	cmd->sidemove = -new_sidemove;
-        
+        float cos_rot = cos( rotation );
+        float sin_rot = sin( rotation );
+
+        float new_forwardmove = ( cos_rot * cmd->forwardmove ) - ( sin_rot * cmd->sidemove );
+        float new_sidemove = ( sin_rot * cmd->forwardmove ) + ( cos_rot * cmd->sidemove );
+
+        cmd->forwardmove = new_forwardmove;
+        cmd->sidemove = -new_sidemove;
+
     }
 
 

@@ -7,10 +7,10 @@
 #include "../Utils/entity.h"
 #include "antiaim.h"
 
-namespace lbyindicator
-{
-	//Hooks
-	void PaintImGui();
-    void CreateMove(CUserCmd* cmd);
-    
+namespace lbyindicator {
+    //Hooks
+    void PaintImGui();
+
+    void CreateMove( CUserCmd* cmd );
+
 }

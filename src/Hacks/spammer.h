@@ -6,9 +6,9 @@
 #include "../Utils/pstring.h"
 #include "../Utils/util.h"
 
-namespace Spammer
-{
-	//Hooks
-	void BeginFrame(float frameTime);
-	void FireGameEvent(IGameEvent* event);
+namespace Spammer {
+    //Hooks
+    void BeginFrame( float frameTime );
+
+    void FireGameEvent( IGameEvent* event );
 }

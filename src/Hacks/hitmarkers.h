@@ -4,9 +4,9 @@
 #include "../interfaces.h"
 #include "../Utils/entity.h"
 
-namespace Hitmarkers
-{
-	//Hooks
-	void FireGameEvent(IGameEvent* event);
-	void Paint();
+namespace Hitmarkers {
+    //Hooks
+    void FireGameEvent( IGameEvent* event );
+
+    void Paint();
 }

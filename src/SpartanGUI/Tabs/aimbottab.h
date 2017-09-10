@@ -2,9 +2,9 @@
 
 #include "../Spartangui.h"
 
-namespace Aimbot
-{
-	void RenderTab();
+namespace Aimbot {
+    void RenderTab();
+
     void MainRenderTab();
 // }
 }

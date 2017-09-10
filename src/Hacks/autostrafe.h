@@ -3,8 +3,7 @@
 #include "../interfaces.h"
 #include "../settings.h"
 
-namespace AutoStrafe
-{
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+namespace AutoStrafe {
+    //Hooks
+    void CreateMove( CUserCmd* cmd );
 }

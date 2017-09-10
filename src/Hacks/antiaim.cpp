@@ -36,7 +36,7 @@ float luaRetX, luaRetY, luaRetY2; // Pop the Lua stack off into these and then r
 lua_State* LuaX, * LuaY, * LuaY2; // 1 instance of Lua for each Script.
 
 static float Distance( Vector a, Vector b ) {
-    return (sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) + pow( a.z - b.z, 2 ) ));
+    return ( sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) + pow( a.z - b.z, 2 ) ) );
 }
 
 static bool GetBestHeadAngle( QAngle& angle ) {

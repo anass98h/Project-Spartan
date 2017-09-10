@@ -2,9 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace SkinModelChanger
-{
-	extern bool showWindow;
+namespace SkinModelChanger {
+    extern bool showWindow;
 
-	extern void RenderWindow();
+    extern void RenderWindow();
 }

@@ -5,7 +5,6 @@
 #include "../SDK/SDK.h"
 #include <vector>
 
-namespace Fakewalk
-{
-	void CreateMove(CUserCmd* cmd);
+namespace Fakewalk {
+    void CreateMove( CUserCmd* cmd );
 }

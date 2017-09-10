@@ -6,9 +6,7 @@
 #include <vector>
 
 
-
-
 namespace CircleStrafe {
     //Hooks
-    void CreateMove(CUserCmd* cmd);
+    void CreateMove( CUserCmd* cmd );
 }

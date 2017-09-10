@@ -7,8 +7,8 @@
 #include <string>
 #include <cstdio>
 
-namespace Image
-{
+namespace Image {
     void InitImages();
-    GLuint LoadImage(const char * const path);
+
+    GLuint LoadImage( const char* const path );
 }

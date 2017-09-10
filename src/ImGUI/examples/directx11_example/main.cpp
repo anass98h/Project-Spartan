@@ -4,44 +4,46 @@
 #include <imgui.h>
 #include "imgui_impl_dx11.h"
 #include <d3d11.h>
+
 #define DIRECTINPUT_VERSION 0x0800
+
 #include <dinput.h>
 #include <tchar.h>
 
 // Data
-static ID3D11Device*            g_pd3dDevice = NULL;
-static ID3D11DeviceContext*     g_pd3dDeviceContext = NULL;
-static IDXGISwapChain*          g_pSwapChain = NULL;
-static ID3D11RenderTargetView*  g_mainRenderTargetView = NULL;
+static ID3D11Device* g_pd3dDevice = NULL;
+static ID3D11DeviceContext* g_pd3dDeviceContext = NULL;
+static IDXGISwapChain* g_pSwapChain = NULL;
+static ID3D11RenderTargetView* g_mainRenderTargetView = NULL;
 
-void CreateRenderTarget()
-{
+void CreateRenderTarget() {
     DXGI_SWAP_CHAIN_DESC sd;
-    g_pSwapChain->GetDesc(&sd);
+    g_pSwapChain->GetDesc( &sd );
 
     // Create the render target
     ID3D11Texture2D* pBackBuffer;
     D3D11_RENDER_TARGET_VIEW_DESC render_target_view_desc;
-    ZeroMemory(&render_target_view_desc, sizeof(render_target_view_desc));
+    ZeroMemory( &render_target_view_desc, sizeof( render_target_view_desc ) );
     render_target_view_desc.Format = sd.BufferDesc.Format;
     render_target_view_desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-    g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-    g_pd3dDevice->CreateRenderTargetView(pBackBuffer, &render_target_view_desc, &g_mainRenderTargetView);
-    g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, NULL);
+    g_pSwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID * ) & pBackBuffer );
+    g_pd3dDevice->CreateRenderTargetView( pBackBuffer, &render_target_view_desc, &g_mainRenderTargetView );
+    g_pd3dDeviceContext->OMSetRenderTargets( 1, &g_mainRenderTargetView, NULL );
     pBackBuffer->Release();
 }
 
-void CleanupRenderTarget()
-{
-    if (g_mainRenderTargetView) { g_mainRenderTargetView->Release(); g_mainRenderTargetView = NULL; }
+void CleanupRenderTarget() {
+    if ( g_mainRenderTargetView ) {
+        g_mainRenderTargetView->Release();
+        g_mainRenderTargetView = NULL;
+    }
 }
 
-HRESULT CreateDeviceD3D(HWND hWnd)
-{
+HRESULT CreateDeviceD3D( HWND hWnd ) {
     // Setup swap chain
     DXGI_SWAP_CHAIN_DESC sd;
     {
-        ZeroMemory(&sd, sizeof(sd));
+        ZeroMemory( &sd, sizeof( sd ) );
         sd.BufferCount = 2;
         sd.BufferDesc.Width = 0;
         sd.BufferDesc.Height = 0;
@@ -61,7 +63,9 @@ HRESULT CreateDeviceD3D(HWND hWnd)
     //createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     D3D_FEATURE_LEVEL featureLevel;
     const D3D_FEATURE_LEVEL featureLevelArray[1] = { D3D_FEATURE_LEVEL_11_0, };
-    if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 1, D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &featureLevel, &g_pd3dDeviceContext) != S_OK)
+    if ( D3D11CreateDeviceAndSwapChain( NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 1,
+                                        D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &featureLevel,
+                                        &g_pd3dDeviceContext ) != S_OK )
         return E_FAIL;
 
     CreateRenderTarget();
@@ -69,64 +73,96 @@ HRESULT CreateDeviceD3D(HWND hWnd)
     return S_OK;
 }
 
-void CleanupDeviceD3D()
-{
+void CleanupDeviceD3D() {
     CleanupRenderTarget();
-    if (g_pSwapChain) { g_pSwapChain->Release(); g_pSwapChain = NULL; }
-    if (g_pd3dDeviceContext) { g_pd3dDeviceContext->Release(); g_pd3dDeviceContext = NULL; }
-    if (g_pd3dDevice) { g_pd3dDevice->Release(); g_pd3dDevice = NULL; }
-}
-
-extern LRESULT ImGui_ImplDX11_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    if (ImGui_ImplDX11_WndProcHandler(hWnd, msg, wParam, lParam))
-        return true;
-
-    switch (msg)
-    {
-    case WM_SIZE:
-        if (g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
-        {
-            ImGui_ImplDX11_InvalidateDeviceObjects();
-            CleanupRenderTarget();
-            g_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
-            CreateRenderTarget();
-            ImGui_ImplDX11_CreateDeviceObjects();
-        }
-        return 0;
-    case WM_SYSCOMMAND:
-        if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
-            return 0;
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
+    if ( g_pSwapChain ) {
+        g_pSwapChain->Release();
+        g_pSwapChain = NULL;
     }
-    return DefWindowProc(hWnd, msg, wParam, lParam);
+    if ( g_pd3dDeviceContext ) {
+        g_pd3dDeviceContext->Release();
+        g_pd3dDeviceContext = NULL;
+    }
+    if ( g_pd3dDevice ) {
+        g_pd3dDevice->Release();
+        g_pd3dDevice = NULL;
+    }
 }
 
-int main(int, char**)
+extern LRESULT ImGui_ImplDX11_WndProcHandler( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
+
+LRESULT WINAPI
+WndProc(HWND
+hWnd,
+UINT msg, WPARAM
+wParam,
+LPARAM lParam
+)
 {
+if (
+ImGui_ImplDX11_WndProcHandler(hWnd, msg, wParam, lParam
+))
+return true;
+
+switch (msg)
+{
+case
+WM_SIZE:
+if (g_pd3dDevice !=
+NULL&& wParam
+!= SIZE_MINIMIZED)
+{
+ImGui_ImplDX11_InvalidateDeviceObjects();
+
+CleanupRenderTarget();
+
+g_pSwapChain->ResizeBuffers(0, (UINT)
+LOWORD(lParam), (UINT)
+HIWORD(lParam), DXGI_FORMAT_UNKNOWN,
+0);
+
+CreateRenderTarget();
+
+ImGui_ImplDX11_CreateDeviceObjects();
+
+}
+return 0;
+case
+WM_SYSCOMMAND:
+if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+return 0;
+break;
+case
+WM_DESTROY:
+        PostQuitMessage( 0 );
+return 0;
+}
+return
+DefWindowProc(hWnd, msg, wParam, lParam
+);
+}
+
+int main( int, char** ) {
     // Create application window
-    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, LoadCursor(NULL, IDC_ARROW), NULL, NULL, _T("ImGui Example"), NULL };
-    RegisterClassEx(&wc);
-    HWND hwnd = CreateWindow(_T("ImGui Example"), _T("ImGui DirectX11 Example"), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+    WNDCLASSEX wc = { sizeof( WNDCLASSEX ), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle( NULL ), NULL,
+                      LoadCursor( NULL, IDC_ARROW ), NULL, NULL, _T( "ImGui Example" ), NULL };
+    RegisterClassEx( &wc );
+    HWND hwnd = CreateWindow( _T( "ImGui Example" ), _T( "ImGui DirectX11 Example" ), WS_OVERLAPPEDWINDOW, 100, 100,
+                              1280, 800, NULL, NULL, wc.hInstance, NULL );
 
     // Initialize Direct3D
-    if (CreateDeviceD3D(hwnd) < 0)
-    {
+    if ( CreateDeviceD3D( hwnd ) < 0 ) {
         CleanupDeviceD3D();
-        UnregisterClass(_T("ImGui Example"), wc.hInstance);
+        UnregisterClass( _T( "ImGui Example" ), wc.hInstance );
         return 1;
     }
 
     // Show the window
-    ShowWindow(hwnd, SW_SHOWDEFAULT);
-    UpdateWindow(hwnd);
+    ShowWindow( hwnd, SW_SHOWDEFAULT );
+    UpdateWindow( hwnd );
 
     // Setup ImGui binding
-    ImGui_ImplDX11_Init(hwnd, g_pd3dDevice, g_pd3dDeviceContext);
+    ImGui_ImplDX11_Init( hwnd, g_pd3dDevice, g_pd3dDeviceContext );
 
     // Load Fonts
     // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
@@ -140,17 +176,15 @@ int main(int, char**)
 
     bool show_test_window = true;
     bool show_another_window = false;
-    ImVec4 clear_col = ImColor(114, 144, 154);
+    ImVec4 clear_col = ImColor( 114, 144, 154 );
 
     // Main loop
     MSG msg;
-    ZeroMemory(&msg, sizeof(msg));
-    while (msg.message != WM_QUIT)
-    {
-        if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+    ZeroMemory( &msg, sizeof( msg ) );
+    while ( msg.message != WM_QUIT ) {
+        if ( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) ) {
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
             continue;
         }
         ImGui_ImplDX11_NewFrame();
@@ -159,41 +193,41 @@ int main(int, char**)
         // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
         {
             static float f = 0.0f;
-            ImGui::Text("Hello, world!");
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-            ImGui::ColorEdit3("clear color", (float*)&clear_col);
-            if (ImGui::Button("Test Window")) show_test_window ^= 1;
-            if (ImGui::Button("Another Window")) show_another_window ^= 1;
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::Text( "Hello, world!" );
+            ImGui::SliderFloat( "float", &f, 0.0f, 1.0f );
+            ImGui::ColorEdit3( "clear color", ( float* ) &clear_col );
+            if ( ImGui::Button( "Test Window" ) ) show_test_window ^= 1;
+            if ( ImGui::Button( "Another Window" ) ) show_another_window ^= 1;
+            ImGui::Text( "Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                         ImGui::GetIO().Framerate );
         }
 
         // 2. Show another simple window, this time using an explicit Begin/End pair
-        if (show_another_window)
-        {
-            ImGui::SetNextWindowSize(ImVec2(200,100), ImGuiCond_FirstUseEver);
-            ImGui::Begin("Another Window", &show_another_window);
-            ImGui::Text("Hello");
+        if ( show_another_window ) {
+            ImGui::SetNextWindowSize( ImVec2( 200, 100 ), ImGuiCond_FirstUseEver );
+            ImGui::Begin( "Another Window", &show_another_window );
+            ImGui::Text( "Hello" );
             ImGui::End();
         }
 
         // 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
-        if (show_test_window)
-        {
-            ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-            ImGui::ShowTestWindow(&show_test_window);
+        if ( show_test_window ) {
+            ImGui::SetNextWindowPos( ImVec2( 650, 20 ),
+                                     ImGuiCond_FirstUseEver );     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
+            ImGui::ShowTestWindow( &show_test_window );
         }
 
         // Rendering
-        g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, (float*)&clear_col);
+        g_pd3dDeviceContext->ClearRenderTargetView( g_mainRenderTargetView, ( float* ) &clear_col );
         ImGui::Render();
 
-        g_pSwapChain->Present(1, 0); // Present with vsync
+        g_pSwapChain->Present( 1, 0 ); // Present with vsync
         //g_pSwapChain->Present(0, 0); // Present without vsync
     }
 
     ImGui_ImplDX11_Shutdown();
     CleanupDeviceD3D();
-    UnregisterClass(_T("ImGui Example"), wc.hInstance);
+    UnregisterClass( _T( "ImGui Example" ), wc.hInstance );
 
     return 0;
 }
