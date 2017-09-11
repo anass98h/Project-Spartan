@@ -892,8 +892,7 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     baseYaw -= 0.0f;
                 break;
                 case AntiAimType_Y::LOWERBODY:
-                    baseYaw = *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + rand() % 35 + 165;
+                    baseYaw = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
                 case AntiAimType_Y::FJITTER: {
                     if ( CreateMove::sendPacket ) {
