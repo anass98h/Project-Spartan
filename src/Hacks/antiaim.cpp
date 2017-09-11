@@ -596,7 +596,6 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
     yFlip = bFlip != yFlip;
 
     float baseYaw = angle.y;
-    baseYaw += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
 
     switch ( aa_type ) {
         case AntiAimType_Y::LEGITTROLLING:
@@ -968,6 +967,7 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
             }
     }
 
+    baseYaw += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
     angle.y = baseYaw;
 
     if ( !Settings::AntiAim::allowUntrustedAngles ) {
