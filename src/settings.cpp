@@ -698,7 +698,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "modulo" )], &Settings::Resolver::modulo );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "Hugtype" )], ( int* ) &Settings::Resolver::Hugtype );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
-
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], ( int* ) &Settings::Resolver::LagComp );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )], &Settings::AngleIndicator::enabled );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "Veloc" )], &Settings::AngleIndicator::Veloc );
     GetVal( settings[XORSTR( "Triggerbot" )][XORSTR( "enabled" )], &Settings::Triggerbot::enabled );
