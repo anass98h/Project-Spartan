@@ -529,6 +529,12 @@ namespace Settings {
 
     }
 
+    namespace EventLogger {
+
+        extern bool enabled;
+
+    }
+
     namespace AntiAim {
         namespace AutoDisable {
             extern bool noEnemy;

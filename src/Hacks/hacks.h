@@ -18,6 +18,7 @@
 #include "dlights.h"
 #include "edgejump.h"
 #include "esp.h"
+#include "eventlogger.h"
 #include "fakelag.h"
 #include "fakewalk.h"
 #include "fovchanger.h"
