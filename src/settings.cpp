@@ -228,13 +228,16 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "AntiAim" )][XORSTR( "allowUntrustedAngles" )] = Settings::AntiAim::allowUntrustedAngles;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "enabled" )] = Settings::AntiAim::Yaw::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "type" )] = ( int ) Settings::AntiAim::Yaw::type;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "customType" )] = Settings::AntiAim::Yaw::customType;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "type_fake" )] = ( int ) Settings::AntiAim::Yaw::typeFake;
-    settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "type" )] = ( int ) Settings::AntiAim::Roll::type;
-    settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "enabled" )] = Settings::AntiAim::Roll::enabled;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "customTypeFake" )] = Settings::AntiAim::Yaw::customTypeFake;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "antiResolver" )] = Settings::AntiAim::Yaw::antiResolver;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Yaw::dynamicAA;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "type" )] = ( int ) Settings::AntiAim::Roll::type;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "enabled" )] = Settings::AntiAim::Roll::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "enabled" )] = Settings::AntiAim::Pitch::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "type" )] = ( int ) Settings::AntiAim::Pitch::type;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "customType" )] = Settings::AntiAim::Pitch::customType;
     settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "enabled" )] = Settings::AntiAim::HeadEdge::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )] = Settings::AntiAim::HeadEdge::distance;
     settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR(

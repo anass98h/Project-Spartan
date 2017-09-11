@@ -539,7 +539,9 @@ namespace Settings {
         namespace Yaw {
             extern bool enabled;
             extern AntiAimType_Y type;
+            extern float customType;
             extern AntiAimType_Y typeFake;
+            extern float customTypeFake;
             extern bool antiResolver;
             extern bool dynamicAA;
         }
@@ -550,6 +552,7 @@ namespace Settings {
         namespace Pitch {
             extern bool enabled;
             extern AntiAimType_X type;
+            extern float customType;
         }
         namespace Lby {
             extern bool enabled;
