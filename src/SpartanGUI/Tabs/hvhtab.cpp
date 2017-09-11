@@ -132,7 +132,7 @@ void HvH::RenderTab() {
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     ImGui::Text( XORSTR( "Real" ) );
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Real Add" ) );
+                    ImGui::Text( XORSTR( "Custom Add" ) );
                 }
                 ImGui::NextColumn();
                 {
