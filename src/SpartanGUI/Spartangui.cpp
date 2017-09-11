@@ -213,9 +213,9 @@ void SetupMainMenuBar() {
 #define IM_ARRAYSIZE( _ARR )  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 void UI::SwapWindow() {
-    if ( UI::isVisible ) {
+    if ( UI::isVisible || ( engine->IsInGame() && ( Settings::EventLogger::enabled /*&& EventLogger::events.size() > 0*/ ) ) )
         return;
-    }
+
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
     // I have enabled the drawing of the watermark even when In-Game
     // If you don't want that, add || engine->IsInGame() after the UI::isVisible statement

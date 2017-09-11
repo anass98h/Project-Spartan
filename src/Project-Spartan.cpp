@@ -86,8 +86,11 @@ int __attribute__ ((constructor)) Startup() {
     soundVMT->HookVM( ( void* ) Hooks::EmitSound2, 6 );
     soundVMT->ApplyVMT();
 
-    eventListener = new EventListener(
-            { "cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team" } );
+    eventListener = new EventListener({
+                                              "cs_game_disconnected", "player_connect_full", "player_death",
+                                              "player_hurt", "switch_team", "item_purchase", "bomb_beginplant",
+                                              "bomb_begindefuse", "bomb_planted", "enter_bombzone"
+                                      });
 
     if ( ModSupport::current_mod != ModType::CSCO &&
          Hooker::HookRecvProp( "CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook ) )

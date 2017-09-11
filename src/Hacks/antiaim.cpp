@@ -596,7 +596,6 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
     yFlip = bFlip != yFlip;
 
     float baseYaw = angle.y;
-    baseYaw += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
 
     switch ( aa_type ) {
         case AntiAimType_Y::LEGITTROLLING:
@@ -968,6 +967,7 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
             }
     }
 
+    baseYaw += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
     angle.y = baseYaw;
 
     if ( !Settings::AntiAim::allowUntrustedAngles ) {
@@ -983,30 +983,39 @@ static void DoAntiAimX( QAngle& angle, bool bFlip, bool& clamp ) {
     static bool fakezeroS = false;
     static bool fakeupS = false;
 
+    float basePitch = angle.x;
+
     switch ( aa_type ) {
         case AntiAimType_X::STATIC_UP:
-            angle.x = -89.0f;
+            basePitch = -89.0f;
             break;
         case AntiAimType_X::FLIP:
             if ( fabsf( pLocal->GetVelocity().x ) != 0 ) {
-                angle.x = bFlip ? -55.0f : 40.0f;
+                basePitch = bFlip ? -55.0f : 40.0f;
             } else {
-                angle.x = 50.0f;
+                basePitch = 50.0f;
             }
             break;
         case AntiAimType_X::STATIC_DOWN:
-            angle.x = 89.0f;
+            basePitch = 89.0f;
             break;
         case AntiAimType_X::FAKEZERO:
             fakezeroS = !fakezeroS;
             CreateMove::sendPacket = fakezeroS;
-            angle.x = fakezeroS ? 0 : 89;
+            basePitch = fakezeroS ? 0 : 89;
             break;
         case AntiAimType_X::FAKEUP:
             fakeupS = !fakeupS;
             CreateMove::sendPacket = fakeupS;
-            angle.x = fakeupS ? -89 : 89;
+            basePitch = fakeupS ? -89 : 89;
             break;
+    }
+
+    basePitch += Settings::AntiAim::Pitch::customType;
+    angle.x = basePitch;
+
+    if ( !Settings::AntiAim::allowUntrustedAngles ) {
+        Math::ClampAngles(angle);
     }
 }
 
@@ -1107,15 +1116,21 @@ static void DoAntiAimLBY( QAngle& angle, int command_number, bool bFlip, bool& c
         }
             break;
         case AntiAimType_LBY::MYRRIB: {
+            static float LBYsave = 0;
+            float LBY = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+
+            if (LBY != LBYsave)
+            {
+                LBYsave = LBY;
+            }
+
             static bool LBYflipM = false;
             LBYflipM = !LBYflipM;
-            if ( LBYflipM ) {
-                angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                        engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
+            if (LBYflipM) {
+                angle.y = LBYsave;
                 CreateMove::sendPacket = true;
             } else {
-                angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                        engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180.f;
+                angle.y = LBYsave + 180.f;
                 CreateMove::sendPacket = false;
             }
         }
@@ -1147,12 +1162,12 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
 
     QAngle angle = cmd->viewangles;
 
-    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer )
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal )
         return;
 
     C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-            localplayer->GetActiveWeapon() );
+            pLocal->GetActiveWeapon() );
     if ( !activeWeapon )
         return;
 
@@ -1167,21 +1182,21 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
                                                                 *activeWeapon->GetItemDefinitionIndex() ==
                                                                 ItemDefinitionIndex::WEAPON_REVOLVER ) )
         return;
-    if ( localplayer->GetMoveType() == MOVETYPE_LADDER || localplayer->GetMoveType() == MOVETYPE_NOCLIP )
+    if ( pLocal->GetMoveType() == MOVETYPE_LADDER || pLocal->GetMoveType() == MOVETYPE_NOCLIP )
         return;
 
     // AutoDisable checks
 
     // Knife
-    if ( Settings::AntiAim::AutoDisable::knifeHeld && localplayer->GetAlive() &&
+    if ( Settings::AntiAim::AutoDisable::knifeHeld && pLocal->GetAlive() &&
          activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE )
         return;
     // Bomb
-    if ( Settings::AntiAim::AutoDisable::bombHeld && localplayer->GetAlive() &&
+    if ( Settings::AntiAim::AutoDisable::bombHeld && pLocal->GetAlive() &&
          activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_C4 )
         return;
     // No Enemy
-    if ( Settings::AntiAim::AutoDisable::noEnemy && localplayer->GetAlive() && !HasViableEnemy() )
+    if ( Settings::AntiAim::AutoDisable::noEnemy && pLocal->GetAlive() && !HasViableEnemy() )
         return;
 
     isAntiAiming = true;
@@ -1192,32 +1207,28 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
     bFlip = !bFlip;
     FakeLag::bFlipping = bFlip;
 
-    bool should_clamp = !Settings::AntiAim::allowUntrustedAngles;
+    bool shouldClamp = !Settings::AntiAim::allowUntrustedAngles;
 
-    if ( !ValveDSCheck::forceUT && ( *csGameRules ) && ( *csGameRules )->IsValveDS() && !should_clamp ) {
-        /*if (Settings::AntiAim::Yaw::type > AntiAimType_Y::CUSTOM)
-            Settings::AntiAim::Yaw::type = AntiAimType_Y::CUSTOM;
-
-        if (Settings::AntiAim::Yaw::typeFake >= AntiAimType_Y::CUSTOM)
-            Settings::AntiAim::Yaw::typeFake = AntiAimType_Y::CUSTOM;
-
-            As far as my information goes, we no longer have any untrusted Yaw AA's in Spartan.
-        */
-
-        if ( Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN )
+    if ( !shouldClamp ) {
+        if ( Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN ) {
             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
+        }
+
+        if ( Settings::AntiAim::Roll::enabled ) {
+            Settings::AntiAim::Roll::enabled = false;
+        }
     }
 
     if ( Settings::AntiAim::Yaw::enabled ) {
         if ( Settings::AntiAim::Lby::enabled && !bFlip ) {
-            DoAntiAimLBY( angle, cmd->command_number, bFlip, should_clamp );
+            DoAntiAimLBY( angle, cmd->command_number, bFlip, shouldClamp );
             Math::NormalizeAngles( angle );
             if ( !Settings::FakeLag::enabled )
                 CreateMove::sendPacket = bFlip;
             if ( Settings::AntiAim::HeadEdge::enabled && edging_head && !bFlip )
                 angle.y = edge_angle.y;
         } else {
-            DoAntiAimY( angle, cmd->command_number, bFlip, should_clamp );
+            DoAntiAimY( angle, cmd->command_number, bFlip, shouldClamp );
             Math::NormalizeAngles( angle );
             if ( !Settings::FakeLag::enabled )
                 CreateMove::sendPacket = bFlip;
@@ -1237,12 +1248,16 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
             angle.y = edge_angle.y;
     }*/
 
-    if ( Settings::AntiAim::Roll::enabled && Settings::AntiAim::allowUntrustedAngles )
-        DoAntiAimZ( angle, cmd->command_number, should_clamp );
-    if ( Settings::AntiAim::Pitch::enabled )
-        DoAntiAimX( angle, bFlip, should_clamp );
+    if ( Settings::AntiAim::Roll::enabled && Settings::AntiAim::allowUntrustedAngles ) {
+        DoAntiAimZ( angle, cmd->command_number, shouldClamp );
+    }
+    if ( Settings::AntiAim::Pitch::enabled ) {
+        DoAntiAimX( angle, bFlip, shouldClamp );
+    }
+
     Math::NormalizeAngles( angle );
-    if ( should_clamp ) {
+
+    if ( shouldClamp ) {
         Math::ClampAngles( angle );
     }
 
@@ -1251,18 +1266,18 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
     if ( Settings::AntiAim::Yaw::antiResolver ) {
         static bool antiResolverFlip = false;
 
-
-        if ( cmd->viewangles.y == *localplayer->GetLowerBodyYawTarget() ) {
-            if ( antiResolverFlip )
+        if ( cmd->viewangles.y == *pLocal->GetLowerBodyYawTarget() ) {
+            if ( antiResolverFlip ) {
                 cmd->viewangles.y += +90;
-            else
+            } else {
                 cmd->viewangles.y -= +90;
+            }
 
             antiResolverFlip = !antiResolverFlip;
 
             Math::NormalizeAngles( cmd->viewangles );
 
-            if ( should_clamp ) {
+            if ( shouldClamp ) {
                 Math::ClampAngles( cmd->viewangles );
             }
         }
@@ -1275,5 +1290,4 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
     }
 
     Math::CorrectMovement( oldAngle, cmd, oldForward, oldSideMove );
-
 }

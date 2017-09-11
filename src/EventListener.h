@@ -19,6 +19,7 @@ public:
         Spammer::FireGameEvent( event );
         ValveDSCheck::FireGameEvent( event );
         SkinChanger::FireGameEvent( event );
+        EventLogger::FireGameEvent( event );
     }
 
     int GetEventDebugID() override {
