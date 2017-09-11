@@ -1,25 +1,23 @@
 #include "hooks.h"
 
-enum ClearFlags_t
-{
-	VIEW_CLEAR_COLOR		= 0x1, // 1
-	VIEW_CLEAR_DEPTH		= 0x2, // 2
-	VIEW_CLEAR_FULL_TARGET	= 0x4, // 4
-	VIEW_NO_DRAW			= 0x8, // 8
-	VIEW_CLEAR_OBEY_STENCIL = 0x10,// 16 Draws a quad allowing stencil test to clear through portals
-	VIEW_CLEAR_STENCIL		= 0x20,// 32
+enum ClearFlags_t {
+    VIEW_CLEAR_COLOR = 0x1, // 1
+    VIEW_CLEAR_DEPTH = 0x2, // 2
+    VIEW_CLEAR_FULL_TARGET = 0x4, // 4
+    VIEW_NO_DRAW = 0x8, // 8
+    VIEW_CLEAR_OBEY_STENCIL = 0x10,// 16 Draws a quad allowing stencil test to clear through portals
+    VIEW_CLEAR_STENCIL = 0x20,// 32
 };
 
-enum RenderViewInfo_t
-{
-	RENDERVIEW_UNSPECIFIED				= 0,
-	RENDERVIEW_DRAWVIEWMODEL			= (1 << 0), // 1
-	RENDERVIEW_DRAWHUD					= (1 << 1), // 2
-	RENDERVIEW_SUPPRESSMONITORRENDERING = (1 << 2), // 4
+enum RenderViewInfo_t {
+    RENDERVIEW_UNSPECIFIED = 0,
+    RENDERVIEW_DRAWVIEWMODEL = ( 1 << 0 ), // 1
+    RENDERVIEW_DRAWHUD = ( 1 << 1 ), // 2
+    RENDERVIEW_SUPPRESSMONITORRENDERING = ( 1 << 2 ), // 4
 };
 
-void Hooks::RenderView(void* thisptr, CViewSetup& setup, CViewSetup& hudViewSetup, unsigned int nClearFlags, int whatToDraw)
-{
+void Hooks::RenderView( void* thisptr, CViewSetup& setup, CViewSetup& hudViewSetup, unsigned int nClearFlags,
+                        int whatToDraw ) {
 
     /** This is for the Rear-View Mirror. Not quite ready yet **/
     /*
@@ -69,6 +67,6 @@ void Hooks::RenderView(void* thisptr, CViewSetup& setup, CViewSetup& hudViewSetu
 	else
 	{
      */
-		viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, setup, hudViewSetup, nClearFlags, whatToDraw);
-	//}
+    viewRenderVMT->GetOriginalMethod<RenderViewFn>( 6 )( thisptr, setup, hudViewSetup, nClearFlags, whatToDraw );
+    //}
 }

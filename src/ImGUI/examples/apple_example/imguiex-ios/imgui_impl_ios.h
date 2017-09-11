@@ -10,13 +10,21 @@
 #include <Foundation/Foundation.h>
 #include <UIKit/UIKit.h>
 
-@interface ImGuiHelper : NSObject
+@
+interface ImGuiHelper :
+NSObject
 
-- (id) initWithView: (UIView *)view;
+- (id)
+initWithView: ( UIView * )
+view;
 
-- (void)connectServer: (NSString*)serverName;
+- (void)
+connectServer: ( NSString * )
+serverName;
 
-- (void)render;
-- (void)newFrame;
+- (void)
+render;
+- (void)
+newFrame;
 
 @end

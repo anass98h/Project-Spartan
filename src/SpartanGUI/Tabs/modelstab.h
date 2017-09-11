@@ -2,7 +2,6 @@
 
 #include "../Spartangui.h"
 
-namespace Models
-{
-	void RenderTab();
+namespace Models {
+    void RenderTab();
 }

@@ -4,8 +4,7 @@
 
 #pragma once
 
-typedef struct DebugHUD
-{
+typedef struct DebugHUD {
     bool show_test_window;
     bool show_example_window;
     float rotation_speed;
@@ -17,8 +16,8 @@ typedef struct DebugHUD
 extern "C" {
 #endif
 
-void DebugHUD_InitDefaults( DebugHUD *hud );
-void DebugHUD_DoInterface( DebugHUD *hud );
+void DebugHUD_InitDefaults( DebugHUD* hud );
+void DebugHUD_DoInterface( DebugHUD* hud );
 
 #if __cplusplus
 }

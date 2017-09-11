@@ -1,4 +1,5 @@
-#pragma once 
+#pragma once
+
 #include <iostream>
 #include <string.h>
 #include <memory>
@@ -11,10 +12,15 @@
 #include <sys/time.h>
 #include "Utils/xorstring.h"
 #include "project-spartan.h"
+
 namespace protection {
-    bool pwmatch(char* Pass);
+    bool pwmatch( char* Pass );
+
     void timerstart();
+
     int UniqueId();
-    void verify(int id);
+
+    void verify( int id );
+
     bool isVerified();
 }

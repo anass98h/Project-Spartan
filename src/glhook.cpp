@@ -5,14 +5,14 @@ SDL_GLContext context = nullptr;
 cFont Settings::UI::Fonts::font = cFont::Arial;
 float Settings::UI::Fonts::fontsize = 16;
 
-void SDL2::SwapWindow(SDL_Window* window) {
+void SDL2::SwapWindow( SDL_Window* window ) {
     static SDL_GL_SwapWindow_t oSDL_GL_SwapWindow = reinterpret_cast<SDL_GL_SwapWindow_t> (oSwapWindow);
 
     static SDL_GLContext original_context = SDL_GL_GetCurrentContext();
 
-    if (!context) {
-        context = SDL_GL_CreateContext(window);
-        ImGui_ImplSdl_Init(window);
+    if ( !context ) {
+        context = SDL_GL_CreateContext( window );
+        ImGui_ImplSdl_Init( window );
 
         /*
         ImWchar RobotoMonoRegular_ranges[] = {
@@ -28,14 +28,14 @@ void SDL2::SwapWindow(SDL_Window* window) {
          */
 
         ImWchar font_ranges[] = {
-            0x0020, 0x007E, // Basic Latin
-            0x00A0, 0x00FF, // Latin-1 Supplement
-            0x0100, 0x017F, // Latin Extended-A
-            0x0180, 0x024F, // Latin Extended-B
-            0x0370, 0x03FF, // Greek and Coptic
-            0x0400, 0x04FF, // Cyrillic
-            0x0500, 0x052F, // Cyrillic Supplementary
-            0
+                0x0020, 0x007E, // Basic Latin
+                0x00A0, 0x00FF, // Latin-1 Supplement
+                0x0100, 0x017F, // Latin Extended-A
+                0x0180, 0x024F, // Latin Extended-B
+                0x0370, 0x03FF, // Greek and Coptic
+                0x0400, 0x04FF, // Cyrillic
+                0x0500, 0x052F, // Cyrillic Supplementary
+                0
         };
 
         /*
@@ -48,17 +48,16 @@ void SDL2::SwapWindow(SDL_Window* window) {
                         }; */
 
 
-        ImWchar icons_ranges[] = {ICON_MIN, ICON_MAX, 0};
-        ImWchar icons_ranges2[] = {0xffde, 0xffea, 0};
-
+        ImWchar icons_ranges[] = { ICON_MIN, ICON_MAX, 0 };
+        ImWchar icons_ranges2[] = { 0xffde, 0xffea, 0 };
 
 
         ImGuiIO& io = ImGui::GetIO();
         ImFontConfig config;
 
 
-
-        io.Fonts->AddFontFromMemoryCompressedTTF(arial_compressed_data, arial_compressed_size, Settings::UI::Fonts::fontsize, &config, font_ranges);
+        io.Fonts->AddFontFromMemoryCompressedTTF( arial_compressed_data, arial_compressed_size,
+                                                  Settings::UI::Fonts::fontsize, &config, font_ranges );
 
 
         //not sure if I set this after or before the merge mode 
@@ -69,9 +68,8 @@ void SDL2::SwapWindow(SDL_Window* window) {
         config.MergeMode = true;
         config.PixelSnapH = true;
         //io.Fonts->AddFontFromMemoryCompressedBase85TTF(KaiGenGothicCNRegular_compressed_data_base85, 14.0f, &config, KaiGenGothicCNRegular_ranges);
-        io.Fonts->AddFontFromMemoryCompressedBase85TTF(Tux_compressed_data_base85, 88.0f, &config, icons_ranges);
-        io.Fonts->AddFontFromMemoryCompressedBase85TTF(Tux2_compressed_data_base85, 28.0f, &config, icons_ranges2);
-
+        io.Fonts->AddFontFromMemoryCompressedBase85TTF( Tux_compressed_data_base85, 88.0f, &config, icons_ranges );
+        io.Fonts->AddFontFromMemoryCompressedBase85TTF( Tux2_compressed_data_base85, 28.0f, &config, icons_ranges2 );
 
 
         io.Fonts->Build();
@@ -82,22 +80,22 @@ void SDL2::SwapWindow(SDL_Window* window) {
                         io.Fonts->Build();  */
     }
 
-    SDL_GL_MakeCurrent(window, context);
+    SDL_GL_MakeCurrent( window, context );
 
-    ImGui_ImplSdl_NewFrame(window);
+    ImGui_ImplSdl_NewFrame( window );
 
     ImGui::GetIO().MouseDrawCursor = UI::isVisible;
     ImGui::GetIO().WantCaptureMouse = UI::isVisible;
     ImGui::GetIO().WantCaptureKeyboard = UI::isVisible;
 
-    if (UI::isVisible && !SetKeyCodeState::shouldListen) {
+    if ( UI::isVisible && !SetKeyCodeState::shouldListen ) {
         SDL_Event event;
 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT)
+        while ( SDL_PollEvent( &event ) ) {
+            if ( event.type == SDL_QUIT )
                 return;
 
-            ImGui_ImplSdl_ProcessEvent(&event);
+            ImGui_ImplSdl_ProcessEvent( &event );
         }
     }
 
@@ -109,27 +107,27 @@ void SDL2::SwapWindow(SDL_Window* window) {
     UI::SetupColors();
     UI::SetupWindows();
 
-    ImGui::GetCurrentContext()->Font->DisplayOffset = ImVec2(0.f, 0.f);
+    ImGui::GetCurrentContext()->Font->DisplayOffset = ImVec2( 0.f, 0.f );
 
     ImGui::Render();
 
-    SDL_GL_MakeCurrent(window, original_context);
-    oSDL_GL_SwapWindow(window);
+    SDL_GL_MakeCurrent( window, original_context );
+    oSDL_GL_SwapWindow( window );
 }
 
 void SDL2::UnhookWindow() {
     IMG_Quit();
     *swapWindowJumpAddress = oSwapWindow;
 
-    SDL_GL_DeleteContext(context);
+    SDL_GL_DeleteContext( context );
 }
 
-int SDL2::PollEvent(SDL_Event* event) {
+int SDL2::PollEvent( SDL_Event* event ) {
     static SDL_PollEvent_t oSDL_PollEvent = reinterpret_cast<SDL_PollEvent_t> (oPollEvent);
 
-    Shortcuts::PollEvent(event);
+    Shortcuts::PollEvent( event );
 
-    return oSDL_PollEvent(event);
+    return oSDL_PollEvent( event );
 }
 
 void SDL2::UnhookPollEvent() {

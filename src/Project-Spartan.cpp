@@ -40,58 +40,58 @@ int __attribute__ ((constructor)) Startup() {
     TracerEffect::RestoreTracers();
 
 
-
-
     ModSupport::OnInit();
 
-    clientVMT->HookVM((void*) Hooks::IN_KeyEvent, 20);
-    clientVMT->HookVM((void*) Hooks::FrameStageNotify, 36);
+    clientVMT->HookVM( ( void* ) Hooks::IN_KeyEvent, 20 );
+    clientVMT->HookVM( ( void* ) Hooks::FrameStageNotify, 36 );
     clientVMT->ApplyVMT();
 
-    panelVMT->HookVM((void*) Hooks::PaintTraverse, 42);
+    panelVMT->HookVM( ( void* ) Hooks::PaintTraverse, 42 );
     panelVMT->ApplyVMT();
 
-    modelRenderVMT->HookVM((void*) Hooks::DrawModelExecute, 21);
+    modelRenderVMT->HookVM( ( void* ) Hooks::DrawModelExecute, 21 );
     modelRenderVMT->ApplyVMT();
 
-    clientModeVMT->HookVM((void*) Hooks::OverrideView, 19);
-    clientModeVMT->HookVM((void*) Hooks::CreateMove, 25);
-    clientModeVMT->HookVM((void*) Hooks::GetViewModelFOV, 36);
+    clientModeVMT->HookVM( ( void* ) Hooks::OverrideView, 19 );
+    clientModeVMT->HookVM( ( void* ) Hooks::CreateMove, 25 );
+    clientModeVMT->HookVM( ( void* ) Hooks::GetViewModelFOV, 36 );
     clientModeVMT->ApplyVMT();
 
-    gameEventsVMT->HookVM((void*) Hooks::FireEvent, 9);
-    gameEventsVMT->HookVM((void*) Hooks::FireEventClientSide, 10);
+    gameEventsVMT->HookVM( ( void* ) Hooks::FireEvent, 9 );
+    gameEventsVMT->HookVM( ( void* ) Hooks::FireEventClientSide, 10 );
     gameEventsVMT->ApplyVMT();
 
-    viewRenderVMT->HookVM((void*) Hooks::RenderView, 6);
-    viewRenderVMT->HookVM((void*) Hooks::RenderSmokePostViewmodel, 41);
+    viewRenderVMT->HookVM( ( void* ) Hooks::RenderView, 6 );
+    viewRenderVMT->HookVM( ( void* ) Hooks::RenderSmokePostViewmodel, 41 );
     viewRenderVMT->ApplyVMT();
 
-    inputInternalVMT->HookVM((void*) Hooks::SetKeyCodeState, 92);
-    inputInternalVMT->HookVM((void*) Hooks::SetMouseCodeState, 93);
+    inputInternalVMT->HookVM( ( void* ) Hooks::SetKeyCodeState, 92 );
+    inputInternalVMT->HookVM( ( void* ) Hooks::SetMouseCodeState, 93 );
     inputInternalVMT->ApplyVMT();
 
-    materialVMT->HookVM((void*) Hooks::BeginFrame, 42);
+    materialVMT->HookVM( ( void* ) Hooks::BeginFrame, 42 );
     materialVMT->ApplyVMT();
 
-    surfaceVMT->HookVM((void*) Hooks::PlaySound, 82);
-    surfaceVMT->HookVM((void*) Hooks::OnScreenSizeChanged, 116);
+    surfaceVMT->HookVM( ( void* ) Hooks::PlaySound, 82 );
+    surfaceVMT->HookVM( ( void* ) Hooks::OnScreenSizeChanged, 116 );
     surfaceVMT->ApplyVMT();
 
-    launcherMgrVMT->HookVM((void*) Hooks::PumpWindowsMessageLoop, 19);
+    launcherMgrVMT->HookVM( ( void* ) Hooks::PumpWindowsMessageLoop, 19 );
     launcherMgrVMT->ApplyVMT();
 
-    engineVGuiVMT->HookVM((void*) Hooks::Paint, 15);
+    engineVGuiVMT->HookVM( ( void* ) Hooks::Paint, 15 );
     engineVGuiVMT->ApplyVMT();
 
-    soundVMT->HookVM((void*) Hooks::EmitSound1, 5);
-    soundVMT->HookVM((void*) Hooks::EmitSound2, 6);
+    soundVMT->HookVM( ( void* ) Hooks::EmitSound1, 5 );
+    soundVMT->HookVM( ( void* ) Hooks::EmitSound2, 6 );
     soundVMT->ApplyVMT();
 
-    eventListener = new EventListener({"cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team"});
+    eventListener = new EventListener(
+            { "cs_game_disconnected", "player_connect_full", "player_death", "player_hurt", "switch_team" } );
 
-    if (ModSupport::current_mod != ModType::CSCO && Hooker::HookRecvProp("CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook))
-        SkinChanger::sequenceHook->SetProxyFunction((RecvVarProxyFn) SkinChanger::SetViewModelSequence);
+    if ( ModSupport::current_mod != ModType::CSCO &&
+         Hooker::HookRecvProp( "CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook ) )
+        SkinChanger::sequenceHook->SetProxyFunction( ( RecvVarProxyFn ) SkinChanger::SetViewModelSequence );
 
     NetVarManager::DumpNetvars();
     Offsets::GetOffsets();
@@ -100,23 +100,30 @@ int __attribute__ ((constructor)) Startup() {
 
     //Settings::LoadSettings();
 
-    srand(time(NULL)); // Seed random # Generator so we can call rand() later
+    srand( time( NULL ) ); // Seed random # Generator so we can call rand() later
 
 
-    engine->ExecuteClientCmd("clear;");
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+    engine->ExecuteClientCmd( "clear;" );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( " )\\ )                      )              \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(()/(           )  (    ( /(    )         \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( " /(_))`  )   ( /(  )(   )\\())( /(   (     \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "     |_|                                  \n" ) );
 
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully injected using the GNU Debugger. \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "Project Spartan has been successfully injected using the GNU Debugger. \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
 
     Image::InitImages();
     return 0;
@@ -125,7 +132,7 @@ int __attribute__ ((constructor)) Startup() {
 /* Called when un-injecting the library */
 void __attribute__ ((destructor)) Shutdown() {
 
-    cvar->FindVar(XORSTR("cl_mouseenable"))->SetValue(1);
+    cvar->FindVar( XORSTR( "cl_mouseenable" ) )->SetValue( 1 );
 
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();
@@ -148,7 +155,7 @@ void __attribute__ ((destructor)) Shutdown() {
 
     input->m_fCameraInThirdPerson = false;
     input->m_vecCameraOffset.z = 150.f;
-    GetLocalClient(-1)->m_nDeltaTick = -1;
+    GetLocalClient( -1 )->m_nDeltaTick = -1;
 
     delete eventListener;
 
@@ -156,26 +163,33 @@ void __attribute__ ((destructor)) Shutdown() {
     *s_bOverridePostProcessingDisable = false;
     *CrosshairWeaponTypeCheck = 5;
     *CamThinkSvCheatsCheck = 0x74;
-    *(CamThinkSvCheatsCheck + 0x1) = 0x64;
+    *( CamThinkSvCheatsCheck + 0x1 ) = 0x64;
 
-    Util::ProtectAddr(bSendPacket, PROT_READ | PROT_EXEC);
-    Util::ProtectAddr(CrosshairWeaponTypeCheck, PROT_READ | PROT_EXEC);
-    for (ptrdiff_t off = 0; off < 0x2; off++)
-        Util::ProtectAddr(CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC);
+    Util::ProtectAddr( bSendPacket, PROT_READ | PROT_EXEC );
+    Util::ProtectAddr( CrosshairWeaponTypeCheck, PROT_READ | PROT_EXEC );
+    for ( ptrdiff_t off = 0; off < 0x2; off++ )
+        Util::ProtectAddr( CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC );
 
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(                                        \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" )\\ )                      )              \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(()/(           )  (    ( /(    )         \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR(" /(_))`  )   ( /(  )(   )\\())( /(   (     \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("     |_|                                  \n"));
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( " )\\ )                      )              \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(()/(           )  (    ( /(    )         \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( " /(_))`  )   ( /(  )(   )\\())( /(   (     \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "(_))  /(/(   )(_))(()\\ (_))/ )(_))  )\\ )  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "/ __|((_)_\\ ((_)_  ((_)| |_ ((_)_  _(_/(  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "\\__ \\| '_ \\)/ _` || '_||  _|/ _` || ' \\)) \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "|___/| .__/ \\__,_||_|   \\__|\\__,_||_||_|  \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "     |_|                                  \n" ) );
 
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("Project Spartan has been successfully unloaded. \n"));
-    cvar->ConsoleColorPrintf(ColorRGBA(244, 66, 83, 255), XORSTR("\n\n"));
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
+                              XORSTR( "Project Spartan has been successfully unloaded. \n" ) );
+    cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
 }
 
 void projectspartan::SelfShutdown() {

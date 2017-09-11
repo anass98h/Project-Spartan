@@ -2,9 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace Configs
-{
-	extern bool showWindow;
+namespace Configs {
+    extern bool showWindow;
 
-	extern void RenderWindow();
+    extern void RenderWindow();
 }

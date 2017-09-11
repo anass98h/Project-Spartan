@@ -5,8 +5,7 @@
 #include "../Utils/entity.h"
 #include "../Utils/math.h"
 
-namespace AutoDefuse
-{
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+namespace AutoDefuse {
+    //Hooks
+    void CreateMove( CUserCmd* cmd );
 };

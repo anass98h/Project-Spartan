@@ -5,8 +5,7 @@
 #include "../Utils/entity.h"
 #include "../Utils/math.h"
 
-namespace Triggerbot
-{
-	//Hooks
-	void CreateMove(CUserCmd* cmd);
+namespace Triggerbot {
+    //Hooks
+    void CreateMove( CUserCmd* cmd );
 };

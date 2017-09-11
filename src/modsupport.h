@@ -2,14 +2,13 @@
 
 #include "interfaces.h"
 
-enum class ModType : int
-{
-	NO_MOD,
-	CSCO
+enum class ModType : int {
+    NO_MOD,
+    CSCO
 };
 
-namespace ModSupport
-{
-	extern ModType current_mod;
-	void OnInit();
+namespace ModSupport {
+    extern ModType current_mod;
+
+    void OnInit();
 }
