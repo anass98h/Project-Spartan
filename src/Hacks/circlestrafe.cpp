@@ -3,6 +3,9 @@
 bool Settings::CircleStrafe::enabled;
 ButtonCode_t Settings::CircleStrafe::key = ButtonCode_t::KEY_C;
 
+// Maybe implement this as better version as rasp told me to implement a better cstrafer
+// https://www.unknowncheats.me/forum/counterstrike-global-offensive/232136-adaptive-circlestrafer.html
+
 void CircleStrafe::CreateMove( CUserCmd* cmd ) {
     C_BasePlayer* Spartan = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
     if ( !Spartan || !Spartan->GetAlive() )
