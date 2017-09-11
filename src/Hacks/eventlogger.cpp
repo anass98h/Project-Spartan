@@ -1,7 +1,6 @@
 #include "eventlogger.h"
 
 bool Settings::EventLogger::enabled = false;
-static bool drawing = false;
 
 const char* team[] { "", "", " (T)", " (CT)" };
 const char* defKit[] { "without a defuse kit.", "with a defuse kit." };
@@ -9,8 +8,6 @@ const char* defKit[] { "without a defuse kit.", "with a defuse kit." };
 void EventLogger::PaintImGui() {
     if ( !Settings::EventLogger::enabled || !engine->IsInGame() )
         return;
-
-    //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Drawing over ImGui now.\n");
 
     for ( size_t i = 0; i < events.size(); i++ ) {
         float time = globalVars->curtime - events[i].time;
@@ -20,11 +17,6 @@ void EventLogger::PaintImGui() {
 
         if ( events[i].color.Value.w < 0.5f )
             return;
-
-        drawing = !drawing;
-
-        cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Drawing \"%s\" now with alpha %f..\n", events[i].text.c_str(),
-        events[i].color.Value.w);
 
         float height = i * ImGui::GetFontSize() + 4.0f;
 
@@ -40,8 +32,6 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
 
     if ( !Settings::EventLogger::enabled )
         return;
-
-    cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Received Event: %s\n", event->GetName());
 
     if ( strstr( event->GetName(), XORSTR("player_hurt")) ) {
         C_BasePlayer* hurt = (C_BasePlayer*) entityList->GetClientEntity(
