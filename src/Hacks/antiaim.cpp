@@ -1116,15 +1116,21 @@ static void DoAntiAimLBY( QAngle& angle, int command_number, bool bFlip, bool& c
         }
             break;
         case AntiAimType_LBY::MYRRIB: {
+            static float LBYsave = 0;
+            float LBY = *((C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+
+            if (LBY != LBYsave)
+            {
+                LBYsave = LBY;
+            }
+
             static bool LBYflipM = false;
             LBYflipM = !LBYflipM;
-            if ( LBYflipM ) {
-                angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                        engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
+            if (LBYflipM) {
+                angle.y = LBYsave;
                 CreateMove::sendPacket = true;
             } else {
-                angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                        engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180.f;
+                angle.y = LBYsave + 180.f;
                 CreateMove::sendPacket = false;
             }
         }
