@@ -115,9 +115,9 @@ bool Aimbot::HitChance( const Vector& point, bool teamCheck, C_BasePlayer* local
         if ( !activeWeapon )
             return false;
 
-        float a = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 0.5;
+        float a = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 500;
         float b = activeWeapon->GetSpread() * ( ( float ) ( rand() % 1000 ) / 1000.0f ) * 90.0f - ( float ) M_PI;
-        float c = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 0.5;
+        float c = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 500;
         float d = activeWeapon->GetInaccuracy() * ( ( float ) ( rand() % 1000 ) / 1000.0f ) * 90.0f - ( float ) M_PI;
 
         Vector dir, src, dest;

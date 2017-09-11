@@ -28,7 +28,7 @@ void HvH::RenderTab() {
 
     const char* Hugtypes[] = {
             "OFF", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep",
-            "Myrrib's DELTA"
+            "Myrrib's DELTA", "Myrrib Old"
     };
 
 

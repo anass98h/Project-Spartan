@@ -175,6 +175,7 @@ enum class ResolverHugtype : int {
     BRUTE1,
     AUTISM,
     MYRRIBDELTA,
+    MYRRIBDELTA2,
 };
 
 enum class cFont : int {
