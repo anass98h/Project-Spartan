@@ -8,197 +8,200 @@ bool Settings::customYaw2::lby;
 
 void HvH::RenderTab() {
 
-    const char* yTypes[] = {
-            "No AA", "Backwards", "Forwards", "Fake Sideways", "Spin", "Backjitter", "Forwardjitter", "TJitter",
-            "Tank 1", "Tank 2", "Tank 3", "Richi's EAP", "Myrrib's EAP", "LBY Breaker", "Fake LBY", "LBY Spin",
-            "LBY Jitter", "LBY", "LBY on Ground", "Legit Trolling", "Legit Trolling 2", "Custom", "Custom 2" // safe
+    const char *yTypes[] = {
+            "Legit Trolling", "Legit Trolling 2", "Spin", "Custom", "Custom 2", "Tank 1", "Tank 2", "Tank 3",
+            "LBY Breaker",
+            "Fake LBY", "LBY Spin", "LBY Jitter", "No AA", "Backjitter", "Fake Sideways", "Backwards", "Forwards",
+            "LBY", "FJitter",
+            "Richi's EAP", "Myrrib's EAP", "LBY on Ground",  // safe
+            // if you remove aas pls remove them also here :c
     };
 
-    const char* lbyTypes[] = {
+    const char *lbyTypes[] = {
             "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "Myrrib", "NONE"
     };
 
-    const char* zTypes[] = {
+    const char *zTypes[] = {
             "TEST", // not so untrusted
     };
 
-    const char* xTypes[] = {
+    const char *xTypes[] = {
             "Up", "Flip", "Down", "Fake Zer0", "Fake Up",
     };
 
-    const char* Hugtypes[] = {
+    const char *Hugtypes[] = {
             "OFF", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep",
             "Myrrib's DELTA"
     };
 
 
-    ImGui::Columns( 2, NULL, true );
+    ImGui::Columns(2, NULL, true);
     {
-        ImGui::BeginChild( XORSTR( "HVH1" ), ImVec2( 0, 0 ), true );
+        ImGui::BeginChild(XORSTR("HVH1"), ImVec2(0, 0), true);
         {
-            ImGui::Text( XORSTR( "AntiAim" ) );
-            ImGui::BeginChild( XORSTR( "##ANTIAIM" ), ImVec2( 0, 0 ), true );
+            ImGui::Text(XORSTR("AntiAim"));
+            ImGui::BeginChild(XORSTR("##ANTIAIM"), ImVec2(0, 0), true);
             {
-                ImGui::Checkbox( XORSTR( "Yaw" ), &Settings::AntiAim::Yaw::enabled );
+                ImGui::Checkbox(XORSTR("Yaw"), &Settings::AntiAim::Yaw::enabled);
 
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
+                ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Fake" ) );
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Fake Add" ) );
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Real" ) );
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Real Add" ) );
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Checkbox( XORSTR( "Lby Breaker" ), &Settings::AntiAim::Lby::enabled );
-                    ImGui::Checkbox( XORSTR( "Anti Resolver" ), &Settings::AntiAim::Yaw::antiResolver );
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Fake"));
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Fake Add"));
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Real"));
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Real Add"));
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Checkbox(XORSTR("Lby Breaker"), &Settings::AntiAim::Lby::enabled);
+                    ImGui::Checkbox(XORSTR("Anti Resolver"), &Settings::AntiAim::Yaw::antiResolver);
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::PushItemWidth( -3 );
+                    ImGui::PushItemWidth(-3);
 
-                    ImGui::Combo( XORSTR( "##YFAKETYPE" ), ( int* ) &Settings::AntiAim::Yaw::typeFake, yTypes,
-                                  IM_ARRAYSIZE( yTypes ) );
+                    ImGui::Combo(XORSTR("##YFAKETYPE"), (int *) &Settings::AntiAim::Yaw::typeFake, yTypes,
+                                 IM_ARRAYSIZE(yTypes));
                     {
-                        ImGui::PushItemWidth( -1 );
-                        ImGui::SliderFloat( XORSTR( "##yawCustomFake" ), &Settings::AntiAim::Yaw::customTypeFake,
-                                            Settings::AntiAim::allowUntrustedAngles ? -1000 : -180,
-                                            Settings::AntiAim::allowUntrustedAngles ? 1000 : 180,
-                                            XORSTR( Settings::AntiAim::Yaw::customTypeFake > 0 ? "+%.1f" : "%.1f" ) );
+                        ImGui::PushItemWidth(-1);
+                        ImGui::SliderFloat(XORSTR("##yawCustomFake"), &Settings::AntiAim::Yaw::customTypeFake,
+                                           Settings::AntiAim::allowUntrustedAngles ? -1000 : -180,
+                                           Settings::AntiAim::allowUntrustedAngles ? 1000 : 180,
+                                           XORSTR(Settings::AntiAim::Yaw::customTypeFake > 0 ? "+%.1f" : "%.1f"));
                         ImGui::PopItemWidth();
                     }
 
-                    ImGui::PushItemWidth( -3 );
+                    ImGui::PushItemWidth(-3);
 
-                    ImGui::Combo( XORSTR( "##YACTUALTYPE" ), ( int* ) &Settings::AntiAim::Yaw::type, yTypes,
-                                  IM_ARRAYSIZE( yTypes ) );
+                    ImGui::Combo(XORSTR("##YACTUALTYPE"), (int *) &Settings::AntiAim::Yaw::type, yTypes,
+                                 IM_ARRAYSIZE(yTypes));
                     {
-                        ImGui::PushItemWidth( -1 );
-                        ImGui::SliderFloat( XORSTR( "##yawCustom" ), &Settings::AntiAim::Yaw::customType,
-                                            Settings::AntiAim::allowUntrustedAngles ? -1000 : -180,
-                                            Settings::AntiAim::allowUntrustedAngles ? 1000 : 180,
-                                            XORSTR( Settings::AntiAim::Yaw::customType > 0 ? "+%.1f" : "%.1f" ) );
+                        ImGui::PushItemWidth(-1);
+                        ImGui::SliderFloat(XORSTR("##yawCustom"), &Settings::AntiAim::Yaw::customType,
+                                           Settings::AntiAim::allowUntrustedAngles ? -1000 : -180,
+                                           Settings::AntiAim::allowUntrustedAngles ? 1000 : 180,
+                                           XORSTR(Settings::AntiAim::Yaw::customType > 0 ? "+%.1f" : "%.1f"));
                         ImGui::PopItemWidth();
                     }
 
-                    ImGui::PushItemWidth( -3 );
+                    ImGui::PushItemWidth(-3);
 
-                    if ( Settings::AntiAim::Lby::enabled ) {
-                        if ( ImGui::Combo( XORSTR( "##LBYTYPE" ), ( int* ) &Settings::AntiAim::Lby::type, lbyTypes,
-                                           IM_ARRAYSIZE( lbyTypes ) ) ) {
-                            if ( Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE ) {
+                    if (Settings::AntiAim::Lby::enabled) {
+                        if (ImGui::Combo(XORSTR("##LBYTYPE"), (int *) &Settings::AntiAim::Lby::type, lbyTypes,
+                                         IM_ARRAYSIZE(lbyTypes))) {
+                            if (Settings::AntiAim::Lby::type != AntiAimType_LBY::NONE) {
                                 Settings::AntiAim::Yaw::type = AntiAimType_Y::LBYBREAK;
                             }
-                            if ( Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE ) {
+                            if (Settings::AntiAim::Lby::type == AntiAimType_LBY::NONE) {
                                 Settings::AntiAim::Lby::enabled = false;
                             }
                         }
                     }
                     ImGui::PopItemWidth();
 
-                    ImGui::Checkbox( XORSTR( "Dynamic AA" ), &Settings::AntiAim::Yaw::dynamicAA );
+                    ImGui::Checkbox(XORSTR("Dynamic AA"), &Settings::AntiAim::Yaw::dynamicAA);
                 }
-                ImGui::Columns( 1 );
+                ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Roll Actual" ) );
+                ImGui::Text(XORSTR("Roll Actual"));
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
+                ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::Checkbox( XORSTR( "Roll" ), &Settings::AntiAim::Roll::enabled );
+                    ImGui::Checkbox(XORSTR("Roll"), &Settings::AntiAim::Roll::enabled);
 
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::PushItemWidth( -1 );
-                    if ( ImGui::Combo( XORSTR( "##ZTYPE" ), ( int* ) &Settings::AntiAim::Roll::type, zTypes,
-                                       IM_ARRAYSIZE( zTypes ) ) ) {
-                        if ( !Settings::AntiAim::allowUntrustedAngles &&
-                             Settings::AntiAim::Roll::type >= AntiAimType_Z::TEST ) {
+                    ImGui::PushItemWidth(-1);
+                    if (ImGui::Combo(XORSTR("##ZTYPE"), (int *) &Settings::AntiAim::Roll::type, zTypes,
+                                     IM_ARRAYSIZE(zTypes))) {
+                        if (!Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Roll::type >= AntiAimType_Z::TEST) {
                             Settings::AntiAim::Roll::enabled = false;
-                            ImGui::OpenPopup( XORSTR( "Error###UNTRUSTED_AA" ) );
+                            ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
                     ImGui::PopItemWidth();
                 }
-                ImGui::Columns( 1 );
+                ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Checkbox( XORSTR( "Pitch" ), &Settings::AntiAim::Pitch::enabled );
+                ImGui::Checkbox(XORSTR("Pitch"), &Settings::AntiAim::Pitch::enabled);
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
+                ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Real" ) );
-                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                    ImGui::Text( XORSTR( "Custom Add" ) );
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Real"));
+                    ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+                    ImGui::Text(XORSTR("Custom Add"));
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::PushItemWidth( -1 );
-                    if ( ImGui::Combo( XORSTR( "##XTYPE" ), ( int* ) &Settings::AntiAim::Pitch::type, xTypes,
-                                       IM_ARRAYSIZE( xTypes ) ) ) {
-                        if ( !Settings::AntiAim::allowUntrustedAngles &&
-                             Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN ) {
+                    ImGui::PushItemWidth(-1);
+                    if (ImGui::Combo(XORSTR("##XTYPE"), (int *) &Settings::AntiAim::Pitch::type, xTypes,
+                                     IM_ARRAYSIZE(xTypes))) {
+                        if (!Settings::AntiAim::allowUntrustedAngles &&
+                            Settings::AntiAim::Pitch::type > AntiAimType_X::STATIC_DOWN) {
                             Settings::AntiAim::Pitch::type = AntiAimType_X::STATIC_DOWN;
-                            ImGui::OpenPopup( XORSTR( "Error###UNTRUSTED_AA" ) );
+                            ImGui::OpenPopup(XORSTR("Error###UNTRUSTED_AA"));
                         }
                     }
                     ImGui::PopItemWidth();
 
-                    ImGui::PushItemWidth( -1 );
-                    ImGui::SliderFloat( XORSTR( "##pitchCustom" ), &Settings::AntiAim::Pitch::customType,
-                                        Settings::AntiAim::allowUntrustedAngles ? -180 : -90,
-                                        Settings::AntiAim::allowUntrustedAngles ? 180 : 90,
-                                        XORSTR( Settings::AntiAim::Pitch::customType > 0 ? "+%.1f" : "%.1f" ) );
+                    ImGui::PushItemWidth(-1);
+                    ImGui::SliderFloat(XORSTR("##pitchCustom"), &Settings::AntiAim::Pitch::customType,
+                                       Settings::AntiAim::allowUntrustedAngles ? -180 : -90,
+                                       Settings::AntiAim::allowUntrustedAngles ? 180 : 90,
+                                       XORSTR(Settings::AntiAim::Pitch::customType > 0 ? "+%.1f" : "%.1f"));
                     ImGui::PopItemWidth();
                 }
 
-                ImGui::Columns( 1 );
+                ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Switch AA" ) );
+                ImGui::Text(XORSTR("Switch AA"));
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
+                ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::AntiAim::SwitchAA::enabled );
+                    ImGui::Checkbox(XORSTR("Enabled"), &Settings::AntiAim::SwitchAA::enabled);
                 }
                 ImGui::NextColumn();
                 {
-                    UI::KeyBindButton( &Settings::AntiAim::SwitchAA::key );
+                    UI::KeyBindButton(&Settings::AntiAim::SwitchAA::key);
                 }
 
-                ImGui::Columns( 1 );
+                ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Disable" ) );
+                ImGui::Text(XORSTR("Disable"));
                 ImGui::Separator();
-                ImGui::Checkbox( XORSTR( "Knife" ), &Settings::AntiAim::AutoDisable::knifeHeld );
-                ImGui::Checkbox( XORSTR( "Bomb" ), &Settings::AntiAim::AutoDisable::bombHeld );
-                ImGui::Checkbox( XORSTR( "No Enemy" ), &Settings::AntiAim::AutoDisable::noEnemy );
+                ImGui::Checkbox(XORSTR("Knife"), &Settings::AntiAim::AutoDisable::knifeHeld);
+                ImGui::Checkbox(XORSTR("Bomb"), &Settings::AntiAim::AutoDisable::bombHeld);
+                ImGui::Checkbox(XORSTR("No Enemy"), &Settings::AntiAim::AutoDisable::noEnemy);
 
-                ImGui::Columns( 1 );
+                ImGui::Columns(1);
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Edging" ) );
+                ImGui::Text(XORSTR("Edging"));
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
+                ImGui::Columns(2, NULL, true);
                 {
-                    ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::AntiAim::HeadEdge::enabled );
+                    ImGui::Checkbox(XORSTR("Enabled"), &Settings::AntiAim::HeadEdge::enabled);
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::PushItemWidth( -1 );
-                    ImGui::SliderFloat( XORSTR( "##EDGEDISTANCE" ), &Settings::AntiAim::HeadEdge::distance, 20, 30,
-                                        "Distance: %0.f" );
+                    ImGui::PushItemWidth(-1);
+                    ImGui::SliderFloat(XORSTR("##EDGEDISTANCE"), &Settings::AntiAim::HeadEdge::distance, 20, 30,
+                                       "Distance: %0.f");
                     ImGui::PopItemWidth();
                 }
-                ImGui::Columns( 1 );
-                ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 210, 85 ) );
-                if ( ImGui::BeginPopupModal( XORSTR( "Error###UNTRUSTED_AA" ) ) ) {
-                    ImGui::Text( XORSTR( "Your selected feature is Untrusted." ) );
+                ImGui::Columns(1);
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(210, 85));
+                if (ImGui::BeginPopupModal(XORSTR("Error###UNTRUSTED_AA"))) {
+                    ImGui::Text(XORSTR("Your selected feature is Untrusted."));
 
-                    ImGui::Checkbox( XORSTR( "Allow Untrusted Angles" ), &Settings::AntiAim::allowUntrustedAngles );
+                    ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
 
-                    if ( ImGui::Button( XORSTR( "OK" ) ) )
+                    if (ImGui::Button(XORSTR("OK")))
                         ImGui::CloseCurrentPopup();
 
                     ImGui::EndPopup();
@@ -212,64 +215,64 @@ void HvH::RenderTab() {
     }
     ImGui::NextColumn();
     {
-        ImGui::BeginChild( XORSTR( "HVH2" ), ImVec2( 0, 0 ), true );
+        ImGui::BeginChild(XORSTR("HVH2"), ImVec2(0, 0), true);
         {
-            ImGui::Text( XORSTR( "Resolver" ) );
+            ImGui::Text(XORSTR("Resolver"));
             ImGui::Separator();
-            ImGui::Checkbox( XORSTR( "Enable" ), &Settings::Resolver::enabled );
-            if ( Settings::Resolver::enabled ) {
-                ImGui::Combo( XORSTR( "##HUGTYPE" ), ( int* ) &Settings::Resolver::Hugtype, Hugtypes,
-                              IM_ARRAYSIZE( Hugtypes ) );
-                ImGui::SliderFloat( XORSTR( "##HUGTICKS" ), &Settings::Resolver::ticks, 0, 50,
-                                    XORSTR( "Ticks: %0.f" ) );
-                ImGui::SliderFloat( XORSTR( "##HUGMODULO" ), &Settings::Resolver::modulo, 0, 50,
-                                    XORSTR( "Modulo: %0.f" ) );
-                ImGui::Checkbox( XORSTR( "crash game" ), &Settings::Resolver::LagComp );
+            ImGui::Checkbox(XORSTR("Enable"), &Settings::Resolver::enabled);
+            if (Settings::Resolver::enabled) {
+                ImGui::Combo(XORSTR("##HUGTYPE"), (int *) &Settings::Resolver::Hugtype, Hugtypes,
+                             IM_ARRAYSIZE(Hugtypes));
+                ImGui::SliderFloat(XORSTR("##HUGTICKS"), &Settings::Resolver::ticks, 0, 50,
+                                   XORSTR("Ticks: %0.f"));
+                ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50,
+                                   XORSTR("Modulo: %0.f"));
+                ImGui::Checkbox(XORSTR("crash game"), &Settings::Resolver::LagComp);
             }
 
             ImGui::Separator();
 
-            ImGui::Text( XORSTR( "Indicators" ) );
+            ImGui::Text(XORSTR("Indicators"));
 
-            ImGui::Checkbox( XORSTR( "Lower Body Yaw" ), &Settings::lbyindicator::enabled );
+            ImGui::Checkbox(XORSTR("Lower Body Yaw"), &Settings::lbyindicator::enabled);
 
-            ImGui::Checkbox( XORSTR( "Angle" ), &Settings::AngleIndicator::enabled );
+            ImGui::Checkbox(XORSTR("Angle"), &Settings::AngleIndicator::enabled);
 
-            ImGui::Checkbox( XORSTR( "Velocity" ), &Settings::AngleIndicator::Veloc );
+            ImGui::Checkbox(XORSTR("Velocity"), &Settings::AngleIndicator::Veloc);
 
-            ImGui::Checkbox( XORSTR( "Kisak Earnhardt Jr." ), &Settings::SpeedIndicator::enabled );
-            SetTooltip( XORSTR( "Get ready to Rumble" ) );
+            ImGui::Checkbox(XORSTR("Kisak Earnhardt Jr."), &Settings::SpeedIndicator::enabled);
+            SetTooltip(XORSTR("Get ready to Rumble"));
             ImGui::Separator();
 
-            ImGui::Text( XORSTR( "Movement" ) );
+            ImGui::Text(XORSTR("Movement"));
             ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
+            ImGui::Columns(2, NULL, true);
             {
-                ImGui::Checkbox( XORSTR( "Fakewalk" ), &Settings::Fakewalk::enabled );
-                ImGui::Checkbox( XORSTR( "CircleStrafe" ), &Settings::CircleStrafe::enabled );
-                ImGui::Checkbox( XORSTR( "Auto Crouch" ), &Settings::Aimbot::AutoCrouch::enabled );
+                ImGui::Checkbox(XORSTR("Fakewalk"), &Settings::Fakewalk::enabled);
+                ImGui::Checkbox(XORSTR("CircleStrafe"), &Settings::CircleStrafe::enabled);
+                ImGui::Checkbox(XORSTR("Auto Crouch"), &Settings::Aimbot::AutoCrouch::enabled);
             }
             ImGui::NextColumn();
             {
-                UI::KeyBindButton( &Settings::Fakewalk::key );
-                UI::KeyBindButton( &Settings::CircleStrafe::key );
+                UI::KeyBindButton(&Settings::Fakewalk::key);
+                UI::KeyBindButton(&Settings::CircleStrafe::key);
             }
 
 
-            ImGui::Columns( 1 );
+            ImGui::Columns(1);
             ImGui::Separator();
-            ImGui::Text( XORSTR( "Miscellaneous" ) );
+            ImGui::Text(XORSTR("Miscellaneous"));
             ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
+            ImGui::Columns(2, NULL, true);
             {
-                ImGui::Checkbox( XORSTR( "Slowmotion" ), &Settings::SlowMo::enabled ); // why you move my memes ? :feelssad:
-                ImGui::Checkbox( XORSTR( "Allow Untrusted Angles" ), &Settings::AntiAim::allowUntrustedAngles );
+                ImGui::Checkbox(XORSTR("Slowmotion"), &Settings::SlowMo::enabled); // why you move my memes ? :feelssad:
+                ImGui::Checkbox(XORSTR("Allow Untrusted Angles"), &Settings::AntiAim::allowUntrustedAngles);
             }
             ImGui::NextColumn();
             {
-                UI::KeyBindButton( &Settings::SlowMo::key );
+                UI::KeyBindButton(&Settings::SlowMo::key);
             }
-            ImGui::Columns( 1 );
+            ImGui::Columns(1);
             ImGui::Separator();
 
             ImGui::Separator();
@@ -341,57 +344,57 @@ void HvH::RenderTab() {
             ImGui::NextColumn();
             {
 
-                if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN ||
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN ||
-                     Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ||
-                     Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2 ||
-                     Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
-                     Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN ) {
-                    ImGui::BeginChild( XORSTR( "HVH3" ), ImVec2( 0, 0 ), true );
+                if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2 ||
+                    Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
+                    Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN) {
+                    ImGui::BeginChild(XORSTR("HVH3"), ImVec2(0, 0), true);
                     {
-                        if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN ||
-                             Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN ||
-                             Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
-                             Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN ) {
-                            ImGui::Text( XORSTR( "Spin Factor" ) );
+                        if (Settings::AntiAim::Yaw::type == AntiAimType_Y::SPIN ||
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::SPIN ||
+                            Settings::AntiAim::Yaw::type == AntiAimType_Y::LBYSPIN ||
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::LBYSPIN) {
+                            ImGui::Text(XORSTR("Spin Factor"));
 
                             {
-                                ImGui::PushItemWidth( -1 );
-                                ImGui::SliderInt( XORSTR( "##spinFactor" ), &Settings::spinFactor::value, 0, 100,
-                                                  XORSTR( "Amount: %1.f" ) );
+                                ImGui::PushItemWidth(-1);
+                                ImGui::SliderInt(XORSTR("##spinFactor"), &Settings::spinFactor::value, 0, 100,
+                                                 XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
 
                             }
                         }
                         ImGui::Separator();
-                        if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
-                             Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM ) {
-                            ImGui::Text( XORSTR( "Custom Yaw" ) );
+                        if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM ||
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM) {
+                            ImGui::Text(XORSTR("Custom Yaw"));
 
                             {
-                                ImGui::PushItemWidth( -1 );
-                                ImGui::Checkbox( XORSTR( "Use LBY" ), &Settings::customYaw::lby );
-                                ImGui::SliderInt( XORSTR( "##customYaw" ), &Settings::customYaw::value,
-                                                  !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
-                                                  !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
-                                                  XORSTR( "Amount: %1.f" ) );
+                                ImGui::PushItemWidth(-1);
+                                ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw::lby);
+                                ImGui::SliderInt(XORSTR("##customYaw"), &Settings::customYaw::value,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
+                                                 XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
 
                             }
                         }
                         ImGui::Separator();
-                        if ( Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
-                             Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2 ) {
-                            ImGui::Text( XORSTR( "Custom Yaw 2" ) );
+                        if (Settings::AntiAim::Yaw::type == AntiAimType_Y::CUSTOM2 ||
+                            Settings::AntiAim::Yaw::typeFake == AntiAimType_Y::CUSTOM2) {
+                            ImGui::Text(XORSTR("Custom Yaw 2"));
                             {
-                                ImGui::PushItemWidth( -1 );
-                                ImGui::Checkbox( XORSTR( "Use LBY" ), &Settings::customYaw2::lby );
-                                ImGui::SliderInt( XORSTR( "##customYaw2" ), &Settings::customYaw2::value,
-                                                  !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
-                                                  !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
-                                                  XORSTR( "Amount: %1.f" ) );
+                                ImGui::PushItemWidth(-1);
+                                ImGui::Checkbox(XORSTR("Use LBY"), &Settings::customYaw2::lby);
+                                ImGui::SliderInt(XORSTR("##customYaw2"), &Settings::customYaw2::value,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? -180 : -10000,
+                                                 !Settings::AntiAim::allowUntrustedAngles ? 180 : 10000,
+                                                 XORSTR("Amount: %1.f"));
                                 ImGui::PopItemWidth();
 
                             }

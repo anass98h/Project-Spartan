@@ -50,29 +50,31 @@ enum class AutostrafeType : int {
 };
 
 enum class AntiAimType_Y : int {
-    NOAA,
-    BACKWARDS,
-    FORWARDS,
-    FAKESIDEWAYS,
+
+    LEGITTROLLING,
+    LEGITTROLLING2,
     SPIN,
-    BACKJITTER,
-    FJITTER,
-    TJITTER,
+    CUSTOM,
+    CUSTOM2,
     TANK1,
     TANK2,
     TANK3,
-    richieap,
-    MYRRIB,
     LBYBREAK,
-    FAKELBY, //Right order now
+    FAKELBY, //Right order NOW :pepethink:
     LBYSPIN,
     LBYJITTER,
+    NOAA,
+    FAKESIDEWAYS,
+    BACKJITTER,
+    BACKWARDS,
+    FORWARDS,
     LOWERBODY,
+    FJITTER,
+    richieap,
+    MYRRIB,
     LBYONGROUND,
-    LEGITTROLLING,
-    LEGITTROLLING2,
-    CUSTOM,
-    CUSTOM2,
+    //same as in hvhtab remove aa's also here :c
+
 };
 
 enum class AntiAimType_LBY : int {
@@ -249,6 +251,8 @@ struct AimbotWeapon_t {
         this->predEnabled = predEnabled;
         this->moveMouse = moveMouse;
         this->hitChanceEnabled = hitChanceEnabled;
+        this->hitChanceRays = hitChanceRays;
+        this->hitChanceValue = hitChanceValue;
         this->autoCockRevolver = autoCockRevolver;
         this->velocityCheck = velocityCheck;
 
@@ -311,7 +315,11 @@ struct AimbotWeapon_t {
                this->predEnabled == another.predEnabled &&
                this->autoAimRealDistance == another.autoAimRealDistance &&
                this->moveMouse == another.moveMouse &&
-               this->autoCockRevolver == another.autoCockRevolver;
+               this->hitChanceEnabled == another.hitChanceEnabled &&
+               this->hitChanceRays == another.hitChanceRays &&
+               this->hitChanceValue == another.hitChanceValue &&
+               this->autoCockRevolver == another.autoCockRevolver &&
+               this->velocityCheck == another.velocityCheck;
     }
 };
 

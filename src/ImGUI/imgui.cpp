@@ -7331,7 +7331,7 @@ bool ImGui::Checkbox( const char* label, bool* v ) {
         const ImVec2 poitns[5] = { ImVec2( check_mark_bb.GetBL() ), ImVec2( check_mark_bb.GetTR() ),
                                    ImVec2( check_mark_bb.GetCenter() ), ImVec2( check_mark_bb.GetTL() ),
                                    ImVec2( check_mark_bb.GetBR() ) };
-        window->DrawList->AddPolyline( poitns, 5, GetColorU32( ImGuiCol_CheckMark ), false, 3.0f, true );
+        window->DrawList->AddPolyline( poitns, 5, GetColorU32( ImGuiCol_CheckMark ), false, 3.0f, false );
 
     }
 
