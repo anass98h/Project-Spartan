@@ -945,6 +945,23 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                         }
                     }
                 break;
+                case AntiAimType_Y::OPPOSITE:
+                    if ( bFlip ) {
+                        float real = AntiAim::lastRealYaw;
+                        if ( real > 0 ) {
+                            angle.y = (-real);
+                        } else {
+                            angle.y = (+real);
+                        }
+                    } else {
+                        float fake = AntiAim::lastFakeYaw;
+                        if ( fake > 0 ) {
+                            angle.y = (-fake);
+                        } else {
+                            angle.y = (+fake);
+                        }
+                    }
+                    break;
                 case AntiAimType_Y::LBYONGROUND:
                     if (pLocal->GetFlags() & FL_ONGROUND)
                         baseYaw = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;

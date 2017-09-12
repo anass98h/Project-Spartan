@@ -60,7 +60,7 @@ enum class AntiAimType_Y : int {
     TANK2,
     TANK3,
     LBYBREAK,
-    FAKELBY, //Right order NOW :pepethink:
+    FAKELBY,
     LBYSPIN,
     LBYJITTER,
     NOAA,
@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,
-    //same as in hvhtab remove aa's also here :c
+    OPPOSITE
 
 };
 
