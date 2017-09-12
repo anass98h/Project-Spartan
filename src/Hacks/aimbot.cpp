@@ -117,19 +117,19 @@ bool Aimbot::HitChance(const Vector &point, bool teamCheck, C_BasePlayer *localp
         if (!activeWeapon)
             return false;
 
-<<<<<<< HEAD
+
         float a = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 500;
         float b = activeWeapon->GetSpread() * ( ( float ) ( rand() % 1000 ) / 1000.0f ) * 90.0f - ( float ) M_PI;
         float c = ( float ) M_PI * 2.0f * ( ( float ) ( rand() % 1000 ) / 1000.0f ) - 500;
         float d = activeWeapon->GetInaccuracy() * ( ( float ) ( rand() % 1000 ) / 1000.0f ) * 90.0f - ( float ) M_PI;
-=======
+
         // if you think this is wrong enable console spam and test your new math before pushing an updated -.-
         float range = activeWeapon->GetCSWpnData()->GetRange();
         float a = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f) ;
   		float b = activeWeapon->GetSpread() * ((float)(rand() % 1000)/1000.0f) * 90.0f; 
   		float c = (float)M_PI * 2.0f * ((float)(rand() % 1000)/1000.0f) ;
   		float d = activeWeapon->GetInaccuracy() * ((float)(rand() % 1000)/1000.0f) * 90.0f; 
->>>>>>> 38b37043f60c7fc862405a0b8a0e58014f48715e
+
 
         Vector dir, src, dest;
         trace_t tr;
