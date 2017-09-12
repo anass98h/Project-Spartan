@@ -135,7 +135,7 @@ bool Aimbot::HitChance(const Vector &point, bool teamCheck, C_BasePlayer *localp
         angles.y += (sin(a) * b) + (sin(c) * d);
         Math::AngleVectors(angles, dir);
 
-        dest = src + (dir * range);
+        dest = src + (dir * range); // not sure what this magic 8192 was replaced it with range :eyo:
 
         ray.Init(src, dest);
         filter.pSkip = localplayer;
