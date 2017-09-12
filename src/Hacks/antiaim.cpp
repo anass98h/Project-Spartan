@@ -980,36 +980,33 @@ static void DoAntiAimX( QAngle& angle, bool bFlip, bool& clamp ) {
     static bool fakezeroS = false;
     static bool fakeupS = false;
 
-    float basePitch = angle.x;
-
     switch ( aa_type ) {
         case AntiAimType_X::STATIC_UP:
-            basePitch = -89.0f;
+            angle.x = -89.0f;
             break;
         case AntiAimType_X::FLIP:
             if ( fabsf( pLocal->GetVelocity().x ) != 0 ) {
-                basePitch = bFlip ? -55.0f : 40.0f;
+                angle.x = bFlip ? -55.0f : 40.0f;
             } else {
-                basePitch = 50.0f;
+                angle.x = 50.0f;
             }
             break;
         case AntiAimType_X::STATIC_DOWN:
-            basePitch = 89.0f;
+            angle.x = 89.0f;
             break;
         case AntiAimType_X::FAKEZERO:
             fakezeroS = !fakezeroS;
             CreateMove::sendPacket = fakezeroS;
-            basePitch = fakezeroS ? 0 : 89;
+            angle.x = fakezeroS ? 0 : 89;
             break;
         case AntiAimType_X::FAKEUP:
             fakeupS = !fakeupS;
             CreateMove::sendPacket = fakeupS;
-            basePitch = fakeupS ? -89 : 89;
+            angle.x = fakeupS ? -89 : 89;
             break;
     }
 
-    basePitch += Settings::AntiAim::Pitch::customType;
-    angle.x = basePitch;
+    angle.x += Settings::AntiAim::Pitch::customType;
 
     if ( !Settings::AntiAim::allowUntrustedAngles ) {
         Math::ClampAngles(angle);
