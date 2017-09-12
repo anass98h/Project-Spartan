@@ -740,37 +740,29 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "allowUntrustedAngles" )], &Settings::AntiAim::allowUntrustedAngles );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "enabled" )], &Settings::AntiAim::Yaw::enabled );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "type" )], ( int* ) &Settings::AntiAim::Yaw::type );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "type_fake" )],
-            ( int* ) &Settings::AntiAim::Yaw::typeFake );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "type" )],
-            ( int* ) &Settings::AntiAim::Roll::type );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "customType" )], &Settings::AntiAim::Yaw::customType );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "type_fake" )], (int*) &Settings::AntiAim::Yaw::typeFake );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "customTypeFake" )], &Settings::AntiAim::Yaw::customTypeFake );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "type" )], (int*) &Settings::AntiAim::Roll::type );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Roll" )][XORSTR( "enabled" )], &Settings::AntiAim::Roll::enabled );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "antiResolver" )],
-            &Settings::AntiAim::Yaw::antiResolver );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "antiResolver" )], &Settings::AntiAim::Yaw::antiResolver );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "dynamicAA" )], &Settings::AntiAim::Yaw::dynamicAA );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "enabled" )], &Settings::AntiAim::Pitch::enabled );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "type" )],
-            ( int* ) &Settings::AntiAim::Pitch::type );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "enabled" )],
-            &Settings::AntiAim::HeadEdge::enabled );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )],
-            &Settings::AntiAim::HeadEdge::distance );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "knife_held" )],
-            &Settings::AntiAim::AutoDisable::knifeHeld );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "bomb_held" )],
-            &Settings::AntiAim::AutoDisable::bombHeld );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "no_enemy" )],
-            &Settings::AntiAim::AutoDisable::noEnemy );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "type" )], (int*) &Settings::AntiAim::Pitch::type );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Pitch" )][XORSTR( "customType" )], &Settings::AntiAim::Pitch::customType );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "enabled" )], &Settings::AntiAim::HeadEdge::enabled );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )], &Settings::AntiAim::HeadEdge::distance );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "knife_held" )], &Settings::AntiAim::AutoDisable::knifeHeld );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "bomb_held" )], &Settings::AntiAim::AutoDisable::bombHeld );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "AutoDisable" )][XORSTR( "no_enemy" )], &Settings::AntiAim::AutoDisable::noEnemy );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lua" )][XORSTR( "debugMode" )], &Settings::AntiAim::Lua::debugMode );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lua" )][XORSTR( "scriptX" )], Settings::AntiAim::Lua::scriptX );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lua" )][XORSTR( "scriptY" )], Settings::AntiAim::Lua::scriptY );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lua" )][XORSTR( "scriptY2" )], Settings::AntiAim::Lua::scriptY2 );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lby" )][XORSTR( "enabled" )], &Settings::AntiAim::Lby::enabled );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Lby" )][XORSTR( "type" )], ( int* ) &Settings::AntiAim::Lby::type );
-    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "SwitchAA" )][XORSTR( "enabled" )],
-            &Settings::AntiAim::SwitchAA::enabled );
-    GetButtonCode( settings[XORSTR( "AntiAim" )][XORSTR( "SwitchAA" )][XORSTR( "key" )],
-                   &Settings::AntiAim::SwitchAA::key );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "SwitchAA" )][XORSTR( "enabled" )], &Settings::AntiAim::SwitchAA::enabled );
+    GetButtonCode( settings[XORSTR( "AntiAim" )][XORSTR( "SwitchAA" )][XORSTR( "key" )], &Settings::AntiAim::SwitchAA::key );
 
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "enabled" )], &Settings::ESP::enabled );
     GetButtonCode( settings[XORSTR( "ESP" )][XORSTR( "key" )], &Settings::ESP::key );
