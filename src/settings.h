@@ -531,7 +531,12 @@ namespace Settings {
 
     namespace EventLogger {
 
-        extern bool enabled;
+        extern bool damage;
+        extern bool itemPurchase;
+        extern bool beginPlant;
+        extern bool beginDefuse;
+        extern bool bombPlanted;
+        extern bool enterBombsite;
 
     }
 

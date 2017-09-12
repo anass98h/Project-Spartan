@@ -1,12 +1,17 @@
 #include "eventlogger.h"
 
-bool Settings::EventLogger::enabled = false;
+bool Settings::EventLogger::damage = false;
+bool Settings::EventLogger::itemPurchase = false;
+bool Settings::EventLogger::beginPlant = false;
+bool Settings::EventLogger::beginDefuse = false;
+bool Settings::EventLogger::bombPlanted = false;
+bool Settings::EventLogger::enterBombsite = false;
 
 const char* team[] { "", "", " (T)", " (CT)" };
 const char* defKit[] { "without a defuse kit.", "with a defuse kit." };
 
 void EventLogger::PaintImGui() {
-    if ( !Settings::EventLogger::enabled || !engine->IsInGame() )
+    if ( !EventLogger::IsEnabled() || !engine->IsInGame() )
         return;
 
     for ( size_t i = 0; i < events.size(); i++ ) {
@@ -30,10 +35,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
     if ( !event )
         return;
 
-    if ( !Settings::EventLogger::enabled )
-        return;
-
-    if ( strstr( event->GetName(), XORSTR("player_hurt")) ) {
+    if ( strstr( event->GetName(), XORSTR( "player_hurt" )) && Settings::EventLogger::damage ) {
         C_BasePlayer* hurt = (C_BasePlayer*) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
@@ -63,7 +65,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         EventLogger::AddEvent( text.str() );
     }
 
-    if ( strstr( event->GetName(), XORSTR("item_purchase")) ) {
+    if ( strstr( event->GetName(), XORSTR( "item_purchase" )) && Settings::EventLogger::itemPurchase ) {
         C_BasePlayer* user = (C_BasePlayer*) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
@@ -77,7 +79,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         EventLogger::AddEvent( text.str() );
     }
 
-    if ( strstr( event->GetName(), XORSTR("bomb_beginplant")) ) {
+    if ( strstr( event->GetName(), XORSTR( "bomb_beginplant" )) && Settings::EventLogger::beginPlant ) {
         C_BasePlayer* user = (C_BasePlayer*) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
@@ -91,7 +93,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         EventLogger::AddEvent( text.str() );
     }
 
-    if ( strstr( event->GetName(), XORSTR("bomb_begindefuse")) ) {
+    if ( strstr( event->GetName(), XORSTR( "bomb_begindefuse" )) && Settings::EventLogger::beginDefuse ) {
         C_BasePlayer* user = (C_BasePlayer*) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
@@ -105,7 +107,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         EventLogger::AddEvent( text.str() );
     }
 
-    if ( strstr( event->GetName(), XORSTR("bomb_planted")) ) {
+    if ( strstr( event->GetName(), XORSTR( "bomb_planted" )) && Settings::EventLogger::bombPlanted ) {
         int site = event->GetInt( XORSTR( "site" ));
 
         std::stringstream text( XORSTR( "The bomb has been planted at bombsite " ));
@@ -113,7 +115,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
     }
 
-    if ( strstr( event->GetName(), XORSTR("enter_bombzone")) ) {
+    if ( strstr( event->GetName(), XORSTR(" enter_bombzone" )) && Settings::EventLogger::enterBombsite ) {
         C_BasePlayer* user = (C_BasePlayer*) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
@@ -140,4 +142,13 @@ void EventLogger::AddEvent(std::string text, ImColor color) {
     if ( events.size() > 12 ) {
         events.pop_back();
     }
+}
+
+bool EventLogger::IsEnabled() {
+    return Settings::EventLogger::damage ||
+            Settings::EventLogger::itemPurchase ||
+            Settings::EventLogger::beginPlant ||
+            Settings::EventLogger::beginDefuse ||
+            Settings::EventLogger::bombPlanted ||
+            Settings::EventLogger::enterBombsite;
 }

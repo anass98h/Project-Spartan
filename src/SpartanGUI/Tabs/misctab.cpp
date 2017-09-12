@@ -2,6 +2,8 @@
 
 static char nickname[127] = "";
 
+void AddEventLoggerPopup();
+
 void Misc::RenderTab() {
     const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
     const char* animationTypes[] = { "Static", "Curtime", "Marquee", "Words", "Letters" };
@@ -338,7 +340,13 @@ void Misc::RenderTab() {
                 UI::KeyBindButton( &Settings::JumpThrow::key );
                 //ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);
                 ImGui::Checkbox( XORSTR( "Silent Defuse" ), &Settings::AutoDefuse::silent );
-                ImGui::Checkbox( XORSTR( "Event Logger" ), &Settings::EventLogger::enabled );
+
+                if( ImGui::Button( XORSTR( "Event Logger" ), ImVec2( -1, 0 ))) {
+                    ImGui::SetNextWindowSize( ImVec2( 200, 100 ), ImGuiSetCond_Always );
+                    ImGui::OpenPopup( XORSTR( "optionsEventLogger" ));
+                }
+
+                AddEventLoggerPopup();
             }
             ImGui::Columns( 1 );
             ImGui::Separator();
@@ -358,5 +366,21 @@ void Misc::RenderTab() {
 
             ImGui::EndChild();
         }
+    }
+}
+
+void AddEventLoggerPopup() {
+    if ( ImGui::BeginPopup( XORSTR( "optionsEventLogger" ))) {
+        ImGui::PushItemWidth( -1 );
+
+        ImGui::Checkbox( XORSTR( "Damage" ), &Settings::EventLogger::damage );
+        ImGui::Checkbox( XORSTR( "Item Purchase" ), &Settings::EventLogger::itemPurchase );
+        ImGui::Checkbox( XORSTR( "Begin Planting" ), &Settings::EventLogger::beginPlant );
+        ImGui::Checkbox( XORSTR( "Begin Defusing" ), &Settings::EventLogger::beginDefuse );
+        ImGui::Checkbox( XORSTR( "Bomb planted" ), &Settings::EventLogger::bombPlanted );
+        ImGui::Checkbox( XORSTR( "Enter Bombsite" ), &Settings::EventLogger::enterBombsite );
+
+        ImGui::PopItemWidth();
+        ImGui::EndPopup();
     }
 }

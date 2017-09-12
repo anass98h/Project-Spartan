@@ -225,7 +225,12 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )] = Settings::AngleIndicator::enabled;
     settings[XORSTR( "AngleIndicator" )][XORSTR( "Veloc" )] = Settings::AngleIndicator::Veloc;
 
-    settings[XORSTR( "EventLogger" )][XORSTR( "enabled" )] = Settings::EventLogger::enabled;
+    settings[XORSTR( "EventLogger" )][XORSTR( "damage" )] = Settings::EventLogger::damage;
+    settings[XORSTR( "EventLogger" )][XORSTR( "itemPurchase" )] = Settings::EventLogger::itemPurchase;
+    settings[XORSTR( "EventLogger" )][XORSTR( "beginPlant" )] = Settings::EventLogger::beginPlant;
+    settings[XORSTR( "EventLogger" )][XORSTR( "beginDefuse" )] = Settings::EventLogger::beginDefuse;
+    settings[XORSTR( "EventLogger" )][XORSTR( "bombPlanted" )] = Settings::EventLogger::bombPlanted;
+    settings[XORSTR( "EventLogger" )][XORSTR( "enterBombsite" )] = Settings::EventLogger::enterBombsite;
 
     settings[XORSTR( "AntiAim" )][XORSTR( "allowUntrustedAngles" )] = Settings::AntiAim::allowUntrustedAngles;
     settings[XORSTR( "AntiAim" )][XORSTR( "Yaw" )][XORSTR( "enabled" )] = Settings::AntiAim::Yaw::enabled;
@@ -707,7 +712,14 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], &Settings::Resolver::LagComp );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )], &Settings::AngleIndicator::enabled );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "Veloc" )], &Settings::AngleIndicator::Veloc );
-    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "enabled" )], &Settings::EventLogger::enabled );
+
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "damage" )], &Settings::EventLogger::damage );
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "itemPurchase" )], &Settings::EventLogger::itemPurchase );
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "beginPlant" )], &Settings::EventLogger::beginPlant );
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "beginDefuse" )], &Settings::EventLogger::beginDefuse );
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "bombPlanted" )], &Settings::EventLogger::bombPlanted );
+    GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "enterBombsite" )], &Settings::EventLogger::enterBombsite );
+
     GetVal( settings[XORSTR( "Triggerbot" )][XORSTR( "enabled" )], &Settings::Triggerbot::enabled );
     GetButtonCode( settings[XORSTR( "Triggerbot" )][XORSTR( "key" )], &Settings::Triggerbot::key );
     GetVal( settings[XORSTR( "Triggerbot" )][XORSTR( "Filters" )][XORSTR( "enemies" )],

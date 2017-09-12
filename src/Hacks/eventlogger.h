@@ -25,6 +25,7 @@ namespace EventLogger {
     static std::deque<loginfo> events = {};
 
     void AddEvent(std::string text, ImColor color = ImColor(255, 255, 255));
+    bool IsEnabled();
 
     // Hooks
     void PaintImGui();
