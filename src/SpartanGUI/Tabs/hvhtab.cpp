@@ -9,12 +9,10 @@ bool Settings::customYaw2::lby;
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "Legit Trolling", "Legit Trolling 2", "Spin", "Custom", "Custom 2", "Tank 1", "Tank 2", "Tank 3",
+            "noaa", "Forwards", "Backwards", "Spin", "FakeSideWays", "Backjitter", "FJitter", "LBYJitter", "LBYSpin", "LBY",
             "LBY Breaker",
-            "Fake LBY", "LBY Spin", "LBY Jitter", "No AA", "Backjitter", "Fake Sideways", "Backwards", "Forwards",
-            "LBY", "FJitter",
-            "Richi's EAP", "Myrrib's EAP", "LBY on Ground",  // safe
-            // if you remove aas pls remove them also here :c
+            "Fake LBY", "LBYonGROUND", "TANK1", "TANK2", "TANK3", "myrrib's eap", "richi's eap", "LegitTrolling 1", "LegitTrolling 2", "Custom 1", "Custom 2"  // safe
+    // someone is retarded and pushes updates without double-checking them :dumb_some1:
     };
 
     const char *lbyTypes[] = {
