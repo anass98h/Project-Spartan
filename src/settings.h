@@ -51,7 +51,7 @@ enum class AutostrafeType : int {
 
 enum class AntiAimType_Y : int {
 
-    LEGITTROLLING,
+    /*LEGITTROLLING,
     LEGITTROLLING2,
     SPIN,
     CUSTOM,
@@ -72,8 +72,29 @@ enum class AntiAimType_Y : int {
     FJITTER,
     richieap,
     MYRRIB,
+    LBYONGROUND,*/
+    NOAA,
+    FORWARDS,
+    BACKWARDS,
+    SPIN,
+    FAKESIDEWAYS,
+    BACKJITTER,
+    FJITTER,
+    LBYJITTER,
+    LBYSPIN,
+    LOWERBODY,
+    LBYBREAK,
+    FAKELBY,
     LBYONGROUND,
-    //same as in hvhtab remove aa's also here :c
+    TANK1,
+    TANK2,
+    TANK3,
+    MYRRIB,
+    richieap,
+    LEGITTROLLING,
+    LEGITTROLLING2,
+    CUSTOM,
+    CUSTOM2,
 
 };
 
