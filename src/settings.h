@@ -104,6 +104,7 @@ enum class AntiAimType_LBY : int {
     THREE,
     FOUR,
     MYRRIB,
+    MYRRIB2,
     NONE,
 };
 
