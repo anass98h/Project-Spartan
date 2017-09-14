@@ -968,10 +968,7 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
     }
 
     angle.y += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
-
-    if (!Settings::AntiAim::allowUntrustedAngles) {
-        Math::ClampAngles(angle);
-    }
+    
 }
 
 static void DoAntiAimX(QAngle &angle, bool bFlip, bool &clamp) {
