@@ -1134,6 +1134,65 @@ static void DoAntiAimLBY(QAngle &angle, int command_number, bool bFlip, bool &cl
         case AntiAimType_LBY::FOUR:
             // TODO
             break;
+        case AntiAimType_LBY::MYRRIB2: {
+            C_BasePlayer localPlayer = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()));
+
+            bool onGround = (localPlayer.GetFlags() & FL_ONGROUND);
+            bool moving = (fabsf(localPlayer.GetVelocity().x) != 0);
+            bool onGroundMoving = (onGround && moving);
+
+            float lby = *localPlayer.GetLowerBodyYawTarget();
+            float realAngle = AntiAim::lastRealYaw;
+            float fakeAngle = AntiAim::lastFakeYaw;
+
+            static bool switch1 = false;
+            static bool switch2 = false;
+            static bool switch3 = false;
+
+            if (onGroundMoving) {
+                angle.y -= 180;
+            } else {
+                if (realAngle == lby) {
+                    switch1 = !switch1;
+                    if (switch1) {
+                        angle.y -= 180;
+                        CreateMove::sendPacket = false;
+                    } else {
+                        angle.y += 90;
+                        CreateMove::sendPacket = true;
+                    }
+                } else if (realAngle == fakeAngle) {
+                    switch2 = !switch2;
+                    if (switch2) {
+                        angle.y -= 180;
+                        CreateMove::sendPacket = false;
+                    } else {
+                        angle.y += 45;
+                        CreateMove::sendPacket = true;
+                    }
+                } else {
+                    switch3 = !switch3;
+                    if (switch3) {
+                        int rng = rand() % 3 + 1;
+                        if (rng == 1) {
+                            angle.y = lby + 90;
+                            CreateMove::sendPacket = false;
+                        } else if (rng == 2) {
+                            angle.y = lby + 180;
+                            CreateMove::sendPacket = false;
+                        } else {
+                            angle.y = lby - 90;
+                            CreateMove::sendPacket = false;
+                        }
+                    } else {
+                        angle.y = lby;
+                        CreateMove::sendPacket = true;
+                    }
+                }
+            }
+
+        }
+            break;
         case AntiAimType_LBY::NONE:
             //Settings::AntiAim::Lby::enabled = false;
             break;
