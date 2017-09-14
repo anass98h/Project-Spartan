@@ -69,6 +69,7 @@ void Math::ClampAngles(QAngle &angle) {
         else if (angle.y < -180.0f)
             angle.y = -180.0f;
 
+
         if (angle.x > 89.0f)
             angle.x = 89.0f;
         else if (angle.x < -89.0f)
