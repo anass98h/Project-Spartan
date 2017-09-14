@@ -968,10 +968,7 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
     }
 
     angle.y += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
-
-    if (!Settings::AntiAim::allowUntrustedAngles) {
-        Math::ClampAngles(angle);
-    }
+    
 }
 
 static void DoAntiAimX(QAngle &angle, bool bFlip, bool &clamp) {
@@ -1135,13 +1132,13 @@ static void DoAntiAimLBY(QAngle &angle, int command_number, bool bFlip, bool &cl
             // TODO
             break;
         case AntiAimType_LBY::MYRRIB2: {
-            C_BasePlayer localPlayer = *((C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer()));
 
-            bool onGround = (localPlayer.GetFlags() & FL_ONGROUND);
-            bool moving = (fabsf(localPlayer.GetVelocity().x) != 0);
+
+            bool onGround = (pLocal->GetFlags() & FL_ONGROUND);
+            bool moving = (fabsf(pLocal->GetVelocity().x) != 0);
             bool onGroundMoving = (onGround && moving);
 
-            float lby = *localPlayer.GetLowerBodyYawTarget();
+            float lby = *pLocal->GetLowerBodyYawTarget();
             float realAngle = AntiAim::lastRealYaw;
             float fakeAngle = AntiAim::lastFakeYaw;
 
