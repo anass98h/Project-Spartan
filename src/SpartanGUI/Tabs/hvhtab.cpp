@@ -9,7 +9,7 @@ bool Settings::customYaw2::lby;
 void HvH::RenderTab() {
 
     const char *yTypes[] = {
-            "noaa", "Forwards", "Backwards", "Spin", "FakeSideWays", "Backjitter", "FJitter", "LBYJitter", "LBYSpin", "LBY",
+            "noaa", "Forwards", "Backwards", "Spin", "FakeSideWays", "Backjitter", "FJitter", "Rasp's EAP 1", "Rasp's EAP 2", "LBYJitter", "LBYSpin", "LBY",
             "LBY Breaker",
             "Fake LBY", "LBYonGROUND", "TANK1", "TANK2", "TANK3", "myrrib's eap", "richi's eap", "LegitTrolling 1", "LegitTrolling 2", "Custom 1", "Custom 2"  // safe
     // someone is retarded and pushes updates without double-checking them :dumb_some1:

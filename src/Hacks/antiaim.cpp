@@ -944,31 +944,54 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                     }
                 break;
                 case AntiAimType_Y::LBYONGROUND:
-                    if (pLocal->GetFlags() & FL_ONGROUND)
-                        angle.y = *pLocal->GetLowerBodyYawTarget() + rand() % 35 + 165;
-                    else {
-                        static int aimType = rand() % 4;
-                        switch (aimType) {
-                            case 1:
-                                yFlip ? angle.y += 90.f : angle.y -= 90.0f;
-                                break;
-                            case 2:
-                                yFlip ? angle.y -= 120.0f : angle.y -= 210.0f;
-                                break;
-                            case 3:
-                                factor = 360.0 / M_PHI;
-                                factor *= 25;
-                                angle.y = fmodf(globalVars->curtime * factor, 360.0);
-                                break;
-                            default:
-                                angle.y -= 180.0f;
-                        }
-                    }
+                    if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f))
+                        angle.y -= 180.f;
+                    else
+                        angle.y = *pLocal->GetLowerBodyYawTarget();
+                break;
+                case AntiAimType_Y::RASP2:
+                static int direction;
+                static bool flipr = false;
+                static float prevLBYr = *((C_BasePlayer *) entityList->GetClientEntity(
+                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+
+                if (pLocal->GetVelocity().x < 0.5f && pLocal->GetVelocity().x > -0.5f) {
+
+                    if (prevLBYr !=
+                        *((C_BasePlayer *) entityList->GetClientEntity(
+                                engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                        flipr = false;
+                    else
+                        flipr = true;
+                    if (flipr)
+                        angle.y += *pLocal->GetLowerBodyYawTarget() + 85;
+                    else
+                        angle.y -= *pLocal->GetLowerBodyYawTarget() - 85;
+
+                    prevLBYr = *((C_BasePlayer *) entityList->GetClientEntity(
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                }
+                else
+                    yFlip ? angle.y -= 170 : angle.y += 170;
+                break;
+                case AntiAimType_Y::RASP:
+                    float realAngle = AntiAim::lastRealYaw;
+                //float realAngle = AntiAim::lastRealYaw;
+                realAngle = AntiAim::lastRealYaw;
+                //realAngle = AntiAim::lastRealYaw;
+                if (AntiAim::lastRealYaw == realAngle) {
+                    angle.y = realAngle + rand() % 110 + 70;
+                    realAngle = AntiAim::lastRealYaw;
+                } else {
+                    angle.y = realAngle + rand() % 110 + 70;
+                    realAngle = AntiAim::lastRealYaw;
+                }
+                break;
             }
     }
 
     angle.y += bFlip ? Settings::AntiAim::Yaw::customTypeFake : Settings::AntiAim::Yaw::customType;
-    
+
 }
 
 static void DoAntiAimX(QAngle &angle, bool bFlip, bool &clamp) {
