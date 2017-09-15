@@ -200,6 +200,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "Resolver" )][XORSTR( "modulo" )] = Settings::Resolver::modulo;
     settings[XORSTR( "Resolver" )][XORSTR( "Hugtype" )] = ( int ) Settings::Resolver::Hugtype;
     settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
+    settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] = ( int ) Settings::Resolver::pitch;
     settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] = ( int ) Settings::Resolver::LagComp;
     settings[XORSTR( "Triggerbot" )][XORSTR( "enabled" )] = Settings::Triggerbot::enabled;
     settings[XORSTR( "Triggerbot" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Triggerbot::key );

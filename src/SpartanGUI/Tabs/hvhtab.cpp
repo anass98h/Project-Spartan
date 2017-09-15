@@ -225,6 +225,8 @@ void HvH::RenderTab() {
                                    XORSTR("Ticks: %0.f"));
                 ImGui::SliderFloat(XORSTR("##HUGMODULO"), &Settings::Resolver::modulo, 0, 50,
                                    XORSTR("Modulo: %0.f"));
+                ImGui::Checkbox(XORSTR("Pitch Resolver"), &Settings::Resolver::pitch);
+
                 ImGui::Checkbox(XORSTR("crash game"), &Settings::Resolver::LagComp);
             }
 

@@ -1,6 +1,7 @@
 #include "resolver.h"
 
 bool Settings::Resolver::enabled = false;
+bool Settings::Resolver::pitch = false;
 float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
 bool Settings::Resolver::LagComp = false;
@@ -59,6 +60,15 @@ void Resolver::Hug(C_BasePlayer *Circlebian) {
 
 
 // END OF NEW MEMES WOOOOH ----------------------------------------------------------------------
+
+    if (Settings::Resolver::pitch) {
+        if (Circlebian->GetEyeAngles()->x < -179.f) Circlebian->GetEyeAngles()->x += 360.f;
+        else if (Circlebian->GetEyeAngles()->x > 90.0 || Circlebian->GetEyeAngles()->x < -90.0) Circlebian->GetEyeAngles()->x = 89.f;
+        else if (Circlebian->GetEyeAngles()->x > 89.0 && Circlebian->GetEyeAngles()->x < 91.0) Circlebian->GetEyeAngles()->x -= 90.f;
+        else if (Circlebian->GetEyeAngles()->x > 179.0 && Circlebian->GetEyeAngles()->x < 181.0) Circlebian->GetEyeAngles()->x -= 180;
+        else if (Circlebian->GetEyeAngles()->x > -179.0 && Circlebian->GetEyeAngles()->x < -181.0) Circlebian->GetEyeAngles()->x += 180;
+        else if (fabs(Circlebian->GetEyeAngles()->x) == 0) Circlebian->GetEyeAngles()->x = std::copysign(89.0f, Circlebian->GetEyeAngles()->x);
+    }
 
     switch (Settings::Resolver::Hugtype) {
         case ResolverHugtype::PASTEHUB: {
