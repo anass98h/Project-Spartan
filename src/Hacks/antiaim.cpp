@@ -906,6 +906,22 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 case AntiAimType_Y::FORWARDS:
                     angle.y -= 0.0f;
                 break;
+                case AntiAimType_Y::PMIX:
+                    if (LBYUpdated()) {
+                        angle.y -= 180.0f;
+                    } else {
+                        if (pLocal->GetFlags() & FL_DUCKING) {
+                            static bool switchlol = false;
+                            switchlol = !switchlol;
+                            if (switchlol)
+                                angle.y = *pLocal->GetLowerBodyYawTarget() + 90.f;
+                            else
+                                angle.y = *pLocal->GetLowerBodyYawTarget() + 135.f;
+                        } else {
+                            angle.y = *pLocal->GetLowerBodyYawTarget() + 135.f;
+                        }
+                    }
+                    break;
                 case AntiAimType_Y::LOWERBODY:
                     angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget();

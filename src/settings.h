@@ -89,6 +89,7 @@ enum class AntiAimType_Y : int {
     TANK1,
     TANK2,
     TANK3,
+    PMIX,
     MYRRIB,
     richieap,
     LEGITTROLLING,
