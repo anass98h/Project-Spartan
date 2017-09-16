@@ -191,6 +191,7 @@ void Misc::RenderTab() {
                 ImGui::Columns( 2, NULL, true );
                 {
                     ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ThirdPerson::enabled );
+                    ImGui::Checkbox( XORSTR( "Show Real Angles" ), &Settings::ThirdPerson::realAngles );
                     ImGui::Text( XORSTR( "Key" ) );
                 }
                 ImGui::NextColumn();
