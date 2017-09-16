@@ -37,7 +37,7 @@ void Resolver::Hug(C_BasePlayer *Circlebian) {
     static float oldTimer[65];
     static bool isLBYPredictited[65];
     INetChannelInfo *nci = engine->GetNetChannelInfo();
-    static float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
+    float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 //-------------------NEW MEMES WOOOOH --------------------------------------------------------
 
     if (OldLowerBodyYaws[Circlebian->GetIndex()] == *Circlebian->GetLowerBodyYawTarget()) {
