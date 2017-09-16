@@ -11,7 +11,7 @@ void HvH::RenderTab() {
     const char *yTypes[] = {
             "noaa", "Forwards", "Backwards", "Spin", "FakeSideWays", "Backjitter", "FJitter", "LBYJitter", "LBYSpin", "LBY",
             "LBY Breaker",
-            "Fake LBY", "LBYonGROUND", "TANK1", "TANK2", "TANK3", "myrrib's eap", "richi's eap", "LegitTrolling 1", "LegitTrolling 2", "Custom 1", "Custom 2"  // safe
+            "Fake LBY", "LBYonGROUND", "TANK1", "TANK2", "TANK3", "pMix", "myrrib's eap", "richi's eap", "LegitTrolling 1", "LegitTrolling 2", "Custom 1", "Custom 2"  // safe
     // someone is retarded and pushes updates without double-checking them :dumb_some1:
     };
 
