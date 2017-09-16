@@ -44,14 +44,14 @@ static float Distance(Vector a, Vector b) {
 static bool LBYUpdated() {
     C_BasePlayer *localplayer = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
 
-    float bodyEyeDelta = AntiAim::lastRealYaw - localplayer->GetLowerBodyYawTarget();
+    float bodyEyeDelta = AntiAim::lastRealYaw - *localplayer->GetLowerBodyYawTarget();
 
     static bool LBYUpdated = false;
 
     bool moving = (localplayer->GetVelocity().x != 0);
     bool onGround = (localplayer->GetFlags() & FL_ONGROUND);
 
-    if (AntiAim::lastRealYaw == localplayer->GetLowerBodyYawTarget() || moving && onGround || fabsf(bodyEyeDelta) < 35.f)
+    if (AntiAim::lastRealYaw == *localplayer->GetLowerBodyYawTarget() || moving && onGround || fabsf(bodyEyeDelta) < 35.f)
         LBYUpdated = true;
     else
         LBYUpdated = false;
