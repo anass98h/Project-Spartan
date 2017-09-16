@@ -1,4 +1,3 @@
-
 #include "antiaim.h"
 
 bool Settings::AntiAim::allowUntrustedAngles = false;
@@ -40,6 +39,24 @@ lua_State *LuaX, *LuaY, *LuaY2; // 1 instance of Lua for each Script.
 
 static float Distance(Vector a, Vector b) {
     return (sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2)));
+}
+
+static bool LBYUpdated() {
+    C_BasePlayer *localplayer = (C_BasePlayer *) entityList->GetClientEntity(engine->GetLocalPlayer());
+
+    float bodyEyeDelta = AntiAim::lastRealYaw - localplayer->GetLowerBodyYawTarget();
+
+    static bool LBYUpdated = false;
+
+    bool moving = (localplayer->GetVelocity().x != 0);
+    bool onGround = (localplayer->GetFlags() & FL_ONGROUND);
+
+    if (AntiAim::lastRealYaw == localplayer->GetLowerBodyYawTarget() || moving && onGround || fabsf(bodyEyeDelta) < 35.f)
+        LBYUpdated = true;
+    else
+        LBYUpdated = false;
+
+    return LBYUpdated;
 }
 
 static bool GetBestHeadAngle(QAngle &angle) {
