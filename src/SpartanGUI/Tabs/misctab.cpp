@@ -282,7 +282,7 @@ void Misc::RenderTab() {
             }
 
             ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "Ayyware Crash Name" ) ) )
+            if ( ImGui::Button( XORSTR( "Inf Name Spam" ) ) )
                 NameChanger::InitColorChange( NameChanger::NC_Type::NC_RAINBOW );
 
             ImGui::SameLine();
