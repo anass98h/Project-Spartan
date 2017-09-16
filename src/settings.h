@@ -1028,6 +1028,7 @@ namespace Settings {
 
     namespace ThirdPerson {
         extern bool enabled;
+        extern bool realAngles;
         extern float distance;
         extern ButtonCode_t key;
     }
