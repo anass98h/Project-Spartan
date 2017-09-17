@@ -90,7 +90,7 @@ int __attribute__ ((constructor)) Startup() {
                                               "cs_game_disconnected", "player_connect_full", "player_death",
                                               "player_hurt", "switch_team", "item_purchase", "bomb_beginplant",
                                               "bomb_begindefuse", "bomb_planted", "enter_bombzone", "player_given_c4",
-                                              "hostage_follows", "hostage_rescued", ""
+                                              "hostage_follows", "hostage_rescued"
                                       });
 
     if ( ModSupport::current_mod != ModType::CSCO &&
