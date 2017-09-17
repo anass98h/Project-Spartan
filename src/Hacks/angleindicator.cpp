@@ -19,7 +19,9 @@ void AngleIndicator::PostPredictionCreateMove( CUserCmd* cmd ) {
     if ( !pLocal || !pLocal->GetAlive() )
         return;
 
-    if ( Settings::AntiAim::Yaw::enabled ) {
+    if ( ( AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::Yaw::enabled :
+           AntiAim::IsMoving() ? Settings::AntiAim::Moving::Yaw::enabled :
+           Settings::AntiAim::Standing::Yaw::enabled ) ) {
         fakeAngle = AntiAim::lastFakeYaw;
         realAngle = AntiAim::lastRealYaw;
         velocity = pLocal->GetVelocity().Length2D();
@@ -59,7 +61,7 @@ void AngleIndicator::PaintImGui() {
     std::ostringstream stream3;
     stream3 << Math::RoundFloat( velocity );
     std::string veloText( stream3.str() );
-    std::string text3( XORSTR( "Veloc: " ) );
+    std::string text3( XORSTR( "Velocity: " ) );
     text3.append( veloText );
     // Calculation of text position on screen
 
@@ -77,6 +79,8 @@ void AngleIndicator::PaintImGui() {
                   ImFontFlags_Shadow );
     Draw::ImText( ImVec2( textX2, textY2 ), ImColor( 255, 255, 255 ), text2.c_str(), NULL, 0.0f, NULL,
                   ImFontFlags_Shadow );
-    Draw::ImText( ImVec2( textX3, textY3 ), ImColor( 255, 255, 255 ), text3.c_str(), NULL, 0.0f, NULL,
-                  ImFontFlags_Shadow );
+    if ( Settings::AngleIndicator::Veloc ) {
+        Draw::ImText( ImVec2( textX3, textY3 ), ImColor( 255, 255, 255 ), text3.c_str(), NULL, 0.0f, NULL,
+                      ImFontFlags_Shadow );
+    }
 }
