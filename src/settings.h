@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-    NOAA,
+            NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -218,19 +218,19 @@ struct AimbotWeapon_t {
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
     bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
 
-    AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
-                   bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
-                   bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
-                   float smoothSaltMultiplier,
-                   bool errorMarginEnabled, float errorMarginValue,
-                   bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
-                   bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
-                   bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-                   bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
-                   bool spreadLimitEnabled, float spreadLimit,
-                   bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-                   bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                   bool autoCockRevolver, bool velocityCheck, bool backtrack) {
+    AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
+                    bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
+                    bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
+                    float smoothSaltMultiplier,
+                    bool errorMarginEnabled, float errorMarginValue,
+                    bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
+                    bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
+                    bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
+                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
+                    bool spreadLimitEnabled, float spreadLimit,
+                    bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
+                    bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -280,8 +280,8 @@ struct AimbotWeapon_t {
         this->velocityCheck = velocityCheck;
 
 
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
-            this->desiredBones[bone] = (desiredBones != nullptr) ? desiredBones[bone] : false;
+        for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
+            this->desiredBones[bone] = ( desiredBones != nullptr ) ? desiredBones[bone] : false;
 
         this->autoAimRealDistance = autoAimRealDistance;
     }
@@ -289,9 +289,9 @@ struct AimbotWeapon_t {
     AimbotWeapon_t() {
     };
 
-    bool operator==(const AimbotWeapon_t &another) const {
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++) {
-            if (this->desiredBones[bone] != another.desiredBones[bone])
+    bool operator==( const AimbotWeapon_t& another ) const {
+        for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ ) {
+            if ( this->desiredBones[bone] != another.desiredBones[bone] )
                 return false;
         }
 
@@ -355,14 +355,14 @@ public:
     ColorVar() {
     }
 
-    ColorVar(ImColor color) {
+    ColorVar( ImColor color ) {
         this->color = color;
         this->rainbow = false;
         this->rainbowSpeed = 0.5f;
     }
 
     ImColor Color() {
-        ImColor result = this->rainbow ? Util::GetRainbowColor(this->rainbowSpeed) : this->color;
+        ImColor result = this->rainbow ? Util::GetRainbowColor( this->rainbowSpeed ) : this->color;
         result.Value.w = this->color.Value.w;
         return result;
     }
@@ -372,16 +372,16 @@ class HealthColorVar : public ColorVar {
 public:
     bool hp;
 
-    HealthColorVar(ImColor color) {
+    HealthColorVar( ImColor color ) {
         this->color = color;
         this->rainbow = false;
         this->rainbowSpeed = 0.5f;
         this->hp = false;
     }
 
-    ImColor Color(C_BasePlayer *player) {
-        ImColor result = this->rainbow ? Util::GetRainbowColor(this->rainbowSpeed) : (this->hp ? Color::ToImColor(
-                Util::GetHealthColor(player)) : this->color);
+    ImColor Color( C_BasePlayer* player ) {
+        ImColor result = this->rainbow ? Util::GetRainbowColor( this->rainbowSpeed ) : ( this->hp ? Color::ToImColor(
+                Util::GetHealthColor( player ) ) : this->color );
         result.Value.w = this->color.Value.w;
         return result;
     }
@@ -403,7 +403,7 @@ namespace Settings {
             extern float fontsize;
 
             namespace ESP {
-                extern char *family;
+                extern char* family;
                 extern int size;
                 extern int flags;
             }
@@ -1156,15 +1156,15 @@ namespace Settings {
     }
 
 
-    void LoadDefaultsOrSave(std::string path);
+    void LoadDefaultsOrSave( std::string path );
 
-    void LoadConfig(std::string path);
+    void LoadConfig( std::string path );
 
     void LoadSettings();
 
-    void DeleteConfig(std::string path);
+    void DeleteConfig( std::string path );
 
-    void SaveGrenadeInfo(std::string path);
+    void SaveGrenadeInfo( std::string path );
 
-    void LoadGrenadeInfo(std::string path);
+    void LoadGrenadeInfo( std::string path );
 }

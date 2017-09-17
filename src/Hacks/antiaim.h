@@ -14,7 +14,9 @@ namespace AntiAim {
     extern float lastFakeYaw;
 
     bool IsStanding();
+
     bool IsMoving();
+
     bool IsAirborne();
 
     //Hooks

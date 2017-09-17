@@ -19,9 +19,9 @@ void AngleIndicator::PostPredictionCreateMove( CUserCmd* cmd ) {
     if ( !pLocal || !pLocal->GetAlive() )
         return;
 
-    if ( (AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::Yaw::enabled :
-          AntiAim::IsMoving() ? Settings::AntiAim::Moving::Yaw::enabled :
-          Settings::AntiAim::Standing::Yaw::enabled) ) {
+    if ( ( AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::Yaw::enabled :
+           AntiAim::IsMoving() ? Settings::AntiAim::Moving::Yaw::enabled :
+           Settings::AntiAim::Standing::Yaw::enabled ) ) {
         fakeAngle = AntiAim::lastFakeYaw;
         realAngle = AntiAim::lastRealYaw;
         velocity = pLocal->GetVelocity().Length2D();
@@ -79,7 +79,7 @@ void AngleIndicator::PaintImGui() {
                   ImFontFlags_Shadow );
     Draw::ImText( ImVec2( textX2, textY2 ), ImColor( 255, 255, 255 ), text2.c_str(), NULL, 0.0f, NULL,
                   ImFontFlags_Shadow );
-    if(Settings::AngleIndicator::Veloc) {
+    if ( Settings::AngleIndicator::Veloc ) {
         Draw::ImText( ImVec2( textX3, textY3 ), ImColor( 255, 255, 255 ), text3.c_str(), NULL, 0.0f, NULL,
                       ImFontFlags_Shadow );
     }

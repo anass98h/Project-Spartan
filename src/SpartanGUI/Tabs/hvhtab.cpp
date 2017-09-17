@@ -24,7 +24,7 @@ void HvH::RenderTab() {
                 Settings::UI::mainColor.Color().Value.w
         );
 
-        if ( ImGui::Button( tabs[i], ImVec2( ImGui::GetWindowSize().x / IM_ARRAYSIZE( tabs ) - 9, 0 ))) {
+        if ( ImGui::Button( tabs[i], ImVec2( ImGui::GetWindowSize().x / IM_ARRAYSIZE( tabs ) - 9, 0 ) ) ) {
             page = i;
         }
 
