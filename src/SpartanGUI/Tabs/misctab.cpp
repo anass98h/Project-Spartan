@@ -192,6 +192,7 @@ void Misc::RenderTab() {
                 {
                     ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ThirdPerson::enabled );
                     ImGui::Text( XORSTR( "Key" ) );
+                    ImGui::Checkbox( XORSTR( "Show Real Angles" ), &Settings::ThirdPerson::realAngles );
                 }
                 ImGui::NextColumn();
                 {
@@ -282,7 +283,7 @@ void Misc::RenderTab() {
             }
 
             ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "Ayyware Crash Name" ) ) )
+            if ( ImGui::Button( XORSTR( "Inf Name Spam" ) ) )
                 NameChanger::InitColorChange( NameChanger::NC_Type::NC_RAINBOW );
 
             ImGui::SameLine();

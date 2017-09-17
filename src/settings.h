@@ -104,6 +104,7 @@ enum class AntiAimType_LBY : int {
     THREE,
     FOUR,
     MYRRIB,
+    MYRRIB2,
     NONE,
 };
 
@@ -1106,6 +1107,7 @@ namespace Settings {
 
     namespace ThirdPerson {
         extern bool enabled;
+        extern bool realAngles;
         extern float distance;
         extern ButtonCode_t key;
     }

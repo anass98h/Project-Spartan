@@ -30,7 +30,7 @@ static std::string GetName() {
 }
 
 void NameChanger::AyywareCrash() {
-    for ( int i = 0; i < 6; i++ ) {
+    /*for ( int i = 0; i < 6; i++ ) {
         static bool ayywareS = false;
         ayywareS = !ayywareS;
         if ( ayywareS ) {
@@ -40,7 +40,19 @@ void NameChanger::AyywareCrash() {
             SetName(
                     "AyyWare Crasher 2k17 --- Project Spartan --- CrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWareCrashAyyWare" );
         }
+    }*/
+
+    std::stringstream ss;
+
+    for(auto i = 0; i<=150; i++)
+    {
+        ss << static_cast<char>(-1);
+        //Breaks it and doesnt work thanks marc
+        //const char char_max = (char)(((unsigned char) char(-1)) / 2);
+        //char c = (-1 & char_max); // Results in not overflowing
     }
+
+    SetName(ss.str().c_str());
 }
 
 static std::string Colorize( const std::string& name, NameChanger::Colors color = NameChanger::Colors::LIGHT_RED ) {
@@ -81,15 +93,23 @@ void NameChanger::BeginFrame( float frameTime ) {
     timeStamp = currentTime_ms;
     changes++;
 
+    static int lelezspam = 6;
+
+    if (NameChanger::type == NC_Type::NC_RAINBOW) {
+        lelezspam = 1;
+    }
+
+    if (lelezspam < 5) {
+        AyywareCrash();
+        lelezspam++;
+    }
+
     if ( changes >= 5 ) {
         switch ( NameChanger::type ) {
             case NC_Type::NC_NORMAL:
                 SetName( Util::PadStringRight( XORSTR( "\230\nProject Spartan" ),
                                                strlen( XORSTR( "\230\nProject Spartan" ) ) +
                                                Util::RandomInt( 10, 50 ) ) );
-                break;
-            case NC_Type::NC_RAINBOW:
-                AyywareCrash();
                 break;
             case NC_Type::NC_SOLID:
                 SetName( Util::PadStringRight( Colorize( origName, NameChanger::color ),

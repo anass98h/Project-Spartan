@@ -22,7 +22,7 @@ void CircleStrafe::CreateMove( CUserCmd* cmd ) {
     if ( Circle > 361 )
         Circle = 0;
 
-    float rotation = 3.f * Circle - globalVars->interval_per_tick;
+    float rotation = 4.f * Circle - globalVars->interval_per_tick;
 
     QAngle storedview = cmd->viewangles;
 
