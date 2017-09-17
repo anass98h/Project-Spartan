@@ -51,5 +51,5 @@ add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-add_library(Spartan SHARED ${SOURCE_FILES} src/SpartanGUI/Tabs/HvHTabs/standinghvhtab.cpp src/SpartanGUI/Tabs/HvHTabs/standinghvhtab.h src/SpartanGUI/Tabs/HvHTabs/movinghvhtab.cpp src/SpartanGUI/Tabs/HvHTabs/movinghvhtab.h src/SpartanGUI/Tabs/HvHTabs/airbornehvhtab.cpp src/SpartanGUI/Tabs/HvHTabs/airbornehvhtab.h src/SpartanGUI/Tabs/HvHTabs/mischvhtab.cpp src/SpartanGUI/Tabs/HvHTabs/mischvhtab.h)
+add_library(Spartan SHARED ${SOURCE_FILES})
 target_link_libraries(Spartan GL dl xdo ${LUA_LIBRARY} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
