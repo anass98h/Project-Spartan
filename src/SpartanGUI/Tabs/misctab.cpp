@@ -261,6 +261,9 @@ void Misc::RenderTab() {
                 if ( ImGui::SliderInt( XORSTR( "##ANIMATIONSPEED" ), &Settings::ClanTagChanger::animationSpeed, 0,
                                        2000 ) )
                     ClanTagChanger::UpdateClanTagCallback();
+                if ( ImGui::Combo( XORSTR( "##PRESETTYPE" ), ( int* ) &Settings::ClanTagChanger::preset,
+                                   presetTypes, IM_ARRAYSIZE( presetTypes ) ) )
+                    ClanTagChanger::UpdateClanTagCallback();
                 ImGui::PopItemWidth();
             }
             ImGui::Columns( 1 );

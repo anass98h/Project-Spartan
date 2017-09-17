@@ -33,12 +33,18 @@ enum class TracerType : int {
     CURSOR,
 };
 
+enum class ClanTagPresetType : int {
+    NONAME,
+    VALVE,
+};
+
 enum class ClanTagType : int {
     STATIC,
     CURTIME,
     MARQUEE,
     WORDS,
     LETTERS,
+    PRESET,
 };
 
 enum class AutostrafeType : int {
@@ -945,6 +951,7 @@ namespace Settings {
         extern int animationSpeed;
         extern bool enabled;
         extern ClanTagType type;
+        extern ClanTagPresetType presetType;
     }
 
     namespace View {

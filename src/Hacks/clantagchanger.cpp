@@ -5,6 +5,7 @@ bool Settings::ClanTagChanger::animation = false;
 int Settings::ClanTagChanger::animationSpeed = 650;
 bool Settings::ClanTagChanger::enabled = false; // TODO find a way to go back to the "official" clan tag for the player? -- Save the current clan tag, before editing, then restore it later
 ClanTagType Settings::ClanTagChanger::type = ClanTagType::STATIC;
+ClanTagPresetType Settings::ClanTagChanger::presetType = ClanTagPresetType::NONAME;
 
 static std::vector<std::wstring> splitWords( std::wstring text ) {
     std::wistringstream stream( text );
@@ -113,6 +114,16 @@ void ClanTagChanger::BeginFrame( float frameTime ) {
 
     if ( Settings::ClanTagChanger::type == ClanTagType::STATIC )
         SendClanTag( ctWithEscapesProcessed.c_str(), "" );
+    else if ( Settings::ClanTagChanger::type == ClanTagType::PRESET ) {
+        switch ( Settings::ClanTagChanger::presetType ) {
+            case ClanTagPresetType::NONAME:
+                    SendClanTag("\r", "Project Spartan");
+                break;
+            case ClanTagPresetType::VALVE:
+                    SendClanTag("[VALV\\xE1\\xB4\\xB1]", "Valve");
+                break;
+        }
+    }
     else if ( ctWithEscapesProcessed == "time" || Settings::ClanTagChanger::type == ClanTagType::CURTIME ) {
         time_t rawtime;
         struct tm* timeinfo;

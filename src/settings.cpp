@@ -511,6 +511,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "animation" )] = Settings::ClanTagChanger::animation;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "animation_speed" )] = Settings::ClanTagChanger::animationSpeed;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "type" )] = ( int ) Settings::ClanTagChanger::type;
+    settings[XORSTR( "ClanTagChanger" )][XORSTR( "presetType" )] = ( int ) Settings::ClanTagChanger::presetType;
 
     settings[XORSTR( "View" )][XORSTR( "NoViewPunch" )][XORSTR( "enabled" )] = Settings::View::NoViewPunch::enabled;
     settings[XORSTR( "View" )][XORSTR( "NoAimPunch" )][XORSTR( "enabled" )] = Settings::View::NoAimPunch::enabled;
@@ -1086,6 +1087,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "animation_speed" )],
             &Settings::ClanTagChanger::animationSpeed );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "type" )], ( int* ) &Settings::ClanTagChanger::type );
+    GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "presetType" )], ( int* ) &Settings::ClanTagChanger::presetType );
     ::ClanTagChanger::UpdateClanTagCallback();
 
     GetVal( settings[XORSTR( "View" )][XORSTR( "NoViewPunch" )][XORSTR( "enabled" )],
@@ -1130,6 +1132,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )], &Settings::ThirdPerson::realAngles );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 
