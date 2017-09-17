@@ -49,7 +49,9 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
     QAngle realAngles = QAngle(localplayer->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
 
     if ( Settings::ThirdPerson::enabled ) {
-        if ( Settings::ThirdPerson::realAngles && Settings::AntiAim::Yaw::enabled )
+        if ( Settings::ThirdPerson::realAngles && ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
+                (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
+                (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) )
             *localplayer->GetVAngles() = realAngles;
         else
             *localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
