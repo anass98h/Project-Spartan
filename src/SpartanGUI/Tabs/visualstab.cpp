@@ -4,6 +4,7 @@ void Visuals::RenderTab() {
     const char* BoxTypes[] = { "Flat 2D", "Frame 2D", "Box 3D", "Hitboxes" };
     const char* TracerTypes[] = { "Bottom", "Cursor" };
     const char* BarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above", "Interwebz" };
+    const char* ArmorTypes[] = {"Right",};
     const char* BarColorTypes[] = { "Static", "Health Based" };
     const char* TeamColorTypes[] = { "Absolute", "Relative" };
     const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass", "Crystal", "BlueCrystal",
@@ -104,6 +105,8 @@ void Visuals::RenderTab() {
                               IM_ARRAYSIZE( ChamsTypes ) );
                 ImGui::Combo( XORSTR( "##BARTYPE" ), ( int* ) &Settings::ESP::Bars::type, BarTypes,
                               IM_ARRAYSIZE( BarTypes ) );
+                ImGui::Combo( XORSTR( "##ARMORTYPE" ), ( int* ) &Settings::ESP::Bars::type, ArmorTypes,
+                              IM_ARRAYSIZE( ArmorTypes ) );
                 ImGui::Combo( XORSTR( "##TRACERTYPE" ), ( int* ) &Settings::ESP::Tracers::type, TracerTypes,
                               IM_ARRAYSIZE( TracerTypes ) );
                 ImGui::Combo( XORSTR( "##BARCOLTYPE" ), ( int* ) &Settings::ESP::Bars::colorType, BarColorTypes,

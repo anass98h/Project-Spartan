@@ -733,6 +733,8 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         // clamp it to 100
         int HealthValue = std::max( 0, std::min( player->GetHealth(), 100 ) );
         float HealthPerc = HealthValue / 100.f;
+        int ArmorValue = std::max( 0, std::min( player->GetArmor(), 100) );
+        float ArmorPerc = HealthValue / 100.f;
 
         int barx = x;
         int bary = y;
@@ -766,7 +768,17 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
                                        bary + barh - 1, barColor );
 
             barsSpacing.x += barw;
-        } else if ( Settings::ESP::Bars::type == BarType::HORIZONTAL ) {
+            } else if ( Settings::ESP::Bars::type == ArmorType::ARMOR_RIGHT) {
+                barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
+            barx -= barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
+            Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+            if ( ArmorPerc > 0 )
+                Draw::FilledRectangle( barx + 1, bary + ( barh * ( 1.f - ArmorPerc ) ) + 1, barx + barw - 1,
+                                       bary + barh - 1, barColor );
+
+            barsSpacing.x += barw;
+            } else if ( Settings::ESP::Bars::type == BarType::HORIZONTAL ) {
             bary += barh +
                     boxSpacing; // player box(?px) + spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 5 px
             barh = 4; // outline(1px) + bar(2px) + outline(1px) = 4px;
@@ -1373,6 +1385,8 @@ void ESP::Paint() {
         DrawSpread();
     if ( Settings::NoScopeBorder::enabled && localplayer->IsScoped() )
         DrawScope();
+    if ( Settings::ESP::enabled && Settings::ThirdPerson::enabled && localplayer->IsScoped() )
+
 }
 
 void ESP::DrawModelExecute( void* thisptr, void* context, void* state, const ModelRenderInfo_t& pInfo,
