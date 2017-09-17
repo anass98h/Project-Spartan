@@ -1,6 +1,6 @@
-#include "triggerbottab.h"
+#include "triggerbotaimtab.h"
 
-void Triggerbot::RenderTab() {
+void TriggerAimTab::RenderTab() {
     ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::Triggerbot::enabled );
     ImGui::Separator();
     ImGui::Columns( 2, NULL, true );

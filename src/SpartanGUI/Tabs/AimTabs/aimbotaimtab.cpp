@@ -1,4 +1,4 @@
-#include "../Spartangui.h"
+#include "aimbotaimtab.h"
 
 static ItemDefinitionIndex currentWeapon = ItemDefinitionIndex::INVALID;
 static bool enabled = false;
@@ -145,7 +145,7 @@ void UI::UpdateWeaponSettings() {
     }
 }
 
-void Aimbot::RenderTab() {
+void AimbotAimTab::RenderTab() {
     const char* targets[] = { "PELVIS", "", "", "HIP", "LOWER SPINE", "MIDDLE SPINE", "UPPER SPINE", "NECK", "HEAD" };
     const char* smoothTypes[] = { "Slow Near End", "Constant Speed", "Fast Near End" };
     static char filterWeapons[32];
