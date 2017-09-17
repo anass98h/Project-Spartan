@@ -8,13 +8,14 @@
 #include <lua.hpp>
 
 namespace AntiAim {
+
     extern bool isAntiAiming;
     extern float lastRealYaw;
     extern float lastFakeYaw;
 
-    void LuaInit();
-
-    void LuaCleanup();
+    bool IsStanding();
+    bool IsMoving();
+    bool IsAirborne();
 
     //Hooks
     void CreateMove( CUserCmd* cmd );

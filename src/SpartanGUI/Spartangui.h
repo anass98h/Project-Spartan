@@ -30,6 +30,10 @@
 #include "Tabs/misctab.h"
 #include "Tabs/modelstab.h"
 #include "Tabs/skinstab.h"
+#include "Tabs/HvHTabs/mischvhtab.h"
+#include "Tabs/HvHTabs/movinghvhtab.h"
+#include "Tabs/HvHTabs/standinghvhtab.h"
+#include "Tabs/HvHTabs/airbornehvhtab.h"
 #include "../Utils/xorstring.h"
 #include "../project-spartan.h"
 

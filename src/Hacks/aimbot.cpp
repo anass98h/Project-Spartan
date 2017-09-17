@@ -638,7 +638,9 @@ static void Smooth(C_BasePlayer *player, QAngle &angle, CUserCmd *cmd) {
     if (!Settings::Aimbot::Smooth::enabled)
         return;
 
-    if (Settings::AntiAim::Pitch::enabled || Settings::AntiAim::Yaw::enabled)
+    if (AntiAim::IsAirborne() ? (Settings::AntiAim::Airborne::Yaw::enabled || Settings::AntiAim::Airborne::Pitch::enabled) :
+         AntiAim::IsMoving() ? (Settings::AntiAim::Moving::Yaw::enabled || Settings::AntiAim::Moving::Pitch::enabled) :
+         (Settings::AntiAim::Standing::Yaw::enabled || Settings::AntiAim::Standing::Pitch::enabled))
         return;
 
     if (!shouldAim || !player)
@@ -818,7 +820,9 @@ static void AutoShoot(C_BasePlayer *player, Vector spot, C_BaseCombatWeapon *act
 }
 
 static void ShootCheck(C_BaseCombatWeapon *activeWeapon, CUserCmd *cmd) {
-    if (!Settings::AntiAim::Pitch::enabled && !Settings::AntiAim::Yaw::enabled)
+    if (AntiAim::IsAirborne() ? (!Settings::AntiAim::Airborne::Yaw::enabled && !Settings::AntiAim::Airborne::Pitch::enabled) :
+        AntiAim::IsMoving() ? (!Settings::AntiAim::Moving::Yaw::enabled && !Settings::AntiAim::Moving::Pitch::enabled) :
+        (!Settings::AntiAim::Standing::Yaw::enabled && !Settings::AntiAim::Standing::Pitch::enabled))
         return;
 
     if (!Settings::Aimbot::silent)

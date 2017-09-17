@@ -63,7 +63,9 @@ void Math::NormalizeYaw(float &yaw) {
 }
 
 void Math::ClampAngles(QAngle &angle) {
-    if (!Settings::AntiAim::allowUntrustedAngles) {
+    if ((AntiAim::IsStanding() && !Settings::AntiAim::Standing::untrustedAngles) ||
+        (AntiAim::IsMoving() && !Settings::AntiAim::Moving::untrustedAngles) ||
+        (AntiAim::IsAirborne() && !Settings::AntiAim::Airborne::untrustedAngles)) {
         if (angle.y > 180.0f)
             angle.y = 180.0f;
         else if (angle.y < -180.0f)
@@ -82,7 +84,9 @@ void Math::ClampAngles(QAngle &angle) {
 }
 
 void Math::ClampY(int &y) {
-    if (!Settings::AntiAim::allowUntrustedAngles) {
+    if ((AntiAim::IsStanding() && !Settings::AntiAim::Standing::untrustedAngles) ||
+        (AntiAim::IsMoving() && !Settings::AntiAim::Moving::untrustedAngles) ||
+        (AntiAim::IsAirborne() && !Settings::AntiAim::Airborne::untrustedAngles)) {
         if (y > 180)
             y = 180;
 

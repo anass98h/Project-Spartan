@@ -10,7 +10,7 @@ void Main::RenderWindow() {
 
     static int page = 0;
     ImGui::SetNextWindowSize( ImVec2( 1080, 700 ), ImGuiSetCond_FirstUseEver );
-    if ( ImGui::Begin( ( "project-spartan" ), &Main::showWindow,
+    if ( ImGui::Begin( ( "Project Spartan" ), &Main::showWindow,
                        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders ) ) {
 
         const char* tabs[] = {

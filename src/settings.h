@@ -566,55 +566,135 @@ namespace Settings {
     }
 
     namespace AntiAim {
-        namespace AutoDisable {
-            extern bool noEnemy;
-            extern bool knifeHeld;
-            extern bool bombHeld;
-        }
 
-        namespace Yaw {
-            extern bool enabled;
-            extern AntiAimType_Y type;
-            extern float customType;
-            extern AntiAimType_Y typeFake;
-            extern float customTypeFake;
+        namespace Moving {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
+
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
+
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
             extern bool antiResolver;
             extern bool dynamicAA;
-        }
-        namespace Roll {
-            extern bool enabled;
-            extern AntiAimType_Z type;
-        }
-        namespace Pitch {
-            extern bool enabled;
-            extern AntiAimType_X type;
-            extern float customType;
-        }
-        namespace Lby {
-            extern bool enabled;
-            extern AntiAimType_LBY type;
-        }
-        namespace HeadEdge {
-            extern bool enabled;
-            extern float distance;
+            extern bool untrustedAngles;
         }
 
-        namespace Lua {
-            extern bool debugMode; // turns on/off error checking. Can be turned off after your script is working for speed.
-            extern char scriptX[512];
-            extern char scriptY[512];
-            extern char scriptY2[512];
+        namespace Standing {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
+
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
+
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
+            extern bool antiResolver;
+            extern bool dynamicAA;
+            extern bool untrustedAngles;
         }
 
-        namespace SwitchAA {
+        namespace Airborne {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
 
-            extern bool enabled;
-            extern ButtonCode_t key;
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
 
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
+            extern bool antiResolver;
+            extern bool dynamicAA;
+            extern bool untrustedAngles;
         }
 
-        extern bool allowUntrustedAngles;
-
+        namespace Misc {
+            namespace AutoDisable {
+                extern bool noEnemy;
+                extern bool knifeHeld;
+                extern bool bombHeld;
+                extern bool freezeTime;
+            }
+        }
     }
 
     namespace Resolver {

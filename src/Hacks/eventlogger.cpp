@@ -68,12 +68,28 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" )))
         );
         const char* weapon = event->GetString( XORSTR( "weapon" ));
+        int teamNum = event->GetInt(XORSTR("team"));
+
+        if(!user)
+            return;
+
+        if(!weapon)
+            return;
+
+        if(std::string(weapon).empty())
+            return;
+
+        if(!teamNum)
+            return;
 
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
 
+        if(!entityInfo.name)
+            return;
+
         std::stringstream text;
-        text << entityInfo.name << team[event->GetInt( XORSTR( "team" ))] << XORSTR( " purchased " ) << weapon;
+        text << entityInfo.name << team[teamNum] << XORSTR( " purchased " ) << weapon;
         EventLogger::AddEvent( text.str() );
     }
 
