@@ -153,6 +153,13 @@ enum class BarType : int {
     INTERWEBZ,
 };
 
+enum class ArmorBarType : int {
+    VERTICAL,
+    VERTICAL_RIGHT,
+    HORIZONTAL,
+    HORIZONTAL_UP
+};
+
 enum class BarColorType : int {
     STATIC_COLOR,
     HEALTH_BASED,
@@ -805,6 +812,11 @@ namespace Settings {
             extern bool enabled;
             extern BarType type;
             extern BarColorType colorType;
+        }
+
+        namespace Armor {
+            extern bool enabled;
+            extern ArmorBarType type;
         }
 
         namespace Tracers {

@@ -372,10 +372,16 @@ Color Util::GetHealthColor( int hp ) {
     );
 }
 
+Color Util::GetArmorColor( int armor ) {
+    // TODO: Make it based on the actual armor lol
+
+    return Color(48, 94, 168);
+}
+
 Color Util::GetHealthColor( C_BasePlayer* player ) {
-    return Color(
-            std::min( 510 * ( 100 - player->GetHealth() ) / 100, 255 ),
-            std::min( 510 * player->GetHealth() / 100, 255 ),
-            25
-    );
+    return Util::GetHealthColor(player->GetHealth());
+}
+
+Color Util::GetArmorColor( C_BasePlayer* player ) {
+    return Util::GetArmorColor(player->GetArmor());
 }

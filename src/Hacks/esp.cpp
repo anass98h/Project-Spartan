@@ -72,7 +72,9 @@ bool Settings::ESP::Boxes::enabled = false;
 BoxType Settings::ESP::Boxes::type = BoxType::FRAME_2D;
 bool Settings::ESP::Bars::enabled = false;
 BarColorType Settings::ESP::Bars::colorType = BarColorType::HEALTH_BASED;
-BarType Settings::ESP::Bars::type = BarType::HORIZONTAL;
+BarType Settings::ESP::Bars::type = BarType::VERTICAL_RIGHT;
+bool Settings::ESP::Armor::enabled = false;
+ArmorBarType Settings::ESP::Armor::type = ArmorBarType::VERTICAL;
 bool Settings::ESP::Tracers::enabled = false;
 TracerType Settings::ESP::Tracers::type = TracerType::BOTTOM;
 bool Settings::ESP::BulletTracers::enabled = false;
@@ -827,6 +829,68 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         }
     }
 
+    // draw armor bars
+    if(Settings::ESP::Armor::enabled) {
+        Color barColor = Color(122, 220, 239); // Util::GetArmorColor()
+
+        int ArmorValue = std::max( 0, std::min( player->GetArmor(), 100 ) );
+        float ArmorPerc = ArmorValue / 100.f;
+
+        int barx = x;
+        int bary = y;
+        int barw = w;
+        int barh = h;
+
+        if ( Settings::ESP::Armor::type == ArmorBarType::VERTICAL ) {
+            barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
+            barx -= barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
+            Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+            if ( ArmorPerc > 0 )
+                Draw::FilledRectangle( barx + 1, bary + ( barh * ( 1.f - ArmorPerc ) ) + 1, barx + barw - 1,
+                                       bary + barh - 1, barColor );
+
+            barsSpacing.x += barw;
+        } else if ( Settings::ESP::Armor::type == ArmorBarType::VERTICAL_RIGHT ) {
+            barx += barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
+            barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
+
+
+            Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+            if ( ArmorPerc > 0 )
+                Draw::FilledRectangle( barx + 1, bary + ( barh * ( 1.f - ArmorPerc ) ) + 1, barx + barw - 1,
+                                       bary + barh - 1, barColor );
+
+            barsSpacing.x += barw;
+        } else if ( Settings::ESP::Armor::type == ArmorBarType::HORIZONTAL ) {
+            bary += barh +
+                    boxSpacing; // player box(?px) + spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 5 px
+            barh = 4; // outline(1px) + bar(2px) + outline(1px) = 4px;
+
+
+            Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+            if ( ArmorPerc > 0 ) {
+                barw *= ArmorPerc;
+                Draw::Rectangle( barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor );
+            }
+            barsSpacing.y += barh;
+        } else if ( Settings::ESP::Armor::type == ArmorBarType::HORIZONTAL_UP ) {
+            barh = 4; // outline(1px) + bar(2px) + outline(1px) = 4px;
+            bary -= barh + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 5 px
+
+            Draw::Rectangle( barx - 1, bary - 1, barx + barw + 1, bary + barh + 1, Color( 255, 255, 255, 170 ) );
+            Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+            if ( ArmorPerc > 0 ) {
+                barw *= ArmorPerc;
+                Draw::Rectangle( barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor );
+            }
+            barsSpacing.y += barh;
+        }
+    }
+
     // draw name
     int multiplier = 1;
     int nameOffset = ( int ) ( Settings::ESP::Bars::type == BarType::HORIZONTAL_UP ? boxSpacing + barsSpacing.y : 0 );
@@ -1373,6 +1437,8 @@ void ESP::Paint() {
         DrawSpread();
     if ( Settings::NoScopeBorder::enabled && localplayer->IsScoped() )
         DrawScope();
+    // TODO: Invisible while drawing memes
+
 }
 
 void ESP::DrawModelExecute( void* thisptr, void* context, void* state, const ModelRenderInfo_t& pInfo,

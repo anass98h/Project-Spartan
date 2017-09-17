@@ -39,8 +39,10 @@ namespace Util {
     ImColor GetRainbowColor( float speed );
 
     Color GetHealthColor( int hp );
+    Color GetArmorColor( int armor );
 
     Color GetHealthColor( C_BasePlayer* player );
+    Color GetArmorColor( C_BasePlayer* player );
 
     int RandomInt( int min, int max );
 
