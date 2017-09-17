@@ -65,6 +65,13 @@ void AngleIndicator::PaintImGui() {
     text3.append( veloText );
     // Calculation of text position on screen
 
+    std::ostringstream stream4;
+    stream4 << (AntiAim::IsStanding() ? XORSTR("Standing") : (AntiAim::IsMoving() ? XORSTR("Moving") :
+                                                      (AntiAim::IsAirborne() ? XORSTR("Airborne") : XORSTR("Unknown"))));
+    std::string stateText( stream4.str() );
+    std::string text4(XORSTR("Current State: "));
+    text4.append(stateText);
+
     int width;
     int height;
     engine->GetScreenSize( width, height );
@@ -75,6 +82,8 @@ void AngleIndicator::PaintImGui() {
     int textY2 = height - ( height - ( height * 51 / 100 ) );
     int textX3 = ( width - ( width - ( width * 85 / 100 ) ) );
     int textY3 = height - ( height - ( height * 55 / 100 ) );
+    int textX4 = ( width - ( width - ( width * 85 / 100 ) ) );
+    int textY4 = height - ( height - ( height * 57 / 100 ) );
     Draw::ImText( ImVec2( textX, textY ), ImColor( 255, 255, 255 ), text.c_str(), NULL, 0.0f, NULL,
                   ImFontFlags_Shadow );
     Draw::ImText( ImVec2( textX2, textY2 ), ImColor( 255, 255, 255 ), text2.c_str(), NULL, 0.0f, NULL,
@@ -82,5 +91,6 @@ void AngleIndicator::PaintImGui() {
     if ( Settings::AngleIndicator::Veloc ) {
         Draw::ImText( ImVec2( textX3, textY3 ), ImColor( 255, 255, 255 ), text3.c_str(), NULL, 0.0f, NULL,
                       ImFontFlags_Shadow );
+        Draw::ImText( ImVec2( textX4, textY4 ), ImColor(255, 255, 255), text4.c_str(), NULL, 0.0f, NULL, ImFontFlags_Shadow);
     }
 }

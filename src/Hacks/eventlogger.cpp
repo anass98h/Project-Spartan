@@ -4,6 +4,36 @@ bool Settings::EventLogger::enabled = false;
 
 const char* team[]{ "", "", " (T)", " (CT)" };
 const char* defKit[]{ "without a defuse kit.", "with a defuse kit." };
+std::map<int, const char*> bombsites = {
+        { 369, "Bombsite A" }, // Dust 2
+        { 366, "Bombsite B" }, // Dust 2
+        { 451, "Bombsite A" }, // Mirage
+        { 452, "Bombsite B" }, // Mirage
+        { 315, "Bombsite A" }, // Cache
+        { 316, "Bombsite B" }, // Cache
+        { 334, "Bombsite A" }, // Inferno
+        { 423, "Bombsite B" }, // Inferno
+        { 260, "Bombsite A" }, // Cobblestone
+        { 95,  "Bombsite B" }, // Cobblestone
+        { 79,  "Bombsite A" }, // Overpass
+        { 507, "Bombsite B" }, // Overpass
+        { 149, "Bombsite A" }, // Nuke
+        { 441, "Bombsite B" }, // Nuke
+        { 93,  "Bombsite A" }, // Train
+        { 538, "Bombsite B" }, // Train
+        { 222, "Bombsite A" }, // Canals
+        { 221, "Bombsite B" }, // Canals
+        { 239, "Bombsite A" }, // Aztec
+        { 238, "Bombsite B" }, // Aztec
+        { 81,  "Bombsite A" }, // Vertigo
+        { 82,  "Bombsite B" }, // Vertigo
+        { 526, "Bombsite A" }, // Dust 1
+        { 525, "Bombsite B" }, // Dust 1
+};
+
+void Capitalize( std::string& s );
+
+std::string GetBombsiteByID( int id );
 
 void EventLogger::PaintImGui() {
     if ( !Settings::EventLogger::enabled || !engine->IsInGame() )
@@ -49,17 +79,27 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         IEngineClient::player_info_t attackerInfo;
         engine->GetPlayerInfo( attacker->GetIndex(), &attackerInfo );
 
+        std::string attackerName = attackerInfo.name;
+        if ( event->GetInt( XORSTR( "attacker" ) ) == 0 ) {
+            attackerName = XORSTR( "World" );
+        }
+
         std::stringstream text;
-        text << attackerInfo.name << XORSTR( " hit " ) << hurtPlayerInfo.name << XORSTR( " for " ) << damage
+        text << attackerName << XORSTR( " hit " ) << hurtPlayerInfo.name << XORSTR( " for " ) << damage
              << XORSTR( " HP" );
 
-        if ( hurt->GetAlive() &&
-             attacker->GetIndex() == entityList->GetClientEntity( engine->GetLocalPlayer() )->GetIndex() ) {
-            int health = hurt->GetHealth() - damage;
+        if ( hurt->GetAlive() ) {
+            if ( !hurt->GetDormant() ) {
+                int health = hurt->GetHealth() - damage;
 
-            if ( health > 0 ) {
-                text << XORSTR( " (" ) << health << XORSTR( " HP remaining)" );
+                if ( health > 0 ) {
+                    text << XORSTR( " (" ) << health << XORSTR( " HP remaining)" );
+                } else {
+                    text << XORSTR( " (Dead)" );
+                }
             }
+        } else {
+            text << XORSTR( " (Dead)" );
         }
 
         EventLogger::AddEvent( text.str() );
@@ -69,16 +109,13 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
-        const char* weapon = event->GetString( XORSTR( "weapon" ) );
+        std::string weapon = std::string( event->GetString( XORSTR( "weapon" ) ) );
         int teamNum = event->GetInt( XORSTR( "team" ) );
 
         if ( !user )
             return;
 
-        if ( !weapon )
-            return;
-
-        if ( std::string( weapon ).empty() )
+        if ( weapon.empty() )
             return;
 
         if ( !teamNum )
@@ -90,8 +127,28 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         if ( !entityInfo.name )
             return;
 
+        std::string prefix( XORSTR( "weapon_" ) );
+        if ( strncmp( weapon.c_str(), prefix.c_str(), prefix.size() ) == 0 ) {
+            weapon = weapon.substr( prefix.size() );
+        }
+        std::replace( weapon.begin(), weapon.end(), '_', ' ' );
+        Capitalize( weapon );
+
         std::stringstream text;
         text << entityInfo.name << team[teamNum] << XORSTR( " purchased " ) << weapon;
+        EventLogger::AddEvent( text.str() );
+    }
+
+    if ( strstr( event->GetName(), XORSTR( "player_given_c4" ) ) ) {
+        C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        IEngineClient::player_info_t entityInfo;
+        engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
+
+        std::stringstream text;
+        text << entityInfo.name << XORSTR( " is now the bomb carrier" );
         EventLogger::AddEvent( text.str() );
     }
 
@@ -105,8 +162,8 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
 
         std::stringstream text;
-        text << entityInfo.name << XORSTR( " started planting at bombsite " ) << site;
-        EventLogger::AddEvent( text.str() );
+        text << entityInfo.name << XORSTR( " started planting at " ) << GetBombsiteByID( site );
+        EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
     }
 
     if ( strstr( event->GetName(), XORSTR( "bomb_begindefuse" ) ) ) {
@@ -120,14 +177,41 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
 
         std::stringstream text;
         text << entityInfo.name << XORSTR( " started defusing the bomb " ) << defKit[defuser];
-        EventLogger::AddEvent( text.str() );
+        EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
+    }
+
+    if ( strstr( event->GetName(), XORSTR( "hostage_follows" ) ) ) {
+        C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        IEngineClient::player_info_t entityInfo;
+        engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
+
+        std::stringstream text;
+        text << entityInfo.name << XORSTR( " has picked up a hostage" );
+        EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
+    }
+
+
+    if ( strstr( event->GetName(), XORSTR( "hostage_rescued" ) ) ) {
+        C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        IEngineClient::player_info_t entityInfo;
+        engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
+
+        std::stringstream text;
+        text << entityInfo.name << XORSTR( " has rescued a hostage" );
+        EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
     }
 
     if ( strstr( event->GetName(), XORSTR( "bomb_planted" ) ) ) {
         int site = event->GetInt( XORSTR( "site" ) );
 
-        std::stringstream text( XORSTR( "The bomb has been planted at bombsite " ) );
-        text << site;
+        std::stringstream text( XORSTR( "" ) );
+        text << XORSTR( "The bomb has been planted at " ) << GetBombsiteByID( site );
         EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
     }
 
@@ -143,7 +227,7 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         if ( !event->GetBool( XORSTR( "isplanted" ) ) && bomb ) {
             std::stringstream text( XORSTR( "Bomb carrier " ) );
             text << entityInfo.name << " has entered a bombsite";
-            EventLogger::AddEvent( text.str(), ImColor( 26, 104, 173 ) );
+            EventLogger::AddEvent( text.str() );
         }
     }
 
@@ -157,5 +241,30 @@ void EventLogger::AddEvent( std::string text, ImColor color ) {
 
     if ( events.size() > 12 ) {
         events.pop_back();
+    }
+}
+
+std::string GetBombsiteByID( int id ) {
+    if ( bombsites.find( id ) == bombsites.end() ) {
+        cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "(EventLogger::GetBombsiteByID): Warning: "
+                                                                              "Could not find localized string for ID \"%i\".\n" ),
+                                  id );
+
+        return XORSTR( "bombsite" );
+    }
+
+    return bombsites.at( id );
+}
+
+void Capitalize( std::string& s ) {
+    bool cap = true;
+
+    for ( unsigned int i = 0; i <= s.length(); i++ ) {
+        if ( isalpha( s[i] ) && cap ) {
+            s[i] = toupper( s[i] );
+            cap = false;
+        } else if ( isspace( s[i] ) ) {
+            cap = true;
+        }
     }
 }
