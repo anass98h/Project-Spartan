@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-    NOAA,
+            NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -220,19 +220,19 @@ struct AimbotWeapon_t {
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
     bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
 
-    AimbotWeapon_t(bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
-                   bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
-                   bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
-                   float smoothSaltMultiplier,
-                   bool errorMarginEnabled, float errorMarginValue,
-                   bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
-                   bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
-                   bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-                   bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
-                   bool spreadLimitEnabled, float spreadLimit,
-                   bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
-                   bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                   bool autoCockRevolver, bool velocityCheck, bool backtrack) {
+    AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
+                    bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
+                    bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
+                    float smoothSaltMultiplier,
+                    bool errorMarginEnabled, float errorMarginValue,
+                    bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
+                    bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
+                    bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
+                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
+                    bool spreadLimitEnabled, float spreadLimit,
+                    bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
+                    bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -282,8 +282,8 @@ struct AimbotWeapon_t {
         this->velocityCheck = velocityCheck;
 
 
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++)
-            this->desiredBones[bone] = (desiredBones != nullptr) ? desiredBones[bone] : false;
+        for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
+            this->desiredBones[bone] = ( desiredBones != nullptr ) ? desiredBones[bone] : false;
 
         this->autoAimRealDistance = autoAimRealDistance;
     }
@@ -291,9 +291,9 @@ struct AimbotWeapon_t {
     AimbotWeapon_t() {
     };
 
-    bool operator==(const AimbotWeapon_t &another) const {
-        for (int bone = (int) DesiredBones::BONE_PELVIS; bone <= (int) DesiredBones::BONE_RIGHT_SOLE; bone++) {
-            if (this->desiredBones[bone] != another.desiredBones[bone])
+    bool operator==( const AimbotWeapon_t& another ) const {
+        for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ ) {
+            if ( this->desiredBones[bone] != another.desiredBones[bone] )
                 return false;
         }
 
@@ -357,14 +357,14 @@ public:
     ColorVar() {
     }
 
-    ColorVar(ImColor color) {
+    ColorVar( ImColor color ) {
         this->color = color;
         this->rainbow = false;
         this->rainbowSpeed = 0.5f;
     }
 
     ImColor Color() {
-        ImColor result = this->rainbow ? Util::GetRainbowColor(this->rainbowSpeed) : this->color;
+        ImColor result = this->rainbow ? Util::GetRainbowColor( this->rainbowSpeed ) : this->color;
         result.Value.w = this->color.Value.w;
         return result;
     }
@@ -374,16 +374,16 @@ class HealthColorVar : public ColorVar {
 public:
     bool hp;
 
-    HealthColorVar(ImColor color) {
+    HealthColorVar( ImColor color ) {
         this->color = color;
         this->rainbow = false;
         this->rainbowSpeed = 0.5f;
         this->hp = false;
     }
 
-    ImColor Color(C_BasePlayer *player) {
-        ImColor result = this->rainbow ? Util::GetRainbowColor(this->rainbowSpeed) : (this->hp ? Color::ToImColor(
-                Util::GetHealthColor(player)) : this->color);
+    ImColor Color( C_BasePlayer* player ) {
+        ImColor result = this->rainbow ? Util::GetRainbowColor( this->rainbowSpeed ) : ( this->hp ? Color::ToImColor(
+                Util::GetHealthColor( player ) ) : this->color );
         result.Value.w = this->color.Value.w;
         return result;
     }
@@ -405,7 +405,7 @@ namespace Settings {
             extern float fontsize;
 
             namespace ESP {
-                extern char *family;
+                extern char* family;
                 extern int size;
                 extern int flags;
             }
@@ -569,55 +569,135 @@ namespace Settings {
     }
 
     namespace AntiAim {
-        namespace AutoDisable {
-            extern bool noEnemy;
-            extern bool knifeHeld;
-            extern bool bombHeld;
-        }
 
-        namespace Yaw {
-            extern bool enabled;
-            extern AntiAimType_Y type;
-            extern float customType;
-            extern AntiAimType_Y typeFake;
-            extern float customTypeFake;
+        namespace Moving {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
+
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
+
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
             extern bool antiResolver;
             extern bool dynamicAA;
-        }
-        namespace Roll {
-            extern bool enabled;
-            extern AntiAimType_Z type;
-        }
-        namespace Pitch {
-            extern bool enabled;
-            extern AntiAimType_X type;
-            extern float customType;
-        }
-        namespace Lby {
-            extern bool enabled;
-            extern AntiAimType_LBY type;
-        }
-        namespace HeadEdge {
-            extern bool enabled;
-            extern float distance;
+            extern bool untrustedAngles;
         }
 
-        namespace Lua {
-            extern bool debugMode; // turns on/off error checking. Can be turned off after your script is working for speed.
-            extern char scriptX[512];
-            extern char scriptY[512];
-            extern char scriptY2[512];
+        namespace Standing {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
+
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
+
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
+            extern bool antiResolver;
+            extern bool dynamicAA;
+            extern bool untrustedAngles;
         }
 
-        namespace SwitchAA {
+        namespace Airborne {
+            namespace Yaw {
+                extern bool enabled;
+                extern AntiAimType_Y type;
+                extern AntiAimType_Y typeFake;
+                extern float typeAdd;
+                extern float typeFakeAdd;
+            }
 
-            extern bool enabled;
-            extern ButtonCode_t key;
+            namespace Pitch {
+                extern bool enabled;
+                extern AntiAimType_X type;
+                extern float custom;
+            }
 
+            namespace Roll {
+                extern bool enabled;
+                extern AntiAimType_Z type;
+            }
+
+            namespace SwitchAA {
+                extern bool enabled;
+                extern ButtonCode_t key;
+            }
+
+            namespace LBY {
+                extern bool enabled;
+                extern AntiAimType_LBY type;
+            }
+
+            namespace HeadEdge {
+                extern bool enabled;
+                extern float distance;
+            }
+
+            extern bool antiResolver;
+            extern bool dynamicAA;
+            extern bool untrustedAngles;
         }
 
-        extern bool allowUntrustedAngles;
-
+        namespace Misc {
+            namespace AutoDisable {
+                extern bool noEnemy;
+                extern bool knifeHeld;
+                extern bool bombHeld;
+                extern bool freezeTime;
+            }
+        }
     }
 
     namespace Resolver {
@@ -1029,6 +1109,7 @@ namespace Settings {
 
     namespace ThirdPerson {
         extern bool enabled;
+        extern bool realAngles;
         extern float distance;
         extern ButtonCode_t key;
     }
@@ -1077,15 +1158,15 @@ namespace Settings {
     }
 
 
-    void LoadDefaultsOrSave(std::string path);
+    void LoadDefaultsOrSave( std::string path );
 
-    void LoadConfig(std::string path);
+    void LoadConfig( std::string path );
 
     void LoadSettings();
 
-    void DeleteConfig(std::string path);
+    void DeleteConfig( std::string path );
 
-    void SaveGrenadeInfo(std::string path);
+    void SaveGrenadeInfo( std::string path );
 
-    void LoadGrenadeInfo(std::string path);
+    void LoadGrenadeInfo( std::string path );
 }

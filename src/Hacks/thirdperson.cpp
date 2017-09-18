@@ -1,6 +1,7 @@
 #include "thirdperson.h"
 
 bool Settings::ThirdPerson::enabled = false;
+bool Settings::ThirdPerson::realAngles = false;
 float Settings::ThirdPerson::distance = 30.f;
 ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_DELETE;
 long millisSinceLastPress = 0;
@@ -45,6 +46,14 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
     input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && localplayer->GetAlive();
     input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.f;
 
-    if ( Settings::ThirdPerson::enabled )
-        *localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
+    QAngle realAngles = QAngle(localplayer->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
+
+    if ( Settings::ThirdPerson::enabled ) {
+        if ( Settings::ThirdPerson::realAngles && ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
+                (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
+                (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) )
+            *localplayer->GetVAngles() = realAngles;
+        else
+            *localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
+    }
 }
