@@ -14,15 +14,16 @@ void Main::RenderWindow() {
                        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders ) ) {
 
         const char* tabs[] = {
-                ICON_7 "\nAim",
+                "  \uFFE5 \nAimbot",
 
-                "  " ICON_9 " \nVisuals",
+                "  \uFFE2 \n   Trigger",
 
-                "    " ICON_5 "\nHvH",
+                "  \uFFE7 \nVisuals",
+                ICON_8
+                        "\nHvH",
+                ICON_12
+                        "\nMisc",
 
-                ICON_12 "\nMisc",
-
-                "  " ICON_1 " \nSettings"
         };
 
 
@@ -43,6 +44,10 @@ void Main::RenderWindow() {
                 if ( ImGui::Button( tabs[i], ImVec2( ImGui::GetWindowSize().x - 9,
                                                      ImGui::GetWindowSize().y / IM_ARRAYSIZE( tabs ) - 5 ) ) )
                     page = i;
+
+
+                i < IM_ARRAYSIZE( tabs ) - 1;
+
             }
             ImGui::EndChild();
         }
@@ -50,40 +55,33 @@ void Main::RenderWindow() {
         ImGui::SameLine();
         ImGui::BeginChild( "Main2", ImVec2( 0, 0 ), true, ImGuiWindowFlags_NoResize );
         {
+
+
             switch ( page ) {
                 case 0:
-                    AimTab::RenderTab();
+                    Aimbot::RenderTab();
                     break;
                 case 1:
-                    Visuals::RenderTab();
+                    Triggerbot::RenderTab();
                     break;
                 case 2:
-                    HvH::RenderTab();
+                    Visuals::RenderTab();
                     break;
                 case 3:
-                    Misc::RenderTab();
+
+                    HvH::RenderTab();
+
+
                     break;
                 case 4:
-                    SettingsTab::RenderTab();
+                    Misc::RenderTab();
                     break;
+
+
             }
+
+
             ImGui::EndChild();
-        }
-
-        static int width = 0;
-        static int height = 0;
-        if ( width == 0 ) {
-            width = ImGui::GetWindowWidth();
-            height = ImGui::GetWindowHeight();
-        }
-
-        if(SettingsTab::iWantToSeeItAlready) {
-            Draw::ImImage(XORSTR("/tmp/whileyouwait.png"),
-                          ImVec2((width - 300) - 25, (height - 300) - 25),
-                          ImVec2((width + 300) - 25, (height + 100) - 25));
-            // Credit to apostr0phe, he gave me the image i didn't find it myself
-            // I'm not a weeb you guys know -marc
-            // proof: https://gyazo.com/fa4fa31b81e3524ba61e19d13ba963ea
         }
 
         ImGui::End();

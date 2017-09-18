@@ -20,10 +20,6 @@ static const unsigned char oil_png[15710] = {
 #include "../assets/img/oil.txt"
 };
 
-static const unsigned char whileyouwait_png[236523] = {
-#include "../assets/img/whileyouwait.txt"
-};
-
 GLuint Image::LoadImage( const char* const path ) {
     SDL_Surface* surface = IMG_Load( path );
     if ( !surface ) {
@@ -117,12 +113,4 @@ void Image::InitImages() {
     }
     fwrite( oil_png, sizeof( char ), 15710, oil );
     fclose( oil );
-
-    FILE* whileyouwait = fopen(XORSTR("/tmp/whileyouwait.png"), "wb");
-    if(whileyouwait == NULL) {
-        cvar->ConsoleDPrintf( XORSTR( "Error opening /tmp/whileyouwait.png\n" ) );
-        return;
-    }
-    fwrite( whileyouwait_png, sizeof( char ), 543917, whileyouwait );
-    fclose( whileyouwait );
 }
