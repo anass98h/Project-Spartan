@@ -80,8 +80,6 @@ enum class AntiAimType_Y : int {
     FAKESIDEWAYS,
     BACKJITTER,
     FJITTER,
-    RASP,
-    RASP2,
     LBYJITTER,
     LBYSPIN,
     LOWERBODY,
