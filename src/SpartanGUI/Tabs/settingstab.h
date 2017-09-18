@@ -2,9 +2,10 @@
 
 #include "../Spartangui.h"
 
-namespace Aimbot {
+namespace SettingsTab {
+
+    extern bool iWantToSeeItAlready;
+
     void RenderTab();
 
-    void MainRenderTab();
-// }
 }

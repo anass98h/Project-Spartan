@@ -51,5 +51,5 @@ add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-add_library(Spartan SHARED ${SOURCE_FILES})
+add_library(Spartan SHARED ${SOURCE_FILES} src/SpartanGUI/Tabs/aimtab.cpp src/SpartanGUI/Tabs/aimtab.h src/SpartanGUI/Tabs/AimTabs/aimbotaimtab.cpp src/SpartanGUI/Tabs/AimTabs/aimbotaimtab.h src/SpartanGUI/Tabs/AimTabs/triggerbotaimtab.cpp src/SpartanGUI/Tabs/AimTabs/triggerbotaimtab.h src/SpartanGUI/Tabs/settingstab.cpp src/SpartanGUI/Tabs/settingstab.h)
 target_link_libraries(Spartan GL dl xdo ${LUA_LIBRARY} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
