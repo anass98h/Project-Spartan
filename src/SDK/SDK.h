@@ -49,3 +49,4 @@
 #include "IMDLCache.h"
 #include "CTickRecord.h"
 #include "INetChannel.h"
+#include "IPlayeranimstate.h"
