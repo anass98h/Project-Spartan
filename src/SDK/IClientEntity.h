@@ -159,6 +159,41 @@ public:
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
+    float GetPoseParameter() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flPoseParameter);
+    }
+
+    float GetPlaybackRate() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flPlaybackRate);
+    }
+
+    float GetModelScale() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flModelScale);
+    }
+
+    Vector GetVecForce() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_vecForce);
+    }
+
+    int GetForceBone() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nForceBone);
+    }
+
+    int GetSequence() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nSequence);
+    }
+
+    bool GetClientSideAnimation() {
+        return *( bool* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_bClientSideAnimation);
+    }
+    
     TeamID GetTeam() {
         return *( TeamID * )( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_iTeamNum);
