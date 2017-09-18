@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath 'io.franzbecker:gradle-lombok:1.6'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'io.franzbecker.gradle-lombok'
+
+println """
+***************************************
+ You are building Aero!
+ 
+ Please follow these simple rules:
+ 1) Don't run this server locally if you don't know how
+ 2) Don't distribute this licensing server publicly
+ 3) Don't distribute the SSL certificates
+ 4) Don't remove copyrights and watermarks
+ 
+***************************************
+"""
+
+group 'club.wontfix.aero'
+version '1.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+defaultTasks 'dependencies', 'shadowJar'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name 'oss-sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        name 'jitpack-central'
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    // Provided at runtime
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+
+    // Shaded using ShadowJar
+    compile group: 'ro.pippo', name: 'pippo', version: '1.5.0'
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.1'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'com.moandjiezana.toml', name: 'toml4j', version: '0.7.2'
+
+    // Test
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+shadowJar {
+    relocate 'com.google', 'club.wontfix.aero.libs.google'
+    relocate 'org.slf4j', 'club.wontfix.aero.libs.slf4j'
+    relocate 'com.moandjiezana.toml', 'club.wontfix.aero.libs.toml4j'
+    relocate 'com.zaxxer.hikari', 'club.wontfix.aero.libs.hikaricp'
+
+    dependencies {
+        include(dependency('::'))
+    }
+}
