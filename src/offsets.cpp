@@ -196,6 +196,21 @@ void Offsets::GetOffsets() {
     offsets.DT_CSPlayer.m_flLowerBodyYawTarget = NetVarManager::GetOffset( tables, XORSTR( "DT_CSPlayer" ),
                                                                            XORSTR( "m_flLowerBodyYawTarget" ) );
 
+    offsets.DT_BaseAnimating.m_nSequence = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nSequence"));
+    offsets.DT_BaseAnimating.m_nForceBone = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nForceBone"));
+    offsets.DT_BaseAnimating.m_vecForce = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("vecForce"));
+    offsets.DT_BaseAnimating.m_flModelScale = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_flModelScale"));
+    offsets.DT_BaseAnimating.m_flPoseParameter = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_flPoseParameter"));
+    offsets.DT_BaseAnimating.m_bClientSideAnimation = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_bClientSideAnimation"));
+    offsets.DT_BaseAnimating.m_flPlaybackRate = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_flPlaybackRate"));
+
     offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex = NetVarManager::GetOffset( tables,
                                                                                        XORSTR( "DT_BaseAttributableItem" ),
                                                                                        XORSTR( "m_iItemDefinitionIndex" ) );

@@ -109,7 +109,15 @@ struct COffsets {
         std::ptrdiff_t m_flFlashMaxAlpha;
         std::ptrdiff_t m_flLowerBodyYawTarget;
     } DT_CSPlayer;
-
+    struct {
+        std::ptrdiff_t m_nSequence;
+        std::ptrdiff_t m_nForceBone;
+        std::ptrdiff_t m_vecForce;
+        std::ptrdiff_t m_flModelScale;
+        std::ptrdiff_t m_flPoseParameter;
+        std::ptrdiff_t m_bClientSideAnimation;
+        std::ptrdiff_t m_flPlaybackRate;
+    } DT_BaseAnimating;
     struct {
         std::ptrdiff_t m_iItemDefinitionIndex;
         std::ptrdiff_t m_iItemIDHigh;
