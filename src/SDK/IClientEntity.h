@@ -159,24 +159,9 @@ public:
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
-    float GetPoseParameter() {
-        return *( float* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_flPoseParameter);
-    }
-
-    float GetPlaybackRate() {
-        return *( float* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_flPlaybackRate);
-    }
-
-    float GetModelScale() {
-        return *( float* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_flModelScale);
-    }
-
-    Vector GetVecForce() {
-        return *( Vector* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_vecForce);
+    int GetSequence() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nSequence);
     }
 
     int GetForceBone() {
@@ -184,14 +169,69 @@ public:
         this + offsets.DT_BaseAnimating.m_nForceBone);
     }
 
-    int GetSequence() {
+    Vector GetVecForce() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_vecForce);
+    }
+
+    int GetSkin() {
         return *( int* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_nSequence);
+        this + offsets.DT_BaseAnimating.m_nSkin);
+    }
+
+    int GetBody() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nBody);
+    }
+
+    int GetHitboxSet() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nHitboxSet);
+    }
+
+    float GetEncodedController() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flEncodedController);
+    }
+
+    float GetModelScale() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flModelScale);
     }
 
     bool GetClientSideAnimation() {
         return *( bool* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_bClientSideAnimation);
+    }
+
+    float GetPlaybackRate() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flPlaybackRate);
+    }
+
+    bool GetClientSideFrameReset() {
+        return *( bool* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_bClientSideFrameReset);
+    }
+
+    bool GetClientSideRagdoll() {
+        return *( bool* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_bClientSideRagdoll);
+    }
+
+    float GetCycle() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_flCycle);
+    }
+
+    float GetFrozen() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_flFrozen);
+    }
+
+    bool GetSuppressAnimSounds() {
+        return *( bool* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_bSuppressAnimSounds);
     }
     
     TeamID GetTeam() {
