@@ -109,7 +109,31 @@ struct COffsets {
         std::ptrdiff_t m_flFlashMaxAlpha;
         std::ptrdiff_t m_flLowerBodyYawTarget;
     } DT_CSPlayer;
-
+    struct {
+        std::ptrdiff_t m_nSequence;
+        std::ptrdiff_t m_nForceBone;
+        std::ptrdiff_t m_vecForce;
+        std::ptrdiff_t m_nSkin;
+        std::ptrdiff_t m_nBody;
+        std::ptrdiff_t m_nHitboxSet;
+        std::ptrdiff_t m_flEncodedController;
+        std::ptrdiff_t m_flModelScale;
+        std::ptrdiff_t m_flPoseParameter;
+        std::ptrdiff_t m_bClientSideAnimation;
+        std::ptrdiff_t m_flPlaybackRate;
+        std::ptrdiff_t m_bClientSideFrameReset;
+        std::ptrdiff_t m_bClientSideRagdoll;
+        std::ptrdiff_t m_nNewSequenceParity;
+        std::ptrdiff_t m_nResetEventsParity;
+        std::ptrdiff_t m_nMuzzleFlashParity;
+        std::ptrdiff_t m_hLightingOrigin;
+    } DT_BaseAnimating;
+    struct {
+        std::ptrdiff_t m_flCycle;
+        std::ptrdiff_t m_flFrozen;
+        std::ptrdiff_t m_ScaleType;
+        std::ptrdiff_t m_bSuppressAnimSounds;
+    } DT_ServerAnimationData;
     struct {
         std::ptrdiff_t m_iItemDefinitionIndex;
         std::ptrdiff_t m_iItemIDHigh;

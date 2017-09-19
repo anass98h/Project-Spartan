@@ -18,7 +18,7 @@ bool Settings::AntiAim::Standing::SwitchAA::enabled = false;
 ButtonCode_t Settings::AntiAim::Standing::SwitchAA::key = ButtonCode_t::KEY_COMMA;
 
 bool Settings::AntiAim::Standing::LBY::enabled = false;
-AntiAimType_LBY Settings::AntiAim::Standing::LBY::type = AntiAimType_LBY::NONE;
+AntiAimType_LBY Settings::AntiAim::Standing::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Standing::HeadEdge::enabled = false;
 float Settings::AntiAim::Standing::HeadEdge::distance = 25.0f;
@@ -45,7 +45,7 @@ bool Settings::AntiAim::Moving::SwitchAA::enabled = false;
 ButtonCode_t Settings::AntiAim::Moving::SwitchAA::key = ButtonCode_t::KEY_COMMA;
 
 bool Settings::AntiAim::Moving::LBY::enabled = false;
-AntiAimType_LBY Settings::AntiAim::Moving::LBY::type = AntiAimType_LBY::NONE;
+AntiAimType_LBY Settings::AntiAim::Moving::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Moving::HeadEdge::enabled = false;
 float Settings::AntiAim::Moving::HeadEdge::distance = 25.0f;
@@ -72,7 +72,7 @@ bool Settings::AntiAim::Airborne::SwitchAA::enabled = false;
 ButtonCode_t Settings::AntiAim::Airborne::SwitchAA::key = ButtonCode_t::KEY_COMMA;
 
 bool Settings::AntiAim::Airborne::LBY::enabled = false;
-AntiAimType_LBY Settings::AntiAim::Airborne::LBY::type = AntiAimType_LBY::NONE;
+AntiAimType_LBY Settings::AntiAim::Airborne::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Airborne::HeadEdge::enabled = false;
 float Settings::AntiAim::Airborne::HeadEdge::distance = 25.0f;

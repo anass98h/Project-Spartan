@@ -14,16 +14,11 @@ void Main::RenderWindow() {
                        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders ) ) {
 
         const char* tabs[] = {
-                "  \uFFE5 \nAimbot",
+                "  " ICON_7 " \n  Aim",
 
-                "  \uFFE2 \n   Trigger",
-
-                "  \uFFE7 \nVisuals",
-                ICON_8
-                        "\nHvH",
-                ICON_12
-                        "\nMisc",
-
+                "  " ICON_9 " \nVisuals",
+                ICON_8 "\nHvH",
+                ICON_12 "\nMisc"
         };
 
 
@@ -59,25 +54,17 @@ void Main::RenderWindow() {
 
             switch ( page ) {
                 case 0:
-                    Aimbot::RenderTab();
+                    AimTab::RenderTab();
                     break;
                 case 1:
-                    Triggerbot::RenderTab();
-                    break;
-                case 2:
                     Visuals::RenderTab();
                     break;
-                case 3:
-
+                case 2:
                     HvH::RenderTab();
-
-
                     break;
-                case 4:
+                case 3:
                     Misc::RenderTab();
                     break;
-
-
             }
 
 
