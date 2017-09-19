@@ -209,6 +209,11 @@ public:
         this + offsets.DT_BaseAnimating.m_flPlaybackRate);
     }
 
+    float GetPoseParameter() {
+        return *( float* ) ( ( uintptr_t ) 
+        this + offsets.DT_BaseAnimating.m_flPoseParameter);
+    }
+
     bool GetClientSideFrameReset() {
         return *( bool* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_bClientSideFrameReset);
