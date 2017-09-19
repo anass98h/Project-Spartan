@@ -92,7 +92,7 @@ enum class AntiAimType_Y : int {
     MYRRIB,
     richieap,
     RASP,
-    RASP2,
+    FEETWIGGLE,
     LEGITTROLLING,
     LEGITTROLLING2,
     CUSTOM,

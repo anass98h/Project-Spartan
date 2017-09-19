@@ -807,27 +807,25 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                         }
                     }
                 break;
-                case AntiAimType_Y::RASP2:
+                case AntiAimType_Y::FEETWIGGLE:
 
                     bool MarcisAWeeb;
                 float oldyaw = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
-                cvar->ConsoleColorPrintf(ColorRGBA(255,0,0,255), "%f\n", oldyaw);
+
                 if (MarcisAWeeb) {
                     angle.y -= 180.0f;
 
                     *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget() += 45.0f;
-                    cvar->ConsoleColorPrintf(ColorRGBA(255,0,0,255), "%f\n",  *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget());
+
                     MarcisAWeeb = false;
                 } else {
                     angle.y -= 180.0f;
 
                     *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= 45.0f;
-                    cvar->ConsoleColorPrintf(ColorRGBA(255,0,0,255), "%f\n",  *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget());
+
 
 
                     MarcisAWeeb = true;
