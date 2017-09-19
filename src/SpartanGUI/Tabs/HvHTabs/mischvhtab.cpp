@@ -1,7 +1,7 @@
 #include "mischvhtab.h"
 
 const char* hugTypes[] = {
-        "OFF", "PasteHub", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old"
+        "OFF", "rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "pastehub"
 };
 
 void MiscHvHTab::RenderTab() {
