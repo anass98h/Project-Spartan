@@ -2,7 +2,7 @@
 
 const char* hugTypes[] = {
 
-        "OFF", "rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "pastehub", "Pose Param Resolver"
+        "OFF", "pastehub", "Rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "Pose Param Resolver"
 
 };
 
