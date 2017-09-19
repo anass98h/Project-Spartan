@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-            NOAA,
+    NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -91,6 +91,8 @@ enum class AntiAimType_Y : int {
     TANK3,
     MYRRIB,
     richieap,
+    RASP,
+    RASP2,
     LEGITTROLLING,
     LEGITTROLLING2,
     CUSTOM,
@@ -195,6 +197,7 @@ enum class SpammerType : int {
 enum class ResolverHugtype : int {
     OFF,
     PASTEHUB,
+    RASP,
     BRUTEHIV,
     BRUTE1,
     AUTISM,
