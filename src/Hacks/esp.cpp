@@ -535,13 +535,11 @@ static void DrawAutoWall( C_BasePlayer* player ) {
     Vector bone3D = player->GetBonePosition((int)Bone::BONE_HEAD);
     if( debugOverlay->ScreenPosition(Vector(bone3D.x, bone3D.y, bone3D.z), bone2D))
             return;
-
     Autowall::FireBulletData data;
     float damage = Autowall::GetDamage(bone3D, !Settings::Aimbot::friendly, data);
     std::stringstream stream;
     stream << std::fixed << std::setprecision(1) << damage;
     std::string output = stream.str();
-
     Draw::Text(Vector2D(bone2D.x, bone2D.y), output.c_str(), autowallFont, Color(255, 0, 255, 255)); // hot pink
      */
 
@@ -650,29 +648,23 @@ static void DrawHeaddot( C_BasePlayer* player ) {
      */
     /*
     matrix3x4_t matrix[128];
-
     if( !player->SetupBones(matrix, 128, 0x100, 0.f) )
             return;
     model_t *pModel = player->GetModel();
     if( !pModel )
             return;
-
     studiohdr_t *hdr = modelInfo->GetStudioModel(pModel);
     if( !hdr )
             return;
-
     mstudiobbox_t *bbox = hdr->pHitbox((int)Hitbox::HITBOX_HEAD, 0); // bounding box
     if( !bbox )
             return;
-
     Vector mins, maxs;
     Math::VectorTransform(bbox->bbmin, matrix[bbox->bone], mins);
     Math::VectorTransform(bbox->bbmax, matrix[bbox->bone], maxs);
-
     Vector min2D, max2D;
     debugOverlay->ScreenPosition(mins, min2D);
     debugOverlay->ScreenPosition(maxs, max2D);
-
     Draw::Text(Vector2D(min2D.x, min2D.y), "Min", esp_font, Color(255, 0, 255, 255));
     Draw::Text(Vector2D(max2D.x, max2D.y), "Max", esp_font, Color(255, 0, 255, 255));
      */
