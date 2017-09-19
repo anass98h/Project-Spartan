@@ -2,6 +2,8 @@
 
 #include "../Spartangui.h"
 
-namespace Triggerbot {
+namespace AimTab {
+
     void RenderTab();
+
 }
