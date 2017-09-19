@@ -196,12 +196,29 @@ void Offsets::GetOffsets() {
     offsets.DT_CSPlayer.m_flLowerBodyYawTarget = NetVarManager::GetOffset( tables, XORSTR( "DT_CSPlayer" ),
                                                                            XORSTR( "m_flLowerBodyYawTarget" ) );
 
+    offsets.DT_ServerAnimationData.m_flCycle = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_flCycle"));
+    offsets.DT_ServerAnimationData.m_flFrozen = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                     XORSTR("m_flFrozen"));
+    offsets.DT_ServerAnimationData.m_ScaleType = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                   XORSTR("m_ScaleType"));
+    offsets.DT_ServerAnimationData.m_bSuppressAnimSounds = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                XORSTR("m_bSuppressAnimSounds"));
+
     offsets.DT_BaseAnimating.m_nSequence = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_nSequence"));
     offsets.DT_BaseAnimating.m_nForceBone = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_nForceBone"));
     offsets.DT_BaseAnimating.m_vecForce = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
-                                                                    XORSTR("vecForce"));
+                                                                    XORSTR("m_vecForce"));
+    offsets.DT_BaseAnimating.m_nSkin = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nSkin"));
+    offsets.DT_BaseAnimating.m_nBody = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nBody"));
+    offsets.DT_BaseAnimating.m_nHitboxSet = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nHitboxSet"));
+    offsets.DT_BaseAnimating.m_flEncodedController = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_flEncodedController"));
     offsets.DT_BaseAnimating.m_flModelScale = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_flModelScale"));
     offsets.DT_BaseAnimating.m_flPoseParameter = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
@@ -209,7 +226,19 @@ void Offsets::GetOffsets() {
     offsets.DT_BaseAnimating.m_bClientSideAnimation = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_bClientSideAnimation"));
     offsets.DT_BaseAnimating.m_flPlaybackRate = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
-                                                                    XORSTR("m_flPlaybackRate"));
+                                                                               XORSTR("m_flPlaybackRate"));
+    offsets.DT_BaseAnimating.m_bClientSideFrameReset = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_bClientSideFrameReset"));
+    offsets.DT_BaseAnimating.m_bClientSideRagdoll = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_bClientSideRagdoll"));
+    offsets.DT_BaseAnimating.m_nNewSequenceParity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nNewSequenceParity"));
+    offsets.DT_BaseAnimating.m_nResetEventsParity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nResetEventsParity"));
+    offsets.DT_BaseAnimating.m_nMuzzleFlashParity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                    XORSTR("m_nMuzzleFlashParity"));
+    offsets.DT_BaseAnimating.m_hLightingOrigin = NetVarManager::GetOffset(tables, XORSTR("m_hLightingOrigin"),
+                                                                    XORSTR("m_hLightingOrigin"));
 
     offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex = NetVarManager::GetOffset( tables,
                                                                                        XORSTR( "DT_BaseAttributableItem" ),
