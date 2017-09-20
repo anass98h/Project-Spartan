@@ -72,7 +72,9 @@ bool Settings::ESP::Boxes::enabled = false;
 BoxType Settings::ESP::Boxes::type = BoxType::FRAME_2D;
 bool Settings::ESP::Bars::enabled = false;
 BarColorType Settings::ESP::Bars::colorType = BarColorType::HEALTH_BASED;
-BarType Settings::ESP::Bars::type = BarType::HORIZONTAL;
+BarType Settings::ESP::Bars::type = BarType::VERTICAL_RIGHT;
+bool Settings::ESP::ArmorBars::enabled = false;
+ArmorBarType Settings::ESP::ArmorBars::type = ArmorBarType::VERTICAL;
 bool Settings::ESP::Tracers::enabled = false;
 TracerType Settings::ESP::Tracers::type = TracerType::BOTTOM;
 bool Settings::ESP::BulletTracers::enabled = false;
@@ -824,6 +826,72 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
             Draw::TexturedPolygon( 4, Verts2, Color( 255, 255, 255, 40 ) );
 
             barsSpacing.y += barh;
+        }
+    }
+
+    // draw armor bars
+    if(Settings::ESP::ArmorBars::enabled) {
+        Color barColor = Color(122, 220, 239); // TODO: Make customizeable
+
+        // clamp it to 100
+        int ArmorValue = std::max( 0, std::min( player->GetArmor(), 100 ) );
+        float ArmorPerc = ArmorValue / 100.f;
+
+        int barx = x;
+        int bary = y;
+        int barw = w;
+        int barh = h;
+
+        switch(Settings::ESP::ArmorBars::type) {
+            case ArmorBarType::VERTICAL:
+                barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
+                barx -= barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
+                Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+                if ( ArmorPerc > 0 )
+                    Draw::FilledRectangle( barx + 1, bary + ( barh * ( 1.f - ArmorPerc ) ) + 1, barx + barw - 1,
+                                           bary + barh - 1, barColor );
+                break;
+            case ArmorBarType::VERTICAL_RIGHT:
+                barx += barw + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 8 px
+                barw = 4; // outline(1px) + bar(2px) + outline(1px) = 6px;
+
+
+                Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+                if ( ArmorPerc > 0 )
+                    Draw::FilledRectangle( barx + 1, bary + ( barh * ( 1.f - ArmorPerc ) ) + 1, barx + barw - 1,
+                                           bary + barh - 1, barColor );
+
+                barsSpacing.x += barw;
+                break;
+            case ArmorBarType::HORIZONTAL:
+                bary += barh +
+                        boxSpacing; // player box(?px) + spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 5 px
+                barh = 4; // outline(1px) + bar(2px) + outline(1px) = 4px;
+
+
+                Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+                if ( ArmorPerc > 0 ) {
+                    barw *= ArmorPerc;
+                    Draw::Rectangle( barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor );
+                }
+                barsSpacing.y += barh;
+                break;
+            case ArmorBarType::HORIZONTAL_UP:
+                barh = 4; // outline(1px) + bar(2px) + outline(1px) = 4px;
+                bary -= barh + boxSpacing; // spacing(1px) + outline(1px) + bar(2px) + outline (1px) = 5 px
+
+                Draw::Rectangle( barx - 1, bary - 1, barx + barw + 1, bary + barh + 1, Color( 255, 255, 255, 170 ) );
+                Draw::FilledRectangle( barx, bary, barx + barw, bary + barh, Color( 10, 10, 10, 255 ) );
+
+                if ( ArmorPerc > 0 ) {
+                    barw *= ArmorPerc;
+                    Draw::Rectangle( barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor );
+                }
+                barsSpacing.y += barh;
+                break;
         }
     }
 

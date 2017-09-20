@@ -373,9 +373,5 @@ Color Util::GetHealthColor( int hp ) {
 }
 
 Color Util::GetHealthColor( C_BasePlayer* player ) {
-    return Color(
-            std::min( 510 * ( 100 - player->GetHealth() ) / 100, 255 ),
-            std::min( 510 * player->GetHealth() / 100, 255 ),
-            25
-    );
+    return Util::GetHealthColor(player->GetHealth());
 }
