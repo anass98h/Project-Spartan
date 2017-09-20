@@ -831,8 +831,6 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
-
-
             }
     }
 

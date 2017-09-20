@@ -92,7 +92,7 @@ enum class AntiAimType_Y : int {
     MYRRIB,
     richieap,
     RASP,
-    RASP2,
+    FEETWIGGLE,
     LEGITTROLLING,
     LEGITTROLLING2,
     CUSTOM,
@@ -158,6 +158,13 @@ enum class BarType : int {
 enum class BarColorType : int {
     STATIC_COLOR,
     HEALTH_BASED,
+};
+
+enum class ArmorBarType : int {
+    VERTICAL,
+    VERTICAL_RIGHT,
+    HORIZONTAL,
+    HORIZONTAL_UP
 };
 
 enum class TeamColorType : int {
@@ -809,6 +816,11 @@ namespace Settings {
             extern bool enabled;
             extern BarType type;
             extern BarColorType colorType;
+        }
+
+        namespace ArmorBars {
+            extern bool enabled;
+            extern ArmorBarType type;
         }
 
         namespace Tracers {

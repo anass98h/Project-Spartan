@@ -62,6 +62,20 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
+    patchelf --set-soname Spartan Spartan.so
+    if [ $? -ne 0 ]; then
+        echo -e "$error_prefix Failed to set .so name."
+        while true; do
+            echo -e -n "$error_prefix "
+            read -p $'Do you wish to continue? (y/N) ' yn
+            case $yn in
+                [Yy]* ) break;;
+                [Nn]* ) exit -1;;
+                * ) echo -e "$error_prefix Please answer yes or no.";;
+            esac
+        done
+    fi
+
     echo -e "$success_prefix Successfully built Project Spartan with target \e[2m$target\e[0m."
 else
     echo -e "$error_prefix Building is only possible with the development version of Project Spartan."
