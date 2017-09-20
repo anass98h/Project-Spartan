@@ -78,34 +78,9 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
     switch ( Settings::Resolver::Hugtype ) {
         case ResolverHugtype::RASP: {
             if (HasStaticRealAngle(cur)) {
-                int num4 = Shotsmissed % 6;
-                switch (num4) {
-                    case 0:
-                        Circlebian->GetEyeAngles()->y -= 90.0f;
-                        num4++;
-                        break;
-                    case 1:
-                        Circlebian->GetEyeAngles()->y = 45.0f;
-                        num4++;
-                        break;
-                    case 2:
-                        Circlebian->GetEyeAngles()->y = -90.0f;
-                        num4++;
-                        break;
-                    case 3:
-                        Circlebian->GetEyeAngles()->y = 75.0f;
-                        num4++;
-                        break;
-                    case 4:
-                        Circlebian->GetEyeAngles()->y = -180.0f;
-                        num4++;
-                        break;
-                    case 5:
-                        Circlebian->GetEyeAngles()->y = -30.0f;
-                        num4 = 0;
-                        break;
+                Circlebian->GetEyeAngles()->y = Circlebian->GetPoseParameter() * 360 - 180;
                 }
-            } else if (HasSteadyDifference(cur)) {
+             else if (HasSteadyDifference(cur)) {
                 float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
                 float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
                 float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
@@ -113,12 +88,12 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             } else if (LBYKeepsChanging(cur))
                 Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
 
-            else if (!LowerBodyYawChanged(Circlebian)) {
+            else if (!(LowerBodyYawChanged(Circlebian))) {
                 float fwyaw = 0;
                 float LBY = (cur.front().m_flLowerBodyYawTarget);
 
-                if (Circlebian->GetEyeAngles()->y == LBY || Circlebian->GetEyeAngles()->y == LBY + 90 ||
-                    Circlebian->GetEyeAngles()->y == LBY - 90) {
+                if (Circlebian->GetEyeAngles()->y == LBY || Circlebian->GetEyeAngles()->y == (LBY + 90) ||
+                    Circlebian->GetEyeAngles()->y == (LBY - 90)) {
                     Circlebian->GetEyeAngles()->y = Circlebian->GetPoseParameter() * 360 - 180;
 
                 }
