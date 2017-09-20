@@ -425,6 +425,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ESP" )][XORSTR( "Bars" )][XORSTR( "enabled" )] = Settings::ESP::Bars::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "Bars" )][XORSTR( "color_type" )] = ( int ) Settings::ESP::Bars::colorType;
     settings[XORSTR( "ESP" )][XORSTR( "Bars" )][XORSTR( "type" )] = ( int ) Settings::ESP::Bars::type;
+    settings[XORSTR( "ESP" )][XORSTR( "ArmorBars" )][XORSTR( "enabled" )] = Settings::ESP::ArmorBars::enabled;
+    settings[XORSTR( "ESP" )][XORSTR( "ArmorBars" )][XORSTR( "type" )] = ( int ) Settings::ESP::ArmorBars::type;
     settings[XORSTR( "ESP" )][XORSTR( "Tracers" )][XORSTR( "enabled" )] = Settings::ESP::Tracers::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "Tracers" )][XORSTR( "type" )] = ( int ) Settings::ESP::Tracers::type;
     settings[XORSTR( "ESP" )][XORSTR( "BulletTracers" )][XORSTR( "enabled" )] = Settings::ESP::BulletTracers::enabled;
@@ -1036,6 +1038,9 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Bars" )][XORSTR( "color_type" )],
             ( int* ) &Settings::ESP::Bars::colorType );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Bars" )][XORSTR( "type" )], ( int* ) &Settings::ESP::Bars::type );
+
+    GetVal(settings[XORSTR( "ESP" )][XORSTR( "ArmorBars" )][XORSTR( "enabled" )], &Settings::ESP::ArmorBars::enabled);
+    GetVal(settings[XORSTR( "ESP" )][XORSTR( "ArmorBars" )][XORSTR( "type" )], ( int* ) &Settings::ESP::ArmorBars::type);
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Tracers" )][XORSTR( "enabled" )], &Settings::ESP::Tracers::enabled );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Tracers" )][XORSTR( "type" )], ( int* ) &Settings::ESP::Tracers::type );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "BulletTracers" )][XORSTR( "enabled" )],

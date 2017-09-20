@@ -160,6 +160,13 @@ enum class BarColorType : int {
     HEALTH_BASED,
 };
 
+enum class ArmorBarType : int {
+    VERTICAL,
+    VERTICAL_RIGHT,
+    HORIZONTAL,
+    HORIZONTAL_UP
+};
+
 enum class TeamColorType : int {
     ABSOLUTE,
     RELATIVE,
@@ -809,6 +816,11 @@ namespace Settings {
             extern bool enabled;
             extern BarType type;
             extern BarColorType colorType;
+        }
+
+        namespace ArmorBars {
+            extern bool enabled;
+            extern ArmorBarType type;
         }
 
         namespace Tracers {

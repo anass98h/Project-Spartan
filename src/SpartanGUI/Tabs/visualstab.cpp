@@ -5,6 +5,7 @@ void Visuals::RenderTab() {
     const char* TracerTypes[] = { "Bottom", "Cursor" };
     const char* BarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above", "Interwebz" };
     const char* BarColorTypes[] = { "Static", "Health Based" };
+    const char* ArmorBarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above" };
     const char* TeamColorTypes[] = { "Absolute", "Relative" };
     const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass", "Crystal", "BlueCrystal",
                                  "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" };
@@ -86,6 +87,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Outline Box" ), &Settings::ESP::Boxes::enabled );
                 ImGui::Checkbox( XORSTR( "Chams" ), &Settings::ESP::Chams::enabled );
                 ImGui::Checkbox( XORSTR( "Health" ), &Settings::ESP::Bars::enabled );
+                ImGui::Checkbox( XORSTR( "Armor" ), &Settings::ESP::ArmorBars::enabled );
                 ImGui::Checkbox( XORSTR( "Tracers" ), &Settings::ESP::Tracers::enabled );
                 ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                 ImGui::Text( XORSTR( "Bar Color" ) );
@@ -104,6 +106,8 @@ void Visuals::RenderTab() {
                               IM_ARRAYSIZE( ChamsTypes ) );
                 ImGui::Combo( XORSTR( "##BARTYPE" ), ( int* ) &Settings::ESP::Bars::type, BarTypes,
                               IM_ARRAYSIZE( BarTypes ) );
+                ImGui::Combo( XORSTR( "##ARMORBARTYPE" ), ( int* ) &Settings::ESP::ArmorBars::type, ArmorBarTypes,
+                              IM_ARRAYSIZE( ArmorBarTypes ) );
                 ImGui::Combo( XORSTR( "##TRACERTYPE" ), ( int* ) &Settings::ESP::Tracers::type, TracerTypes,
                               IM_ARRAYSIZE( TracerTypes ) );
                 ImGui::Combo( XORSTR( "##BARCOLTYPE" ), ( int* ) &Settings::ESP::Bars::colorType, BarColorTypes,
