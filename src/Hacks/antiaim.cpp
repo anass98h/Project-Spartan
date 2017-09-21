@@ -808,37 +808,26 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                     }
                 break;
                 case AntiAimType_Y::FEETWIGGLE:
-
-                    bool MarcisAWeeb;
-                float oldyaw = *((C_BasePlayer *) entityList->GetClientEntity(
+                 static bool flip1 = false;
+                static float prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
 
-                if (MarcisAWeeb) {
-                    angle.y -= 180.0f;
 
+                if (prevLBY1 !=
                     *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() += 45.0f;
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                    flip1 = false;
+                else
+                    flip1 = true;
+                if (flip1)
+                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 110.f;
+                else
+                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 110.f;
 
-                    MarcisAWeeb = false;
-                } else {
-                    angle.y -= 180.0f;
-
-                    *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= 45.0f;
-
-
-
-                    MarcisAWeeb = true;
-                }
-
-                if (oldyaw == *((C_BasePlayer *) entityList->GetClientEntity(
-                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget()) {
-
-                    angle.y += oldyaw / 2 + 133;
-                    *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= oldyaw / 3 + 133;
-                }
-
+                prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
+                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
 
 
