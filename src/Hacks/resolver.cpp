@@ -28,33 +28,33 @@ static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
     cmd->tick_count = TIME_TO_TICKS( tick );
 }
 
-void Resolver::Hug( C_BasePlayer* Circlebian ) {
-    auto cur = m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords;
+void Resolver::Hug( C_BasePlayer* player ) {
+    auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
     static float OldYawDeltas[65];
-    float CurYaw = *Circlebian->GetLowerBodyYawTarget();
+    float CurYaw = *player->GetLowerBodyYawTarget();
     static float oldTimer[65];
     static bool isLBYPredictited[65];
     INetChannelInfo* nci = engine->GetNetChannelInfo();
-    float bodyeyedelta = Circlebian->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
+    float bodyeyedelta = player->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
 //-------------------NEW MEMES WOOOOH --------------------------------------------------------
 
-    if ( OldLowerBodyYaws[Circlebian->GetIndex()] == *Circlebian->GetLowerBodyYawTarget() ) {
-        if ( oldTimer[Circlebian->GetIndex()] + 1.1 >= globalVars->curtime ) {
-            oldTimer[Circlebian->GetIndex()] = globalVars->curtime;
-            isLBYPredictited[Circlebian->GetIndex()] = true;
+    if ( OldLowerBodyYaws[player->GetIndex()] == *player->GetLowerBodyYawTarget() ) {
+        if ( oldTimer[player->GetIndex()] + 1.1 >= globalVars->curtime ) {
+            oldTimer[player->GetIndex()] = globalVars->curtime;
+            isLBYPredictited[player->GetIndex()] = true;
 
         } else {
-            isLBYPredictited[Circlebian->GetIndex()] = false;
+            isLBYPredictited[player->GetIndex()] = false;
         }
-    } else if ( Circlebian->GetDormant() || !Circlebian->GetAlive() ) {
-        oldTimer[Circlebian->GetIndex()] = -1;
-        isLBYPredictited[Circlebian->GetIndex()] = false;
+    } else if ( player->GetDormant() || !player->GetAlive() ) {
+        oldTimer[player->GetIndex()] = -1;
+        isLBYPredictited[player->GetIndex()] = false;
     } else {
-        OldLowerBodyYaws[Circlebian->GetIndex()] = *Circlebian->GetLowerBodyYawTarget();
-        oldTimer[Circlebian->GetIndex()] = globalVars->curtime - nci->GetAvgLatency( FLOW_OUTGOING ); // pValveC0denz
-        isLBYPredictited[Circlebian->GetIndex()] = false;
+        OldLowerBodyYaws[player->GetIndex()] = *player->GetLowerBodyYawTarget();
+        oldTimer[player->GetIndex()] = globalVars->curtime - nci->GetAvgLatency( FLOW_OUTGOING ); // pValveC0denz
+        isLBYPredictited[player->GetIndex()] = false;
     }
 
 
@@ -62,129 +62,129 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
 // END OF NEW MEMES WOOOOH ----------------------------------------------------------------------
 
     if ( Settings::Resolver::pitch ) {
-        if ( Circlebian->GetEyeAngles()->x < -179.f ) Circlebian->GetEyeAngles()->x += 360.f;
-        else if ( Circlebian->GetEyeAngles()->x > 90.0 || Circlebian->GetEyeAngles()->x < -90.0 )
-            Circlebian->GetEyeAngles()->x = 89.f;
-        else if ( Circlebian->GetEyeAngles()->x > 89.0 && Circlebian->GetEyeAngles()->x < 91.0 )
-            Circlebian->GetEyeAngles()->x -= 90.f;
-        else if ( Circlebian->GetEyeAngles()->x > 179.0 && Circlebian->GetEyeAngles()->x < 181.0 )
-            Circlebian->GetEyeAngles()->x -= 180;
-        else if ( Circlebian->GetEyeAngles()->x > -179.0 && Circlebian->GetEyeAngles()->x < -181.0 )
-            Circlebian->GetEyeAngles()->x += 180;
-        else if ( fabs( Circlebian->GetEyeAngles()->x ) == 0 )
-            Circlebian->GetEyeAngles()->x = std::copysign( 89.0f, Circlebian->GetEyeAngles()->x );
+        if ( player->GetEyeAngles()->x < -179.f ) player->GetEyeAngles()->x += 360.f;
+        else if ( player->GetEyeAngles()->x > 90.0 || player->GetEyeAngles()->x < -90.0 )
+            player->GetEyeAngles()->x = 89.f;
+        else if ( player->GetEyeAngles()->x > 89.0 && player->GetEyeAngles()->x < 91.0 )
+            player->GetEyeAngles()->x -= 90.f;
+        else if ( player->GetEyeAngles()->x > 179.0 && player->GetEyeAngles()->x < 181.0 )
+            player->GetEyeAngles()->x -= 180;
+        else if ( player->GetEyeAngles()->x > -179.0 && player->GetEyeAngles()->x < -181.0 )
+            player->GetEyeAngles()->x += 180;
+        else if ( fabs( player->GetEyeAngles()->x ) == 0 )
+            player->GetEyeAngles()->x = std::copysign( 89.0f, player->GetEyeAngles()->x );
     }
 
     switch ( Settings::Resolver::Hugtype ) {
         case ResolverHugtype::RASP: {
 
-            if (HasStaticRealAngle(cur)) {
+            if ( HasStaticRealAngle( cur ) ) {
                 int num4 = Shotsmissed % 6;
-                switch (num4) {
+                switch ( num4 ) {
                     case 0:
-                        Circlebian->GetEyeAngles()->y -= 90.0f;
+                        player->GetEyeAngles()->y -= 90.0f;
                         break;
                     case 1:
-                        Circlebian->GetEyeAngles()->y = 45.0f;
+                        player->GetEyeAngles()->y = 45.0f;
                         break;
                     case 2:
-                        Circlebian->GetEyeAngles()->y = -90.0f;
+                        player->GetEyeAngles()->y = -90.0f;
                         break;
                     case 3:
-                        Circlebian->GetEyeAngles()->y = 75.0f;
+                        player->GetEyeAngles()->y = 75.0f;
                         break;
                     case 4:
-                        Circlebian->GetEyeAngles()->y = -180.0f;
+                        player->GetEyeAngles()->y = -180.0f;
                         break;
                     case 5:
-                        Circlebian->GetEyeAngles()->y = -30.0f;
+                        player->GetEyeAngles()->y = -30.0f;
                         break;
                 }
-            } else if (HasSteadyDifference(cur)) {
-                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
-                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
+            } else if ( HasSteadyDifference( cur ) ) {
+                float tickdif = static_cast<float> (cur.front().tickcount - cur.at( 1 ).tickcount);
+                float lbydif = GetDelta( cur.front().m_flLowerBodyYawTarget, cur.at( 1 ).m_flLowerBodyYawTarget );
                 float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
-                Circlebian->GetEyeAngles()->y = (lbydif / tickdif) * ntickdif;
-            } else if (LBYKeepsChanging(cur))
-                Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
+                player->GetEyeAngles()->y = ( lbydif / tickdif ) * ntickdif;
+            } else if ( LBYKeepsChanging( cur ) )
+                player->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
 
-            else if (!LowerBodyYawChanged(Circlebian)) {
+            else if ( !LowerBodyYawChanged( player ) ) {
                 float fwyaw = 0;
-                float LBY = (cur.front().m_flLowerBodyYawTarget);
+                float LBY = ( cur.front().m_flLowerBodyYawTarget );
 
-                if (Circlebian->GetEyeAngles()->y == LBY) {
+                if ( player->GetEyeAngles()->y == LBY ) {
                     int num10 = Shotsmissed % 9;
-                    switch (num10) {
+                    switch ( num10 ) {
                         case 0:
-                            Circlebian->GetEyeAngles()->y = LBY;
+                            player->GetEyeAngles()->y = LBY;
                             break;
                         case 1:
-                            Circlebian->GetEyeAngles()->y = LBY + 180;
+                            player->GetEyeAngles()->y = LBY + 180;
                             break;
                         case 2:
-                            Circlebian->GetEyeAngles()->y = LBY + 160;
+                            player->GetEyeAngles()->y = LBY + 160;
                             break;
                         case 3:
-                            Circlebian->GetEyeAngles()->y = LBY + 200;
+                            player->GetEyeAngles()->y = LBY + 200;
                             break;
                         case 4:
-                            Circlebian->GetEyeAngles()->y = LBY - 90;
+                            player->GetEyeAngles()->y = LBY - 90;
                             break;
                         case 5:
-                            Circlebian->GetEyeAngles()->y = LBY + 45;
+                            player->GetEyeAngles()->y = LBY + 45;
                             break;
                         case 6:
-                            Circlebian->GetEyeAngles()->y = LBY - 45;
+                            player->GetEyeAngles()->y = LBY - 45;
                             break;
                         case 7:
-                            Circlebian->GetEyeAngles()->y = LBY - 135;
+                            player->GetEyeAngles()->y = LBY - 135;
                             break;
                         case 8:
-                            Circlebian->GetEyeAngles()->y = LBY + 100;
+                            player->GetEyeAngles()->y = LBY + 100;
                             break;
                         case 9:
-                            Circlebian->GetEyeAngles()->y = LBY - 100;
+                            player->GetEyeAngles()->y = LBY - 100;
                             break;
                         default:
-                            Circlebian->GetEyeAngles()->y = LBY;
+                            player->GetEyeAngles()->y = LBY;
                             break;
 
                     }
-                    if (Shotsmissed == 0) {
+                    if ( Shotsmissed == 0 ) {
                         fwyaw -= 180;
-                    } else if (Shotsmissed == 1)
+                    } else if ( Shotsmissed == 1 )
                         fwyaw += 90;
 
-                    else if (Shotsmissed == 2)
+                    else if ( Shotsmissed == 2 )
                         fwyaw += 180;
 
-                    else if (Shotsmissed == 3)
+                    else if ( Shotsmissed == 3 )
                         fwyaw -= 45;
 
-                    else if (Shotsmissed == 4)
+                    else if ( Shotsmissed == 4 )
                         fwyaw -= 90;
 
-                    else if (Shotsmissed == 5)
+                    else if ( Shotsmissed == 5 )
                         fwyaw -= 30;
 
-                    else if (Shotsmissed == 6)
+                    else if ( Shotsmissed == 6 )
                         fwyaw += 150;
-                    Circlebian->GetEyeAngles()->y = fwyaw;
+                    player->GetEyeAngles()->y = fwyaw;
                 } else {
-                    if (LowerBodyYawChanged(Circlebian)) {
-                        Circlebian->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget);
-                    } else if (Shotsmissed == 3) {
+                    if ( LowerBodyYawChanged( player ) ) {
+                        player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget );
+                    } else if ( Shotsmissed == 3 ) {
                         flYaw = flYaw - 180;
-                        Circlebian->GetEyeAngles()->y = flYaw;
-                    } else if (Shotsmissed == 4) {
+                        player->GetEyeAngles()->y = flYaw;
+                    } else if ( Shotsmissed == 4 ) {
                         flYaw = flYaw + 90;
-                        Circlebian->GetEyeAngles()->y = flYaw;
-                    } else if (Shotsmissed == 5 && Shotsmissed < 6) {
+                        player->GetEyeAngles()->y = flYaw;
+                    } else if ( Shotsmissed == 5 && Shotsmissed < 6 ) {
                         flYaw = flYaw + 180;
-                        Circlebian->GetEyeAngles()->y = flYaw;
-                    } else if (Shotsmissed > 3 && isLBYPredictited[Circlebian->GetIndex()] == true &&
-                               LowerBodyYawChanged(Circlebian)) {
-                        Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+                        player->GetEyeAngles()->y = flYaw;
+                    } else if ( Shotsmissed > 3 && isLBYPredictited[player->GetIndex()] == true &&
+                                LowerBodyYawChanged( player ) ) {
+                        player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
                     }
 
                 }
@@ -197,39 +197,39 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
                 int num4 = Shotsmissed % 6;
                 switch ( num4 ) {
                     case 0:
-                        Circlebian->GetEyeAngles()->y -= 0.0f;
+                        player->GetEyeAngles()->y -= 0.0f;
                         break;
                     case 1:
-                        Circlebian->GetEyeAngles()->y = 35.0f;
+                        player->GetEyeAngles()->y = 35.0f;
                         break;
                     case 2:
-                        Circlebian->GetEyeAngles()->y = -70.0f;
+                        player->GetEyeAngles()->y = -70.0f;
                         break;
                     case 3:
-                        Circlebian->GetEyeAngles()->y = 55.0f;
+                        player->GetEyeAngles()->y = 55.0f;
                         break;
                     case 4:
-                        Circlebian->GetEyeAngles()->y = -180.0f;
+                        player->GetEyeAngles()->y = -180.0f;
                         break;
                     case 5:
-                        Circlebian->GetEyeAngles()->y = -30.0f;
+                        player->GetEyeAngles()->y = -30.0f;
                         break;
                 }
             } else if ( HasStaticYawDifference( cur ) )
-                Circlebian->GetEyeAngles()->y =
-                        Circlebian->GetEyeAngles()->y -
+                player->GetEyeAngles()->y =
+                        player->GetEyeAngles()->y -
                         ( cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget );
             else if ( HasSteadyDifference( cur ) ) {
                 float tickdif = static_cast<float> (cur.front().tickcount - cur.at( 1 ).tickcount);
                 float lbydif = GetDelta( cur.front().m_flLowerBodyYawTarget, cur.at( 1 ).m_flLowerBodyYawTarget );
                 float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
-                Circlebian->GetEyeAngles()->y = ( lbydif / tickdif ) * ntickdif;
+                player->GetEyeAngles()->y = ( lbydif / tickdif ) * ntickdif;
             } else if ( DeltaKeepsChanging( cur ) )
-                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks( cur );
+                player->GetEyeAngles()->y = player->GetEyeAngles()->y - GetDeltaByComparingTicks( cur );
             else if ( LBYKeepsChanging( cur ) )
-                Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
+                player->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
 
-            else if ( !LowerBodyYawChanged( Circlebian ) ) {
+            else if ( !LowerBodyYawChanged( player ) ) {
                 float fwyaw = 0;
                 if ( Shotsmissed == 0 ) {
                     fwyaw -= 180;
@@ -255,27 +255,27 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
                     fwyaw += bodyeyedelta;
                 }
 
-                Circlebian->GetEyeAngles()->y = fwyaw;
+                player->GetEyeAngles()->y = fwyaw;
             } else {
-                if ( LowerBodyYawChanged( Circlebian ) ) {
-                    Circlebian->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget);
+                if ( LowerBodyYawChanged( player ) ) {
+                    player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget );
                 } else if ( Shotsmissed == 3 ) {
                     flYaw = flYaw - 180;
-                    Circlebian->GetEyeAngles()->y = flYaw;
+                    player->GetEyeAngles()->y = flYaw;
                 } else if ( Shotsmissed == 4 ) {
                     flYaw = flYaw + 90;
-                    Circlebian->GetEyeAngles()->y = flYaw;
+                    player->GetEyeAngles()->y = flYaw;
                 } else if ( Shotsmissed == 5 && Shotsmissed < 6 ) {
                     flYaw = flYaw + 180;
-                    Circlebian->GetEyeAngles()->y = flYaw;
-                } else if ( OldLowerBodyYaws[Circlebian->GetIndex()] == CurYaw ) {
+                    player->GetEyeAngles()->y = flYaw;
+                } else if ( OldLowerBodyYaws[player->GetIndex()] == CurYaw ) {
 
 
-                    Circlebian->GetEyeAngles()->y -= OldYawDeltas[Circlebian->GetIndex()];
+                    player->GetEyeAngles()->y -= OldYawDeltas[player->GetIndex()];
 
-                } else if ( Shotsmissed > 3 && isLBYPredictited[Circlebian->GetIndex()] == true &&
-                            LowerBodyYawChanged( Circlebian ) ) {
-                    Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+                } else if ( Shotsmissed > 3 && isLBYPredictited[player->GetIndex()] == true &&
+                            LowerBodyYawChanged( player ) ) {
+                    player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
                 }
 
             }
@@ -291,29 +291,29 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             float fakeYaw4;
 
 
-            if ( LowerBodyYawChanged( Circlebian ) ) {
-                Circlebian->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget + bodyeyedelta );
+            if ( LowerBodyYawChanged( player ) ) {
+                player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget + bodyeyedelta );
 
             } else {
                 int num3 = Shotsmissed % 6;
                 switch ( num3 ) {
                     case 0:
-                        Circlebian->GetEyeAngles()->y -= 180.0f;
+                        player->GetEyeAngles()->y -= 180.0f;
                         break;
                     case 1:
-                        Circlebian->GetEyeAngles()->y += 90.0f;
+                        player->GetEyeAngles()->y += 90.0f;
                         break;
                     case 2:
-                        Circlebian->GetEyeAngles()->y -= 90.0f;
+                        player->GetEyeAngles()->y -= 90.0f;
                         break;
                     case 3:
-                        Circlebian->GetEyeAngles()->y = 0.0f;
+                        player->GetEyeAngles()->y = 0.0f;
                         break;
                     case 4:
-                        Circlebian->GetEyeAngles()->y = -180.0f;
+                        player->GetEyeAngles()->y = -180.0f;
                         break;
                     case 5:
-                        Circlebian->GetEyeAngles()->y = -30.0f;
+                        player->GetEyeAngles()->y = -30.0f;
                         break;
                 }
 
@@ -325,22 +325,22 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             int num2 = Shotsmissed % 6;
             switch ( num2 ) {
                 case 0:
-                    Circlebian->GetEyeAngles()->y -= 0.0f;
+                    player->GetEyeAngles()->y -= 0.0f;
                     break;
                 case 1:
-                    Circlebian->GetEyeAngles()->y = 35.0f;
+                    player->GetEyeAngles()->y = 35.0f;
                     break;
                 case 2:
-                    Circlebian->GetEyeAngles()->y = -70.0f;
+                    player->GetEyeAngles()->y = -70.0f;
                     break;
                 case 3:
-                    Circlebian->GetEyeAngles()->y = 55.0f;
+                    player->GetEyeAngles()->y = 55.0f;
                     break;
                 case 4:
-                    Circlebian->GetEyeAngles()->y = -180.0f;
+                    player->GetEyeAngles()->y = -180.0f;
                     break;
                 case 5:
-                    Circlebian->GetEyeAngles()->y = -30.0f;
+                    player->GetEyeAngles()->y = -30.0f;
                     break;
             }
             break;
@@ -349,21 +349,21 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
         {
 
             if ( HasStaticRealAngle( cur ) )
-                Circlebian->GetEyeAngles()->y += 180;
+                player->GetEyeAngles()->y += 180;
 
-            else if ( LowerBodyYawChanged( Circlebian ) )
-                Circlebian->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget + bodyeyedelta );
+            else if ( LowerBodyYawChanged( player ) )
+                player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget + bodyeyedelta );
             else if ( HasStaticYawDifference( cur ) )
-                Circlebian->GetEyeAngles()->y =
-                        Circlebian->GetEyeAngles()->y -
+                player->GetEyeAngles()->y =
+                        player->GetEyeAngles()->y -
                         ( cur.front().m_angEyeAngles.y - cur.front().m_flLowerBodyYawTarget );
 
             else if ( DeltaKeepsChanging( cur ) )
-                Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y - GetDeltaByComparingTicks( cur );
+                player->GetEyeAngles()->y = player->GetEyeAngles()->y - GetDeltaByComparingTicks( cur );
             else if ( LBYKeepsChanging( cur ) )
-                Circlebian->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
+                player->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
             else
-                Circlebian->GetEyeAngles()->y += ( cur.front().m_flLowerBodyYawTarget ) + 180;
+                player->GetEyeAngles()->y += ( cur.front().m_flLowerBodyYawTarget ) + 180;
             break;
         }
         case ResolverHugtype::MYRRIBDELTA: {
@@ -377,9 +377,9 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             static bool staticAngle = false;
             static bool firstLBYupdate = false;
 
-            bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
+            bool onGround = player->GetFlags() & FL_ONGROUND;
             float curTime = globalVars->curtime;
-            float LBY = *Circlebian->GetLowerBodyYawTarget();
+            float LBY = *player->GetLowerBodyYawTarget();
 
             static float nextUpdate = 0.f;
 
@@ -393,7 +393,7 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
                 shotsmissedSave = 0;
             }
 
-            if ( onGround && fabsf( Circlebian->GetVelocity().x ) > 1 ) {
+            if ( onGround && fabsf( player->GetVelocity().x ) > 1 ) {
                 isMoving = true;
             } else {
                 isMoving = false;
@@ -414,82 +414,82 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             if ( isMoving || isLBYupdated || fabsf( bodyeyedelta ) < 35.f ) {
                 firstLBYupdate = true;
                 nextUpdate = curTime + 1.1f;
-                Circlebian->GetEyeAngles()->y = LBY;
+                player->GetEyeAngles()->y = LBY;
             } else {
                 // LBY is NOT updated
                 if ( staticAngle ) {
-                    if ( Circlebian->GetEyeAngles()->y == LBY ) {
+                    if ( player->GetEyeAngles()->y == LBY ) {
                         int a = shotsmissedSave % 10;
                         switch ( a ) {
                             case 0:
-                                Circlebian->GetEyeAngles()->y = LBY;
+                                player->GetEyeAngles()->y = LBY;
                                 break;
                             case 1:
-                                Circlebian->GetEyeAngles()->y = LBY + 180;
+                                player->GetEyeAngles()->y = LBY + 180;
                                 break;
                             case 2:
-                                Circlebian->GetEyeAngles()->y = LBY + 90;
+                                player->GetEyeAngles()->y = LBY + 90;
                                 break;
                             case 3:
-                                Circlebian->GetEyeAngles()->y = LBY + 135;
+                                player->GetEyeAngles()->y = LBY + 135;
                                 break;
                             case 4:
-                                Circlebian->GetEyeAngles()->y = LBY - 90;
+                                player->GetEyeAngles()->y = LBY - 90;
                                 break;
                             case 5:
-                                Circlebian->GetEyeAngles()->y = LBY + 45;
+                                player->GetEyeAngles()->y = LBY + 45;
                                 break;
                             case 6:
-                                Circlebian->GetEyeAngles()->y = LBY - 45;
+                                player->GetEyeAngles()->y = LBY - 45;
                                 break;
                             case 7:
-                                Circlebian->GetEyeAngles()->y = LBY - 135;
+                                player->GetEyeAngles()->y = LBY - 135;
                                 break;
                             case 8:
-                                Circlebian->GetEyeAngles()->y = LBY + 100;
+                                player->GetEyeAngles()->y = LBY + 100;
                                 break;
                             case 9:
-                                Circlebian->GetEyeAngles()->y = LBY - 100;
+                                player->GetEyeAngles()->y = LBY - 100;
                                 break;
                             default:
-                                Circlebian->GetEyeAngles()->y = LBY;
+                                player->GetEyeAngles()->y = LBY;
                                 break;
                         }
                     } else {
                         int b = shotsmissedSave % 10;
                         switch ( b ) {
                             case 0:
-                                Circlebian->GetEyeAngles()->y = LBY;
+                                player->GetEyeAngles()->y = LBY;
                                 break;
                             case 1:
-                                Circlebian->GetEyeAngles()->y += 180;
+                                player->GetEyeAngles()->y += 180;
                                 break;
                             case 2:
-                                Circlebian->GetEyeAngles()->y -= 90;
+                                player->GetEyeAngles()->y -= 90;
                                 break;
                             case 3:
-                                Circlebian->GetEyeAngles()->y += 135;
+                                player->GetEyeAngles()->y += 135;
                                 break;
                             case 4:
-                                Circlebian->GetEyeAngles()->y += 90;
+                                player->GetEyeAngles()->y += 90;
                                 break;
                             case 5:
-                                Circlebian->GetEyeAngles()->y -= 45;
+                                player->GetEyeAngles()->y -= 45;
                                 break;
                             case 6:
-                                Circlebian->GetEyeAngles()->y += 45;
+                                player->GetEyeAngles()->y += 45;
                                 break;
                             case 7:
-                                Circlebian->GetEyeAngles()->y -= 135;
+                                player->GetEyeAngles()->y -= 135;
                                 break;
                             case 8:
-                                Circlebian->GetEyeAngles()->y -= 100;
+                                player->GetEyeAngles()->y -= 100;
                                 break;
                             case 9:
-                                Circlebian->GetEyeAngles()->y += 100;
+                                player->GetEyeAngles()->y += 100;
                                 break;
                             default:
-                                Circlebian->GetEyeAngles()->y = LBY;
+                                player->GetEyeAngles()->y = LBY;
                                 break;
                         }
                     }
@@ -498,40 +498,40 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
                     int rng = rand() % 180 + 1;
                     switch ( c ) {
                         case 0:
-                            Circlebian->GetEyeAngles()->y = LBY;
+                            player->GetEyeAngles()->y = LBY;
                             break; // This should not even be used
                         case 1:
-                            Circlebian->GetEyeAngles()->y += 180.f;
+                            player->GetEyeAngles()->y += 180.f;
                             break;
                         case 2:
-                            Circlebian->GetEyeAngles()->y = LBY + 180.f;
+                            player->GetEyeAngles()->y = LBY + 180.f;
                             break; // This is where it will start
                         case 3:
-                            Circlebian->GetEyeAngles()->y = LBY + 90.f;
+                            player->GetEyeAngles()->y = LBY + 90.f;
                             break;
                         case 4:
-                            Circlebian->GetEyeAngles()->y = LBY + 135.f;
+                            player->GetEyeAngles()->y = LBY + 135.f;
                             break;
                         case 5:
-                            Circlebian->GetEyeAngles()->y = LBY - 90.f;
+                            player->GetEyeAngles()->y = LBY - 90.f;
                             break;
                         case 6:
-                            Circlebian->GetEyeAngles()->y = LBY + 45.f;
+                            player->GetEyeAngles()->y = LBY + 45.f;
                             break;
                         case 7:
-                            Circlebian->GetEyeAngles()->y = LBY - 135.f;
+                            player->GetEyeAngles()->y = LBY - 135.f;
                             break;
                         case 8:
-                            Circlebian->GetEyeAngles()->y = LBY - 45.f;
+                            player->GetEyeAngles()->y = LBY - 45.f;
                             break;
                         case 9:
-                            Circlebian->GetEyeAngles()->y = LBY + rng;
+                            player->GetEyeAngles()->y = LBY + rng;
                             break;
                         case 10:
-                            Circlebian->GetEyeAngles()->y = LBY - rng;
+                            player->GetEyeAngles()->y = LBY - rng;
                             break;
                         default:
-                            Circlebian->GetEyeAngles()->y = LBY;
+                            player->GetEyeAngles()->y = LBY;
                             break;
                     }
                 }
@@ -548,9 +548,9 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             static bool lbyFirstUpdateM = false;
 
             float LBY = ( cur.front().m_flLowerBodyYawTarget );
-            bool onGround = Circlebian->GetFlags() & FL_ONGROUND;
+            bool onGround = player->GetFlags() & FL_ONGROUND;
 
-            if ( Circlebian->GetVelocity().Length2D() > 1 && onGround ) {
+            if ( player->GetVelocity().Length2D() > 1 && onGround ) {
                 isMovingM = true;
             } else {
                 isMovingM = false;
@@ -564,47 +564,47 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             }
 
             if ( lbyUpdatedM || isMovingM || fabsf( bodyeyedelta ) >= 35.0f ) {
-                Circlebian->GetEyeAngles()->y = LBY;
+                player->GetEyeAngles()->y = LBY;
                 lbySaveM = LBY;
                 lbyFirstUpdateM = true;
             } else if ( !onGround ) {
-                Circlebian->GetEyeAngles()->y = lbySaveM;
+                player->GetEyeAngles()->y = lbySaveM;
             } else {
                 if ( Shotsmissed > 2 ) {
                     int n = Shotsmissed % 9;
 
                     switch ( n ) {
                         case 0:
-                            Circlebian->GetEyeAngles()->y = lbySaveM;
+                            player->GetEyeAngles()->y = lbySaveM;
                             break;
                         case 1:
-                            Circlebian->GetEyeAngles()->y = LBY + 180;
+                            player->GetEyeAngles()->y = LBY + 180;
                             break;
                         case 2:
-                            Circlebian->GetEyeAngles()->y = LBY + 90;
+                            player->GetEyeAngles()->y = LBY + 90;
                             break;
                         case 3:
-                            Circlebian->GetEyeAngles()->y = LBY - 90;
+                            player->GetEyeAngles()->y = LBY - 90;
                             break;
                         case 4:
-                            Circlebian->GetEyeAngles()->y = LBY + 135;
+                            player->GetEyeAngles()->y = LBY + 135;
                             break;
                         case 5:
-                            Circlebian->GetEyeAngles()->y = LBY - 135;
+                            player->GetEyeAngles()->y = LBY - 135;
                             break;
                         case 6:
-                            Circlebian->GetEyeAngles()->y = LBY + 45;
+                            player->GetEyeAngles()->y = LBY + 45;
                             break;
                         case 7:
-                            Circlebian->GetEyeAngles()->y = LBY - 45;
+                            player->GetEyeAngles()->y = LBY - 45;
                             break;
                         case 8:
-                            Circlebian->GetEyeAngles()->y = Circlebian->GetEyeAngles()->y + 180;
+                            player->GetEyeAngles()->y = player->GetEyeAngles()->y + 180;
                             break;
                     }
                 } else {
                     if ( fabsf( bodyeyedelta ) < 35.0f && fabsf( bodyeyedelta ) > 0.0f ) {
-                        Circlebian->GetEyeAngles()->y = LBY + bodyeyedelta;
+                        player->GetEyeAngles()->y = LBY + bodyeyedelta;
                     }
                 }
             }
@@ -613,20 +613,20 @@ void Resolver::Hug( C_BasePlayer* Circlebian ) {
             static bool lbyUpdated = false;
 
             float curTime = globalVars->curtime;
-            bool onGround = (Circlebian->GetFlags() & FL_ONGROUND);
-            bool isMoving = (Circlebian->GetVelocity().Length2D() > 1);
+            bool onGround = ( player->GetFlags() & FL_ONGROUND );
+            bool isMoving = ( player->GetVelocity().Length2D() > 1 );
             static float nextUpdate;
 
-            if (onGround && curTime > nextUpdate || onGround && isMoving)
+            if ( onGround && curTime > nextUpdate || onGround && isMoving )
                 lbyUpdated = true;
             else
                 lbyUpdated = false;
 
-            if (lbyUpdated) {
-                Circlebian->GetEyeAngles()->y = *Circlebian->GetLowerBodyYawTarget();
+            if ( lbyUpdated ) {
+                player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
                 nextUpdate = curTime + 1.1f;
             } else {
-                Circlebian->GetEyeAngles()->y = Circlebian->GetPoseParameter() * 360 - 180;
+                player->GetEyeAngles()->y = player->GetPoseParameter() * 360 - 180;
             }
         }
         case ResolverHugtype::OFF:
@@ -710,33 +710,33 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
 void Resolver::PostFrameStageNotify( ClientFrameStage_t stage ) {
 }
 
-CTickRecord Resolver::GetShotRecord( C_BasePlayer* Circlebian ) {
-    for ( auto cur : m_arrInfos[Circlebian->GetIndex()].m_sRecords ) {
+CTickRecord Resolver::GetShotRecord( C_BasePlayer* player ) {
+    for ( auto cur : m_arrInfos[player->GetIndex()].m_sRecords ) {
         if ( cur.validtick )
             return CTickRecord( cur );
     }
     return CTickRecord();
 }
 
-bool& Resolver::LowerBodyYawChanged( C_BasePlayer* Circlebian ) {
-    return m_arrInfos.at( Circlebian->GetIndex() ).m_bLowerBodyYawChanged;
+bool& Resolver::LowerBodyYawChanged( C_BasePlayer* player ) {
+    return m_arrInfos.at( player->GetIndex() ).m_bLowerBodyYawChanged;
 }
 
-void Resolver::StoreVars( C_BasePlayer* Circlebian ) {
-    if ( m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks ) {
-        m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.pop_back();
+void Resolver::StoreVars( C_BasePlayer* player ) {
+    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks ) {
+        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
     }
-    m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.push_front( CTickRecord( Circlebian ) );
+    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
 }
 
-void Resolver::StoreVars( C_BasePlayer* Circlebian, QAngle ang, float lby, float simtime, float tick ) {
-    if ( m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks )
-        m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.pop_back();
-    m_arrInfos.at( Circlebian->GetIndex() ).m_sRecords.push_front( CTickRecord( Circlebian ) );
+void Resolver::StoreVars( C_BasePlayer* player, QAngle ang, float lby, float simtime, float tick ) {
+    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks )
+        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
+    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
 }
 
-bool& Resolver::BacktrackThisTick( C_BasePlayer* Circlebian ) {
-    return m_arrInfos.at( Circlebian->GetIndex() ).m_bBacktrackThisTick;
+bool& Resolver::BacktrackThisTick( C_BasePlayer* player ) {
+    return m_arrInfos.at( player->GetIndex() ).m_bBacktrackThisTick;
 }
 
 bool Resolver::HasStaticRealAngle( const std::deque<CTickRecord>& l, float tolerance ) {
