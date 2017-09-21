@@ -508,8 +508,10 @@ void AimbotAimTab::RenderTab() {
                     UI::UpdateWeaponSettings();
                 if ( ImGui::Checkbox( XORSTR( "pSilent" ), &pSilent ) )
                     UI::UpdateWeaponSettings();
-                if ( ImGui::Checkbox( XORSTR( "Backtrack" ), &backtrack ) )
+                if ( ImGui::Checkbox( XORSTR( "Backtrack" ), &backtrack ) ) {
                     UI::UpdateWeaponSettings();
+                    Backtracking::ToggleRequiredCVars(backtrack);
+                }
 
             }
             ImGui::NextColumn();

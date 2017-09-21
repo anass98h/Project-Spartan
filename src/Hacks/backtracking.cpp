@@ -1,16 +1,16 @@
 #include "backtracking.h"
 
 std::map<int, std::deque<CTickRecord>> Backtracking::lagRecords;
-
+float previousInterp = -1.0f;
+int previousInterpolate = -1;
+int previousLagCompensation = -1;
 
 void Backtracking::RestorePosition( int playerIndex, int tickDiff ) {
     return;
-    C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity( playerIndex );
 }
 
-
 /* Used for a Queue size-limit. Too lazy to write a wrapper class fam */
-static inline void pushLagRecord( int index, C_BasePlayer* player = NULL ) {
+static inline void PushLagRecord( int index, C_BasePlayer* player = NULL ) {
     if ( player ) {
         Backtracking::lagRecords[index].push_back( CTickRecord( player ) );
     } else {
@@ -25,18 +25,10 @@ static inline void pushLagRecord( int index, C_BasePlayer* player = NULL ) {
 /* Keep track of players */
 void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
     if ( !engine->IsInGame() ) {
-        // pMeme starts here
-        static bool runOnce = false;
-        if ( runOnce == false ) {
-            cvar->FindVar( XORSTR( "cl_interp" ) )->SetValue( 0.f );
-            cvar->FindVar( XORSTR( "cl_interpolate" ) )->SetValue( 0.f );
-            cvar->FindVar( XORSTR( "cl_lagcompensation" ) )->SetValue( 1.f );
-            runOnce = true;
-        }
-        // pMeme ends here
         Backtracking::lagRecords.clear(); // empty records.
         return;
     }
+
     if ( stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START ) {
         C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
         if ( !me || !me->GetAlive() )
@@ -50,10 +42,45 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
             if ( target == me || ( target->GetTeam() == me->GetTeam() ) )
                 continue;
             if ( target->GetDormant() || !target->GetAlive() || target->GetImmune() ) {
-                pushLagRecord( i, NULL );
+                PushLagRecord( i, NULL );
                 //push record with blank coords
             }
-            pushLagRecord( i, target );
+            PushLagRecord( i, target );
+        }
+    }
+}
+
+void Backtracking::ToggleRequiredCVars( bool activate ) {
+    ConVar* interp = cvar->FindVar( XORSTR( "cl_interp" ) );
+    ConVar* interpolate = cvar->FindVar( XORSTR( "cl_interpolate" ) );
+    ConVar* lagCompensation = cvar->FindVar( XORSTR( "cl_lagcompensation" ) );
+
+    if ( activate ) {
+        if ( interp->GetFloat() != 0.0f ) {
+            previousInterp = interp->GetFloat();
+            interp->SetValue( 0.0f );
+        }
+
+        if ( interpolate->GetInt() != 0 ) {
+            previousInterpolate = interpolate->GetInt();
+            interpolate->SetValue( 0 );
+        }
+
+        if ( lagCompensation->GetInt() != 1 ) {
+            previousLagCompensation = lagCompensation->GetInt();
+            lagCompensation->SetValue( 1 );
+        }
+    } else {
+        if ( previousInterp != -1.0f ) {
+            interp->SetValue( previousInterp );
+        }
+
+        if ( previousInterpolate != -1 ) {
+            interpolate->SetValue( previousInterpolate );
+        }
+
+        if ( previousLagCompensation != -1 ) {
+            lagCompensation->SetValue( previousLagCompensation );
         }
     }
 }

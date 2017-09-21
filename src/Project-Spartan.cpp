@@ -137,6 +137,7 @@ int __attribute__ ((constructor)) Startup() {
 void __attribute__ ((destructor)) Shutdown() {
 
     cvar->FindVar( XORSTR( "cl_mouseenable" ) )->SetValue( 1 );
+    Backtracking::ToggleRequiredCVars( false );
 
     SDL2::UnhookWindow();
     SDL2::UnhookPollEvent();
