@@ -203,7 +203,6 @@ enum class SpammerType : int {
 
 enum class ResolverHugtype : int {
     OFF,
-    PASTEHUB,
     RASP,
     BRUTEHIV,
     BRUTE1,
