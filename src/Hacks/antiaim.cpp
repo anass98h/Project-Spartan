@@ -809,7 +809,7 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                         }
                     }
                 break;
-                case AntiAimType_Y::RASP2:
+                case AntiAimType    _Y::RASP2:
                     static bool flip1 = false;
                 static float prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
@@ -831,8 +831,6 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
-
-
             }
     }
 
