@@ -9,12 +9,15 @@ ResolverHugtype Settings::Resolver::Hugtype = ResolverHugtype::OFF;
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
 
+C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
 int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
 
+CLagCompensation LagCompensation;
 
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
     ConVar* cvar_cl_interp = cvar->FindVar( XORSTR( "cl_interp" ) );
@@ -708,6 +711,186 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
 }
 
 void Resolver::PostFrameStageNotify( ClientFrameStage_t stage ) {
+}
+
+void CLagCompensation::SaveNetvars(StoredNetvars *dest, C_BasePlayer *Circlebian) {
+    dest->origin = Circlebian->GetVecOrigin();
+
+    dest->flags = Circlebian->GetFlags();
+    dest->simulationtime = Circlebian->GetSimulationTime();
+    dest->min = *pEntity->GetMin();
+    dest->max = *pEntity->GetMax();
+    dest->lowerbodyyaw = *Circlebian->GetLowerBodyYawTarget();
+    dest->eyeangles = *Circlebian->GetEyeAngles();
+
+    dest->sequence = Circlebian->GetSequence();
+    dest->cycle = Circlebian->GetCycle();
+
+    dest->velo = Circlebian->GetVelocity();
+
+    std::memcpy(dest->poseparam, Circlebian->GetPosePosition(), 24 * sizeof(float));
+
+    //not big deal proper anim fix
+}
+
+void CLagCompensation::RestoreNetvars(StoredNetvars *src, C_BasePlayer *Circlebian) {
+    Circlebian->GetVecOrigin() = src->origin;
+
+    Circlebian->GetFlags() = src->flags;
+    Circlebian->GetSimulationTime() = src->simulationtime;
+    *pEntity->GetMin() = src->min;
+    *pEntity->GetMax() = src->max;
+    *Circlebian->GetLowerBodyYawTarget() = src->lowerbodyyaw;
+    Circlebian->GetEyeAngles() = src->eyeangles;
+
+    Circlebian->GetSequence() = src->sequence;
+    Circlebian->GetCycle() = src->cycle;
+
+    Circlebian->GetVelocity() = src->velo;
+
+    std::memcpy(pEntity->GetPosePosition(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
+}
+
+float CLagCompensation::GetLerpTime() {
+    float updaterate = cvar->FindVar(XORSTR("cl_updaterate"))->GetFloat();
+    float ratio = cvar->FindVar(XORSTR("cl_interp_ratio"))->GetFloat();
+    float lerp = cvar->FindVar(XORSTR("cl_interp"))->GetFloat();
+
+    return max(lerp, ratio / updaterate);
+}
+
+float CLagCompensation::GetLatency(int type) {
+    INetChannelInfo *nci = engine->GetNetChannelInfo()
+
+    if (nci) {
+        return nci->GetLatency(type);
+    }
+
+    return 0.f;
+}
+
+bool CLagCompensation::isValidTick(int tick) {
+    if (TICKS_TO_TIME(pLocal->GetTickBase() - tick) < Math::ClampValue((.2f + GetLatency(FLOW_INCOMING) - GetLatency(FLOW_OUTGOING)), 0.f, .9f))
+        return true;
+
+    return false;
+}
+
+void CLagCompensation::SetValidTickCount(C_BasePlayer *Circlebian, CUserCmd* pCmd) {
+    int iEntityId = Circlebian->GetIndex();
+
+    // if (MenuOptions.Aimbot.g_checkBacktracked && pRecordRollback[iEntityId])
+    if (pRecordRollback[iEntityId]) {
+        pCmd->tick_count = TIME_TO_TICKS(pRecordRollback[iEntityId]->simulationtime + GetLerpTime());
+    }
+    else {
+        pCmd->tick_count = TIME_TO_TICKS(Circlebian->GetSimulationTime() + GetLerpTime());
+    }
+}
+
+void CLagCompensation::StoreDatas(C_BasePlayer *Circlebian) {
+    int iEntityId = Circlebian->GetIndex();
+
+    for (int j = 0; j < vecLagRecord[iEntityId].size(); ++j) {
+        if (!isValidTick(TIME_TO_TICKS(vecLagRecord[iEntityId][j].simulationtime + GetLerpTime()))) {
+            vecLagRecord[iEntityId].erase(vecLagRecord[iEntityId].begin() + j);
+            break;
+        }
+    }
+
+    //LOWERBODYUPDATE
+    static float flOldLowerBody[64];
+
+    float flCurLowerBody = *Circlebian->GetLowerBodyYawTarget();
+
+    bool bLbyUpdate = false;
+
+    if (flOldLowerBody[iEntityId] != flCurLowerBody) {
+        flOldLowerBody[iEntityId] = flCurLowerBody;
+        bLbyUpdate = true;
+    }
+
+    //CORE
+    static float flOldSimTime[64];
+
+    float flCurSimTime = Circlebian->GetSimulationTime();
+
+    if (fabs(flOldSimTime[Circlebian->GetIndex()] - flCurSimTime) > 5.f)
+        flOldSimTime[Circlebian->GetIndex()] = 0.f;
+
+    StoredNetvars LagRecord;
+
+    if (flOldSimTime[iEntityId] < flCurSimTime) {
+        SaveNetvars(&LagRecord, Circlebian);
+        LagRecord.lbyupdate = bLbyUpdate;
+
+        vecLagRecord[iEntityId].emplace_back(LagRecord);
+
+        flOldSimTime[iEntityId] = flCurSimTime;
+    }
+}
+
+int CLagCompensation::GetLastLbyRecord(C_BasePlayer *Circlebian) {
+    int iEntityId = Circlebian->GetIndex();
+
+    if (!pLocal)
+        return false;
+
+    if (Circlebian->GetTeam() == pLocal->GetTeam())
+        return -1;
+
+    if (vecLagRecord[iEntityId].empty())
+        return -1;
+
+    int result = -1;
+
+    for (int i = 0; i < vecLagRecord[iEntityId].size(); ++i) {
+        if (vecLagRecord[iEntityId][i].lbyupdate)
+            result = i;
+    }
+
+    return result;
+}
+
+void CLagCompensation::RestorePlayer(C_BasePlayer *Circlebian) {
+    //if (!MenuOptions.Aimbot.g_checkBacktracked)
+    //    return;
+
+    if (vecLagRecord[Circlebian->GetIndex()].empty())
+        return;
+
+    int bestLbyTarget = GetLastLbyRecord(Circlebian);
+    StoredNetvars *src;
+    if (bestLbyTarget != -1 && !pEntity->isMoving()) {
+        src = &vecLagRecord[Circlebian->GetIndex()][bestLbyTarget];
+    }
+    else {
+        src = &vecLagRecord[Circlebian->GetIndex()].back();
+    }
+
+    pRecordRollback[Circlebian->GetIndex()] = src;
+
+    RestoreNetvars(src, Circlebian);
+}
+
+bool CLagCompensation::isLbyUpdate(C_BasePlayer *Circlebian) {
+    //if (!MenuOptions.ESP.g_lbyUpdate)
+    //return false;
+
+    int iEntityId = Circlebian->GetIndex();
+
+    if (Circlebian->GetTeam() == pLocal->GetTeam())
+        return false;
+
+    if (vecLagRecord[iEntityId].empty())
+        return false;
+
+    for (int i = 0; i < vecLagRecord[iEntityId].size(); ++i) {
+        if (vecLagRecord[iEntityId][i].lbyupdate)
+            return true;
+    }
+
+    return false;
 }
 
 CTickRecord Resolver::GetShotRecord( C_BasePlayer* Circlebian ) {

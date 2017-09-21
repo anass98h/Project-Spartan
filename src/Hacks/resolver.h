@@ -9,10 +9,49 @@
 #include "../SDK/CTickRecord.h"
 #include <random>
 
+#define FLOW_OUTGOING	0
+#define FLOW_INCOMING	1
+#define MAX_FLOWS		2		// in & out
 
 #define TIME_TO_TICKS( dt )        ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
 #define TICKS_TO_TIME( t )        ( globalVars->interval_per_tick * ( t ) )
 
+struct StoredNetvars {
+    float lowerbodyyaw;
+    Vector origin;
+    Vector min;
+    Vector max;
+    int flags;
+    float simulationtime;
+    QAngle eyeangles;
+    float poseparam[24];
+    int sequence;
+    float cycle;
+
+    Vector velo;
+
+    bool lbyupdate;
+};
+
+class CLagCompensation {
+private:
+    void SaveNetvars(StoredNetvars *dest, C_BasePlayer *Circlebian);
+    void RestoreNetvars(StoredNetvars *src, C_BasePlayer *Circlebian);
+public:
+    std::vector<StoredNetvars> vecLagRecord[64];
+    StoredNetvars *pRecordRollback[64];
+
+    float GetLatency(int type);
+    bool isValidTick(int tick);
+    float GetLerpTime();
+    void SetValidTickCount(C_BasePlayer* Circlebian, CUserCmd* pCmd);
+    void StoreDatas(C_BasePlayer* Circlebian);
+    int GetLastLbyRecord(C_BasePlayer* Circlebian);
+    void RestorePlayer(C_BasePlayer* Circlebian);
+    bool isLbyUpdate(C_BasePlayer* Circlebian);
+};
+
+extern CLagCompensation LagCompensation;
 
 class CResolveInfo {
 
