@@ -25,7 +25,7 @@ int __attribute__ ((constructor)) Startup() {
     Hooker::FindSendClanTag();
     Hooker::FindSendPacket();
     Hooker::FindPrediction();
-    //Hooker::FindIsReadyCallback();
+    Hooker::FindIsReadyCallback();
     Hooker::FindSurfaceDrawing();
     Hooker::FindGetLocalClient();
     Hooker::FindLineGoesThroughSmoke();
@@ -97,7 +97,7 @@ int __attribute__ ((constructor)) Startup() {
          Hooker::HookRecvProp( "CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook ) )
         SkinChanger::sequenceHook->SetProxyFunction( ( RecvVarProxyFn ) SkinChanger::SetViewModelSequence );
 
-    NetVarManager::DumpNetvars();
+    //NetVarManager::DumpNetvars();
     Offsets::GetOffsets();
 
     Fonts::SetupFonts();

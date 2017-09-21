@@ -319,6 +319,7 @@ void Misc::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Fake Lag" ), &Settings::FakeLag::enabled );
                 ImGui::Checkbox( XORSTR( "Adaptive Fake Lag" ), &Settings::FakeLag::adaptive );
                 ImGui::Checkbox( XORSTR( "Auto Accept" ), &Settings::AutoAccept::enabled );
+                SetTooltip( XORSTR( "WARNING: This may crash your game." ) );
                 ImGui::Checkbox( XORSTR( "AirStuck" ), &Settings::Airstuck::enabled );
                 ImGui::Checkbox( XORSTR( "Autoblock" ), &Settings::Autoblock::enabled );
                 ImGui::Checkbox( XORSTR( "Jump Throw" ), &Settings::JumpThrow::enabled );
