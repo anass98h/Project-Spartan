@@ -159,8 +159,18 @@ public:
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
+    float* GetSimulationTimePointer() {
+        return ( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseEntity.m_flSimulationTime);
+    }
+
     int GetSequence() {
         return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nSequence);
+    }
+
+    int* GetSequencePointer() {
+        return ( int* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_nSequence);
     }
 
@@ -172,6 +182,36 @@ public:
     Vector GetVecForce() {
         return *( Vector* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_vecForce);
+    }
+
+    Vector GetMin() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMins);
+    }
+
+    Vector* GetMinPointer() {
+        return ( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMins);
+    }
+
+    Vector GetMax() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxs);
+    }
+
+    Vector* GetMaxPointer() {
+        return ( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxs);
+    }
+
+    Vector GetMinPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMinsPreScaled);
+    }
+
+    Vector GetMaxPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxsPreScaled);
     }
 
     int GetSkin() {
@@ -209,8 +249,13 @@ public:
         this + offsets.DT_BaseAnimating.m_flPlaybackRate);
     }
 
-    float GetPoseParameter() {
-        return *( float* ) ( ( uintptr_t ) 
+    std::array<float, 24> GetPoseParameter() {
+        return *( std::array<float, 24>* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flPoseParameter);
+    }
+
+    std::array<float, 24>* GetPoseParameterPointer() {
+        return ( std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
@@ -229,6 +274,11 @@ public:
         this + offsets.DT_ServerAnimationData.m_flCycle);
     }
 
+    float* GetCyclePointer() {
+        return ( float* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_flCycle);
+    }
+
     float GetFrozen() {
         return *( float* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_flFrozen);
@@ -238,14 +288,19 @@ public:
         return *( bool* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_bSuppressAnimSounds);
     }
-    
+
     TeamID GetTeam() {
-        return *( TeamID * )( ( uintptr_t )
+        return *( TeamID* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_iTeamNum);
     }
 
     Vector GetVecOrigin() {
         return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BaseEntity.m_vecOrigin);
+    }
+
+    Vector* GetVecOriginPointer() {
+        return ( Vector* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_vecOrigin);
     }
 
@@ -293,6 +348,11 @@ public:
         this + offsets.DT_BasePlayer.m_vecVelocity);
     }
 
+    Vector* GetVelocityPointer() {
+        return ( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BasePlayer.m_vecVelocity);
+    }
+
     int GetHealth() {
         return *( int* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_iHealth);
@@ -308,8 +368,13 @@ public:
         this + offsets.DT_BasePlayer.m_fFlags);
     }
 
+    int* GetFlagsPointer() {
+        return ( int* ) ( ( uintptr_t )
+        this + offsets.DT_BasePlayer.m_fFlags);
+    }
+
     ObserverMode_t* GetObserverMode() {
-        return ( ObserverMode_t * )( ( uintptr_t )
+        return ( ObserverMode_t* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_iObserverMode);
     }
 
@@ -474,7 +539,7 @@ public:
 class C_BaseAttributableItem : public C_BaseEntity {
 public:
     ItemDefinitionIndex* GetItemDefinitionIndex() {
-        return ( ItemDefinitionIndex * )( ( uintptr_t )
+        return ( ItemDefinitionIndex* ) ( ( uintptr_t )
         this + offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex);
     }
 
@@ -604,7 +669,7 @@ public:
     }
 
     CSWeaponType GetWeaponType() {
-        return *( CSWeaponType * )( ( uintptr_t )
+        return *( CSWeaponType* ) ( ( uintptr_t )
         this + 0x140);
     }
 

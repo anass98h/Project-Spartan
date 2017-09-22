@@ -22,6 +22,13 @@ struct COffsets {
     } DT_BasePlayer;
 
     struct {
+        std::ptrdiff_t m_vecMinsPreScaled;
+        std::ptrdiff_t m_vecMaxsPreScaled;
+        std::ptrdiff_t m_vecMins;
+        std::ptrdiff_t m_vecMaxs;
+    } DT_CollisionProperty;
+
+    struct {
         std::ptrdiff_t m_flAnimTime;
         std::ptrdiff_t m_flSimulationTime;
         std::ptrdiff_t m_vecOrigin;

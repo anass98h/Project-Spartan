@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-    NOAA,
+            NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -210,7 +210,7 @@ enum class ResolverHugtype : int {
     AUTISM,
     MYRRIBDELTA,
     MYRRIBDELTA2,
-    POSEPARAMMEME,
+    BACKTRACKLBY,
 };
 
 enum class cFont : int {
