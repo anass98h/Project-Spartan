@@ -4,7 +4,9 @@ static char nickname[127] = "";
 
 void Misc::RenderTab() {
     const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
-    const char* animationTypes[] = { "Static", "Curtime", "Marquee", "Words", "Letters" };
+    const char* animationTypes[] = {
+            "Static", "Curtime", "Marquee", "Words", "Letters", "Project Spartan", "cantvac.me"
+    };
     const char* spammerTypes[] = { "None", "Normal", "Positions" };
     const char* teams[] = { "Allies", "Enemies", "Both" };
 
@@ -238,32 +240,105 @@ void Misc::RenderTab() {
     {
         ImGui::BeginChild( XORSTR( "Child2" ), ImVec2( 0, 0 ), true );
         {
-            ImGui::Text( XORSTR( "Clantag" ) );
-            ImGui::Separator();
-            ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ClanTagChanger::enabled );
-            ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
-            {
-                ImGui::PushItemWidth( -1 );
-                if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-                ImGui::PopItemWidth();
+            static int page = 0;
+            const char* tabs[] = { "Clantag", "Name Changer" };
+            for(int i = 0; i < IM_ARRAYSIZE(tabs); i++) {
+                int distance = i == page ? 0 : i > page ? i - page : page - i;
 
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                ImGui::Text( XORSTR( "Animation Speed" ) );
+                ImVec4 previousCol = ImGui::GetStyle().Colors[ImGuiCol_Button];
+                ImGui::GetStyle().Colors[ImGuiCol_Button] = ImVec4(
+                        Settings::UI::mainColor.Color().Value.x - ( distance * 0.035f ),
+                        Settings::UI::mainColor.Color().Value.y - ( distance * 0.035f ),
+                        Settings::UI::mainColor.Color().Value.z - ( distance * 0.035f ),
+                        Settings::UI::mainColor.Color().Value.w
+                );
+
+                if ( ImGui::Button( tabs[i], ImVec2( ImGui::GetWindowSize().x / IM_ARRAYSIZE( tabs ) - 9, 0 ) ) ) {
+                    page = i;
+                }
+
+                ImGui::GetStyle().Colors[ImGuiCol_Button] = previousCol;
+
+                if ( i < IM_ARRAYSIZE( tabs ) - 1 ) {
+                    ImGui::SameLine();
+                }
             }
-            ImGui::NextColumn();
-            {
-                ImGui::PushItemWidth( -1 );
-                if ( ImGui::Combo( XORSTR( "##ANIMATIONTYPE" ), ( int* ) &Settings::ClanTagChanger::type,
-                                   animationTypes, IM_ARRAYSIZE( animationTypes ) ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-                if ( ImGui::SliderInt( XORSTR( "##ANIMATIONSPEED" ), &Settings::ClanTagChanger::animationSpeed, 0,
-                                       2000 ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-                ImGui::PopItemWidth();
+
+            ImGui::Separator();
+
+            switch(page) {
+                case 0:
+                    // Clantag
+                    ImGui::Checkbox( XORSTR( "ClanTag Changer" ), &Settings::ClanTagChanger::enabled );
+                    {
+                        ImGui::Separator();
+
+                        ClanTagType type = Settings::ClanTagChanger::type;
+                        ImGui::Columns( 2, NULL, true );
+                        {
+                            ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                            ImGui::Text( XORSTR( "Text" ) );
+                            ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                            ImGui::Text( XORSTR( "Type" ) );
+                            ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+
+                            if ( type != ClanTagType::STATIC && type != ClanTagType::CURTIME ) {
+                                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                                ImGui::Text( XORSTR( "Speed" ) );
+                                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                            }
+                        }
+                        ImGui::NextColumn();
+                        {
+                            ImGui::PushItemWidth( -1 );
+                            if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) ) {
+                                ClanTagChanger::UpdateClanTagCallback();
+                            }
+                            if ( ImGui::Combo( XORSTR( "##ANIMATIONTYPE" ), ( int* ) &Settings::ClanTagChanger::type,
+                                               animationTypes, IM_ARRAYSIZE( animationTypes ) ) ) {
+                                ClanTagChanger::UpdateClanTagCallback();
+                            }
+                            if ( type != ClanTagType::STATIC && type != ClanTagType::CURTIME ) {
+                                if ( ImGui::SliderInt( XORSTR( "##ANIMATIONSPEED" ),
+                                                       &Settings::ClanTagChanger::animationSpeed, 0,  2000 ) ) {
+                                    ClanTagChanger::UpdateClanTagCallback();
+                                }
+                            }
+                            ImGui::PopItemWidth();
+                        }
+                        ImGui::Columns( 1 );
+
+                        if(type == ClanTagType::CANTVAC) {
+                            Settings::ClanTagChanger::type = ClanTagType::MARQUEE;
+                            strcpy(Settings::ClanTagChanger::value, XORSTR("cantvac.me"));
+                            Settings::ClanTagChanger::animationSpeed = 300;
+                            if(Settings::ClanTagChanger::enabled) {
+                                ClanTagChanger::UpdateClanTagCallback();
+                            }
+                        }
+                        if(type == ClanTagType::SPARTAN) {
+                            Settings::ClanTagChanger::type = ClanTagType::MARQUEE;
+                            strcpy(Settings::ClanTagChanger::value, XORSTR("Project Spartan"));
+                            Settings::ClanTagChanger::animationSpeed = 300;
+                            if(Settings::ClanTagChanger::enabled) {
+                                ClanTagChanger::UpdateClanTagCallback();
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    // Name Changer
+
+                    break;
             }
-            ImGui::Columns( 1 );
+
+
+
+
+
+
+
+            /*
             ImGui::Separator();
             ImGui::Text( XORSTR( "Nickname" ) );
             ImGui::Separator();
@@ -310,7 +385,8 @@ void Misc::RenderTab() {
                 ImGui::Combo( "", &Settings::NameStealer::team, teams, IM_ARRAYSIZE( teams ) );
             }
 
-            ImGui::Columns( 1 );
+            ImGui::Columns( 1 );*/
+
             ImGui::Separator();
             ImGui::Text( XORSTR( "Other" ) );
             ImGui::Separator();

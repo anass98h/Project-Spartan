@@ -39,6 +39,8 @@ enum class ClanTagType : int {
     MARQUEE,
     WORDS,
     LETTERS,
+    SPARTAN,
+    CANTVAC,
 };
 
 enum class AutostrafeType : int {
