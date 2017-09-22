@@ -16,6 +16,7 @@ void CLagCompensation2::SaveNetvars( StoredNetvars* dest, C_BasePlayer* player )
     dest->max = player->GetMax();
     dest->lby = *player->GetLowerBodyYawTarget();
     dest->eyeangles = *player->GetEyeAngles();
+    dest->headpos = player->GetBonePosition( ( int ) Bone::BONE_HEAD );
 
     dest->sequence = player->GetSequence();
     dest->cycle = player->GetCycle();

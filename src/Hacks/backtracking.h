@@ -37,6 +37,7 @@ struct StoredNetvars {
     int flags;
     float simulationtime;
     QAngle eyeangles;
+    Vector headpos;
     std::array<float, 24> poseparam;
     int sequence;
     float cycle;
