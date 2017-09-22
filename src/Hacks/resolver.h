@@ -8,7 +8,6 @@
 #include "../Utils/entity.h"
 #include "../SDK/CTickRecord.h"
 #include <random>
-#include "backtracking.h"
 
 
 #define TIME_TO_TICKS( dt )        ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )

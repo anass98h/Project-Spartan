@@ -43,7 +43,5 @@ namespace Math {
 
     void AngleVectors2( Vector& qAngles, Vector& vecForward );
 
-    float Clamp( float value, float min, float max );
-
     float ClampYaw( float val );
 }
