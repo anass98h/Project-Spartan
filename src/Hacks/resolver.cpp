@@ -78,7 +78,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
     switch ( Settings::Resolver::Hugtype ) {
        case ResolverHugtype::RASP: {
             if (HasStaticRealAngle(cur)) {
-                player->GetEyeAngles()->y = player->GetPoseParameter() * 360 - 180;
+                player->GetEyeAngles()->y = player->GetPoseParameter()[1] * 360 - 180;
                 }
              else if (HasSteadyDifference(cur)) {
                 float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);

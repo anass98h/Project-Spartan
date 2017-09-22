@@ -22,7 +22,11 @@ void CLagCompensation2::SaveNetvars(StoredNetvars *dest, C_BasePlayer *player) {
 
     dest->velo = player->GetVelocity();
 
-    std::memcpy(dest->poseparam, player->GetPoseParameter(), 24 * sizeof(float));
+    std::array<float, 24> p = player->GetPoseParameter();
+    std::array<float, 24> save = dest->poseparam;
+
+    //std::memcpy(dest->poseparam, pEntity->GetPosePosition(), 24 * sizeof(float));
+    std::memcpy(&save, &p, 24 * sizeof(float));
 
     //not big deal proper anim fix
 }
@@ -42,7 +46,11 @@ void CLagCompensation2::RestoreNetvars(StoredNetvars *src, C_BasePlayer *player)
 
     *player->GetVelocityPointer() = src->velo;
 
-    std::memcpy(player->GetPoseParameter(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
+    std::array<float, 24> save = src->poseparam;
+    std::array<float, 24> p = player->GetPoseParameter();
+
+    //std::memcpy(player->GetPoseParameter(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
+    std::memcpy(&p, &save, 24 * sizeof(float)); //skeet way of doing shit
 }
 
 float CLagCompensation2::GetLerpTime() {
@@ -50,7 +58,7 @@ float CLagCompensation2::GetLerpTime() {
     float ratio = cvar->FindVar(XORSTR("cl_interp_ratio"))->GetFloat();
     float lerp = cvar->FindVar(XORSTR("cl_interp"))->GetFloat();
 
-    return max(lerp, ratio / updaterate);
+    return std::max(lerp, ratio / updaterate);
 }
 
 float CLagCompensation2::GetLatency(int type) {
@@ -64,7 +72,7 @@ float CLagCompensation2::GetLatency(int type) {
 }
 
 bool CLagCompensation2::isValidTick(int tick) {
-    if (TICKS_TO_TIME(pLocal->GetTickBase() - tick) < std::clamp((.2f + GetLatency(FLOW_INCOMING) - GetLatency(FLOW_OUTGOING)), 0.f, .9f))
+    if (TICKS_TO_TIME(pLocal->GetTickBase() - tick) < Math::Clamp((.2f + GetLatency(FLOW_INCOMING) - GetLatency(FLOW_OUTGOING)), 0.f, .9f))
         return true;
 
     return false;

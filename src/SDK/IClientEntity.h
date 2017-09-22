@@ -160,7 +160,7 @@ public:
     }
 
     float* GetSimulationTimePointer() {
-        return *( float* ) ( ( uintptr_t )
+        return ( float* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
@@ -170,7 +170,7 @@ public:
     }
 
     int* GetSequencePointer() {
-        return *( int* ) ( ( uintptr_t )
+        return ( int* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_nSequence);
     }
 
@@ -190,7 +190,7 @@ public:
     }
 
     Vector* GetMinPointer() {
-        return *( Vector* ) ( ( uintptr_t )
+        return ( Vector* ) ( ( uintptr_t )
         this + offsets.DT_CollisionProperty.m_vecMins);
     }
 
@@ -200,7 +200,7 @@ public:
     }
 
     Vector* GetMaxPointer() {
-        return *( Vector* ) ( ( uintptr_t )
+        return ( Vector* ) ( ( uintptr_t )
         this + offsets.DT_CollisionProperty.m_vecMaxs);
     }
 
@@ -249,8 +249,13 @@ public:
         this + offsets.DT_BaseAnimating.m_flPlaybackRate);
     }
 
-    float GetPoseParameter() {
-        return *( float* ) ( ( uintptr_t ) 
+    std::array<float, 24> GetPoseParameter() {
+        return *(  std::array<float, 24>* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_flPoseParameter);
+    }
+
+    std::array<float, 24>* GetPoseParameterPointer() {
+        return (  std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
@@ -270,7 +275,7 @@ public:
     }
 
     float* GetCyclePointer() {
-        return *( float* ) ( ( uintptr_t )
+        return ( float* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_flCycle);
     }
 
@@ -295,7 +300,7 @@ public:
     }
 
     Vector* GetVecOriginPointer() {
-        return *( Vector* ) ( ( uintptr_t )
+        return ( Vector* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_vecOrigin);
     }
 
@@ -344,7 +349,7 @@ public:
     }
 
     Vector* GetVelocityPointer() {
-        return *( Vector* ) ( ( uintptr_t )
+        return ( Vector* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_vecVelocity);
     }
 
@@ -364,7 +369,7 @@ public:
     }
 
     int* GetFlagsPointer() {
-        return *( int* ) ( ( uintptr_t )
+        return ( int* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_fFlags);
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <algorithm>
 #include <map>
 #include "../interfaces.h"
 #include "../settings.h"
@@ -36,7 +37,7 @@ struct StoredNetvars {
     int flags;
     float simulationtime;
     QAngle eyeangles;
-    float poseparam[24];
+    std::array<float, 24> poseparam;
     int sequence;
     float cycle;
 
@@ -50,7 +51,7 @@ private:
     void SaveNetvars(StoredNetvars *dest, C_BasePlayer *player);
     void RestoreNetvars(StoredNetvars *src, C_BasePlayer *player);
 public:
-    std::Vector<StoredNetvars> vecLagRecord[64];
+    std::vector<StoredNetvars> vecLagRecord[64];
     StoredNetvars *pRecordRollback[64];
 
     float GetLatency(int type);
