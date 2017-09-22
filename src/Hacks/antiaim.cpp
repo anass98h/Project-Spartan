@@ -807,7 +807,7 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                         }
                     }
                 break;
-                case AntiAimType_Y::FEETWIGGLE:
+                case AntiAimType_Y::RASP2:  // get your own dank names :feelsmocked:
                  static bool flip1 = false;
                 static float prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
@@ -830,7 +830,44 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                         engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
 
+                case AntiAimType_Y::FEETWIGGLE:
 
+                    bool MarcisAWeeb;
+                float oldyaw = *((C_BasePlayer *) entityList->GetClientEntity(
+                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+
+                if (MarcisAWeeb) {
+                    angle.y -= 180.0f;
+
+                    *((C_BasePlayer *) entityList->GetClientEntity(
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() += 45.0f;
+
+                    MarcisAWeeb = false;
+                } else {
+                    angle.y -= 180.0f;
+
+                    *((C_BasePlayer *) entityList->GetClientEntity(
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= 45.0f;
+
+
+
+                    MarcisAWeeb = true;
+                }
+                float Diff = *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget()   - AntiAim::lastRealYaw;
+
+                if (oldyaw == *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget()) {
+
+                    angle.y += oldyaw / 2 + 133;
+                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= oldyaw / 3 + 133;
+                }
+
+                if ( std::abs( Diff ) <= 35.0f )
+                {
+                    angle.y /= M_PI ;
+                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() /= M_PHI;
+                        
+                }
+                break;
             }
     }
 
