@@ -159,7 +159,17 @@ public:
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
+    float* GetSimulationTimePointer() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseEntity.m_flSimulationTime);
+    }
+
     int GetSequence() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nSequence);
+    }
+
+    int* GetSequencePointer() {
         return *( int* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_nSequence);
     }
@@ -229,6 +239,11 @@ public:
         this + offsets.DT_ServerAnimationData.m_flCycle);
     }
 
+    float* GetCyclePointer() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_flCycle);
+    }
+
     float GetFrozen() {
         return *( float* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_flFrozen);
@@ -245,6 +260,11 @@ public:
     }
 
     Vector GetVecOrigin() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BaseEntity.m_vecOrigin);
+    }
+
+    Vector* GetVecOriginPointer() {
         return *( Vector* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_vecOrigin);
     }
@@ -293,6 +313,11 @@ public:
         this + offsets.DT_BasePlayer.m_vecVelocity);
     }
 
+    Vector* GetVelocityPointer() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_BasePlayer.m_vecVelocity);
+    }
+
     int GetHealth() {
         return *( int* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_iHealth);
@@ -304,6 +329,11 @@ public:
     }
 
     int GetFlags() {
+        return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BasePlayer.m_fFlags);
+    }
+
+    int* GetFlagsPointer() {
         return *( int* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_fFlags);
     }

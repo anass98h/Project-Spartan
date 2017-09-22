@@ -210,6 +210,7 @@ enum class ResolverHugtype : int {
     MYRRIBDELTA,
     MYRRIBDELTA2,
     POSEPARAMMEME,
+    BACKTRACKLBY,
 };
 
 enum class cFont : int {
