@@ -73,7 +73,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-    NOAA,
+            NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,

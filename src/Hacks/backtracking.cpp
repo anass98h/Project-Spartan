@@ -7,7 +7,7 @@ int previousLagCompensation = -1;
 
 C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
 
-void CLagCompensation2::SaveNetvars(StoredNetvars *dest, C_BasePlayer *player) {
+void CLagCompensation2::SaveNetvars( StoredNetvars* dest, C_BasePlayer* player ) {
     dest->origin = player->GetVecOrigin();
 
     dest->flags = player->GetFlags();
@@ -26,12 +26,12 @@ void CLagCompensation2::SaveNetvars(StoredNetvars *dest, C_BasePlayer *player) {
     std::array<float, 24> save = dest->poseparam;
 
     //std::memcpy(dest->poseparam, pEntity->GetPosePosition(), 24 * sizeof(float));
-    std::memcpy(&save, &p, 24 * sizeof(float));
+    std::memcpy( &save, &p, 24 * sizeof( float ) );
 
     //not big deal proper anim fix
 }
 
-void CLagCompensation2::RestoreNetvars(StoredNetvars *src, C_BasePlayer *player) {
+void CLagCompensation2::RestoreNetvars( StoredNetvars* src, C_BasePlayer* player ) {
     *player->GetVecOriginPointer() = src->origin;
 
     *player->GetFlagsPointer() = src->flags;
@@ -50,51 +50,51 @@ void CLagCompensation2::RestoreNetvars(StoredNetvars *src, C_BasePlayer *player)
     std::array<float, 24> p = player->GetPoseParameter();
 
     //std::memcpy(player->GetPoseParameter(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
-    std::memcpy(&p, &save, 24 * sizeof(float)); //skeet way of doing shit
+    std::memcpy( &p, &save, 24 * sizeof( float ) ); //skeet way of doing shit
 }
 
 float CLagCompensation2::GetLerpTime() {
-    float updaterate = cvar->FindVar(XORSTR("cl_updaterate"))->GetFloat();
-    float ratio = cvar->FindVar(XORSTR("cl_interp_ratio"))->GetFloat();
-    float lerp = cvar->FindVar(XORSTR("cl_interp"))->GetFloat();
+    float updaterate = cvar->FindVar( XORSTR( "cl_updaterate" ) )->GetFloat();
+    float ratio = cvar->FindVar( XORSTR( "cl_interp_ratio" ) )->GetFloat();
+    float lerp = cvar->FindVar( XORSTR( "cl_interp" ) )->GetFloat();
 
-    return std::max(lerp, ratio / updaterate);
+    return std::max( lerp, ratio / updaterate );
 }
 
-float CLagCompensation2::GetLatency(int type) {
-    INetChannelInfo *nci = engine->GetNetChannelInfo();
+float CLagCompensation2::GetLatency( int type ) {
+    INetChannelInfo* nci = engine->GetNetChannelInfo();
 
-    if (nci) {
-        return nci->GetLatency(type);
+    if ( nci ) {
+        return nci->GetLatency( type );
     }
 
     return 0.f;
 }
 
-bool CLagCompensation2::isValidTick(int tick) {
-    if (TICKS_TO_TIME(pLocal->GetTickBase() - tick) < Math::Clamp((.2f + GetLatency(FLOW_INCOMING) - GetLatency(FLOW_OUTGOING)), 0.f, .9f))
+bool CLagCompensation2::isValidTick( int tick ) {
+    if ( TICKS_TO_TIME( pLocal->GetTickBase() - tick ) <
+         Math::Clamp( ( .2f + GetLatency( FLOW_INCOMING ) - GetLatency( FLOW_OUTGOING ) ), 0.f, .9f ) )
         return true;
 
     return false;
 }
 
-void CLagCompensation2::SetValidTickCount(C_BasePlayer* player, CUserCmd* pCmd) {
+void CLagCompensation2::SetValidTickCount( C_BasePlayer* player, CUserCmd* pCmd ) {
     int iEntityId = player->GetIndex();
 
-    if (Settings::Resolver::LagComp && pRecordRollback[iEntityId]) {
-        pCmd->tick_count = TIME_TO_TICKS(pRecordRollback[iEntityId]->simulationtime + GetLerpTime());
-    }
-    else {
-        pCmd->tick_count = TIME_TO_TICKS(player->GetSimulationTime() + GetLerpTime());
+    if ( Settings::Resolver::LagComp && pRecordRollback[iEntityId] ) {
+        pCmd->tick_count = TIME_TO_TICKS( pRecordRollback[iEntityId]->simulationtime + GetLerpTime() );
+    } else {
+        pCmd->tick_count = TIME_TO_TICKS( player->GetSimulationTime() + GetLerpTime() );
     }
 }
 
-void CLagCompensation2::StoreDatas(C_BasePlayer* player) {
+void CLagCompensation2::StoreDatas( C_BasePlayer* player ) {
     int iEntityId = player->GetIndex();
 
-    for (int j = 0; j < vecLagRecord[iEntityId].size(); ++j) {
-        if (!isValidTick(TIME_TO_TICKS(vecLagRecord[iEntityId][j].simulationtime + GetLerpTime()))) {
-            vecLagRecord[iEntityId].erase(vecLagRecord[iEntityId].begin() + j);
+    for ( int j = 0; j < vecLagRecord[iEntityId].size(); ++j ) {
+        if ( !isValidTick( TIME_TO_TICKS( vecLagRecord[iEntityId][j].simulationtime + GetLerpTime() ) ) ) {
+            vecLagRecord[iEntityId].erase( vecLagRecord[iEntityId].begin() + j );
             break;
         }
     }
@@ -106,7 +106,7 @@ void CLagCompensation2::StoreDatas(C_BasePlayer* player) {
 
     bool bLbyUpdate = false;
 
-    if (flOldLowerBody[iEntityId] != flCurLowerBody) {
+    if ( flOldLowerBody[iEntityId] != flCurLowerBody ) {
         flOldLowerBody[iEntityId] = flCurLowerBody;
         bLbyUpdate = true;
     }
@@ -116,99 +116,98 @@ void CLagCompensation2::StoreDatas(C_BasePlayer* player) {
 
     float flCurSimTime = player->GetSimulationTime();
 
-    if (fabs(flOldSimTime[player->GetIndex()] - flCurSimTime) > 5.f)
+    if ( fabs( flOldSimTime[player->GetIndex()] - flCurSimTime ) > 5.f )
         flOldSimTime[player->GetIndex()] = 0.f;
 
     StoredNetvars LagRecord;
 
-    if (flOldSimTime[iEntityId] < flCurSimTime) {
-        SaveNetvars(&LagRecord, player);
+    if ( flOldSimTime[iEntityId] < flCurSimTime ) {
+        SaveNetvars( &LagRecord, player );
         LagRecord.lbyupdate = bLbyUpdate;
 
-        vecLagRecord[iEntityId].emplace_back(LagRecord);
+        vecLagRecord[iEntityId].emplace_back( LagRecord );
 
         flOldSimTime[iEntityId] = flCurSimTime;
     }
 }
 
-int CLagCompensation2::GetLastLbyRecord(C_BasePlayer* player) {
+int CLagCompensation2::GetLastLbyRecord( C_BasePlayer* player ) {
     int iEntityId = player->GetIndex();
 
-    if (!pLocal)
+    if ( !pLocal )
         return false;
 
-    if (player->GetTeam() == pLocal->GetTeam())
+    if ( player->GetTeam() == pLocal->GetTeam() )
         return -1;
 
-    if (vecLagRecord[iEntityId].empty())
+    if ( vecLagRecord[iEntityId].empty() )
         return -1;
 
     int result = -1;
 
-    for (int i = 0; i < vecLagRecord[iEntityId].size(); ++i) {
-        if (vecLagRecord[iEntityId][i].lbyupdate)
+    for ( int i = 0; i < vecLagRecord[iEntityId].size(); ++i ) {
+        if ( vecLagRecord[iEntityId][i].lbyupdate )
             result = i;
     }
 
     return result;
 }
 
-void CLagCompensation2::RestorePlayer(C_BasePlayer* player) {
+void CLagCompensation2::RestorePlayer( C_BasePlayer* player ) {
     //if (!Settings::Resolver::LagComp)
     //    return;
 
     static bool isMoving = false;
 
-    if (fabsf(player->GetVelocity().Length2D()))
+    if ( fabsf( player->GetVelocity().Length2D() ) )
         isMoving = true;
     else
         isMoving = false;
 
-    if (vecLagRecord[player->GetIndex()].empty())
+    if ( vecLagRecord[player->GetIndex()].empty() )
         return;
 
-    int bestLbyTarget = GetLastLbyRecord(player);
-    StoredNetvars *src;
-    if (bestLbyTarget != -1 && !isMoving) {
+    int bestLbyTarget = GetLastLbyRecord( player );
+    StoredNetvars* src;
+    if ( bestLbyTarget != -1 && !isMoving ) {
         src = &vecLagRecord[player->GetIndex()][bestLbyTarget];
-    }
-    else {
+    } else {
         src = &vecLagRecord[player->GetIndex()].back();
     }
 
     pRecordRollback[player->GetIndex()] = src;
 
-    RestoreNetvars(src, player);
+    RestoreNetvars( src, player );
 }
 
-bool CLagCompensation2::isLbyUpdate(C_BasePlayer* player) {
+bool CLagCompensation2::isLbyUpdate( C_BasePlayer* player ) {
     //if (!MenuOptions.ESP.g_lbyUpdate)
     //return false;
 
     int iEntityId = player->GetIndex();
 
-    if (player->GetTeam() == pLocal->GetTeam())
+    if ( player->GetTeam() == pLocal->GetTeam() )
         return false;
 
-    if (vecLagRecord[iEntityId].empty())
+    if ( vecLagRecord[iEntityId].empty() )
         return false;
 
-    for (int i = 0; i < vecLagRecord[iEntityId].size(); ++i) {
-        if (vecLagRecord[iEntityId][i].lbyupdate)
+    for ( int i = 0; i < vecLagRecord[iEntityId].size(); ++i ) {
+        if ( vecLagRecord[iEntityId][i].lbyupdate )
             return true;
     }
 
     return false;
 }
 
-void CLagCompensation2::Store(C_BasePlayer *player) {
+void CLagCompensation2::Store( C_BasePlayer* player ) {
     CLagCompensation2 lagComp;
-    lagComp.StoreDatas(player);
+    lagComp.StoreDatas( player );
 }
 
-void CLagCompensation2::Restore(C_BasePlayer *player) {
+void CLagCompensation2::Restore( C_BasePlayer* player ) {
     CLagCompensation2 lagComp;
-    lagComp.RestorePlayer(player);
+    lagComp.RestorePlayer( player );
 }
 
 void Backtracking::RestorePosition( int playerIndex, int tickDiff ) {

@@ -76,16 +76,15 @@ void Resolver::Hug( C_BasePlayer* player ) {
     }
 
     switch ( Settings::Resolver::Hugtype ) {
-       case ResolverHugtype::RASP: {
-            if (HasStaticRealAngle(cur)) {
+        case ResolverHugtype::RASP: {
+            if ( HasStaticRealAngle( cur ) ) {
                 player->GetEyeAngles()->y = player->GetPoseParameter()[1] * 360 - 180;
-                }
-             else if (HasSteadyDifference(cur)) {
-                float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
-                float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
+            } else if ( HasSteadyDifference( cur ) ) {
+                float tickdif = static_cast<float> (cur.front().tickcount - cur.at( 1 ).tickcount);
+                float lbydif = GetDelta( cur.front().m_flLowerBodyYawTarget, cur.at( 1 ).m_flLowerBodyYawTarget );
                 float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
                 int num4 = Shotsmissed % 6;
-                switch (num4) {
+                switch ( num4 ) {
                     case 0:
                         player->GetEyeAngles()->y -= 90.0f;
                         num4++;
@@ -110,20 +109,20 @@ void Resolver::Hug( C_BasePlayer* player ) {
                         player->GetEyeAngles()->y = -30.0f;
                         num4 = 0;
                         break;
-            }} else if (LBYKeepsChanging(cur))
-                player->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
+                }
+            } else if ( LBYKeepsChanging( cur ) )
+                player->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
 
-            else if (!(LowerBodyYawChanged(player))) {
+            else if ( !( LowerBodyYawChanged( player ) ) ) {
                 float fwyaw = 0;
-                float LBY = (cur.front().m_flLowerBodyYawTarget);
+                float LBY = ( cur.front().m_flLowerBodyYawTarget );
 
-                if (player->GetEyeAngles()->y == LBY || player->GetEyeAngles()->y == (LBY + 90) ||
-                    player->GetEyeAngles()->y == (LBY - 90)) {
+                if ( player->GetEyeAngles()->y == LBY || player->GetEyeAngles()->y == ( LBY + 90 ) ||
+                     player->GetEyeAngles()->y == ( LBY - 90 ) ) {
                     int numa = Shotsmissed % 4;
-                    switch (numa)
-                    {
+                    switch ( numa ) {
                         case 0:
-                            player->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget) - 15;
+                            player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget ) - 15;
                             break;
                         case 1:
                             player->GetEyeAngles()->y += 40;
@@ -137,14 +136,13 @@ void Resolver::Hug( C_BasePlayer* player ) {
                     }
 
                 }
-            }
-                else {
-                    if ( player->GetVelocity().x  > 1 || player->GetVelocity().x < 1) {
+            } else {
+                if ( player->GetVelocity().x > 1 || player->GetVelocity().x < 1 ) {
 
-                        player->GetEyeAngles()->y = (cur.front().m_flLowerBodyYawTarget);
-                    }
+                    player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget );
                 }
-                break;
+            }
+            break;
 
         }
         case ResolverHugtype::BRUTEHIV: {
@@ -508,10 +506,10 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
             if ( lbyUpdated ) {
                 player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
-                CLagCompensation2::Store(player);
+                CLagCompensation2::Store( player );
                 nextUpdate = curTime + 1.1f;
             } else if ( !onGround ) {
-              nextUpdate = curTime + 1.1f;
+                nextUpdate = curTime + 1.1f;
             } else {
                 if ( Shotsmissed > 2 ) {
                     if ( staticAngle ) {
@@ -633,7 +631,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                         }
                     }
                 } else {
-                    CLagCompensation2::Restore(player);
+                    CLagCompensation2::Restore( player );
                 }
             }
         }

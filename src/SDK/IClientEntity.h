@@ -250,12 +250,12 @@ public:
     }
 
     std::array<float, 24> GetPoseParameter() {
-        return *(  std::array<float, 24>* ) ( ( uintptr_t )
+        return *( std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
     std::array<float, 24>* GetPoseParameterPointer() {
-        return (  std::array<float, 24>* ) ( ( uintptr_t )
+        return ( std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
@@ -288,9 +288,9 @@ public:
         return *( bool* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_bSuppressAnimSounds);
     }
-    
+
     TeamID GetTeam() {
-        return *( TeamID * )( ( uintptr_t )
+        return *( TeamID* ) ( ( uintptr_t )
         this + offsets.DT_BaseEntity.m_iTeamNum);
     }
 
@@ -374,7 +374,7 @@ public:
     }
 
     ObserverMode_t* GetObserverMode() {
-        return ( ObserverMode_t * )( ( uintptr_t )
+        return ( ObserverMode_t* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_iObserverMode);
     }
 
@@ -539,7 +539,7 @@ public:
 class C_BaseAttributableItem : public C_BaseEntity {
 public:
     ItemDefinitionIndex* GetItemDefinitionIndex() {
-        return ( ItemDefinitionIndex * )( ( uintptr_t )
+        return ( ItemDefinitionIndex* ) ( ( uintptr_t )
         this + offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex);
     }
 
@@ -669,7 +669,7 @@ public:
     }
 
     CSWeaponType GetWeaponType() {
-        return *( CSWeaponType * )( ( uintptr_t )
+        return *( CSWeaponType* ) ( ( uintptr_t )
         this + 0x140);
     }
 
