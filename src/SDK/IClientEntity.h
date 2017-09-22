@@ -184,6 +184,36 @@ public:
         this + offsets.DT_BaseAnimating.m_vecForce);
     }
 
+    Vector GetMin() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMins);
+    }
+
+    Vector* GetMinPointer() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMins);
+    }
+
+    Vector GetMax() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxs);
+    }
+
+    Vector* GetMaxPointer() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxs);
+    }
+
+    Vector GetMinPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMinsPreScaled);
+    }
+
+    Vector GetMaxPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxsPreScaled);
+    }
+
     int GetSkin() {
         return *( int* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_nSkin);

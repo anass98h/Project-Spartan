@@ -475,9 +475,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
             }
         }
         case ResolverHugtype::BACKTRACKLBY: {
-            if (!Settings::Resolver::LagComp)
-                Settings::Resolver::LagComp = true;
-
             static bool lbyUpdated = false;
             static bool staticAngle = false;
 

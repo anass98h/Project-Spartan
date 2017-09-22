@@ -12,8 +12,8 @@ void CLagCompensation2::SaveNetvars(StoredNetvars *dest, C_BasePlayer *player) {
 
     dest->flags = player->GetFlags();
     dest->simulationtime = player->GetSimulationTime();
-    dest->min = *pEntity->GetMin();
-    dest->max = *pEntity->GetMax();
+    dest->min = player->GetMin();
+    dest->max = player->GetMax();
     dest->lby = *player->GetLowerBodyYawTarget();
     dest->eyeangles = *player->GetEyeAngles();
 
@@ -22,7 +22,7 @@ void CLagCompensation2::SaveNetvars(StoredNetvars *dest, C_BasePlayer *player) {
 
     dest->velo = player->GetVelocity();
 
-    std::memcpy(dest->poseparam, pEntity->GetPosePosition(), 24 * sizeof(float));
+    std::memcpy(dest->poseparam, player->GetPoseParameter(), 24 * sizeof(float));
 
     //not big deal proper anim fix
 }
@@ -32,8 +32,8 @@ void CLagCompensation2::RestoreNetvars(StoredNetvars *src, C_BasePlayer *player)
 
     *player->GetFlagsPointer() = src->flags;
     *player->GetSimulationTimePointer() = src->simulationtime;
-    *pEntity->GetMin() = src->min;
-    *pEntity->GetMax() = src->max;
+    *player->GetMinPointer() = src->min;
+    *player->GetMaxPointer() = src->max;
     *player->GetLowerBodyYawTarget() = src->lby;
     *player->GetEyeAngles() = src->eyeangles;
 
@@ -42,7 +42,7 @@ void CLagCompensation2::RestoreNetvars(StoredNetvars *src, C_BasePlayer *player)
 
     *player->GetVelocityPointer() = src->velo;
 
-    std::memcpy(pEntity->GetPosePosition(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
+    std::memcpy(player->GetPoseParameter(), src->poseparam, 24 * sizeof(float)); //skeet way of doing shit
 }
 
 float CLagCompensation2::GetLerpTime() {
@@ -146,8 +146,8 @@ int CLagCompensation2::GetLastLbyRecord(C_BasePlayer* player) {
 }
 
 void CLagCompensation2::RestorePlayer(C_BasePlayer* player) {
-    if (!Settings::Resolver::LagComp)
-        return;
+    //if (!Settings::Resolver::LagComp)
+    //    return;
 
     static bool isMoving = false;
 
