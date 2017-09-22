@@ -474,26 +474,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 }
             }
         }
-        case ResolverHugtype::POSEPARAMMEME: {
-            static bool lbyUpdated = false;
-
-            float curTime = globalVars->curtime;
-            bool onGround = ( player->GetFlags() & FL_ONGROUND );
-            bool isMoving = ( player->GetVelocity().Length2D() > 1 );
-            static float nextUpdate;
-
-            if ( onGround && curTime > nextUpdate || onGround && isMoving )
-                lbyUpdated = true;
-            else
-                lbyUpdated = false;
-
-            if ( lbyUpdated ) {
-                player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
-                nextUpdate = curTime + 1.1f;
-            } else {
-                player->GetEyeAngles()->y = player->GetPoseParameter() * 360 - 180;
-            }
-        }
         case ResolverHugtype::BACKTRACKLBY: {
             if (!Settings::Resolver::LagComp)
                 Settings::Resolver::LagComp = true;

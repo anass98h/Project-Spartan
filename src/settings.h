@@ -209,7 +209,6 @@ enum class ResolverHugtype : int {
     AUTISM,
     MYRRIBDELTA,
     MYRRIBDELTA2,
-    POSEPARAMMEME,
     BACKTRACKLBY,
 };
 
