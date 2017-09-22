@@ -1,16 +1,6 @@
 #include "math.h"
 #include "../settings.h"
 
-float Math::Clamp( float value, float min, float max ) {
-    if ( value < min )
-        return min;
-
-    if ( value > max )
-        return max;
-
-    return value;
-}
-
 void inline Math::SinCos( float radians, float* sine, float* cosine ) {
     register double __cosr, __sinr;
     __asm ("fsincos" : "=t" (__cosr), "=u" (__sinr) : "0" (radians));
