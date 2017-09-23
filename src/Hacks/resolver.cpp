@@ -14,14 +14,21 @@ bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
+LagComp Lagcomp;
 
-static void StartLagComp() {
+static void StartLagComp(C_BasePlayer* ribrib) {
+  if (!engine->IsInGame())
+      return;
+
     if (Settings::Resolver::Hugtype != ResolverHugtype::BACKTRACKLBY)
         Settings::Resolver::Hugtype = ResolverHugtype::BACKTRACKLBY;
 
     if (Settings::Aimbot::backtrack)
        Settings::Aimbot::backtrack = false;
 
+
+    Lagcomp.StoreData(ribrib);
+    Lagcomp.RestorePlayer(ribrib);
     /*if (!engine->IsInGame()) {
         ConVar* interp = cvar->FindVar( XORSTR( "cl_interp" ) );
         ConVar* interpolate = cvar->FindVar( XORSTR( "cl_interpolate" ) );
@@ -36,6 +43,7 @@ static void StartLagComp() {
         if (lagcomp->GetInt() != 1)
             lagcomp->SetValue("1");
     }*/
+
 }
 
 void LagComp::Store(StoredNetvars* dest, C_BasePlayer* player) {
@@ -111,7 +119,36 @@ float LagComp::GetLerpTime() {
 
     return std::max(lerp, ratio / updaterate);
 }
+float LagComp::GetLatency(int type) {
+    INetChannelInfo *nci = engine->GetNetChannelInfo();
 
+    if (nci) {
+        return nci->GetLatency(type);
+    }
+
+    return 0.f;
+}
+
+bool LagComp::isValidTick(int tick , C_BasePlayer* pLocal) {
+    float t1 = pLocal->GetTickBase() - tick;
+
+
+    if (TICKS_TO_TIME( t1 ) < Math::Clamp((.2f + GetLatency(FLOW_INCOMING) - GetLatency(FLOW_OUTGOING)), 0.f, .9f) )
+        return true;
+
+    return false;
+}
+
+void LagComp::SetValidTickCount(C_BasePlayer* pEntity, CUserCmd* pCmd) {
+    int iEntityId = pEntity->GetIndex();
+
+    if (Settings::Resolver::LagComp && pRecordRollback[iEntityId]) {
+        pCmd->tick_count = TIME_TO_TICKS(pRecordRollback[iEntityId]->simulationTime + GetLerpTime());
+    }
+    else {
+        pCmd->tick_count = TIME_TO_TICKS(pEntity->GetSimulationTime() + GetLerpTime());
+    }
+}
 void LagComp::StoreData(C_BasePlayer *player) {
     if (!engine->IsInGame())
         return;
@@ -124,7 +161,7 @@ void LagComp::StoreData(C_BasePlayer *player) {
     int iEntityId = player->GetIndex();
 
     for (int j = 0; j < vecLagRecord[iEntityId].size(); ++j) {
-        if (!isValidTick(TIME_TO_TICKS(vecLagRecord[iEntityId][j].simulationTime + GetLerpTime()))) {
+        if (!isValidTick(TIME_TO_TICKS(vecLagRecord[iEntityId][j].simulationTime + GetLerpTime()), player)) {
             vecLagRecord[iEntityId].erase(vecLagRecord[iEntityId].begin() + j);
             break;
         }
@@ -784,8 +821,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
 }
 
 void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
-    if ( Settings::Resolver::LagComp && Settings::Resolver::enabled || Settings::Resolver::enabled && Settings::Resolver::Hugtype == ResolverHugtype::BACKTRACKLBY )
-        StartLagComp();
+
 
     if ( !Settings::Resolver::enabled || !engine->IsInGame() )
         return;
@@ -1027,5 +1063,7 @@ void Resolver::CreateMove( CUserCmd* cmd ) {
              || target->GetImmune()
              || target->GetTeam() == entityList->GetClientEntity( engine->GetLocalPlayer() )->GetTeam() )
             continue;
+        if ( Settings::Resolver::LagComp )
+            StartLagComp(target);
     }
 }

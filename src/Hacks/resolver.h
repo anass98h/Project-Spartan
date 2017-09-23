@@ -9,9 +9,6 @@
 #include "../SDK/CTickRecord.h"
 #include <random>
 
-#define FLOW_OUTGOING	0
-#define FLOW_INCOMING	1
-#define MAX_FLOWS		2		// in & out
 
 #define TIME_TO_TICKS( dt )        ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
 #define TICKS_TO_TIME( t )        ( globalVars->interval_per_tick * ( t ) )
@@ -52,11 +49,12 @@ public:
     StoredNetvars *pRecordRollback[64];
 
     float GetLatency(int type);
-    bool isValidTick(int tick);
+    bool isValidTick(int tick , C_BasePlayer* pLocal);
     float GetLerpTime();
     void SetValidTickCount(C_BasePlayer* player, CUserCmd* pCmd);
     void StoreData(C_BasePlayer *player);
     void RestorePlayer(C_BasePlayer* player);
+
 };
 
 namespace Resolver {
@@ -115,4 +113,4 @@ const inline bool IsDifferent( float a, float b, float tolerance = 10.f ) {
     return ( GetDelta( a, b ) > tolerance );
 }
 
-extern LagComp LagComp;
+extern LagComp Lagcomp;
