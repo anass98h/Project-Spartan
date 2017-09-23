@@ -3,8 +3,10 @@
 char Settings::ClanTagChanger::value[30] = "";
 bool Settings::ClanTagChanger::animation = false;
 int Settings::ClanTagChanger::animationSpeed = 650;
-bool Settings::ClanTagChanger::enabled = false; // TODO find a way to go back to the "official" clan tag for the player? -- Save the current clan tag, before editing, then restore it later
+bool Settings::ClanTagChanger::enabled = false; // Marc will add restore shit later im 2 lazy   ¯\_(ツ)_/¯
 ClanTagType Settings::ClanTagChanger::type = ClanTagType::STATIC;
+valueType Settings::ClanTagChanger::preset = valueType::PSPARTAN;
+
 
 static std::vector<std::wstring> splitWords( std::wstring text ) {
     std::wistringstream stream( text );
@@ -14,6 +16,38 @@ static std::vector<std::wstring> splitWords( std::wstring text ) {
         words.push_back( word );
 
     return words;
+}
+
+static const char* PresetChars() {
+
+    switch ( Settings::ClanTagChanger::preset ) {
+        case valueType::PSPARTAN:
+            return "Project-Spartan";
+
+            break;
+        case valueType::NOVAC:
+            return "cantvac.me";
+
+            break;
+        case valueType::TUXCH:
+            return "tuxcheats.com";
+
+            break;
+        case valueType::REALNIGGA:
+            return "realnigga.club";
+
+            break;
+        case valueType::MARC:
+            return "void MarcIsAWeeb()";
+
+            break;
+        case valueType::CUSTOM:
+            return Settings::ClanTagChanger::value;
+
+            break;
+    }
+
+
 }
 
 static ClanTagChanger::Animation Letters( std::string name, std::wstring text ) {
@@ -60,8 +94,8 @@ std::vector<ClanTagChanger::Animation> ClanTagChanger::animations = {
 ClanTagChanger::Animation* ClanTagChanger::animation = &ClanTagChanger::animations[0];
 
 void ClanTagChanger::UpdateClanTagCallback() {
-    if ( strlen( Settings::ClanTagChanger::value ) > 0 && Settings::ClanTagChanger::type > ClanTagType::STATIC ) {
-        std::wstring wc = Util::StringToWstring( Settings::ClanTagChanger::value );
+    if ( Settings::ClanTagChanger::type > ClanTagType::STATIC ) {
+        std::wstring wc = Util::StringToWstring( std::string( PresetChars() ) );
 
         switch ( Settings::ClanTagChanger::type ) {
 
@@ -107,13 +141,8 @@ void ClanTagChanger::BeginFrame( float frameTime ) {
         ClanTagChanger::animation->NextFrame();
     }
 
-    std::string ctWithEscapesProcessed = std::string( Settings::ClanTagChanger::value );
-    Util::StdReplaceStr( ctWithEscapesProcessed, "\\n",
-                         "\n" ); // compute time impact? also, referential so i assume RAII builtin cleans it up...
 
-    if ( Settings::ClanTagChanger::type == ClanTagType::STATIC )
-        SendClanTag( ctWithEscapesProcessed.c_str(), "" );
-    else if ( ctWithEscapesProcessed == "time" || Settings::ClanTagChanger::type == ClanTagType::CURTIME ) {
+    if ( Settings::ClanTagChanger::type == ClanTagType::CURTIME ) {
         time_t rawtime;
         struct tm* timeinfo;
         char buffer[80];
@@ -126,6 +155,15 @@ void ClanTagChanger::BeginFrame( float frameTime ) {
 
         SendClanTag( str.c_str(), "" );
         return;
-    } else
-        SendClanTag( Util::WstringToString( ClanTagChanger::animation->GetCurrentFrame().text ).c_str(), "" );
+    } else {
+        std::string ctWithEscapesProcessed = std::string( PresetChars() );
+        Util::StdReplaceStr( ctWithEscapesProcessed, "\\n",
+                             "\n" );
+
+
+        if ( Settings::ClanTagChanger::type == ClanTagType::STATIC )
+            SendClanTag( ctWithEscapesProcessed.c_str(), "" );
+        else
+            SendClanTag( Util::WstringToString( ClanTagChanger::animation->GetCurrentFrame().text ).c_str(), "" );
+    }
 }
