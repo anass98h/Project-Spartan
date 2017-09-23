@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include "SDK/vector.h"
+#include "../../../../../../usr/include/c++/5/cstddef"
 
 struct COffsets {
     struct {
@@ -20,6 +21,11 @@ struct COffsets {
         std::ptrdiff_t m_szLastPlaceName;
         std::ptrdiff_t deadflag;
     } DT_BasePlayer;
+
+    struct {
+        std::ptrdiff_t m_vecMinsPreScaled;
+        std::ptrdiff_t m_vecMaxsPreScaled;
+    } DT_CollisionProperty;
 
     struct {
         std::ptrdiff_t m_flAnimTime;

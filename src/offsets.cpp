@@ -1,5 +1,6 @@
 #include "offsets.h"
 #include "Utils/netvarmanager.h"
+#include "SDK/SDK.h"
 
 COffsets offsets;
 
@@ -33,6 +34,11 @@ void Offsets::GetOffsets() {
                                                                         XORSTR( "m_szLastPlaceName" ) );
     offsets.DT_BasePlayer.deadflag = NetVarManager::GetOffset( tables, XORSTR( "DT_BasePlayer" ),
                                                                XORSTR( "deadflag" ) );
+
+    offsets.DT_CollisionProperty.m_vecMinsPreScaled = NetVarManager::GetOffset( tables, XORSTR( "DT_CollisionProperty" ),
+                                                               XORSTR( "m_vecMinsPreScaled" ) );
+    offsets.DT_CollisionProperty.m_vecMaxsPreScaled = NetVarManager::GetOffset( tables, XORSTR( "DT_CollisionProperty" ),
+                                                                       XORSTR( "m_vecMaxsPreScaled" ) );
 
     offsets.DT_BaseEntity.m_flAnimTime = NetVarManager::GetOffset( tables, XORSTR( "DT_BaseEntity" ),
                                                                    XORSTR( "m_flAnimTime" ) );

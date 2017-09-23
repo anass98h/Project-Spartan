@@ -159,8 +159,18 @@ public:
         this + offsets.DT_BaseEntity.m_flSimulationTime);
     }
 
+    float* GetSimulationTimePointer() {
+        return ( float* ) ( ( uintptr_t )
+        this + offsets.DT_BaseEntity.m_flSimulationTime);
+    }
+
     int GetSequence() {
         return *( int* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_nSequence);
+    }
+
+    int* GetSequencePointer() {
+        return ( int* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_nSequence);
     }
 
@@ -209,8 +219,8 @@ public:
         this + offsets.DT_BaseAnimating.m_flPlaybackRate);
     }
 
-    float GetPoseParameter() {
-        return *( float* ) ( ( uintptr_t ) 
+    std::array<float, 24> GetPoseParameter() {
+        return *( std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
@@ -226,6 +236,11 @@ public:
 
     float GetCycle() {
         return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_ServerAnimationData.m_flCycle);
+    }
+
+    float* GetCyclePointer() {
+        return ( float* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_flCycle);
     }
 
@@ -308,6 +323,12 @@ public:
         this + offsets.DT_BasePlayer.m_fFlags);
     }
 
+    int* GetFlagsPointer() {
+        return ( int* ) ( ( uintptr_t )
+        this + offsets.DT_BasePlayer.m_fFlags);
+    }
+
+
     ObserverMode_t* GetObserverMode() {
         return ( ObserverMode_t * )( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_iObserverMode);
@@ -326,6 +347,16 @@ public:
     const char* GetLastPlaceName() {
         return ( const char* ) ( ( uintptr_t )
         this + offsets.DT_BasePlayer.m_szLastPlaceName);
+    }
+
+    Vector GetMinPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMinsPreScaled);
+    }
+
+    Vector GetMaxPrescaled() {
+        return *( Vector* ) ( ( uintptr_t )
+        this + offsets.DT_CollisionProperty.m_vecMaxsPreScaled);
     }
 
     int GetShotsFired() {

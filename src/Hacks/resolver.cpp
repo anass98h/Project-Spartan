@@ -15,20 +15,166 @@ std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
 
+static void StartLagComp() {
+    if (Settings::Resolver::Hugtype != ResolverHugtype::BACKTRACKLBY)
+        Settings::Resolver::Hugtype = ResolverHugtype::BACKTRACKLBY;
 
-static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
-    ConVar* cvar_cl_interp = cvar->FindVar( XORSTR( "cl_interp" ) );
-    ConVar* cvar_cl_updaterate = cvar->FindVar( XORSTR( "cl_updaterate" ) );
-    ConVar* cvar_cl_interp_ratio = cvar->FindVar( XORSTR( "cl_interp_ratio" ) );
-    // is this lagcomp ? :/
-    float cl_interp = cvar_cl_interp->fValue;
-    float cl_updaterate = cvar_cl_updaterate->fValue;
-    float cl_interp_ratio = cvar_cl_interp_ratio->fValue;
-    float tick = ( player->GetSimulationTime() + std::max( cl_interp, cl_interp_ratio / cl_updaterate ) );
-    cmd->tick_count = TIME_TO_TICKS( tick );
+    if (Settings::Aimbot::backtrack)
+       Settings::Aimbot::backtrack = false;
+
+    /*if (!engine->IsInGame()) {
+        ConVar* interp = cvar->FindVar( XORSTR( "cl_interp" ) );
+        ConVar* interpolate = cvar->FindVar( XORSTR( "cl_interpolate" ) );
+        ConVar* lagcomp = cvar->FindVar( XORSTR( "cl_lagcompensation" ) );
+
+        if (interp->GetInt() != 0)
+            interp->SetValue("0");
+
+        if (interpolate->GetInt() != 0)
+            interpolate->SetValue("0");
+
+        if (lagcomp->GetInt() != 1)
+            lagcomp->SetValue("1");
+    }*/
+}
+
+void LagComp::Store(StoredNetvars* dest, C_BasePlayer* player) {
+    if (!engine->IsInGame())
+        return;
+
+    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
+    if (!me || !player)
+        return;
+
+    dest->origin = player->GetVecOrigin();
+
+    dest->flags = player->GetFlags();
+    dest->simulationTime = player->GetSimulationTime();
+    dest->min = player->GetMinPrescaled();
+    dest->max = player->GetMaxPrescaled();
+    dest->lby = *player->GetLowerBodyYawTarget();
+    dest->eyeAngles = *player->GetEyeAngles();
+
+    dest->sequence = player->GetSequence();
+    dest->cycle = player->GetCycle();
+
+    dest->velocity = player->GetVelocity();
+
+    //fuck off animations, animations are gay, plz die animations :kys:
+    //std::memcpy(dest->poseParam, player->GetPoseParameter(), 24 * sizeof(float));
+
+    //pfix instead of using memcpy, which causes too much trouble for me
+    /*for (int i = 0; i < 24; i++) {
+        dest->poseParam[i] = player->GetPoseParameter()[i];
+    }*/
+
+    //not big deal proper anim fix
+}
+
+void LagComp::Restore(StoredNetvars* src, C_BasePlayer* player) {
+    if (!engine->IsInGame())
+        return;
+
+    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
+    if (!me || !player)
+        return;
+
+    player->GetVecOrigin() = src->origin;
+
+    *player->GetFlagsPointer() = src->flags;
+    *player->GetSimulationTimePointer() = src->simulationTime;
+    player->GetMinPrescaled() = src->min;
+    player->GetMaxPrescaled() = src->max;
+    *player->GetLowerBodyYawTarget() = src->lby;
+    *player->GetEyeAngles() = src->eyeAngles;
+
+    *player->GetSequencePointer() = src->sequence;
+    *player->GetCyclePointer() = src->cycle;
+
+    player->GetVelocity() = src->velocity;
+
+    //fuck off animations, animations are gay, plz die animations :kys:
+    //std::memcpy(pEntity->GetPosePosition(), src->poseParam, 24 * sizeof(float)); //skeet way of doing shit
+
+    //pfix instead of using memcpy, which causes too much trouble for me
+    /*for (int i = 0; i < 24; i++) {
+        player->GetPoseParameter()[i] = src->poseParam[i];
+    }*/
+}
+
+float LagComp::GetLerpTime() {
+    float updaterate = cvar->FindVar(XORSTR("cl_updaterate"))->GetFloat();
+    float ratio = cvar->FindVar(XORSTR("cl_interp_ratio"))->GetFloat();
+    float lerp = cvar->FindVar(XORSTR("cl_interp"))->GetFloat();
+
+    return std::max(lerp, ratio / updaterate);
+}
+
+void LagComp::StoreData(C_BasePlayer *player) {
+    if (!engine->IsInGame())
+        return;
+
+    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
+    if (!me || !player)
+        return;
+
+    int iEntityId = player->GetIndex();
+
+    for (int j = 0; j < vecLagRecord[iEntityId].size(); ++j) {
+        if (!isValidTick(TIME_TO_TICKS(vecLagRecord[iEntityId][j].simulationTime + GetLerpTime()))) {
+            vecLagRecord[iEntityId].erase(vecLagRecord[iEntityId].begin() + j);
+            break;
+        }
+    }
+
+    //CORE
+    static float flOldSimTime[64];
+
+    float flCurSimTime = player->GetSimulationTime();
+
+    if (fabs(flOldSimTime[iEntityId] - flCurSimTime) > 5.f)
+        flOldSimTime[iEntityId] = 0.f;
+
+    StoredNetvars LagRecord;
+
+    if (flOldSimTime[iEntityId] < flCurSimTime) {
+        Store(&LagRecord, player);
+
+        vecLagRecord[iEntityId].emplace_back(LagRecord);
+
+        flOldSimTime[iEntityId] = flCurSimTime;
+    }
+}
+
+void LagComp::RestorePlayer(C_BasePlayer *player) {
+    if (!Settings::Resolver::LagComp)
+        return;
+
+    if (!engine->IsInGame())
+        return;
+
+    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
+    if (!me || !player)
+        return;
+
+    if (vecLagRecord[player->GetIndex()].empty())
+        return;
+
+    StoredNetvars *src;
+
+    pRecordRollback[player->GetIndex()] = src;
+
+    Restore(src, player);
 }
 
 void Resolver::Hug( C_BasePlayer* player ) {
+    if (!engine->IsInGame() || !player)
+        return;
+
     auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
@@ -78,7 +224,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
     switch ( Settings::Resolver::Hugtype ) {
        case ResolverHugtype::RASP: {
             if (HasStaticRealAngle(cur)) {
-                player->GetEyeAngles()->y = player->GetPoseParameter() * 360 - 180;
+                player->GetEyeAngles()->y = player->GetPoseParameter()[0] * 360 - 180;
                 }
              else if (HasSteadyDifference(cur)) {
                 float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
@@ -475,24 +621,161 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 }
             }
         }
-        case ResolverHugtype::POSEPARAMMEME: {
+        case ResolverHugtype::BACKTRACKLBY: {
+            if (!Settings::Resolver::LagComp)
+                Settings::Resolver::LagComp = true;
+
             static bool lbyUpdated = false;
 
             float curTime = globalVars->curtime;
-            bool onGround = ( player->GetFlags() & FL_ONGROUND );
-            bool isMoving = ( player->GetVelocity().Length2D() > 1 );
-            static float nextUpdate;
+            static float nextUpdate = 0;
+            static bool lbyFirstUpdateM = false;
 
-            if ( onGround && curTime > nextUpdate || onGround && isMoving )
+            float LBY = ( cur.front().m_flLowerBodyYawTarget );
+            bool onGround = (player->GetFlags() & FL_ONGROUND);
+            bool isMoving = (player->GetVelocity().Length2D() != 0 && onGround);
+            bool staticAngle = (HasStaticRealAngle(cur));
+
+            static int shotsmissedSave = 0;
+            static float shotsmissedTime = 0.f;
+
+            if ( Shotsmissed > 0 && Shotsmissed != shotsmissedSave ) {
+                shotsmissedTime = curTime + 4.f;
+                shotsmissedSave = Shotsmissed;
+            } else if ( shotsmissedTime > curTime && Shotsmissed == 0 ) {
+                shotsmissedSave = 0;
+            }
+
+            if ( curTime > nextUpdate || isMoving )
                 lbyUpdated = true;
             else
                 lbyUpdated = false;
 
             if ( lbyUpdated ) {
-                player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
+                player->GetEyeAngles()->y = LBY;
                 nextUpdate = curTime + 1.1f;
             } else {
-                player->GetEyeAngles()->y = player->GetPoseParameter() * 360 - 180;
+                if (Shotsmissed > 2) {
+                    if ( staticAngle ) {
+                        if ( player->GetEyeAngles()->y == LBY ) {
+                            int a = shotsmissedSave % 10;
+                            switch ( a ) {
+                                case 0:
+                                    player->GetEyeAngles()->y = LBY;
+                                    break;
+                                case 1:
+                                    player->GetEyeAngles()->y = LBY + 180;
+                                    break;
+                                case 2:
+                                    player->GetEyeAngles()->y = LBY + 90;
+                                    break;
+                                case 3:
+                                    player->GetEyeAngles()->y = LBY + 135;
+                                    break;
+                                case 4:
+                                    player->GetEyeAngles()->y = LBY - 90;
+                                    break;
+                                case 5:
+                                    player->GetEyeAngles()->y = LBY + 45;
+                                    break;
+                                case 6:
+                                    player->GetEyeAngles()->y = LBY - 45;
+                                    break;
+                                case 7:
+                                    player->GetEyeAngles()->y = LBY - 135;
+                                    break;
+                                case 8:
+                                    player->GetEyeAngles()->y = LBY + 100;
+                                    break;
+                                case 9:
+                                    player->GetEyeAngles()->y = LBY - 100;
+                                    break;
+                                default:
+                                    player->GetEyeAngles()->y = LBY;
+                                    break;
+                            }
+                        } else {
+                            int b = shotsmissedSave % 10;
+                            switch ( b ) {
+                                case 0:
+                                    player->GetEyeAngles()->y = LBY;
+                                    break;
+                                case 1:
+                                    player->GetEyeAngles()->y += 180;
+                                    break;
+                                case 2:
+                                    player->GetEyeAngles()->y -= 90;
+                                    break;
+                                case 3:
+                                    player->GetEyeAngles()->y += 135;
+                                    break;
+                                case 4:
+                                    player->GetEyeAngles()->y += 90;
+                                    break;
+                                case 5:
+                                    player->GetEyeAngles()->y -= 45;
+                                    break;
+                                case 6:
+                                    player->GetEyeAngles()->y += 45;
+                                    break;
+                                case 7:
+                                    player->GetEyeAngles()->y -= 135;
+                                    break;
+                                case 8:
+                                    player->GetEyeAngles()->y -= 100;
+                                    break;
+                                case 9:
+                                    player->GetEyeAngles()->y += 100;
+                                    break;
+                                default:
+                                    player->GetEyeAngles()->y = LBY;
+                                    break;
+                            }
+                        }
+                    } else {
+                        int c = shotsmissedSave % 11;
+                        int rng = rand() % 180 + 1;
+                        switch ( c ) {
+                            case 0:
+                                player->GetEyeAngles()->y = LBY;
+                                break; // This should not even be used
+                            case 1:
+                                player->GetEyeAngles()->y += 180.f;
+                                break;
+                            case 2:
+                                player->GetEyeAngles()->y = LBY + 180.f;
+                                break; // This is where it will start
+                            case 3:
+                                player->GetEyeAngles()->y = LBY + 90.f;
+                                break;
+                            case 4:
+                                player->GetEyeAngles()->y = LBY + 135.f;
+                                break;
+                            case 5:
+                                player->GetEyeAngles()->y = LBY - 90.f;
+                                break;
+                            case 6:
+                                player->GetEyeAngles()->y = LBY + 45.f;
+                                break;
+                            case 7:
+                                player->GetEyeAngles()->y = LBY - 135.f;
+                                break;
+                            case 8:
+                                player->GetEyeAngles()->y = LBY - 45.f;
+                                break;
+                            case 9:
+                                player->GetEyeAngles()->y = LBY + rng;
+                                break;
+                            case 10:
+                                player->GetEyeAngles()->y = LBY - rng;
+                                break;
+                            default:
+                                player->GetEyeAngles()->y = LBY;
+                                break;
+                        }
+                    }
+                } else {
+                }
             }
         }
         case ResolverHugtype::OFF:
@@ -501,10 +784,14 @@ void Resolver::Hug( C_BasePlayer* player ) {
 }
 
 void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
+    if ( Settings::Resolver::LagComp && Settings::Resolver::enabled || Settings::Resolver::enabled && Settings::Resolver::Hugtype == ResolverHugtype::BACKTRACKLBY )
+        StartLagComp();
+
     if ( !Settings::Resolver::enabled || !engine->IsInGame() )
         return;
 
     C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
     if ( !me || !me->GetAlive() )
         return;
 
@@ -586,23 +873,6 @@ CTickRecord Resolver::GetShotRecord( C_BasePlayer* player ) {
 
 bool& Resolver::LowerBodyYawChanged( C_BasePlayer* player ) {
     return m_arrInfos.at( player->GetIndex() ).m_bLowerBodyYawChanged;
-}
-
-void Resolver::StoreVars( C_BasePlayer* player ) {
-    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks ) {
-        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
-    }
-    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
-}
-
-void Resolver::StoreVars( C_BasePlayer* player, QAngle ang, float lby, float simtime, float tick ) {
-    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks )
-        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
-    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
-}
-
-bool& Resolver::BacktrackThisTick( C_BasePlayer* player ) {
-    return m_arrInfos.at( player->GetIndex() ).m_bBacktrackThisTick;
 }
 
 bool Resolver::HasStaticRealAngle( const std::deque<CTickRecord>& l, float tolerance ) {
@@ -757,11 +1027,5 @@ void Resolver::CreateMove( CUserCmd* cmd ) {
              || target->GetImmune()
              || target->GetTeam() == entityList->GetClientEntity( engine->GetLocalPlayer() )->GetTeam() )
             continue;
-
-        Resolver::StoreVars( target );
-
-        if ( Settings::Resolver::LagComp )
-            StartLagComp( target, cmd );
-
     }
 }
