@@ -70,12 +70,12 @@ struct CTickRecord {
 	int tickcount = 0;*/
 
     float m_flLowerBodyYawTarget = 0.f;
-    QAngle m_angEyeAngles = QAngle(0, 0, 0);
+    QAngle m_angEyeAngles = QAngle( 0, 0, 0 );
     float m_flCycle = 0.f;
     float m_flSimulationTime = 0.f;
     int m_nSequence = 0;
-    Vector m_vecOrigin = Vector(0, 0, 0);
-    Vector m_vecVelocity = Vector(0, 0, 0);
+    Vector m_vecOrigin = Vector( 0, 0, 0 );
+    Vector m_vecVelocity = Vector( 0, 0, 0 );
     std::array<float, 24> m_flPoseParameter = {};
     Vector headPos;
     CValidTick validtick;

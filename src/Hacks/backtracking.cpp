@@ -45,21 +45,21 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 PushLagRecord( i, NULL );
                 //push record with blank coords
             }
-            if (Settings::Resolver::LagComp) {
+            if ( Settings::Resolver::LagComp ) {
                 static bool lbyUpdated = false;
 
-                bool onGround = (target->GetFlags() & FL_ONGROUND);
-                bool isMoving = (target->GetVelocity().Length2D() != 0 && onGround);
+                bool onGround = ( target->GetFlags() & FL_ONGROUND );
+                bool isMoving = ( target->GetVelocity().Length2D() != 0 && onGround );
 
                 static float nextUpdate = 0.f;
                 float curTime = globalVars->curtime;
 
-                if (isMoving || nextUpdate > curTime && onGround)
+                if ( isMoving || nextUpdate > curTime && onGround )
                     lbyUpdated = true;
                 else
                     lbyUpdated = false;
 
-                if (lbyUpdated) {
+                if ( lbyUpdated ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
                 }
