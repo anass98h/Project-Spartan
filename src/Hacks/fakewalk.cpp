@@ -1,13 +1,13 @@
 #include "fakewalk.h"
 
+bool Settings::FakewalkAW::enabled;
+ButtonCode_t Settings::FakewalkAW::key = ButtonCode_t::KEY_C;
 bool Settings::Fakewalk::enabled;
 ButtonCode_t Settings::Fakewalk::key = ButtonCode_t::KEY_C;
+bool Settings::ChokePackets::enabled;
+ButtonCode_t Settings::ChokePackets::key = ButtonCode_t::KEY_X;
 bool Settings::SlowMo::enabled;
 ButtonCode_t Settings::SlowMo::key = ButtonCode_t::KEY_C;
-
-
-
-// I should rename this to pMemes
 
 
 void Fakewalk::CreateMove( CUserCmd* cmd ) {
@@ -15,48 +15,88 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
     if ( !localplayer || !localplayer->GetAlive() )
         return;
 
-    if ( Settings::Fakewalk::enabled ) {
+    if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
+        bool isForward = cmd->buttons & IN_FORWARD;
+        bool isBack = cmd->buttons & IN_BACK;
+        bool isRight = cmd->buttons & IN_RIGHT;
+        bool isLeft = cmd->buttons & IN_LEFT;
 
+        if ( isForward )
+            cmd->forwardmove = 10;
 
-        C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-                localplayer->GetActiveWeapon() );
-        if ( !activeWeapon || activeWeapon->GetInReload() )
-            return;
+        if ( isBack )
+            cmd->forwardmove = -10;
 
-        CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-        if ( weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE ||
-             weaponType == CSWeaponType::WEAPONTYPE_KNIFE )
-            return;
+        if ( isRight )
+            cmd->sidemove = 10;
 
-        ConVar* stopme = cvar->FindVar( XORSTR( "sv_stopspeed" ) );
-        ConVar* runsme = cvar->FindVar( XORSTR( "sv_accelerate" ) );
+        if ( isLeft )
+            cmd->sidemove = -10;
 
-        float stopfact = stopme->fValue;
-        float stopspeed = runsme->fValue;
-        if ( inputSystem->IsButtonDown( Settings::Fakewalk::key ) ) {
-            static int iChoked = -1;
-            iChoked++;
+    } else if ( Settings::Fakewalk::enabled && inputSystem->IsButtonDown( Settings::Fakewalk::key ) ) {
+        bool isForward = cmd->buttons & IN_FORWARD;
+        bool isBack = cmd->buttons & IN_BACK;
+        bool isRight = cmd->buttons & IN_RIGHT;
+        bool isLeft = cmd->buttons & IN_LEFT;
+        bool inAttack = cmd->buttons & IN_ATTACK;
 
-            if ( iChoked < 1 ) {
-                CreateMove::sendPacket = false;
-
-                cmd->buttons |= localplayer->GetMoveType() == IN_BACK;
-                cmd->forwardmove = cmd->sidemove = 0.f;
-
-            } else {
-                if ( localplayer->GetVelocity().Length2D() > 0.1f ) {
-                    cmd->upmove = -localplayer->GetVelocity().Length2D();
-
-
+        if ( !inAttack ) {
+            if ( isForward ) {
+                static int ChokingPacketsW = -1;
+                if ( ChokingPacketsW > 5 ) {
+                    cmd->forwardmove = -1;
+                    CreateMove::sendPacket = true;
+                    ChokingPacketsW = -1;
+                } else {
+                    cmd->forwardmove = 35;
+                    CreateMove::sendPacket = false;
                 }
-
-                CreateMove::sendPacket = true;
-                iChoked = -1;
-
-
-                cmd->buttons |= localplayer->GetMoveType() == IN_WALK;
-                // ik ik this still isnt even close to fakewalk but old meme fucked some shit up :eyo:
             }
+
+            if ( isBack ) {
+                static int ChokingPacketsS = -1;
+                if ( ChokingPacketsS > 5 ) {
+                    cmd->forwardmove = 1;
+                    CreateMove::sendPacket = true;
+                    ChokingPacketsS = -1;
+                } else {
+                    cmd->forwardmove = -35;
+                    CreateMove::sendPacket = false;
+                }
+            }
+
+            if ( isLeft ) {
+                static int ChokingPacketsA = -1;
+                if ( ChokingPacketsA > 5 ) {
+                    cmd->sidemove = 1;
+                    CreateMove::sendPacket = true;
+                    ChokingPacketsA = -1;
+                } else {
+                    cmd->sidemove = -35;
+                    CreateMove::sendPacket = false;
+                }
+            }
+
+            if ( isRight ) {
+                static int ChokingPacketsD = -1;
+                if ( ChokingPacketsD > 5 ) {
+                    cmd->sidemove = -1;
+                    CreateMove::sendPacket = true;
+                    ChokingPacketsD = -1;
+                } else {
+                    cmd->sidemove = 35;
+                    CreateMove::sendPacket = false;
+                }
+            }
+        }
+    } else if ( Settings::ChokePackets::enabled && inputSystem->IsButtonDown( Settings::ChokePackets::key ) ) {
+        static bool chokedPackets = 0;
+        if ( chokedPackets > 10000 ) {
+            CreateMove::sendPacket = true;
+            chokedPackets = 0;
+        } else {
+            CreateMove::sendPacket = false;
+            chokedPackets++;
         }
     } else if ( Settings::SlowMo::enabled ) {
 
@@ -80,8 +120,6 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
         }
     } else
         return;
-
-
 }
  
 

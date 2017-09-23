@@ -991,7 +991,15 @@ namespace Settings {
         extern bool enabled;
         extern ButtonCode_t key;
     }
+    namespace FakewalkAW {
+        extern bool enabled;
+        extern ButtonCode_t key;
+    }
     namespace Fakewalk {
+        extern bool enabled;
+        extern ButtonCode_t key;
+    }
+    namespace ChokePackets {
         extern bool enabled;
         extern ButtonCode_t key;
     }
