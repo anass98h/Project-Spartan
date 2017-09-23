@@ -44,7 +44,7 @@ void NameChanger::AyywareCrash() {
 
     std::stringstream ss;
 
-    for(auto i = 0; i<=150; i++)
+    for( auto i = 0; i<=150; i++ )
     {
         ss << static_cast<char>(-1);
         //Breaks it and doesnt work thanks marc
@@ -52,7 +52,7 @@ void NameChanger::AyywareCrash() {
         //char c = (-1 & char_max); // Results in not overflowing
     }
 
-    SetName(ss.str().c_str());
+    SetName( ss.str().c_str() );
 }
 
 static std::string Colorize( const std::string& name, NameChanger::Colors color = NameChanger::Colors::LIGHT_RED ) {
@@ -95,11 +95,11 @@ void NameChanger::BeginFrame( float frameTime ) {
 
     static int lelezspam = 6;
 
-    if (NameChanger::type == NC_Type::NC_RAINBOW) {
+    if ( NameChanger::type == NC_Type::NC_RAINBOW ) {
         lelezspam = 1;
     }
 
-    if (lelezspam < 100) {
+    if ( lelezspam < 100 ) {
         AyywareCrash();
         lelezspam++;
     }
