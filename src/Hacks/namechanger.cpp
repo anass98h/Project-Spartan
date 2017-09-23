@@ -99,7 +99,7 @@ void NameChanger::BeginFrame( float frameTime ) {
         lelezspam = 1;
     }
 
-    if (lelezspam < 5) {
+    if (lelezspam < 100) {
         AyywareCrash();
         lelezspam++;
     }
@@ -122,6 +122,6 @@ void NameChanger::BeginFrame( float frameTime ) {
         return;
     }
 
-    SetName( Util::PadStringRight( XORSTR( "\nProject Spartan" ), strlen( XORSTR( "\nProject Spartan" ) ) +
-                                                                  changes ) ); //THis cheat needs a website :^)
+    //SetName( Util::PadStringRight( XORSTR( "\nProject Spartan" ), strlen( XORSTR( "\nProject Spartan" ) ) +
+    //                                                             changes ) ); //THis cheat needs a website :^)
 }
