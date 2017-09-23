@@ -40,7 +40,14 @@ enum class ClanTagType : int {
     WORDS,
     LETTERS,
 };
-
+enum class valueType : int {
+    PSPARTAN,
+    NOVAC,
+    TUXCH,
+    REALNIGGA,
+    MARC,  // ¯\_(ツ)_/¯
+    CUSTOM,
+};
 enum class AutostrafeType : int {
     AS_FORWARDS,
     AS_BACKWARDS,
@@ -1045,6 +1052,7 @@ namespace Settings {
 
     namespace ClanTagChanger {
         extern char value[30];
+        extern valueType preset;
         extern bool animation;
         extern int animationSpeed;
         extern bool enabled;

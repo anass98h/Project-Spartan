@@ -7,7 +7,8 @@ void Misc::RenderTab() {
     const char* animationTypes[] = { "Static", "Curtime", "Marquee", "Words", "Letters" };
     const char* spammerTypes[] = { "None", "Normal", "Positions" };
     const char* teams[] = { "Allies", "Enemies", "Both" };
-
+    const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
+                                  "void MarcIsAWeeb", "Custom negro" };
 
     ImGui::Columns( 2, NULL, true );
     {
@@ -242,11 +243,18 @@ void Misc::RenderTab() {
             ImGui::Separator();
             ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ClanTagChanger::enabled );
             ImGui::Separator();
+            ImGui::Columns( 1 );
+            if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) &&
+                 Settings::ClanTagChanger::preset == valueType::CUSTOM )
+                ClanTagChanger::UpdateClanTagCallback();
+            ImGui::Separator();
             ImGui::Columns( 2, NULL, true );
             {
                 ImGui::PushItemWidth( -1 );
-                if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) )
+                if ( ImGui::Combo( XORSTR( "##PRESETTYPE" ), ( int* ) &Settings::ClanTagChanger::preset, presetTypes,
+                                   IM_ARRAYSIZE( presetTypes ) ) )
                     ClanTagChanger::UpdateClanTagCallback();
+
                 ImGui::PopItemWidth();
 
                 ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
