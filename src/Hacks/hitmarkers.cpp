@@ -14,12 +14,6 @@ bool Settings::ESP::Hitmarker::sound = true;
 std::vector<std::pair<int, long>> damages;
 long lastHitmarkerTimestamp = 0;
 
-void Hitmarkers::PlayHitSound() {
-    std::string cmd(XORSTR("play \"hitmarker\""));
-
-
-}
-
 void Hitmarkers::Paint() {
     if ( !Settings::ESP::enabled || !Settings::ESP::Hitmarker::enabled )
         return;

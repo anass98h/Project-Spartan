@@ -6,8 +6,6 @@
 
 namespace Hitmarkers {
 
-    void PlayHitSound();
-
     //Hooks
     void FireGameEvent( IGameEvent* event );
 
