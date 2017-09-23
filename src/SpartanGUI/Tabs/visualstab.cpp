@@ -330,6 +330,7 @@ void Visuals::RenderTab() {
                 ImGui::SliderInt( XORSTR( "##HITMARKERGAP" ), &Settings::ESP::Hitmarker::innerGap, 1, 16,
                                   XORSTR( "Gap: %0.f" ) );
                 ImGui::PopItemWidth();
+                ImGui::Checkbox( XORSTR( "Sound##HITMARKERS" ), &Settings::ESP::Hitmarker::sound );
             }
             ImGui::Columns( 1 );
             ImGui::Separator();

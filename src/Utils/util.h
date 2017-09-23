@@ -16,6 +16,7 @@
 #include <fstream>
 #include "../ImGUI/imgui.h"
 #include "../SDK/SDK.h"
+#include "sound.h"
 
 namespace Util {
     std::string ReplaceString( std::string subject, const std::string& search, const std::string& replace );

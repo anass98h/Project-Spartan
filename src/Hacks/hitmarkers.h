@@ -5,6 +5,9 @@
 #include "../Utils/entity.h"
 
 namespace Hitmarkers {
+
+    void PlayHitSound();
+
     //Hooks
     void FireGameEvent( IGameEvent* event );
 
