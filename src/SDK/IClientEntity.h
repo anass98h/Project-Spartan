@@ -209,8 +209,8 @@ public:
         this + offsets.DT_BaseAnimating.m_flPlaybackRate);
     }
 
-    float GetPoseParameter() {
-        return *( float* ) ( ( uintptr_t ) 
+    std::array<float, 24> GetPoseParameter() {
+        return *( std::array<float, 24>* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_flPoseParameter);
     }
 
