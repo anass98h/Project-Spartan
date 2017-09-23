@@ -19,12 +19,16 @@ struct CTickRecord {
     CTickRecord() {
     }
 
-    CTickRecord( C_BasePlayer* Circlebian ) {
-        m_vecOrigin = Circlebian->GetVecOrigin();
-        m_flLowerBodyYawTarget = *Circlebian->GetLowerBodyYawTarget();
-        m_angEyeAngles = *Circlebian->GetEyeAngles();
-        m_flSimulationTime = Circlebian->GetSimulationTime();
-        headPos = Circlebian->GetBonePosition( ( int ) Bone::BONE_HEAD );
+    CTickRecord( C_BasePlayer* player ) {
+        m_flLowerBodyYawTarget = *player->GetLowerBodyYawTarget();
+        m_angEyeAngles = *player->GetEyeAngles();
+        m_flCycle = player->GetCycle();
+        m_flSimulationTime = player->GetSimulationTime();
+        m_nSequence = player->GetSequence();
+        m_vecOrigin = player->GetVecOrigin();
+        m_vecVelocity = player->GetVelocity();
+        m_flPoseParameter = player->GetPoseParameter();
+        headPos = player->GetBonePosition( ( int ) Bone::BONE_HEAD );
         tickcount = 0;
     }
 
@@ -52,11 +56,28 @@ struct CTickRecord {
         return ( m_flSimulationTime == others.m_flSimulationTime );
     }
 
+    /* 	float m_flLowerBodyYawTarget = 0.f;
+	QAngle m_angEyeAngles = QAngle(0, 0, 0);
+	float m_flCycle = 0.f;
+	float m_flSimulationTime = 0.f;
+	int m_nSequence = 0;
+	Vector m_vecOrigin = Vector(0, 0, 0);
+	Vector m_vecAbsOrigin = Vector(0, 0, 0);
+	Vector m_vecVelocity = Vector(0, 0, 0);
+	std::array<float, 24> m_flPoseParameter = {};
+	QAngle m_angAbsAngles = QAngle(0, 0, 0);
+	CValidTick validtick;
+	int tickcount = 0;*/
+
+    float m_flLowerBodyYawTarget = 0.f;
+    QAngle m_angEyeAngles = QAngle( 0, 0, 0 );
+    float m_flCycle = 0.f;
+    float m_flSimulationTime = 0.f;
+    int m_nSequence = 0;
+    Vector m_vecOrigin = Vector( 0, 0, 0 );
+    Vector m_vecVelocity = Vector( 0, 0, 0 );
+    std::array<float, 24> m_flPoseParameter = {};
     Vector headPos;
-    Vector m_vecOrigin;
-    float m_flLowerBodyYawTarget;
-    QAngle m_angEyeAngles;
-    float m_flSimulationTime;
     CValidTick validtick;
     int tickcount = 0;
 };

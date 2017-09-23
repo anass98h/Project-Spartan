@@ -2,7 +2,7 @@
 
 const char* hugTypes[] = {
 
-        "OFF", "Rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "Pose Param Resolver"
+        "OFF", "Rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "LBY Backtrack"
 
 };
 
@@ -48,7 +48,7 @@ void MiscHvHTab::RenderTab() {
                     ImGui::Columns( 2, NULL, true );
                     {
                         ImGui::Checkbox( XORSTR( "Lag Compensation" ), &Settings::Resolver::LagComp );
-                        SetTooltip( XORSTR( "WARNING: This may crash your game." ) );
+                        SetTooltip( XORSTR( "WARNING: Needs testing." ) );
                     }
                     ImGui::NextColumn();
                     {
