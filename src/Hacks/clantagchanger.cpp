@@ -18,14 +18,14 @@ void ClanTagChanger::SaveOriginalClanTag() {
 }
 
 void ClanTagChanger::RestoreOriginalClanTag() {
-    if(clanID != -1) {
-        ConVar* clClanID = cvar->FindVar(XORSTR("cl_clanid"));
+    if ( clanID != -1 ) {
+        ConVar* clClanID = cvar->FindVar( XORSTR( "cl_clanid" ) );
 
-        if(clanID == 0) {
+        if ( clanID == 0 ) {
             // Workaround in case the player didn't set a clantag (so we set it back to 0)
-            clClanID->SetValue(1);
+            clClanID->SetValue( 1 );
         }
-        clClanID->SetValue(clanID);
+        clClanID->SetValue( clanID );
         clanID = -1;
     }
 }
