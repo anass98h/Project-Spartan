@@ -60,11 +60,9 @@ void Visuals::RenderTab() {
             ".50 Cal Low Glow", // 17
     };
 
-    ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ESP::enabled );
-    ImGui::Separator();
     ImGui::Columns( 2, NULL, true );
     {
-        ImGui::Text( XORSTR( "Only on Key" ) );
+        ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ESP::enabled );
     }
     ImGui::NextColumn();
     {
