@@ -481,6 +481,8 @@ void Resolver::Hug( C_BasePlayer* player ) {
             bool isMoving = ( player->GetVelocity().Length2D() > 1 );
             static float nextUpdate;
 
+            static float lastUpdate;
+
             float LBY = *player->GetLowerBodyYawTarget();
 
             bool staticAngle = ( HasStaticRealAngle( cur, 0.f ) );
@@ -503,7 +505,9 @@ void Resolver::Hug( C_BasePlayer* player ) {
             if ( lbyUpdated ) {
                 player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
                 nextUpdate = curTime + 1.1f;
+                lastUpdate = curTime + 0.3f;
             } else {
+              if ( lastUpdate < curTime) {
                 if ( staticAngle ) {
                     if ( player->GetEyeAngles()->y == LBY ) {
                         int a = shotsmissedSave % 10;
@@ -623,6 +627,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                     }
                 }
             }
+          }
         }
         case ResolverHugtype::OFF:
             break;
