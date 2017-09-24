@@ -2,7 +2,7 @@
 
 char Settings::ClanTagChanger::value[30] = "";
 bool Settings::ClanTagChanger::animation = false;
-int Settings::ClanTagChanger::animationSpeed = 650;
+int Settings::ClanTagChanger::animationSpeed = 300;
 bool Settings::ClanTagChanger::enabled = false;
 ClanTagType Settings::ClanTagChanger::type = ClanTagType::STATIC;
 valueType Settings::ClanTagChanger::preset = valueType::PSPARTAN;
