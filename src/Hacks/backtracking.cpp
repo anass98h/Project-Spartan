@@ -51,6 +51,7 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 bool onGround = ( target->GetFlags() & FL_ONGROUND );
                 bool isMoving = ( target->GetVelocity().Length2D() != 0 && onGround );
 
+                static float lastUpdate = 0.f;
                 static float nextUpdate = 0.f;
                 float curTime = globalVars->curtime;
 
@@ -62,6 +63,9 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 if ( lbyUpdated ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
+                    lastUpdate = curTime + 0.3f;
+                } else if ( lastUpdate < curTime ) {
+                    PushLagRecord( i, target );
                 }
             } else {
                 PushLagRecord( i, target );
