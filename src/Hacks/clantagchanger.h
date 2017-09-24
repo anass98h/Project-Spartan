@@ -51,6 +51,9 @@ namespace ClanTagChanger {
 
     void UpdateClanTagCallback();
 
+    void SaveOriginalClanTag();
+    void RestoreOriginalClanTag();
+
     //Hooks
     void BeginFrame( float frameTime );
 }
