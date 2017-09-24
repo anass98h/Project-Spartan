@@ -3,10 +3,32 @@
 char Settings::ClanTagChanger::value[30] = "";
 bool Settings::ClanTagChanger::animation = false;
 int Settings::ClanTagChanger::animationSpeed = 650;
-bool Settings::ClanTagChanger::enabled = false; // Marc will add restore shit later im 2 lazy   ¯\_(ツ)_/¯
+bool Settings::ClanTagChanger::enabled = false;
 ClanTagType Settings::ClanTagChanger::type = ClanTagType::STATIC;
 valueType Settings::ClanTagChanger::preset = valueType::PSPARTAN;
+static int clanID = -1;
 
+void ClanTagChanger::SaveOriginalClanTag() {
+    if(clanID == -1) {
+        ConVar* clClanID = cvar->FindVar(XORSTR("cl_clanid"));
+
+        clanID = clClanID->GetInt();
+        clClanID->SetValue(0);
+    }
+}
+
+void ClanTagChanger::RestoreOriginalClanTag() {
+    if(clanID != -1) {
+        ConVar* clClanID = cvar->FindVar(XORSTR("cl_clanid"));
+
+        if(clanID == 0) {
+            // Workaround in case the player didn't set a clantag (so we set it back to 0)
+            clClanID->SetValue(1);
+        }
+        clClanID->SetValue(clanID);
+        clanID = -1;
+    }
+}
 
 static std::vector<std::wstring> splitWords( std::wstring text ) {
     std::wistringstream stream( text );
@@ -127,8 +149,12 @@ void ClanTagChanger::UpdateClanTagCallback() {
 }
 
 void ClanTagChanger::BeginFrame( float frameTime ) {
-    if ( !Settings::ClanTagChanger::enabled )
+    if ( !Settings::ClanTagChanger::enabled ) {
+        ClanTagChanger::RestoreOriginalClanTag();
         return;
+    } else {
+        ClanTagChanger::SaveOriginalClanTag();
+    }
 
     if ( !engine->IsInGame() )
         return;
