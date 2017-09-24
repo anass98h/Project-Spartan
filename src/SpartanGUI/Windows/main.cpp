@@ -7,22 +7,24 @@ void Main::RenderWindow() {
     if ( !Main::showWindow )
         return;
 
-
     static int page = 0;
     ImGui::SetNextWindowSize( ImVec2( 1080, 700 ), ImGuiSetCond_FirstUseEver );
-    if ( ImGui::Begin( ( "Project Spartan" ), &Main::showWindow,
+    if ( ImGui::Begin( ( XORSTR( "Project Spartan" ) ), &Main::showWindow,
                        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders ) ) {
-
         const char* tabs[] = {
-                "  " ICON_7 " \n  Aim",
-
-                "  " ICON_9 " \nVisuals",
-                ICON_8 "\nHvH",
-                ICON_12 "\nMisc"
+                XORSTR( "  "
+                                ICON_7
+                                " \n  Aim" ),
+                XORSTR( "  "
+                                ICON_9
+                                " \nVisuals" ),
+                XORSTR( ICON_8
+                                "\nHvH" ),
+                XORSTR( ICON_12
+                                "\nMisc" )
         };
 
-
-        ImGui::BeginChild( "Main1", ImVec2( 150, 0 ), true, ImGuiWindowFlags_NoResize );
+        ImGui::BeginChild( XORSTR( "Main1" ), ImVec2( 150, 0 ), true, ImGuiWindowFlags_NoResize );
         {
             for ( int i = 0; i < IM_ARRAYSIZE( tabs ); i++ ) {
                 int distance = i == page ? 0 : i > page ? i - page : page - i;
@@ -40,18 +42,12 @@ void Main::RenderWindow() {
                                                      ImGui::GetWindowSize().y / IM_ARRAYSIZE( tabs ) - 5 ) ) )
                     page = i;
 
-
-                i < IM_ARRAYSIZE( tabs ) - 1;
-
             }
             ImGui::EndChild();
         }
-
         ImGui::SameLine();
-        ImGui::BeginChild( "Main2", ImVec2( 0, 0 ), true, ImGuiWindowFlags_NoResize );
+        ImGui::BeginChild( XORSTR( "Main2" ), ImVec2( 0, 0 ), true, ImGuiWindowFlags_NoResize );
         {
-
-
             switch ( page ) {
                 case 0:
                     AimTab::RenderTab();
@@ -66,11 +62,8 @@ void Main::RenderWindow() {
                     Misc::RenderTab();
                     break;
             }
-
-
             ImGui::EndChild();
         }
-
         ImGui::End();
     }
 

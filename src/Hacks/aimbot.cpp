@@ -813,10 +813,12 @@ static void AutoShoot( C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* ac
     if ( Settings::SmartAim::enabled ) {
         if ( sentShotToTarget ) {
             missedShots++;
-            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), "WE MISSED A SHOT! Missed Shots: " + missedShots );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "WE MISSED A SHOT! Missed Shots: " + missedShots ) );
             sentShotToTarget = false;
         } else {
-            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), "Hitted Shots. Missed Shots: " + missedShots );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "Hitted Shots. Missed Shots: " + missedShots ) );
         }
 
         sentShotToTarget = true;
@@ -1076,7 +1078,8 @@ void Aimbot::FireGameEvent( IGameEvent* event ) {
 
             missedShots = 0;
 
-            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), "Received hurt event. Attacker: %s HurtPlayer: %s\n",
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "Received hurt event. Attacker: %s HurtPlayer: %s\n" ),
                                       localPlayerInfo.name, hurtPlayerInfo.name );
         }
     }

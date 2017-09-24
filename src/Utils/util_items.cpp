@@ -73,27 +73,28 @@ namespace Util {
 
         std::string GetItemName( const enum ItemDefinitionIndex index ) {
             return Util::MapReverseSearchOrDefault<std::string, ItemDefinitionIndex>( &ItemNames, index,
-                                                                                      "ITEM_INVALID" );
+                                                                                      XORSTR( "ITEM_INVALID" ) );
         }
 
         std::string GetItemEntityName( ItemDefinitionIndex index ) {
             if ( ItemDefinitionIndexMap.find( index ) != ItemDefinitionIndexMap.end() ) {
                 std::string entityName = ItemDefinitionIndexMap.at( index ).entityName;
 
-                if ( entityName.find( "weapon_" ) != std::string::npos )
-                    entityName.erase( entityName.find( "weapon_" ), std::string( "weapon_" ).length() );
+                if ( entityName.find( XORSTR( "weapon_" ) ) != std::string::npos )
+                    entityName.erase( entityName.find( XORSTR( "weapon_" ) ),
+                                      std::string( XORSTR( "weapon_" ) ).length() );
 
                 return entityName;
             }
 
-            return "INVALID";
+            return XORSTR( "INVALID" );
         }
 
         std::string GetItemConfigEntityName( ItemDefinitionIndex index ) {
             if ( ItemDefinitionIndexMap.find( index ) != ItemDefinitionIndexMap.end() )
                 return ItemDefinitionIndexMap.at( index ).entityName;
 
-            return "INVALID";
+            return XORSTR( "INVALID" );
         }
 
         std::string GetItemDisplayName( ItemDefinitionIndex index ) {
@@ -106,7 +107,7 @@ namespace Util {
                 return ItemDefinitionIndexMap.at( index ).displayName;
             }
 
-            return "INVALID";
+            return XORSTR( "INVALID" );
         }
 
         ItemDefinitionIndex GetItemIndex( const std::string itemName ) {

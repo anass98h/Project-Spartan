@@ -43,8 +43,10 @@ void Airborne::RenderTab() {
                                                 &Settings::AntiAim::Airborne::Yaw::typeFakeAdd,
                                                 Settings::AntiAim::Airborne::untrustedAngles ? -1000 : -180,
                                                 Settings::AntiAim::Airborne::untrustedAngles ? 1000 : 180,
-                                                XORSTR( Settings::AntiAim::Airborne::Yaw::typeFakeAdd > 0 ? "+%.1f"
-                                                                                                          : "%.1f" ) );
+                                                XORSTR( Settings::AntiAim::Airborne::Yaw::typeFakeAdd > 0 ? XORSTR(
+                                                        "+%.1f" )
+                                                                                                          : XORSTR(
+                                                                "%.1f" ) ) );
                             ImGui::PopItemWidth();
                         }
                         ImGui::Separator();
@@ -57,8 +59,10 @@ void Airborne::RenderTab() {
                             ImGui::SliderFloat( XORSTR( "##YCUSTOM" ), &Settings::AntiAim::Airborne::Yaw::typeAdd,
                                                 Settings::AntiAim::Airborne::untrustedAngles ? -1000 : -180,
                                                 Settings::AntiAim::Airborne::untrustedAngles ? 1000 : 180,
-                                                XORSTR( Settings::AntiAim::Airborne::Yaw::typeAdd > 0 ? "+%.1f"
-                                                                                                      : "%.1f" ) );
+                                                XORSTR( Settings::AntiAim::Airborne::Yaw::typeAdd > 0 ? XORSTR(
+                                                        "+%.1f" )
+                                                                                                      : XORSTR(
+                                                                "%.1f" ) ) );
                             ImGui::PopItemWidth();
                         }
                     }
@@ -88,8 +92,9 @@ void Airborne::RenderTab() {
                         ImGui::SliderFloat( XORSTR( "##XCUSTOM" ), &Settings::AntiAim::Airborne::Pitch::custom,
                                             Settings::AntiAim::Airborne::untrustedAngles ? -1000 : -180,
                                             Settings::AntiAim::Airborne::untrustedAngles ? 1000 : 180,
-                                            XORSTR( Settings::AntiAim::Airborne::Pitch::custom > 0 ? "+%.1f"
-                                                                                                   : "%.1f" ) );
+                                            XORSTR( Settings::AntiAim::Airborne::Pitch::custom > 0 ? XORSTR( "+%.1f" )
+                                                                                                   : XORSTR(
+                                                            "%.1f" ) ) );
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );

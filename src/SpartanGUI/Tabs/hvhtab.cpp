@@ -9,7 +9,7 @@ bool Settings::customYaw2::lby;
 static int page = 0;
 
 const char* tabs[] = {
-        "Standing", "Moving", "Airborne", "Miscellaneous"
+        XORSTR( "Standing" ), XORSTR( "Moving" ), XORSTR( "Airborne" ), XORSTR( "Miscellaneous" )
 };
 
 void HvH::RenderTab() {

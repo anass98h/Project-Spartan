@@ -66,8 +66,9 @@ void AngleIndicator::PaintImGui() {
     // Calculation of text position on screen
 
     std::ostringstream stream4;
-    stream4 << (AntiAim::IsStanding() ? XORSTR("Standing") : (AntiAim::IsMoving() ? XORSTR("Moving") :
-                                                      (AntiAim::IsAirborne() ? XORSTR("Airborne") : XORSTR("Unknown"))));
+    stream4 << ( AntiAim::IsStanding() ? XORSTR( "Standing" ) : ( AntiAim::IsAirborne() ? XORSTR( "Airborne" ) :
+                                                                  ( AntiAim::IsMoving() ? XORSTR( "Moving" ) : XORSTR(
+                                                                          "Unknown" ) ) ) );
     std::string stateText( stream4.str() );
     std::string text4(XORSTR("Current State: "));
     text4.append(stateText);

@@ -1451,17 +1451,17 @@ void remove_directory( const char* path ) {
     dir = opendir( path );
 
     while ( ( pdir = readdir( dir ) ) ) {
-        if ( strcmp( pdir->d_name, "." ) == 0 || strcmp( pdir->d_name, ".." ) == 0 )
+        if ( strcmp( pdir->d_name, XORSTR( "." ) ) == 0 || strcmp( pdir->d_name, XORSTR( ".." ) ) == 0 )
             continue;
 
         if ( pdir->d_type == DT_DIR ) {
             pstring _dir;
-            _dir << path << "/" << pdir->d_name;
+            _dir << path << XORSTR( "/" ) << pdir->d_name;
 
             remove_directory( _dir.c_str() );
         } else if ( pdir->d_type == DT_REG ) {
             pstring file;
-            file << path << "/" << pdir->d_name;
+            file << path << XORSTR( "/" ) << pdir->d_name;
 
             unlink( file.c_str() );
         }

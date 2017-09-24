@@ -10,28 +10,29 @@ std::unordered_map<MaterialHandle_t, ImColor> skyboxMaterials;
 std::unordered_map<MaterialHandle_t, ImColor> skyboxMaterials2;
 
 const char* skyBoxNames[] = {
-        "cs_baggage_skybox_", // 0
-        "cs_tibet", "embassy",
-        "italy",
-        "jungle",
-        "office",
-        "nukeblank",
-        "sky_venice",
-        "sky_cs15_daylight01_hdr",
-        "sky_cs15_daylight02_hdr",
-        "sky_cs15_daylight03_hdr",
-        "sky_cs15_daylight04_hdr",
-        "sky_csgo_cloudy01",
-        "sky_csgo_night_flat",
-        "sky_csgo_night02",
-        "sky_csgo_night02b",
-        "sky_day02_05",
-        "sky_day02_05_hdr",
-        "sky_dust",
-        "vertigo",
-        "vertigo_hdr",
-        "vertigoblue_hdr",
-        "vietnam" // 21
+        XORSTR( "cs_baggage_skybox_" ), // 0
+        XORSTR( "cs_tibet" ),
+        XORSTR( "embassy" ),
+        XORSTR( "italy" ),
+        XORSTR( "jungle" ),
+        XORSTR( "office" ),
+        XORSTR( "nukeblank" ),
+        XORSTR( "sky_venice" ),
+        XORSTR( "sky_cs15_daylight01_hdr" ),
+        XORSTR( "sky_cs15_daylight02_hdr" ),
+        XORSTR( "sky_cs15_daylight03_hdr" ),
+        XORSTR( "sky_cs15_daylight04_hdr" ),
+        XORSTR( "sky_csgo_cloudy01" ),
+        XORSTR( "sky_csgo_night_flat" ),
+        XORSTR( "sky_csgo_night02" ),
+        XORSTR( "sky_csgo_night02b" ),
+        XORSTR( "sky_day02_05" ),
+        XORSTR( "sky_day02_05_hdr" ),
+        XORSTR( "sky_dust" ),
+        XORSTR( "vertigo" ),
+        XORSTR( "vertigo_hdr" ),
+        XORSTR( "vertigoblue_hdr" ),
+        XORSTR( "vietnam" ) // 21
 };
 
 void SkyBox::FrameStageNotify( ClientFrameStage_t stage ) {

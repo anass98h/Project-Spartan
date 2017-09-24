@@ -19,12 +19,12 @@ void Login::RenderWindow() {
         static char Nam[128] = "";
         static char Pass[128] = "";
         ImGui::PushItemWidth( 138 );
-        ImGui::Text( " Username " );
+        ImGui::Text( XORSTR( " Username " ) );
         ImGui::InputText( "", Nam, IM_ARRAYSIZE( Nam ) );
         ImGui::PopItemWidth();
 
         ImGui::Spacing();
-        ImGui::Text( " Password " );
+        ImGui::Text( XORSTR( " Password " ) );
         ImGui::InputText( "", Pass, IM_ARRAYSIZE( Pass ) );
         ImGui::PopItemWidth();
 

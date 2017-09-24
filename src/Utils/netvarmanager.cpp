@@ -86,9 +86,9 @@ std::string NetVarManager::DumpTable( RecvTable* table, int depth ) {
     std::stringstream ss;
 
     for ( int i = 0; i < depth; i++ )
-        pre.append( "\t" );
+        pre.append( XORSTR( "\t" ) );
 
-    ss << pre << table->m_pNetTableName << "\n";
+    ss << pre << table->m_pNetTableName << XORSTR( "\n" );
 
     for ( int i = 0; i < table->m_nProps; i++ ) {
         RecvProp* prop = &table->m_pProps[i];
@@ -97,11 +97,11 @@ std::string NetVarManager::DumpTable( RecvTable* table, int depth ) {
 
         std::string varName( prop->m_pVarName );
 
-        if ( varName.find( "baseclass" ) == 0 || varName.find( "0" ) == 0 || varName.find( "1" ) == 0 ||
-             varName.find( "2" ) == 0 )
+        if ( varName.find( XORSTR( "baseclass" ) ) == 0 || varName.find( XORSTR( "0" ) ) == 0 ||
+             varName.find( XORSTR( "1" ) ) == 0 || varName.find( XORSTR( "2" ) ) == 0 )
             continue;
 
-        ss << pre << "\t" << varName << " [0x" << std::hex << prop->m_Offset << "]\n";
+        ss << pre << XORSTR( "\t" ) << varName << XORSTR( " [0x" ) << std::hex << prop->m_Offset << XORSTR( "]\n" );
 
         if ( prop->m_pDataTable )
             ss << DumpTable( prop->m_pDataTable, depth + 1 );
