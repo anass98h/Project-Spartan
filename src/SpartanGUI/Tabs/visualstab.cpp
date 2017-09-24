@@ -1,63 +1,76 @@
 #include "visualstab.h"
 
 void Visuals::RenderTab() {
-    const char* BoxTypes[] = { "Flat 2D", "Frame 2D", "Box 3D", "Hitboxes" };
-    const char* TracerTypes[] = { "Bottom", "Cursor" };
-    const char* BarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above", "Interwebz" };
-    const char* BarColorTypes[] = { "Static", "Health Based" };
-    const char* ArmorBarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above" };
-    const char* TeamColorTypes[] = { "Absolute", "Relative" };
-    const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass", "Crystal", "BlueCrystal",
-                                 "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" };
-    const char* ArmsTypes[] = { "Default", "Glass", "Crystal", "BlueCrystal", "Gold", "Velvet", "Tree", "SpeechInfo",
-                                "FishNet", "Letters", "Gloss", "Wireframe", "None" };
+    const char* BoxTypes[] = { XORSTR( "Flat 2D" ), XORSTR( "Frame 2D" ), XORSTR( "Box 3D" ), XORSTR( "Hitboxes" ) };
+    const char* TracerTypes[] = { XORSTR( "Bottom" ), XORSTR( "Cursor" ) };
+    const char* BarTypes[] = {
+            XORSTR( "Vertical Left" ), XORSTR( "Vertical Right" ), XORSTR( "Horizontal Below" ),
+            XORSTR( "Horizontal Above" ), XORSTR( "Interwebz" )
+    };
+    const char* BarColorTypes[] = { XORSTR( "Static" ), XORSTR( "Health Based" ) };
+    const char* ArmorBarTypes[] = {
+            XORSTR( "Vertical Left" ), XORSTR( "Vertical Right" ), XORSTR( "Horizontal Below" ),
+            XORSTR( "Horizontal Above" )
+    };
+    const char* TeamColorTypes[] = { XORSTR( "Absolute" ), XORSTR( "Relative" ) };
+    const char* ChamsTypes[] = {
+            XORSTR( "Normal" ), XORSTR( "Normal - XQZ" ), XORSTR( "Flat Is Justice" ), XORSTR( "Flat - XQZ" ),
+            XORSTR( "Glass" ),
+            XORSTR( "Crystal" ), XORSTR( "BlueCrystal" ), XORSTR( "Gold" ), XORSTR( "Velvet" ), XORSTR( "Tree" ),
+            XORSTR( "SpeechInfo" ), XORSTR( "FishNet" ), XORSTR( "Letters" ), XORSTR( "Gloss" )
+    };
+    const char* ArmsTypes[] = {
+            XORSTR( "Default" ), XORSTR( "Glass" ), XORSTR( "Crystal" ), XORSTR( "BlueCrystal" ), XORSTR( "Gold" ),
+            XORSTR( "Velvet" ), XORSTR( "Tree" ), XORSTR( "SpeechInfo" ), XORSTR( "FishNet" ), XORSTR( "Letters" ),
+            XORSTR( "Gloss" ), XORSTR( "Wireframe" ), XORSTR( "None" )
+    };
 
     const char* SkyBoxes[] = {
-            "cs_baggage_skybox_", // 0
-            "cs_tibet",
-            "embassy",
-            "italy",
-            "jungle",
-            "office",
-            "nukeblank",
-            "sky_venice",
-            "sky_cs15_daylight01_hdr",
-            "sky_cs15_daylight02_hdr",
-            "sky_cs15_daylight03_hdr",
-            "sky_cs15_daylight04_hdr",
-            "sky_csgo_cloudy01",
-            "sky_csgo_night_flat",
-            "sky_csgo_night02",
-            "sky_csgo_night02b",
-            "sky_day02_05",
-            "sky_day02_05_hdr",
-            "sky_dust",
-            "vertigo",
-            "vertigo_hdr",
-            "vertigoblue_hdr",
-            "vietnam" // 21
+            XORSTR( "cs_baggage_skybox_" ), // 0
+            XORSTR( "cs_tibet" ),
+            XORSTR( "embassy" ),
+            XORSTR( "italy" ),
+            XORSTR( "jungle" ),
+            XORSTR( "office" ),
+            XORSTR( "nukeblank" ),
+            XORSTR( "sky_venice" ),
+            XORSTR( "sky_cs15_daylight01_hdr" ),
+            XORSTR( "sky_cs15_daylight02_hdr" ),
+            XORSTR( "sky_cs15_daylight03_hdr" ),
+            XORSTR( "sky_cs15_daylight04_hdr" ),
+            XORSTR( "sky_csgo_cloudy01" ),
+            XORSTR( "sky_csgo_night_flat" ),
+            XORSTR( "sky_csgo_night02" ),
+            XORSTR( "sky_csgo_night02b" ),
+            XORSTR( "sky_day02_05" ),
+            XORSTR( "sky_day02_05_hdr" ),
+            XORSTR( "sky_dust" ),
+            XORSTR( "vertigo" ),
+            XORSTR( "vertigo_hdr" ),
+            XORSTR( "vertigoblue_hdr" ),
+            XORSTR( "vietnam" ) // 21
     };
 
 
     const char* tracerEffectNames[] = {
-            "Assault Rifle", // 0
-            "Pistol",
-            "SMG",
-            "Rifle",
-            "Kisak Snot",
-            "Machine Gun",
-            "Shotgun",
-            "Kisak Snot Fallback",
-            "Kisak Snot Fallback2",
-            "Wire1A",
-            "Wire2",
-            "Wire1B",
-            "Original",
-            "Backup",
-            ".50 Cal",
-            ".50 Cal Glow",
-            ".50 Cal Low",
-            ".50 Cal Low Glow", // 17
+            XORSTR( "Assault Rifle" ), // 0
+            XORSTR( "Pistol" ),
+            XORSTR( "SMG" ),
+            XORSTR( "Rifle" ),
+            XORSTR( "Kisak Snot" ),
+            XORSTR( "Machine Gun" ),
+            XORSTR( "Shotgun" ),
+            XORSTR( "Kisak Snot Fallback" ),
+            XORSTR( "Kisak Snot Fallback 2" ),
+            XORSTR( "Wire1A" ),
+            XORSTR( "Wire2" ),
+            XORSTR( "Wire1B" ),
+            XORSTR( "Original" ),
+            XORSTR( "Backup" ),
+            XORSTR( ".50 Cal" ),
+            XORSTR( ".50 Cal Glow" ),
+            XORSTR( ".50 Cal Low" ),
+            XORSTR( ".50 Cal Low Glow" ), // 17
     };
 
     ImGui::Columns( 2, NULL, true );
@@ -241,7 +254,8 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Enable Tracers" ), &Settings::TracerEffects::enabled );
                 ImGui::Checkbox( XORSTR( "Server Sided?" ), &Settings::TracerEffects::serverSide );
                 SetTooltip(
-                        "Requires a Taser in your Inventory.\nCan only shoot one shot at a time\nOnly Works with Kisak Snot" );
+                        XORSTR( "Requires a Taser in your Inventory.\nCan only shoot one shot at a time\nOnly Works with Kisak Snot" )
+                );
                 ImGui::Columns( 2, NULL, false );
                 {
                     ImGui::SliderInt( XORSTR( "##TracerFreq" ), &Settings::TracerEffects::frequency, 0, 10,

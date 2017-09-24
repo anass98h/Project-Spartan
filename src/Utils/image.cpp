@@ -76,7 +76,7 @@ void Image::InitImages() {
 
     FILE* needle = fopen( XORSTR( "/tmp/needle.png" ), "wb" );
     if ( needle == NULL ) {
-        cvar->ConsoleDPrintf( "Error opening /tmp/needle.png\n" );
+        cvar->ConsoleDPrintf( XORSTR( "Error opening /tmp/needle.png\n" ) );
         return;
     }
     fwrite( needle_png, sizeof( unsigned char ), 8071, needle );

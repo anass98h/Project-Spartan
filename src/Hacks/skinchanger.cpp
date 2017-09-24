@@ -6,7 +6,7 @@ bool Settings::Skinchanger::Models::enabled = false;
 bool Settings::Skinchanger::Skins::perTeam = true;
 
 std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefinitionIndex>> Settings::Skinchanger::skinsCT = {
-        { ItemDefinitionIndex::WEAPON_AK47 /*WeaponID*/,    { ItemDefinitionIndex::INVALID /*itemDefinitionIndex*/, 524 /*fallbackPaintKit*/, 0.0005f /*fallbackWear*/, -1 /*fallbackSeed*/, 1337/*fallbackStatTrak*/, -1/*fallbackEntityQuality*/, "TestTux"/*customName*/} },
+        { ItemDefinitionIndex::WEAPON_AK47 /*WeaponID*/,    { ItemDefinitionIndex::INVALID /*itemDefinitionIndex*/, 524 /*fallbackPaintKit*/, 0.0005f /*fallbackWear*/, -1 /*fallbackSeed*/, 1337/*fallbackStatTrak*/, -1/*fallbackEntityQuality*/, XORSTR( "Spartan" )/*customName*/} },
         { ItemDefinitionIndex::WEAPON_KNIFE,                { ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET,         -1,                       -1,                       -1,                  -1,                       -1,                          "" } },
         { ItemDefinitionIndex::GLOVE_CT_SIDE,               { ItemDefinitionIndex::GLOVE_SPECIALIST,                10006,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
         { ItemDefinitionIndex::GLOVE_T_SIDE,                { ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND,        10006,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
@@ -29,9 +29,9 @@ std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefiniti
 };
 
 std::unordered_map<ItemDefinitionIndex, AttribItem_t, Util::IntHash<ItemDefinitionIndex>> Settings::Skinchanger::skinsT = {
-        { ItemDefinitionIndex::WEAPON_AK47 /*WeaponID*/,    { ItemDefinitionIndex::INVALID /*itemDefinitionIndex*/, 524 /*fallbackPaintKit*/, 0.0005f /*fallbackWear*/, -1 /*fallbackSeed*/, 1337/*fallbackStatTrak*/, -1/*fallbackEntityQuality*/, "TestTux"/*customName*/} },
-        { ItemDefinitionIndex::WEAPON_KNIFE_T,              { ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT,           -1,                       -1,                       -1,                  -1,                       -1,                          "" } },
-        { ItemDefinitionIndex::GLOVE_T_SIDE,                { ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND,        10006,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
+        { ItemDefinitionIndex::WEAPON_AK47 /*WeaponID*/, { ItemDefinitionIndex::INVALID /*itemDefinitionIndex*/, 524 /*fallbackPaintKit*/, 0.0005f /*fallbackWear*/, -1 /*fallbackSeed*/, 1337/*fallbackStatTrak*/, -1/*fallbackEntityQuality*/, XORSTR( "Spartan" )/*customName*/} },
+        { ItemDefinitionIndex::WEAPON_KNIFE_T,           { ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT,           -1,                       -1,                       -1,                  -1,                       -1,                          "" } },
+        { ItemDefinitionIndex::GLOVE_T_SIDE,             { ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND,        10006,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
         { ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND,    { ItemDefinitionIndex::INVALID,                         10006,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
         { ItemDefinitionIndex::GLOVE_SPORTY,                { ItemDefinitionIndex::INVALID,                         10018,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
         { ItemDefinitionIndex::GLOVE_SLICK,                 { ItemDefinitionIndex::INVALID,                         10013,                    0.0005f,                  -1,                  -1,                       -1,                          "" } },
@@ -243,7 +243,7 @@ void SkinChanger::FrameStageNotifySkins( ClientFrameStage_t stage ) {
                 *weapon->GetEntityQuality() = skin.entityQuality;
 
             if ( skin.customName != "" )
-                snprintf( weapon->GetCustomName(), 32, "%s", skin.customName.c_str() );
+                snprintf( weapon->GetCustomName(), 32, XORSTR( "%s" ), skin.customName.c_str() );
 
             *weapon->GetItemIDHigh() = -1;
             *weapon->GetAccountID() = localplayer_info.xuidlow;
@@ -327,16 +327,16 @@ void SkinChanger::FireEventClientSide( IGameEvent* event ) {
     if ( !engine->IsInGame() )
         return;
 
-    if ( !event || strcmp( event->GetName(), "player_death" ) != 0 )
+    if ( !event || strcmp( event->GetName(), XORSTR( "player_death" ) ) != 0 )
         return;
 
-    if ( !event->GetInt( "attacker" ) ||
-         engine->GetPlayerForUserID( event->GetInt( "attacker" ) ) != engine->GetLocalPlayer() )
+    if ( !event->GetInt( XORSTR( "attacker" ) ) ||
+         engine->GetPlayerForUserID( event->GetInt( XORSTR( "attacker" ) ) ) != engine->GetLocalPlayer() )
         return;
 
-    std::string weapon = event->GetString( "weapon" );
+    std::string weapon = event->GetString( XORSTR( "weapon" ) );
 
-    event->SetString( "weapon",
+    event->SetString( XORSTR( "weapon" ),
                       killIcons.find( weapon ) != killIcons.end() ? killIcons.at( weapon ).c_str() : weapon.c_str() );
 }
 
@@ -344,7 +344,7 @@ void SkinChanger::FireGameEvent( IGameEvent* event ) {
     if ( !Settings::Skinchanger::Models::enabled || ModSupport::current_mod == ModType::CSCO )
         return;
 
-    if ( !event || strcmp( event->GetName(), "switch_team" ) != 0 )
+    if ( !event || strcmp( event->GetName(), XORSTR( "switch_team" ) ) != 0 )
         return;
 
     if ( !( *csPlayerResource ) )
@@ -380,7 +380,7 @@ void SkinChanger::SetViewModelSequence( const CRecvProxyData* pDataConst, void* 
 
             // Store the current sequence.
             int m_nSequence = pData->m_Value.m_Int;
-            if ( szModel == "models/weapons/v_knife_butterfly.mdl" ) {
+            if ( szModel == XORSTR( "models/weapons/v_knife_butterfly.mdl" ) ) {
                 // Fix animations for the Butterfly Knife.
                 switch ( m_nSequence ) {
                     case SEQUENCE_DEFAULT_DRAW:
@@ -392,7 +392,7 @@ void SkinChanger::SetViewModelSequence( const CRecvProxyData* pDataConst, void* 
                     default:
                         m_nSequence++;
                 }
-            } else if ( szModel == "models/weapons/v_knife_falchion_advanced.mdl" ) {
+            } else if ( szModel == XORSTR( "models/weapons/v_knife_falchion_advanced.mdl" ) ) {
                 // Fix animations for the Falchion Knife.
                 switch ( m_nSequence ) {
                     case SEQUENCE_DEFAULT_IDLE2:
@@ -411,7 +411,7 @@ void SkinChanger::SetViewModelSequence( const CRecvProxyData* pDataConst, void* 
                     default:
                         m_nSequence--;
                 }
-            } else if ( szModel == "models/weapons/v_knife_push.mdl" ) {
+            } else if ( szModel == XORSTR( "models/weapons/v_knife_push.mdl" ) ) {
                 // Fix animations for the Shadow Daggers.
                 switch ( m_nSequence ) {
                     case SEQUENCE_DEFAULT_IDLE2:
@@ -435,7 +435,7 @@ void SkinChanger::SetViewModelSequence( const CRecvProxyData* pDataConst, void* 
                     default:
                         m_nSequence += 2;
                 }
-            } else if ( szModel == "models/weapons/v_knife_survival_bowie.mdl" ) {
+            } else if ( szModel == XORSTR( "models/weapons/v_knife_survival_bowie.mdl" ) ) {
                 // Fix animations for the Bowie Knife.
                 switch ( m_nSequence ) {
                     case SEQUENCE_DEFAULT_DRAW:

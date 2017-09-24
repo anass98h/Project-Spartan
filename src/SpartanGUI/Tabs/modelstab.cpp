@@ -87,7 +87,7 @@ void Models::RenderTab() {
         }
         ImGui::NextColumn();
 
-        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -121,7 +121,7 @@ void Models::RenderTab() {
             replacementModelCT = ( int ) model.first;
         ImGui::NextColumn();
 
-        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -148,7 +148,7 @@ void Models::RenderTab() {
         }
         ImGui::NextColumn();
 
-        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -182,7 +182,7 @@ void Models::RenderTab() {
             replacementModelT = ( int ) model.first;
         ImGui::NextColumn();
 
-        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();

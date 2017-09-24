@@ -104,27 +104,27 @@ QAngle viewanglesBackup;
 std::vector<Footstep> footsteps;
 
 const char* ESP::ranks[] = {
-        "Unranked",
-        "Silver I",
-        "Silver II",
-        "Silver III",
-        "Silver IV",
-        "Silver Elite",
-        "Silver Elite Master",
+        XORSTR( "Unranked" ),
+        XORSTR( "Silver I" ),
+        XORSTR( "Silver II" ),
+        XORSTR( "Silver III" ),
+        XORSTR( "Silver IV" ),
+        XORSTR( "Silver Elite" ),
+        XORSTR( "Silver Elite Master" ),
 
-        "Gold Nova I",
-        "Gold Nova II",
-        "Gold Nova III",
-        "Gold Nova Master",
-        "Master Guardian I",
-        "Master Guardian II",
+        XORSTR( "Gold Nova I" ),
+        XORSTR( "Gold Nova II" ),
+        XORSTR( "Gold Nova III" ),
+        XORSTR( "Gold Nova Master" ),
+        XORSTR( "Master Guardian I" ),
+        XORSTR( "Master Guardian II" ),
 
-        "Master Guardian Elite",
-        "Distinguished Master Guardian",
-        "Legendary Eagle",
-        "Legendary Eagle Master",
-        "Supreme Master First Class",
-        "The Global Elite"
+        XORSTR( "Master Guardian Elite" ),
+        XORSTR( "Distinguished Master Guardian" ),
+        XORSTR( "Legendary Eagle" ),
+        XORSTR( "Legendary Eagle Master" ),
+        XORSTR( "Supreme Master First Class" ),
+        XORSTR( "The Global Elite" )
 };
 
 // credits to Casual_Hacker from UC for this method (I modified it a lil bit)
@@ -1372,11 +1372,8 @@ static void DrawSpread() {
 }
 
 bool ESP::PrePaintTraverse( VPANEL vgui_panel, bool force_repaint, bool allow_force ) {
-    if ( Settings::ESP::enabled && Settings::NoScopeBorder::enabled &&
-         strcmp( "HudZoom", panel->GetName( vgui_panel ) ) == 0 )
-        return false;
-
-    return true;
+    return !( Settings::ESP::enabled && Settings::NoScopeBorder::enabled &&
+              strcmp( XORSTR( "HudZoom" ), panel->GetName( vgui_panel ) ) == 0 );
 }
 
 void ESP::Paint() {

@@ -2,33 +2,33 @@
 
 bool Settings::EventLogger::enabled = false;
 
-const char* team[]{ "", "", " (T)", " (CT)" };
-const char* defKit[]{ "without a defuse kit.", "with a defuse kit." };
+const char* team[]{ XORSTR( "" ), XORSTR( "" ), XORSTR( " (T)" ), XORSTR( " (CT)" ) };
+const char* defKit[]{ XORSTR( "without a defuse kit." ), XORSTR( "with a defuse kit." ) };
 std::map<int, const char*> bombsites = {
-        { 369, "Bombsite A" }, // Dust 2
-        { 366, "Bombsite B" }, // Dust 2
-        { 451, "Bombsite A" }, // Mirage
-        { 452, "Bombsite B" }, // Mirage
-        { 315, "Bombsite A" }, // Cache
-        { 316, "Bombsite B" }, // Cache
-        { 334, "Bombsite A" }, // Inferno
-        { 423, "Bombsite B" }, // Inferno
-        { 260, "Bombsite A" }, // Cobblestone
-        { 95,  "Bombsite B" }, // Cobblestone
-        { 79,  "Bombsite A" }, // Overpass
-        { 507, "Bombsite B" }, // Overpass
-        { 149, "Bombsite A" }, // Nuke
-        { 441, "Bombsite B" }, // Nuke
-        { 93,  "Bombsite A" }, // Train
-        { 538, "Bombsite B" }, // Train
-        { 222, "Bombsite A" }, // Canals
-        { 221, "Bombsite B" }, // Canals
-        { 239, "Bombsite A" }, // Aztec
-        { 238, "Bombsite B" }, // Aztec
-        { 81,  "Bombsite A" }, // Vertigo
-        { 82,  "Bombsite B" }, // Vertigo
-        { 526, "Bombsite A" }, // Dust 1
-        { 525, "Bombsite B" }, // Dust 1
+        { 369, XORSTR( "Bombsite A" ) }, // Dust 2
+        { 366, XORSTR( "Bombsite B" ) }, // Dust 2
+        { 451, XORSTR( "Bombsite A" ) }, // Mirage
+        { 452, XORSTR( "Bombsite B" ) }, // Mirage
+        { 315, XORSTR( "Bombsite A" ) }, // Cache
+        { 316, XORSTR( "Bombsite B" ) }, // Cache
+        { 334, XORSTR( "Bombsite A" ) }, // Inferno
+        { 423, XORSTR( "Bombsite B" ) }, // Inferno
+        { 260, XORSTR( "Bombsite A" ) }, // Cobblestone
+        { 95,  XORSTR( "Bombsite B" ) }, // Cobblestone
+        { 79,  XORSTR( "Bombsite A" ) }, // Overpass
+        { 507, XORSTR( "Bombsite B" ) }, // Overpass
+        { 149, XORSTR( "Bombsite A" ) }, // Nuke
+        { 441, XORSTR( "Bombsite B" ) }, // Nuke
+        { 93,  XORSTR( "Bombsite A" ) }, // Train
+        { 538, XORSTR( "Bombsite B" ) }, // Train
+        { 222, XORSTR( "Bombsite A" ) }, // Canals
+        { 221, XORSTR( "Bombsite B" ) }, // Canals
+        { 239, XORSTR( "Bombsite A" ) }, // Aztec
+        { 238, XORSTR( "Bombsite B" ) }, // Aztec
+        { 81,  XORSTR( "Bombsite A" ) }, // Vertigo
+        { 82,  XORSTR( "Bombsite B" ) }, // Vertigo
+        { 526, XORSTR( "Bombsite A" ) }, // Dust 1
+        { 525, XORSTR( "Bombsite B" ) }, // Dust 1
 };
 
 void Capitalize( std::string& s );

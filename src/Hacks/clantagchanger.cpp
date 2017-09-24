@@ -44,29 +44,17 @@ static const char* PresetChars() {
 
     switch ( Settings::ClanTagChanger::preset ) {
         case valueType::PSPARTAN:
-            return "Project-Spartan";
-
-            break;
+            return XORSTR( "Project-Spartan" );
         case valueType::NOVAC:
-            return "cantvac.me";
-
-            break;
+            return XORSTR( "cantvac.me" );
         case valueType::TUXCH:
-            return "tuxcheats.com";
-
-            break;
+            return XORSTR( "tuxcheats.com" );
         case valueType::REALNIGGA:
-            return "realnigga.club";
-
-            break;
+            return XORSTR( "realnigga.club" );
         case valueType::MARC:
-            return "void MarcIsAWeeb()";
-
-            break;
+            return XORSTR( "void MarcIsAWeeb()" );
         case valueType::CUSTOM:
             return Settings::ClanTagChanger::value;
-
-            break;
     }
 
 
@@ -109,9 +97,9 @@ static ClanTagChanger::Animation Words( std::string name, std::wstring text ) {
 
 std::vector<ClanTagChanger::Animation> ClanTagChanger::animations = {
 
-        Marquee( "--", L"--" ),
-        Words( "--", L"--" ),
-        Letters( "--", L"--" )
+        Marquee( XORSTR( "--" ), L"--" ),
+        Words( XORSTR( "--" ), L"--" ),
+        Letters( XORSTR( "--" ), L"--" )
 };
 ClanTagChanger::Animation* ClanTagChanger::animation = &ClanTagChanger::animations[0];
 
@@ -122,13 +110,13 @@ void ClanTagChanger::UpdateClanTagCallback() {
         switch ( Settings::ClanTagChanger::type ) {
 
             case ClanTagType::MARQUEE:
-                *ClanTagChanger::animation = Marquee( "------", wc );
+                *ClanTagChanger::animation = Marquee( XORSTR( "------" ), wc );
                 break;
             case ClanTagType::WORDS:
-                *ClanTagChanger::animation = Words( "------", wc );
+                *ClanTagChanger::animation = Words( XORSTR( "------" ), wc );
                 break;
             case ClanTagType::LETTERS:
-                *ClanTagChanger::animation = Letters( "------", wc );
+                *ClanTagChanger::animation = Letters( XORSTR( "------" ), wc );
                 break;
             default:
                 break;
@@ -138,9 +126,9 @@ void ClanTagChanger::UpdateClanTagCallback() {
     }
 
     ClanTagChanger::animations = {
-            Marquee( "--", L"--" ),
-            Words( "--", L"--" ),
-            Letters( "--", L"--" )
+            Marquee( XORSTR( "--" ), L"--" ),
+            Words( XORSTR( "--" ), L"--" ),
+            Letters( XORSTR( "--" ), L"--" )
     };
 
     int current_animation = ( int ) Settings::ClanTagChanger::type - 1;
@@ -176,20 +164,21 @@ void ClanTagChanger::BeginFrame( float frameTime ) {
         time( &rawtime );
         timeinfo = localtime( &rawtime );
 
-        strftime( buffer, sizeof( buffer ), "%T %Z", timeinfo );
+        strftime( buffer, sizeof( buffer ), XORSTR( "%T %Z" ), timeinfo );
         std::string str( buffer );
 
-        SendClanTag( str.c_str(), "" );
+        SendClanTag( str.c_str(), XORSTR( "" ) );
         return;
     } else {
         std::string ctWithEscapesProcessed = std::string( PresetChars() );
-        Util::StdReplaceStr( ctWithEscapesProcessed, "\\n",
-                             "\n" );
+        Util::StdReplaceStr( ctWithEscapesProcessed, XORSTR( "\\n" ),
+                             XORSTR( "\n" ) );
 
 
         if ( Settings::ClanTagChanger::type == ClanTagType::STATIC )
-            SendClanTag( ctWithEscapesProcessed.c_str(), "" );
+            SendClanTag( ctWithEscapesProcessed.c_str(), XORSTR( "" ) );
         else
-            SendClanTag( Util::WstringToString( ClanTagChanger::animation->GetCurrentFrame().text ).c_str(), "" );
+            SendClanTag( Util::WstringToString( ClanTagChanger::animation->GetCurrentFrame().text ).c_str(),
+                         XORSTR( "" ) );
     }
 }

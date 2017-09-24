@@ -186,55 +186,60 @@ static void DrawArms( const ModelRenderInfo_t& pInfo ) {
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
         case ArmsType::GLASS:
-            mat = material->FindMaterial( "models/inventory_items/cologne_prediction/cologne_prediction_glass",
-                                          TEXTURE_GROUP_OTHER );
+            mat = material->FindMaterial(
+                    XORSTR( "models/inventory_items/cologne_prediction/cologne_prediction_glass" ),
+                    TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
         case ArmsType::CRYSTAL:
-            mat = material->FindMaterial( "models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER );
+            mat = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/crystal_clear" ),
+                                          TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
         case ArmsType::CRYSTALBLUE:
-            mat = material->FindMaterial( "models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER );
+            mat = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/crystal_blue" ),
+                                          TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
         case ArmsType::GOLD:
-            mat = material->FindMaterial( "models/inventory_items/wildfire_gold/wildfire_gold_detail",
+            mat = material->FindMaterial( XORSTR( "models/inventory_items/wildfire_gold/wildfire_gold_detail" ),
                                           TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
         case ArmsType::VELVET:
-            mat = material->FindMaterial( "models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER );
-            mat->AlphaModulate( 1.0f );
-            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
-            break;
-        case ArmsType::TREE:
-            mat = material->FindMaterial( "models/props_foliage/urban_tree03_branches", TEXTURE_GROUP_OTHER );
-            mat->AlphaModulate( 1.0f );
-            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
-            break;
-        case ArmsType::SPEECHINFO:
-            mat = material->FindMaterial( "models/extras/speech_info", TEXTURE_GROUP_OTHER );
-            mat->AlphaModulate( 1.0f );
-            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
-            break;
-        case ArmsType::FISHNET:
-            mat = material->FindMaterial( "models/props_shacks/fishing_net01", TEXTURE_GROUP_OTHER );
-            mat->AlphaModulate( 1.0f );
-            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
-            break;
-        case ArmsType::LETTERS:
-            mat = material->FindMaterial( "models/inventory_items/contributor_map_tokens/contributor_charset_color",
+            mat = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/velvet" ),
                                           TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
+        case ArmsType::TREE:
+            mat = material->FindMaterial( XORSTR( "models/props_foliage/urban_tree03_branches" ), TEXTURE_GROUP_OTHER );
+            mat->AlphaModulate( 1.0f );
+            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
+            break;
+        case ArmsType::SPEECHINFO:
+            mat = material->FindMaterial( XORSTR( "models/extras/speech_info" ), TEXTURE_GROUP_OTHER );
+            mat->AlphaModulate( 1.0f );
+            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
+            break;
+        case ArmsType::FISHNET:
+            mat = material->FindMaterial( XORSTR( "models/props_shacks/fishing_net01" ), TEXTURE_GROUP_OTHER );
+            mat->AlphaModulate( 1.0f );
+            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
+            break;
+        case ArmsType::LETTERS:
+            mat = material->FindMaterial(
+                    XORSTR( "models/inventory_items/contributor_map_tokens/contributor_charset_color" ),
+                    TEXTURE_GROUP_OTHER );
+            mat->AlphaModulate( 1.0f );
+            mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
+            break;
         case ArmsType::GLOSS:
-            mat = material->FindMaterial( "models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER );
+            mat = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/gloss" ), TEXTURE_GROUP_OTHER );
             mat->AlphaModulate( 1.0f );
             mat->ColorModulate( Settings::ESP::Chams::Arms::color.Color() );
             break;
@@ -272,21 +277,26 @@ void Chams::DrawModelExecute( void* thisptr, void* context, void* state, const M
         materialChamsWeapons = Util::CreateMaterial( XORSTR( "VertexLitGeneric" ), XORSTR( "VGUI/white_additive" ),
                                                      false, true, true, true, true );
         materialChamsGlass = material->FindMaterial(
-                "models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER );
-        materialChamsCrystal = material->FindMaterial( "models/inventory_items/trophy_majors/crystal_clear",
+                XORSTR( "models/inventory_items/cologne_prediction/cologne_prediction_glass" ), TEXTURE_GROUP_OTHER );
+        materialChamsCrystal = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/crystal_clear" ),
                                                        TEXTURE_GROUP_OTHER );
-        materialChamsBlueCrystal = material->FindMaterial( "models/inventory_items/trophy_majors/crystal_blue",
-                                                           TEXTURE_GROUP_OTHER );
-        materialChamsGold = material->FindMaterial( "models/inventory_items/wildfire_gold/wildfire_gold_detail",
-                                                    TEXTURE_GROUP_OTHER );
-        materialChamsVelvet = material->FindMaterial( "models/inventory_items/trophy_majors/velvet",
+        materialChamsBlueCrystal = material->FindMaterial(
+                XORSTR( "models/inventory_items/trophy_majors/crystal_blue" ),
+                TEXTURE_GROUP_OTHER );
+        materialChamsGold = material->FindMaterial(
+                XORSTR( "models/inventory_items/wildfire_gold/wildfire_gold_detail" ),
+                TEXTURE_GROUP_OTHER );
+        materialChamsVelvet = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/velvet" ),
                                                       TEXTURE_GROUP_OTHER );
-        materialChamsTree = material->FindMaterial( "models/props_foliage/urban_tree03_branches", TEXTURE_GROUP_OTHER );
-        materialChamsSpeechInfo = material->FindMaterial( "models/extras/speech_info", TEXTURE_GROUP_OTHER );
-        materialChamsFishNet = material->FindMaterial( "models/props_shacks/fishing_net01", TEXTURE_GROUP_OTHER );
+        materialChamsTree = material->FindMaterial( XORSTR( "models/props_foliage/urban_tree03_branches" ),
+                                                    TEXTURE_GROUP_OTHER );
+        materialChamsSpeechInfo = material->FindMaterial( XORSTR( "models/extras/speech_info" ), TEXTURE_GROUP_OTHER );
+        materialChamsFishNet = material->FindMaterial( XORSTR( "models/props_shacks/fishing_net01" ),
+                                                       TEXTURE_GROUP_OTHER );
         materialChamsLetters = material->FindMaterial(
-                "models/inventory_items/contributor_map_tokens/contributor_charset_color", TEXTURE_GROUP_OTHER );
-        materialChamsGloss = material->FindMaterial( "models/inventory_items/trophy_majors/gloss",
+                XORSTR( "models/inventory_items/contributor_map_tokens/contributor_charset_color" ),
+                TEXTURE_GROUP_OTHER );
+        materialChamsGloss = material->FindMaterial( XORSTR( "models/inventory_items/trophy_majors/gloss" ),
                                                      TEXTURE_GROUP_OTHER );
 
         materialsCreated = true;

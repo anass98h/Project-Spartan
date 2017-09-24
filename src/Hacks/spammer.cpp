@@ -72,25 +72,25 @@ void Spammer::BeginFrame( float frameTime ) {
 
     if ( Settings::Spammer::RadioSpammer::enabled ) {
         const char* radioCommands[] = {
-                "coverme",
-                "takepoint",
-                "holdpos",
-                "regroup",
-                "followme",
-                "takingfire",
-                "go",
-                "fallback",
-                "sticktog",
-                "report",
-                "roger",
-                "enemyspot",
-                "needbackup",
-                "sectorclear",
-                "inposition",
-                "reportingin",
-                "getout",
-                "negative",
-                "enemydown",
+                XORSTR( "coverme" ),
+                XORSTR( "takepoint" ),
+                XORSTR( "holdpos" ),
+                XORSTR( "regroup" ),
+                XORSTR( "followme" ),
+                XORSTR( "takingfire" ),
+                XORSTR( "go" ),
+                XORSTR( "fallback" ),
+                XORSTR( "sticktog" ),
+                XORSTR( "report" ),
+                XORSTR( "roger" ),
+                XORSTR( "enemyspot" ),
+                XORSTR( "needbackup" ),
+                XORSTR( "sectorclear" ),
+                XORSTR( "inposition" ),
+                XORSTR( "reportingin" ),
+                XORSTR( "getout" ),
+                XORSTR( "negative" ),
+                XORSTR( "enemydown" ),
         };
 
         engine->ClientCmd_Unrestricted( radioCommands[std::rand() % IM_ARRAYSIZE( radioCommands )] );
@@ -150,16 +150,16 @@ void Spammer::BeginFrame( float frameTime ) {
 
             // Construct a command with our message
             pstring str;
-            str << ( Settings::Spammer::say_team ? XORSTR( "say_team" ) : XORSTR( "say" ) ) << " \"";
+            str << ( Settings::Spammer::say_team ? XORSTR( "say_team" ) : XORSTR( "say" ) ) << XORSTR( " \"" );
 
             if ( Settings::Spammer::PositionSpammer::showName )
                 str << playerName << " | ";
 
             if ( Settings::Spammer::PositionSpammer::showWeapon )
-                str << Util::Items::GetItemDisplayName( *activeWeapon->GetItemDefinitionIndex() ) << " | ";
+                str << Util::Items::GetItemDisplayName( *activeWeapon->GetItemDefinitionIndex() ) << XORSTR( " | " );
 
             if ( Settings::Spammer::PositionSpammer::showRank )
-                str << ESP::ranks[*( *csPlayerResource )->GetCompetitiveRanking( i )] << " | ";
+                str << ESP::ranks[*( *csPlayerResource )->GetCompetitiveRanking( i )] << XORSTR( " | " );
 
             if ( Settings::Spammer::PositionSpammer::showWins )
                 str << *( *csPlayerResource )->GetCompetitiveWins( i ) << XORSTR( " wins | " );

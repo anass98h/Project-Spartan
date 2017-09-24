@@ -100,11 +100,11 @@ long Util::GetEpochTime() {
 const char* Util::GetCurrentTimeAsISO8601Timestamp() {
     time_t rawtime;
     struct tm* timeinfo;
-    char buffer[sizeof( "2011-10-08T07:07:09Z" )];
+    char buffer[sizeof( XORSTR( "2011-10-08T07:07:09Z" ) )];
 
     time( &rawtime );
     timeinfo = localtime( &rawtime );
-    strftime( buffer, sizeof( buffer ), "%FT%TZ", timeinfo );
+    strftime( buffer, sizeof( buffer ), XORSTR( "%FT%TZ" ), timeinfo );
     std::string time( buffer );
 
     return time.c_str();
@@ -142,7 +142,8 @@ const std::map<int, int>* Util::GetModelTypeBoneMap( C_BasePlayer* player ) {
             if ( memchr( pStudioModel->name, 'h', sizeof( pStudioModel->name ) ) != NULL ) // Phoenix
             {
                 return &BoneMapT_Phoenix;
-            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), "ba", 2 ) != NULL ) // balkan
+            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), XORSTR( "ba" ), 2 ) !=
+                        NULL ) // balkan
             {
                 return &BoneMapT_Balkan;
             } else // Separatist
@@ -153,7 +154,7 @@ const std::map<int, int>* Util::GetModelTypeBoneMap( C_BasePlayer* player ) {
             if ( memchr( pStudioModel->name, 'f', sizeof( pStudioModel->name ) ) != NULL ) // FBI
             {
                 return &BoneMapCT_FBI;
-            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), "sg", 2 ) != NULL ) // GSG
+            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), XORSTR( "sg" ), 2 ) != NULL ) // GSG
             {
                 return &BoneMapCT_GSG;
             } else // Seals
@@ -197,7 +198,8 @@ ModelType Util::GetModelTypeID( C_BasePlayer* player ) {
             if ( memchr( pStudioModel->name, 'h', sizeof( pStudioModel->name ) ) != NULL ) // Phoenix
             {
                 return ModelType::PHOENIX;
-            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), "ba", 2 ) != NULL ) // balkan
+            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), XORSTR( "ba" ), 2 ) !=
+                        NULL ) // balkan
             {
                 return ModelType::BALKAN;
             } else // Separatist
@@ -208,7 +210,7 @@ ModelType Util::GetModelTypeID( C_BasePlayer* player ) {
             if ( memchr( pStudioModel->name, 'f', sizeof( pStudioModel->name ) ) != NULL ) // FBI
             {
                 return ModelType::FBI;
-            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), "sg", 2 ) != NULL ) // GSG
+            } else if ( memmem( pStudioModel->name, sizeof( pStudioModel->name ), XORSTR( "sg" ), 2 ) != NULL ) // GSG
             {
                 return ModelType::GSG;
             } else // Seals

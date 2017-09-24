@@ -26,7 +26,7 @@ static void ccc() {
 }
 
 static void ppp() {
-    if ( ImGui::BeginPopup( "oops" ) ) {
+    if ( ImGui::BeginPopup( XORSTR( "oops" ) ) ) {
         ImGui::Text( XORSTR( "Oops the ID you entered is wrong please retry" ) );
         ImGui::Spacing();
         ImGui::Spacing();
@@ -44,10 +44,10 @@ static void ppp() {
 void SetupMainMenuBar() {
 
 
-    if ( ImGui::Begin( "Logout", &ShowMainWindow, ImGuiWindowFlags_AlwaysAutoResize |
-                                                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-                                                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-                                                  ImGuiWindowFlags_NoTitleBar ) ) {
+    if ( ImGui::Begin( XORSTR( "Logout" ), &ShowMainWindow, ImGuiWindowFlags_AlwaysAutoResize |
+                                                            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+                                                            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                                                            ImGuiWindowFlags_NoTitleBar ) ) {
 
         if ( !LoggedIn ) {
             if ( protection::isVerified() ) {
@@ -96,7 +96,7 @@ void SetupMainMenuBar() {
                 ImGui::CloseCurrentPopup();
             }
             ImGui::Spacing();
-            ImGui::BulletText( " Verification-ID " );
+            ImGui::BulletText( XORSTR( " Verification-ID " ) );
             ImGui::Separator();
             ImGui::PushItemWidth( 440 );
             ImGui::InputText( "", Pass, IM_ARRAYSIZE( Pass ),
@@ -115,7 +115,7 @@ void SetupMainMenuBar() {
                     miss += 1;
                     ImGui::CloseCurrentPopup();
 
-                    ImGui::OpenPopup( "whoops" );
+                    ImGui::OpenPopup( XORSTR( "whoops" ) );
                 }
 
             }
@@ -144,30 +144,33 @@ void SetupMainMenuBar() {
             projectspartan::SelfShutdown();
 
         ImGui::Separator();
-        if ( ImGui::Checkbox( "Right click ", &Settings::UI::right ) )
+        if ( ImGui::Checkbox( XORSTR( "Right click " ), &Settings::UI::right ) )
             Settings::UI::middle = false;
         ImGui::Separator();
-        if ( ImGui::Checkbox( "Middle click ", &Settings::UI::middle ) )
+        if ( ImGui::Checkbox( XORSTR( "Middle click " ), &Settings::UI::middle ) )
             Settings::UI::right = false;
 
-        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs" };
+        const char* items[] = {
+                XORSTR( "Main" ), XORSTR( "Config" ), XORSTR( "Color" ), XORSTR( "Skins" ), XORSTR( "pList" ),
+                XORSTR( "Specs" )
+        };
         int items_count = sizeof( items ) / sizeof( *items );
 
 
         if ( Settings::UI::middle ) {
             if ( ImGui::IsMouseClicked( 2, true ) )
-                ImGui::OpenPopup( "##piepopup" );
+                ImGui::OpenPopup( XORSTR( "##piepopup" ) );
 
             center = ImGui::GetIO().MouseClickedPos[2];
         } else if ( Settings::UI::right ) {
 
             if ( ImGui::IsMouseClicked( 1, true ) )
-                ImGui::OpenPopup( "##piepopup" );
+                ImGui::OpenPopup( XORSTR( "##piepopup" ) );
 
             center = ImGui::GetIO().MouseClickedPos[1];
         }
 
-        int n = PiePopupSelectMenu( center, "##piepopup", items, items_count );
+        int n = PiePopupSelectMenu( center, XORSTR( "##piepopup" ), items, items_count );
         switch ( n ) { // a switch for my love Myrrib
 
 
@@ -226,7 +229,7 @@ void UI::SwapWindow() {
 
     time( &rawtime );
     timeinfo = localtime( &rawtime );
-    strftime( buffer, sizeof( buffer ), "%T %Z", timeinfo );
+    strftime( buffer, sizeof( buffer ), XORSTR( "%T %Z" ), timeinfo );
     std::string time( buffer );
 
     std::string watermark( XORSTR( "Project Spartan | " ) );
