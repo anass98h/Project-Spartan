@@ -7,11 +7,17 @@
 #include "aimbot.h"
 #include <lua.hpp>
 
+#define ANTIAIM_AIRBORNE 0
+#define ANTIAIM_MOVING 1
+#define ANTIAIM_STANDING 2
+
 namespace AntiAim {
 
     extern bool isAntiAiming;
     extern float lastRealYaw;
     extern float lastFakeYaw;
+
+    void SwitchAA( int state );
 
     bool IsStanding();
 
