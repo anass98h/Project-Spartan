@@ -5,22 +5,22 @@ int NameChanger::changes = -1;
 NameChanger::NC_Type NameChanger::type = NC_Type::NC_NORMAL;
 NameChanger::Colors NameChanger::color = Colors::LIGHT_RED;
 std::vector<std::pair<NameChanger::Colors, const char*>> NameChanger::colors = {
-        { NameChanger::Colors::WHITE,        XORSTR( "White" ) },
-        { NameChanger::Colors::DARK_RED,     XORSTR( "Dark Red" ) },
-        { NameChanger::Colors::LIGHT_PURPLE, XORSTR( "Light Purple" ) },
-        { NameChanger::Colors::DARK_GREEN,   XORSTR( "Dark Green" ) },
-        { NameChanger::Colors::LIGHT_GREEN,  XORSTR( "Light Green" ) },
-        { NameChanger::Colors::GREEN,        XORSTR( "Green" ) },
-        { NameChanger::Colors::LIGHT_RED,    XORSTR( "Light Red" ) },
-        { NameChanger::Colors::GRAY,         XORSTR( "Gray" ) },
-        { NameChanger::Colors::YELLOW,       XORSTR( "Yellow" ) },
-        { NameChanger::Colors::LIGHT_BLUE,   XORSTR( "Light Blue" ) },
-        { NameChanger::Colors::BLUE,         XORSTR( "Blue" ) },
-        { NameChanger::Colors::DARK_BLUE,    XORSTR( "Dark Blue" ) },
-        { NameChanger::Colors::DARK_GRAY,    XORSTR( "Dark Gray" ) },
-        { NameChanger::Colors::PURPLE,       XORSTR( "Purple" ) },
-        { NameChanger::Colors::RED,          XORSTR( "Red" ) },
-        { NameChanger::Colors::ORANGE,       XORSTR( "Orange" ) },
+        { NameChanger::Colors::WHITE,        "White" },
+        { NameChanger::Colors::DARK_RED,     "Dark Red" },
+        { NameChanger::Colors::LIGHT_PURPLE, "Light Purple" },
+        { NameChanger::Colors::DARK_GREEN,   "Dark Green" },
+        { NameChanger::Colors::LIGHT_GREEN,  "Light Green" },
+        { NameChanger::Colors::GREEN,        "Green" },
+        { NameChanger::Colors::LIGHT_RED,    "Light Red" },
+        { NameChanger::Colors::GRAY,         "Gray" },
+        { NameChanger::Colors::YELLOW,       "Yellow" },
+        { NameChanger::Colors::LIGHT_BLUE,   "Light Blue" },
+        { NameChanger::Colors::BLUE,         "Blue" },
+        { NameChanger::Colors::DARK_BLUE,    "Dark Blue" },
+        { NameChanger::Colors::DARK_GRAY,    "Dark Gray" },
+        { NameChanger::Colors::PURPLE,       "Purple" },
+        { NameChanger::Colors::RED,          "Red" },
+        { NameChanger::Colors::ORANGE,       "Orange" },
 };
 
 static std::string GetName() {

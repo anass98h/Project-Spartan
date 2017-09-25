@@ -146,9 +146,8 @@ void UI::UpdateWeaponSettings() {
 }
 
 void AimbotAimTab::RenderTab() {
-    const char* targets[] = { XORSTR( "PELVIS" ), XORSTR( "" ), XORSTR( "" ), XORSTR( "HIP" ), XORSTR( "LOWER SPINE" ),
-                              XORSTR( "MIDDLE SPINE" ), XORSTR( "UPPER SPINE" ), XORSTR( "NECK" ), XORSTR( "HEAD" ) };
-    const char* smoothTypes[] = { XORSTR( "Slow Near End" ), XORSTR( "Constant Speed" ), XORSTR( "Fast Near End" ) };
+    const char* targets[] = { "PELVIS", "", "", "HIP", "LOWER SPINE", "MIDDLE SPINE", "UPPER SPINE", "NECK", "HEAD" };
+    const char* smoothTypes[] = { "Slow Near End", "Constant Speed", "Fast Near End" };
     static char filterWeapons[32];
 
     if ( ImGui::Checkbox( XORSTR( "Enabled" ), &enabled ) )
@@ -412,22 +411,22 @@ void AimbotAimTab::RenderTab() {
                 UI::UpdateWeaponSettings();
             if ( ImGui::Checkbox( XORSTR( "Spread Limit" ), &spreadLimitEnabled ) )
                 UI::UpdateWeaponSettings();
-            SetTooltip( XORSTR( "Spread limit, but by simulating spread of the weapon" ) );
+            SetTooltip( "Spread limit, but by simulating spread of the weapon" );
             if ( ImGui::SliderFloat( XORSTR( "##SPREADLIMIT" ), &spreadLimit, 0, 0.1 ) )
                 UI::UpdateWeaponSettings();
-            SetTooltip( XORSTR( "Below this value, Auto Shoot does not shoot" ) );
+            SetTooltip( "Below this value, autoshoot does not shoot" );
             ImGui::Separator();
             ImGui::Text( XORSTR( "Hitchance" ) );
             ImGui::Separator();
             ImGui::Columns( 1 );
             {
-                if ( ImGui::Checkbox( XORSTR( "Hit Chance" ), &hitChanceEnabled ) )
+                if ( ImGui::Checkbox( "Hit Chance", &hitChanceEnabled ) )
                     UI::UpdateWeaponSettings();
-                if ( ImGui::SliderFloat( XORSTR( "##HITCHANCEVALUE" ), &hitChanceValue, 0, 1 ) )
+                if ( ImGui::SliderFloat( "##HITCHANCEVALUE", &hitChanceValue, 0, 1 ) )
                     UI::UpdateWeaponSettings();
-                if ( ImGui::SliderInt( XORSTR( "##HITCHANCERAYS" ), &hitChanceRays, 1, 250 ) )
+                if ( ImGui::SliderInt( "##HITCHANCERAYS", &hitChanceRays, 1, 250 ) )
                     UI::UpdateWeaponSettings();
-                SetTooltip( XORSTR( "Amount of rays to be shot" ) );
+                SetTooltip( "Amount of rays to be shot" );
             }
 
             ImGui::EndChild();
@@ -492,7 +491,7 @@ void AimbotAimTab::RenderTab() {
                     case ItemDefinitionIndex::WEAPON_P250:
                     case ItemDefinitionIndex::WEAPON_CZ75A:
                     case ItemDefinitionIndex::WEAPON_REVOLVER:
-                        if ( ImGui::Checkbox( XORSTR( "Auto Cock Revolver" ), &autoCockRevolver ) )
+                        if ( ImGui::Checkbox( "Auto Cock Revolver", &autoCockRevolver ) )
                             UI::UpdateWeaponSettings();
                         if ( ImGui::Checkbox( XORSTR( "Auto Pistol" ), &autoPistolEnabled ) )
                             UI::UpdateWeaponSettings();

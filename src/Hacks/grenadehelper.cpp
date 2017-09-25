@@ -160,7 +160,7 @@ static void CheckForUpdate() {
         return;
 
     pstring s = pstring( GetLocalClient( -1 )->m_szLevelNameShort );
-    unsigned long p = s.find_last_of( XORSTR( "/" ) );
+    unsigned long p = s.find_last_of( "/" );
     if ( p != std::string::npos )
         s.erase( 0, p + 1 );
 

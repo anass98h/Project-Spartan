@@ -3,18 +3,12 @@
 static char nickname[127] = "";
 
 void Misc::RenderTab() {
-    const char* strafeTypes[] = {
-            XORSTR( "Forwards" ), XORSTR( "Backwards" ), XORSTR( "Left" ), XORSTR( "Right" ), XORSTR( "Rage" )
-    };
-    const char* animationTypes[] = {
-            XORSTR( "Static" ), XORSTR( "Curtime" ), XORSTR( "Marquee" ), XORSTR( "Words" ), XORSTR( "Letters" )
-    };
-    const char* spammerTypes[] = { XORSTR( "None" ), XORSTR( "Normal" ), XORSTR( "Positions" ) };
-    const char* teams[] = { XORSTR( "Allies" ), XORSTR( "Enemies" ), XORSTR( "Both" ) };
-    const char* presetTypes[] = {
-            XORSTR( "Project-Spartan" ), XORSTR( "cantvac.me" ), XORSTR( "tuxcheats.com" ), XORSTR( "realnigga.club" ),
-            XORSTR( "void MarcIsAWeeb" ), XORSTR( "Custom" )
-    };
+    const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
+    const char* animationTypes[] = { "Static", "Curtime", "Marquee", "Words", "Letters" };
+    const char* spammerTypes[] = { "None", "Normal", "Positions" };
+    const char* teams[] = { "Allies", "Enemies", "Both" };
+    const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
+                                  "void MarcIsAWeeb", "Custom negro" };
 
     ImGui::Columns( 2, NULL, true );
     {

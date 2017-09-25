@@ -1,9 +1,9 @@
 #include "mischvhtab.h"
 
 const char* hugTypes[] = {
-        XORSTR( "OFF" ), XORSTR( "Rasp" ), XORSTR( "Brute Log EAP" ), XORSTR( "Bruteforce" ),
-        XORSTR( "TapTipTopTupTep" ),
-        XORSTR( "Myrrib's DELTA" ), XORSTR( "Myrrib Old" ), XORSTR( "LBY Backtrack" )
+
+        "OFF", "Rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "LBY Backtrack"
+
 };
 
 void MiscHvHTab::RenderTab() {

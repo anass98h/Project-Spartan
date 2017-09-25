@@ -3,7 +3,7 @@
 static int page = 0;
 
 const char* aimTabs[] = {
-        XORSTR( "Aimbot" ), XORSTR( "Triggerbot" )
+        "Aimbot", "Triggerbot"
 };
 
 void AimTab::RenderTab() {

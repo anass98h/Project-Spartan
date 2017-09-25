@@ -42,10 +42,8 @@ void Moving::RenderTab() {
                             ImGui::SliderFloat( XORSTR( "##YFAKECUSTOM" ), &Settings::AntiAim::Moving::Yaw::typeFakeAdd,
                                                 Settings::AntiAim::Moving::untrustedAngles ? -1000 : -180,
                                                 Settings::AntiAim::Moving::untrustedAngles ? 1000 : 180,
-                                                XORSTR( Settings::AntiAim::Moving::Yaw::typeFakeAdd > 0 ? XORSTR(
-                                                        "+%.1f" )
-                                                                                                        : XORSTR(
-                                                                "%.1f" ) ) );
+                                                XORSTR( Settings::AntiAim::Moving::Yaw::typeFakeAdd > 0 ? "+%.1f"
+                                                                                                        : "%.1f" ) );
                             ImGui::PopItemWidth();
                         }
                         ImGui::Separator();
@@ -58,9 +56,8 @@ void Moving::RenderTab() {
                             ImGui::SliderFloat( XORSTR( "##YCUSTOM" ), &Settings::AntiAim::Moving::Yaw::typeAdd,
                                                 Settings::AntiAim::Moving::untrustedAngles ? -1000 : -180,
                                                 Settings::AntiAim::Moving::untrustedAngles ? 1000 : 180,
-                                                XORSTR( Settings::AntiAim::Moving::Yaw::typeAdd > 0 ? XORSTR( "+%.1f" )
-                                                                                                    : XORSTR(
-                                                                "%.1f" ) ) );
+                                                XORSTR( Settings::AntiAim::Moving::Yaw::typeAdd > 0 ? "+%.1f"
+                                                                                                    : "%.1f" ) );
                             ImGui::PopItemWidth();
                         }
                     }
@@ -90,8 +87,7 @@ void Moving::RenderTab() {
                         ImGui::SliderFloat( XORSTR( "##XCUSTOM" ), &Settings::AntiAim::Moving::Pitch::custom,
                                             Settings::AntiAim::Moving::untrustedAngles ? -1000 : -180,
                                             Settings::AntiAim::Moving::untrustedAngles ? 1000 : 180,
-                                            XORSTR( Settings::AntiAim::Moving::Pitch::custom > 0 ? XORSTR( "+%.1f" )
-                                                                                                 : XORSTR( "%.1f" ) ) );
+                                            XORSTR( Settings::AntiAim::Moving::Pitch::custom > 0 ? "+%.1f" : "%.1f" ) );
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );

@@ -5,26 +5,16 @@
 namespace HvH {
 
     static const char* yTypes[] = {
-            XORSTR( "No AA" ), XORSTR( "Forwards" ), XORSTR( "Backwards" ), XORSTR( "Spin" ), XORSTR( "Fake Sideways" ),
-            XORSTR( "Backjitter" ), XORSTR( "FJitter" ), XORSTR( "LBY Jitter" ), XORSTR( "LBY Spin" ), XORSTR( "LBY" ),
-            XORSTR( "LBY Breaker" ), XORSTR( "Fake LBY" ), XORSTR( "LBY on Ground" ), XORSTR( "Tank 1" ),
-            XORSTR( "Tank 2" ),
-            XORSTR( "Tank 2" ), XORSTR( "Myrrib's eap" ), XORSTR( "Richi's eap" ), XORSTR( "Rasp 1" ),
-            XORSTR( "Rasp 2" ),
-            XORSTR( "FeetWiggle" ), XORSTR( "Legit Trolling 1" ), XORSTR( "Legit Trolling 2" ), XORSTR( "Custom 1" ),
-            XORSTR( "Custom 2" )
+            "No AA", "Forwards", "Backwards", "Spin", "Fake Sideways", "Backjitter", "FJitter", "LBY Jitter", "LBY Spin",
+            "LBY", "LBY Breaker", "Fake LBY", "LBY on Ground", "Tank 1", "Tank 2", "Tank 2", "Myrrib's eap",
+            "Richi's eap","Rasp 1","Rasp 2", "FeetWiggle", "Legit Trolling 1", "Legit Trolling 2", "Custom 1", "Custom 2"
     };
 
-    static const char* lbyTypes[] = {
-            XORSTR( "Breaker 1" ), XORSTR( "Breaker 2" ), XORSTR( "Breaker 3" ), XORSTR( "Avoz" ), XORSTR( "Myrrib" ),
-            XORSTR( "None" )
-    };
+    static const char* lbyTypes[] = { "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "Myrrib", "None" };
 
-    static const char* zTypes[] = { XORSTR( "TEST" ) };
+    static const char* zTypes[] = { "TEST" };
 
-    static const char* xTypes[] = {
-            XORSTR( "Up" ), XORSTR( "Flip" ), XORSTR( "Down" ), XORSTR( "Fake Zer0" ), XORSTR( "Fake Up" )
-    };
+    static const char* xTypes[] = { "Up", "Flip", "Down", "Fake Zer0", "Fake Up" };
 
     void RenderTab();
     void MainRenderTab();
