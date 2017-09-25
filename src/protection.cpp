@@ -19,7 +19,7 @@ const char* getMachineName() {
 
     if ( uname( &u ) < 0 ) {
         assert( 0 );
-        return XORSTR( "unknown" );
+        return "unknown";
     }
 
     return u.nodename;
@@ -137,7 +137,7 @@ bool protection::pwmatch( char* Pass ) {
     if ( verified ) {
         //Project-Spartan.hiv :thinking:
         FILE* fp = popen( XORSTR( "wget --quiet -O - whatKills.us/psecuritymemez" ),
-                          XORSTR( "r" ) ); //pipe wget output to a file handle
+                          "r" ); //pipe wget output to a file handle
         while ( fgets( line, 328, fp ) )
             result += line;
 
@@ -155,7 +155,7 @@ bool protection::pwmatch( char* Pass ) {
                 } else {
 
                     FILE* fp = popen( XORSTR( "wget --quiet -O - whatKills.us/psecuritymemez" ),
-                                      XORSTR( "r" ) ); //pipe wget output to a file handle
+                                      "r" ); //pipe wget output to a file handle
                     while ( fgets( line, 328, fp ) )
                         result += line;
 
@@ -184,7 +184,7 @@ bool protection::pwmatch( char* Pass ) {
             } else {
 
                 FILE* fp = popen( XORSTR( "wget --quiet -O - whatKills.us/psecuritymemez" ),
-                                  XORSTR( "r" ) ); //pipe wget output to a file handle
+                                  "r" ); //pipe wget output to a file handle
                 while ( fgets( line, 328, fp ) )
                     result += line;
 
@@ -223,8 +223,8 @@ int protection::UniqueId() {
     int nH = getNameHash();
     std::string n = getMachineName(); //Magic number :^) 
     int uniqueId = ( ( ( cH + nH ) * n.length() ) / 4.37138579 );
-    std::string id = XORSTR( "your unique id is " );
-    std::string id2 = XORSTR( "\n please send it to an Admin to get verified \n" );
+    std::string id = "your unique id is ";
+    std::string id2 = "\n please send it to an Admin to get verified \n";
     std::string id3 = std::to_string( uniqueId );
     id.append( id3 );
     id.append( id2 );

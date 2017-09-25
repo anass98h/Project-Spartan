@@ -6,8 +6,8 @@ static int page = 0;
 
 void TabButtons() {
     const char* tabs[] = {
-            XORSTR( "Models" ),
-            XORSTR( "Skins" ),
+            "Models",
+            "Skins",
     };
 
     for ( int i = 0; i < IM_ARRAYSIZE( tabs ); i++ ) {

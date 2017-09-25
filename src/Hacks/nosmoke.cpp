@@ -3,10 +3,10 @@
 bool Settings::NoSmoke::enabled = false;
 
 std::vector<const char*> smoke_materials = {
-        XORSTR( "particle/vistasmokev1/vistasmokev1_fire" ),
-        XORSTR( "particle/vistasmokev1/vistasmokev1_smokegrenade" ),
-        XORSTR( "particle/vistasmokev1/vistasmokev1_emods" ),
-        XORSTR( "particle/vistasmokev1/vistasmokev1_emods_impactdust" ),
+        "particle/vistasmokev1/vistasmokev1_fire",
+        "particle/vistasmokev1/vistasmokev1_smokegrenade",
+        "particle/vistasmokev1/vistasmokev1_emods",
+        "particle/vistasmokev1/vistasmokev1_emods_impactdust",
 };
 
 

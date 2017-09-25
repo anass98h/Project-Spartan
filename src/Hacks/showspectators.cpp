@@ -72,7 +72,7 @@ void ShowSpectators::RenderWindow() {
 
             ImGui::Separator();
 
-            ImGui::Text( XORSTR( "%s" ), entityInformation.name );
+            ImGui::Text( "%s", entityInformation.name );
             ImGui::NextColumn();
 
             switch ( *player->GetObserverMode() ) {

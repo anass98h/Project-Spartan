@@ -27,58 +27,58 @@ static std::vector<tracerRecord> tracerRecords;
 
 
 static const char* tracerEffectNames[] = {
-        XORSTR( "weapon_tracers_assrifle" ), // 0
-        XORSTR( "weapon_tracers_pistol" ),
-        XORSTR( "weapon_tracers_smg" ),
-        XORSTR( "weapon_tracers_rifle" ),
-        XORSTR( "weapon_tracers_taser" ),
-        XORSTR( "weapon_tracers_mach" ),
-        XORSTR( "weapon_tracers_shot" ),
-        XORSTR( "weapon_tracers_taser_fallback" ),
-        XORSTR( "weapon_tracers_taser_fallback2" ),
-        XORSTR( "weapon_tracers_taser_wire1a" ),
-        XORSTR( "weapon_tracers_taser_wire2" ),
-        XORSTR( "weapon_tracers_taser_wire1b" ),
-        XORSTR( "weapon_tracers_original" ),
-        XORSTR( "weapon_tracers_backup" ),
-        XORSTR( "weapon_tracers_50cal" ),
-        XORSTR( "weapon_tracers_50cal_glow" ),
-        XORSTR( "weapon_tracers_50cal_low" ),
-        XORSTR( "weapon_tracers_50cal_low_glow" ), // 17
+        "weapon_tracers_assrifle", // 0
+        "weapon_tracers_pistol",
+        "weapon_tracers_smg",
+        "weapon_tracers_rifle",
+        "weapon_tracers_taser",
+        "weapon_tracers_mach",
+        "weapon_tracers_shot",
+        "weapon_tracers_taser_fallback",
+        "weapon_tracers_taser_fallback2",
+        "weapon_tracers_taser_wire1a",
+        "weapon_tracers_taser_wire2",
+        "weapon_tracers_taser_wire1b",
+        "weapon_tracers_original",
+        "weapon_tracers_backup",
+        "weapon_tracers_50cal",
+        "weapon_tracers_50cal_glow",
+        "weapon_tracers_50cal_low",
+        "weapon_tracers_50cal_low_glow", // 17
 };
 
 const std::map<std::string, short> drawTimes = {
-        { XORSTR( "weapon_cz75a" ),         1880 },
-        { XORSTR( "weapon_mp9" ),           1330 },
-        { XORSTR( "weapon_awp" ),           1900 },
-        { XORSTR( "weapon_aug" ),           1285 },
-        { XORSTR( "weapon_m249" ),          1180 },
-        { XORSTR( "weapon_m4a1" ),          1170 },
-        { XORSTR( "weapon_m4a1_silencer" ), 1170 },
-        { XORSTR( "weapon_galilar" ),       1175 },
-        { XORSTR( "weapon_bizon" ),         1150 },
-        { XORSTR( "weapon_glock" ),         1150 },
-        { XORSTR( "weapon_negev" ),         1130 },
-        { XORSTR( "weapon_sawedoff" ),      1120 },
-        { XORSTR( "weapon_elite" ),         1100 },
-        { XORSTR( "weapon_ump45" ),         1085 },
-        { XORSTR( "weapon_nova" ),          1070 },
-        { XORSTR( "weapon_scar20" ),        1050 },
-        { XORSTR( "weapon_g3sg1" ),         1050 },
-        { XORSTR( "weapon_famas" ),         1050 },
-        { XORSTR( "weapon_mp7" ),           1055 },
-        { XORSTR( "weapon_fiveseven" ),     1050 },
-        { XORSTR( "weapon_ak47" ),          1050 },
-        { XORSTR( "weapon_mac10" ),         1030 },
-        { XORSTR( "weapon_usp_silencer" ),  1030 },
-        { XORSTR( "weapon_deagle" ),        1030 },
-        { XORSTR( "weapon_ssg08" ),         1150 },
-        { XORSTR( "weapon_xm1014" ),        1020 },
-        { XORSTR( "weapon_hkp2000" ),       1020 },
-        { XORSTR( "weapon_p250" ),          1050 },
-        { XORSTR( "weapon_tec9" ),          1050 },
-        { XORSTR( "weapon_sg556" ),         1025 },
-        { XORSTR( "weapon_mag7" ),          1025 },
+        { "weapon_cz75a",         1880 },
+        { "weapon_mp9",           1330 },
+        { "weapon_awp",           1900 },
+        { "weapon_aug",           1285 },
+        { "weapon_m249",          1180 },
+        { "weapon_m4a1",          1170 },
+        { "weapon_m4a1_silencer", 1170 },
+        { "weapon_galilar",       1175 },
+        { "weapon_bizon",         1150 },
+        { "weapon_glock",         1150 },
+        { "weapon_negev",         1130 },
+        { "weapon_sawedoff",      1120 },
+        { "weapon_elite",         1100 },
+        { "weapon_ump45",         1085 },
+        { "weapon_nova",          1070 },
+        { "weapon_scar20",        1050 },
+        { "weapon_g3sg1",         1050 },
+        { "weapon_famas",         1050 },
+        { "weapon_mp7",           1055 },
+        { "weapon_fiveseven",     1050 },
+        { "weapon_ak47",          1050 },
+        { "weapon_mac10",         1030 },
+        { "weapon_usp_silencer",  1030 },
+        { "weapon_deagle",        1030 },
+        { "weapon_ssg08",         1150 },
+        { "weapon_xm1014",        1020 },
+        { "weapon_hkp2000",       1020 },
+        { "weapon_p250",          1050 },
+        { "weapon_tec9",          1050 },
+        { "weapon_sg556",         1025 },
+        { "weapon_mag7",          1025 },
 };
 
 void TracerEffect::RestoreTracers() {
@@ -110,9 +110,9 @@ void TracerEffect::CreateMove( CUserCmd* cmd ) {
         return;
     if ( !( cmd->buttons & IN_ATTACK ) ) {
         /* On One-taps, it doesn't get to the taser part, so we need to switch back to the gun here */
-        if ( strcmp( localWeapon->GetCSWpnData()->GetConsoleName(), XORSTR( "weapon_taser" ) ) == 0 &&
+        if ( strcmp( localWeapon->GetCSWpnData()->GetConsoleName(), "weapon_taser" ) == 0 &&
              Settings::TracerEffects::serverSide )
-            engine->ExecuteClientCmd( XORSTR( "lastinv" ) );
+            engine->ExecuteClientCmd( "lastinv" );
         return;
     }
 
@@ -164,7 +164,7 @@ void TracerEffect::CreateMove( CUserCmd* cmd ) {
              * The Glitch is that the server will use the tracer effect of your currently selected weapon
              * Instead of the one you took the shot with */
             lastGun = localWeapon->GetCSWpnData()->GetConsoleName();
-            engine->ClientCmd_Unrestricted( XORSTR( "use weapon_taser;" ) ); // needs to be unrestricted
+            engine->ClientCmd_Unrestricted( "use weapon_taser;" ); // needs to be unrestricted
             cmd->buttons = cmd->buttons | IN_ATTACK;
             wait = true;
             waitUntil = Util::GetEpochTime() + 125;
@@ -182,20 +182,19 @@ void TracerEffect::CreateMove( CUserCmd* cmd ) {
                          strlen( tracerEffectNames[( int ) Settings::TracerEffects::effect] ) );
             }
         }
-    } else if ( strcmp( localWeapon->GetCSWpnData()->GetConsoleName(), XORSTR( "weapon_taser" ) ) == 0 ) {
+    } else if ( strcmp( localWeapon->GetCSWpnData()->GetConsoleName(), "weapon_taser" ) == 0 ) {
         if ( !Settings::TracerEffects::serverSide )
             return;
         /* Taser is out, we need to switch back to the gun and wait for it to be cocked */
         if ( drawTimes.find( lastGun ) == drawTimes.end() ) {
-            cvar->ConsoleDPrintf(
-                    XORSTR( "(TracerEffect::CreateMove): Warning: Gun \"%s\" not found in drawTimes map\n" ),
-                    localWeapon->GetCSWpnData()->GetConsoleName() );
+            cvar->ConsoleDPrintf( "(TracerEffect::CreateMove): Warning: Gun \"%s\" not found in drawTimes map\n",
+                                  localWeapon->GetCSWpnData()->GetConsoleName() );
         } else {
             wait = true;
             waitUntil = Util::GetEpochTime() + drawTimes.at( lastGun );
         }
 
-        engine->ExecuteClientCmd( XORSTR( "lastinv" ) );
+        engine->ExecuteClientCmd( "lastinv" );
         cmd->buttons = cmd->buttons & ~IN_ATTACK;
 
     }

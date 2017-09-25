@@ -62,7 +62,7 @@ void PlayerList::RenderWindow() {
             }
 
             for ( int team = ( int ) TeamID::TEAM_UNASSIGNED; team <= ( int ) TeamID::TEAM_COUNTER_TERRORIST; team++ ) {
-                char* teamName;
+                char* teamName = strdup( "" );
                 switch ( ( TeamID ) team ) {
                     case TeamID::TEAM_UNASSIGNED:
                         teamName = strdup( XORSTR( "Unassigned" ) );
@@ -93,26 +93,26 @@ void PlayerList::RenderWindow() {
                         currentPlayer = it;
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%s" ), entityInformation.name );
+                    ImGui::Text( "%s", entityInformation.name );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%s" ), entityInformation.guid );
+                    ImGui::Text( "%s", entityInformation.guid );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%s" ), teamName );
+                    ImGui::Text( "%s", teamName );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%s" ), ( *csPlayerResource )->GetClan( it ) );
+                    ImGui::Text( "%s", ( *csPlayerResource )->GetClan( it ) );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%d/%d/%d" ), ( *csPlayerResource )->GetKills( it ),
+                    ImGui::Text( "%d/%d/%d", ( *csPlayerResource )->GetKills( it ),
                                  ( *csPlayerResource )->GetAssists( it ), ( *csPlayerResource )->GetDeaths( it ) );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%s" ), ESP::ranks[*( *csPlayerResource )->GetCompetitiveRanking( it )] );
+                    ImGui::Text( "%s", ESP::ranks[*( *csPlayerResource )->GetCompetitiveRanking( it )] );
                     ImGui::NextColumn();
 
-                    ImGui::Text( XORSTR( "%d" ), *( *csPlayerResource )->GetCompetitiveWins( it ) );
+                    ImGui::Text( "%d", *( *csPlayerResource )->GetCompetitiveWins( it ) );
                     ImGui::NextColumn();
                 }
             }

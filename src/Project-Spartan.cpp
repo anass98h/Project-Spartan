@@ -87,23 +87,14 @@ int __attribute__ ((constructor)) Startup() {
     soundVMT->ApplyVMT();
 
     eventListener = new EventListener({
-                                              XORSTR( "cs_game_disconnected" ),
-                                              XORSTR( "player_connect_full" ),
-                                              XORSTR( "player_death" ),
-                                              XORSTR( "player_hurt" ),
-                                              XORSTR( "switch_team" ),
-                                              XORSTR( "item_purchase" ),
-                                              XORSTR( "bomb_beginplant" ),
-                                              XORSTR( "bomb_begindefuse" ),
-                                              XORSTR( "bomb_planted" ),
-                                              XORSTR( "enter_bombzone" ),
-                                              XORSTR( "player_given_c4" ),
-                                              XORSTR( "hostage_follows" ),
-                                              XORSTR( "hostage_rescued" )
+                                              "cs_game_disconnected", "player_connect_full", "player_death",
+                                              "player_hurt", "switch_team", "item_purchase", "bomb_beginplant",
+                                              "bomb_begindefuse", "bomb_planted", "enter_bombzone", "player_given_c4",
+                                              "hostage_follows", "hostage_rescued"
                                       });
 
     if ( ModSupport::current_mod != ModType::CSCO &&
-         Hooker::HookRecvProp( XORSTR( "CBaseViewModel" ), XORSTR( "m_nSequence" ), SkinChanger::sequenceHook ) )
+         Hooker::HookRecvProp( "CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook ) )
         SkinChanger::sequenceHook->SetProxyFunction( ( RecvVarProxyFn ) SkinChanger::SetViewModelSequence );
 
     //NetVarManager::DumpNetvars();
@@ -116,7 +107,7 @@ int __attribute__ ((constructor)) Startup() {
     srand( time( NULL ) ); // Seed random # Generator so we can call rand() later
 
 
-    engine->ExecuteClientCmd( XORSTR( "clear;" ) );
+    engine->ExecuteClientCmd( "clear;" );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
                               XORSTR( " )\\ )                      )              \n" ) );

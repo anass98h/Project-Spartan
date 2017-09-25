@@ -98,7 +98,7 @@ void SplitSkins() {
         }
         ImGui::NextColumn();
 
-        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -129,7 +129,7 @@ void SplitSkins() {
             modelSkinCT = skin.first;
         ImGui::NextColumn();
 
-        ImGui::Text( XORSTR( "%s" ), skin.second.paintName != nullptr ? skin.second.paintName : "" );
+        ImGui::Text( "%s", skin.second.paintName != nullptr ? skin.second.paintName : "" );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -170,7 +170,7 @@ void SplitSkins() {
         }
         ImGui::NextColumn();
 
-        ImGui::Text( XORSTR( "%s" ), Util::Items::GetItemEntityName( model.first ).c_str() );
+        ImGui::Text( "%s", Util::Items::GetItemEntityName( model.first ).c_str() );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -201,7 +201,7 @@ void SplitSkins() {
             modelSkinT = skin.first;
         ImGui::NextColumn();
 
-        ImGui::Text( XORSTR( "%s" ), skin.second.paintName != nullptr ? skin.second.paintName : "" );
+        ImGui::Text( "%s", skin.second.paintName != nullptr ? skin.second.paintName : "" );
         ImGui::NextColumn();
 
         ImGui::Separator();
@@ -397,7 +397,7 @@ void CombinedSkins() {
             selectedModelSkin = skin.first;
         ImGui::NextColumn();
 
-        ImGui::Text( XORSTR( "%s" ), skin.second.paintName != nullptr ? skin.second.paintName : "" );
+        ImGui::Text( "%s", skin.second.paintName != nullptr ? skin.second.paintName : "" );
         ImGui::NextColumn();
 
         ImGui::Separator();
