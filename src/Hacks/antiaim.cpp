@@ -328,8 +328,8 @@ bool NextLBYUpdate() {
 
     if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) &&
         (LocalPlayer->GetFlags() & FL_ONGROUND)) {
-        if (LastLBYUpdateTime + 1.1 - (GetLatency() * 2) < flServerTime) {
-            LastLBYUpdateTime += 1.1;
+        if (LastLBYUpdateTime + 1.125 - (GetLatency() * 2) < flServerTime) {
+            LastLBYUpdateTime += 1.125;
         }
         return true;
     }
@@ -411,10 +411,10 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
 
             if (Settings::customYaw::lby) {
                 if (Settings::customYaw::value > 0)
-                    angle.y += *((C_BasePlayer *) entityList->GetClientEntity(
+                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + (Settings::customYaw::value);
                 else
-                    angle.y -= *((C_BasePlayer *) entityList->GetClientEntity(
+                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - (Settings::customYaw::value);
 
             } else {
@@ -809,27 +809,26 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 break;
                 case AntiAimType_Y::RASP2:  // get your own dank names :feelsmocked:
                  static bool flip1 = false;
-                static float prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
-                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                static float last;
+                angle.y = AntiAim::lastFakeYaw + 180;
+                if (NextLBYUpdate()) {
+                flip1 = false;
+                }
 
-
-                if (prevLBY1 !=
-                    *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget())
+                else
                     flip1 = false;
-                else
-                    flip1 = true;
-                if (flip1)
+                if (flip1) {
+                    last = AntiAim::lastRealYaw;
                     angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() + 110.f;
-                else
-                    angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
-                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget() - 110.f;
+                            engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                    angle.y = last;
+                    flip1 = false;
+                }
+                else {
+                    angle.y = AntiAim::lastFakeYaw + 180;
+                }
 
-                prevLBY1 = *((C_BasePlayer *) entityList->GetClientEntity(
-                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
                 break;
-
                 case AntiAimType_Y::FEETWIGGLE:
                     float Diff ;
                     bool MarcisAWeeb;
