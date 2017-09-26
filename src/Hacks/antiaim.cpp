@@ -90,6 +90,7 @@ bool Settings::AntiAim::Misc::AutoDisable::freezeTime = true;
 float AntiAim::lastRealYaw = 0.0f;
 float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
+long lastPress = 0;
 
 static float Distance(Vector a, Vector b) {
     return (sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2)));
@@ -220,50 +221,61 @@ static float DoAAatTarget() {
     }
 }
 
-static void SwapAA() {
-    int count = 0;
+void AntiAim::SwitchAA( int state ) {
+    switch ( state ) {
+        case ANTIAIM_AIRBORNE: {
+            // Airborne
+            AntiAimType_Y fakeYaw = Settings::AntiAim::Airborne::Yaw::typeFake;
+            AntiAimType_Y realYaw = Settings::AntiAim::Airborne::Yaw::type;
+            Settings::AntiAim::Airborne::Yaw::typeFake = realYaw;
+            Settings::AntiAim::Airborne::Yaw::type = fakeYaw;
 
-    if (inputSystem->IsButtonDown(AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::SwitchAA::key :
-                                  AntiAim::IsMoving() ? Settings::AntiAim::Moving::SwitchAA::key :
-                                  Settings::AntiAim::Standing::SwitchAA::key)) {
-        count++;
-        //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "Switch AA Count: %i\n", count);
-    } else {
-        if (count > 0) {
-            if (AntiAim::IsStanding()) {
-                AntiAimType_Y fake = Settings::AntiAim::Standing::Yaw::typeFake;
-                AntiAimType_Y real = Settings::AntiAim::Standing::Yaw::type;
-                float fakeAdd = Settings::AntiAim::Standing::Yaw::typeFakeAdd;
-                float realAdd = Settings::AntiAim::Standing::Yaw::typeAdd;
+            float fakeYawAdd = Settings::AntiAim::Airborne::Yaw::typeFakeAdd;
+            float realYawAdd = Settings::AntiAim::Airborne::Yaw::typeAdd;
+            Settings::AntiAim::Airborne::Yaw::typeFakeAdd = realYawAdd;
+            Settings::AntiAim::Airborne::Yaw::typeAdd = fakeYawAdd;
 
-                Settings::AntiAim::Standing::Yaw::typeFake = real;
-                Settings::AntiAim::Standing::Yaw::type = fake;
-                Settings::AntiAim::Standing::Yaw::typeFakeAdd = realAdd;
-                Settings::AntiAim::Standing::Yaw::typeAdd = fakeAdd;
-            }
-            if (AntiAim::IsMoving()) {
-                AntiAimType_Y fake = Settings::AntiAim::Moving::Yaw::typeFake;
-                AntiAimType_Y real = Settings::AntiAim::Moving::Yaw::type;
-                float fakeAdd = Settings::AntiAim::Moving::Yaw::typeFakeAdd;
-                float realAdd = Settings::AntiAim::Moving::Yaw::typeAdd;
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "Switched AntiAims for Airborne!" ) );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "New Fake: %s - New Real: %s - New Fake Add: %f - New Real Add: %f" ),
+                                      realYaw, fakeYaw, realYawAdd, fakeYawAdd );
+            break;
+        }
+        case ANTIAIM_MOVING: {
+            // Moving
+            AntiAimType_Y fakeYaw = Settings::AntiAim::Moving::Yaw::typeFake;
+            AntiAimType_Y realYaw = Settings::AntiAim::Moving::Yaw::type;
+            Settings::AntiAim::Moving::Yaw::typeFake = realYaw;
+            Settings::AntiAim::Moving::Yaw::type = fakeYaw;
 
-                Settings::AntiAim::Moving::Yaw::typeFake = real;
-                Settings::AntiAim::Moving::Yaw::type = fake;
-                Settings::AntiAim::Moving::Yaw::typeFakeAdd = realAdd;
-                Settings::AntiAim::Moving::Yaw::typeAdd = fakeAdd;
-            }
-            if (AntiAim::IsAirborne()) {
-                AntiAimType_Y fake = Settings::AntiAim::Airborne::Yaw::typeFake;
-                AntiAimType_Y real = Settings::AntiAim::Airborne::Yaw::type;
-                float fakeAdd = Settings::AntiAim::Airborne::Yaw::typeFakeAdd;
-                float realAdd = Settings::AntiAim::Airborne::Yaw::typeAdd;
+            float fakeYawAdd = Settings::AntiAim::Moving::Yaw::typeFakeAdd;
+            float realYawAdd = Settings::AntiAim::Moving::Yaw::typeAdd;
+            Settings::AntiAim::Moving::Yaw::typeFakeAdd = realYawAdd;
+            Settings::AntiAim::Moving::Yaw::typeAdd = fakeYawAdd;
 
-                Settings::AntiAim::Airborne::Yaw::typeFake = real;
-                Settings::AntiAim::Airborne::Yaw::type = fake;
-                Settings::AntiAim::Airborne::Yaw::typeFakeAdd = realAdd;
-                Settings::AntiAim::Airborne::Yaw::typeAdd = fakeAdd;
-            }
-            count = 0;
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "Switched AntiAims for Moving!" ) );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "New Fake: %s - New Real: %s - New Fake Add: %f - New Real Add: %f" ),
+                                      realYaw, fakeYaw, realYawAdd, fakeYawAdd );
+            break;
+        }
+        case ANTIAIM_STANDING: {
+            // Standing
+            AntiAimType_Y fakeYaw = Settings::AntiAim::Standing::Yaw::typeFake;
+            AntiAimType_Y realYaw = Settings::AntiAim::Standing::Yaw::type;
+            Settings::AntiAim::Standing::Yaw::typeFake = realYaw;
+            Settings::AntiAim::Standing::Yaw::type = fakeYaw;
+
+            float fakeYawAdd = Settings::AntiAim::Standing::Yaw::typeFakeAdd;
+            float realYawAdd = Settings::AntiAim::Standing::Yaw::typeAdd;
+            Settings::AntiAim::Standing::Yaw::typeFakeAdd = realYawAdd;
+            Settings::AntiAim::Standing::Yaw::typeAdd = fakeYawAdd;
+
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "Switched AntiAims for Standing!" ) );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ),
+                                      XORSTR( "New Fake: %s - New Real: %s - New Fake Add: %f - New Real Add: %f" ),
+                                      realYaw, fakeYaw, realYawAdd, fakeYawAdd );
+            break;
         }
     }
 }
@@ -1242,6 +1254,29 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
         }
     }
 
+    long millis = Util::GetEpochTime();
+    if ( millis - lastPress >= 1000 ) {
+        if ( Settings::AntiAim::Airborne::SwitchAA::enabled &&
+             inputSystem->IsButtonDown( Settings::AntiAim::Airborne::SwitchAA::key ) ) {
+            if ( AntiAim::IsAirborne() ) {
+                SwitchAA( ANTIAIM_AIRBORNE );
+                lastPress = Util::GetEpochTime();
+            }
+        } else if ( Settings::AntiAim::Moving::SwitchAA::enabled &&
+                    inputSystem->IsButtonDown( Settings::AntiAim::Moving::SwitchAA::key ) ) {
+            if ( AntiAim::IsMoving() ) {
+                SwitchAA( ANTIAIM_MOVING );
+                lastPress = Util::GetEpochTime();
+            }
+        } else if ( Settings::AntiAim::Standing::SwitchAA::enabled &&
+                    inputSystem->IsButtonDown( Settings::AntiAim::Standing::SwitchAA::key ) ) {
+            if ( AntiAim::IsStanding() ) {
+                SwitchAA( ANTIAIM_STANDING );
+                lastPress = Util::GetEpochTime();
+            }
+        }
+    }
+
     if (IsAirborne() ? Settings::AntiAim::Airborne::Yaw::enabled :
         IsMoving() ? Settings::AntiAim::Moving::Yaw::enabled :
         Settings::AntiAim::Standing::Yaw::enabled) {
@@ -1262,11 +1297,6 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
              IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
              Settings::AntiAim::Standing::HeadEdge::enabled) && shouldEdge && !bFlip)
             angle.y = edge_angle.y;
-
-        if ((IsAirborne() ? Settings::AntiAim::Airborne::SwitchAA::enabled :
-             IsMoving() ? Settings::AntiAim::Moving::SwitchAA::enabled :
-             Settings::AntiAim::Standing::SwitchAA::enabled))
-            SwapAA();
     }
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
 
