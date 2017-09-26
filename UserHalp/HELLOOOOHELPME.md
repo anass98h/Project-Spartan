@@ -2,10 +2,10 @@
 ## Installation
 
 Download the required dependencies:
-* **Debian-based**: ` sudo apt-get install cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
-* **Arch**: `sudo pacman -S base-devel cmake gdb git sdl2 lua xdotool patchelf`
-* **Fedora**: `sudo dnf install cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
-* **Gentoo**: `sudo emerge cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf`
+* **Debian-based**: `sudo apt-get install cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf curl libcurlpp-dev`
+* **Arch**: `sudo pacman -S base-devel cmake gdb git sdl2 lua xdotool patchelf sdl2_image curl curl libcurl4-openssl-dev libcurlpp`
+* **Fedora**: `sudo dnf install cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf curl libcurl-devel curlpp-devel`
+* **Gentoo**: `sudo emerge cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf sdl2-image curl dev-cpp/curlpp`
 
 Then Install the included font files.
 
