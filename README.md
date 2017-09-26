@@ -50,6 +50,9 @@ $ ./build.sh
 $ ./load.sh
 ```
 
+Prebuilt binaries are available on the [psBuild][3] repository.
+Please ship prebuilt binaries only over this repository.
+
 ## Usage
 
 Press <kbd>Insert</kbd> to open the UI. You will be prompted to enter
@@ -96,3 +99,4 @@ GIGA Shoutout to Kisak.
 [0]: https://github.com/anass98h/Project-Spartan
 [1]: https://github.com/anass98h/Project-Spartan
 [2]: https://discord.gg/exTBFWz
+[3]: https://github.com/ikfe/psbuilds
