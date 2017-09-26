@@ -1261,16 +1261,19 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
              inputSystem->IsButtonDown( Settings::AntiAim::Airborne::SwitchAA::key ) ) {
             if ( AntiAim::IsAirborne() ) {
                 SwitchAA( ANTIAIM_AIRBORNE );
+                lastPress = Util::GetEpochTime();
             }
         } else if ( Settings::AntiAim::Moving::SwitchAA::enabled &&
                     inputSystem->IsButtonDown( Settings::AntiAim::Moving::SwitchAA::key ) ) {
             if ( AntiAim::IsMoving() ) {
                 SwitchAA( ANTIAIM_MOVING );
+                lastPress = Util::GetEpochTime();
             }
         } else if ( Settings::AntiAim::Standing::SwitchAA::enabled &&
                     inputSystem->IsButtonDown( Settings::AntiAim::Standing::SwitchAA::key ) ) {
             if ( AntiAim::IsStanding() ) {
                 SwitchAA( ANTIAIM_STANDING );
+                lastPress = Util::GetEpochTime();
             }
         }
     }
