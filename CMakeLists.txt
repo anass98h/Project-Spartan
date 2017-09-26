@@ -53,5 +53,5 @@ add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-add_library(Spartan SHARED ${SOURCE_FILES})
+add_library(Spartan SHARED ${SOURCE_FILES} src/Protection/Protection.cpp src/Protection/Protection.h)
 target_link_libraries(Spartan GL dl xdo ${LUA_LIBRARY} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
