@@ -12,6 +12,11 @@
 #include "glhook.h"
 #include "interfaces.h"
 
+#define LIB_CLIENT_CLIENT XORSTR("client_client.so")
+#define LIB_ENGINE_CLIENT XORSTR("engine_client.so"
+#define LIB_LAUNCHER_CLIENT XORSTR("launcher_client.so")
+#define LIB_VGUIMATSURFACE XORSTR("vguimatsurface_client.so")
+
 struct dlinfo_t {
     const char* library = nullptr;
     uintptr_t address = 0;

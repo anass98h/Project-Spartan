@@ -146,7 +146,7 @@ void Hooker::FindCInput() {
 }
 
 void Hooker::FindGlowManager() {
-    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                      ( unsigned char* ) XORSTR(
                                                                              "\xE8\x00\x00\x00\x00\x48\x8B\x3D\x00\x00\x00\x00\xBE\x01\x00\x00\x00\xC7" ),
                                                                      XORSTR( "x????xxx????xxxxxx" ) );
@@ -155,7 +155,7 @@ void Hooker::FindGlowManager() {
 }
 
 void Hooker::FindPlayerResource() {
-    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                      ( unsigned char* ) XORSTR(
                                                                              "\x48\x8B\x05\x00\x00\x00\x00\x55\x48\x89\xE5\x48\x85\xC0\x74\x10\x48" ),
                                                                      XORSTR( "xxx????xxxxxxxxxx" ) );
@@ -164,7 +164,7 @@ void Hooker::FindPlayerResource() {
 }
 
 void Hooker::FindGameRules() {
-    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                      ( unsigned char* ) XORSTR(
                                                                              "\x48\x8B\x05\x00\x00\x00\x00\x48\x8B\x00\x0F\x84" ),
                                                                      XORSTR( "xxx????xx?xx" ) );
@@ -173,7 +173,7 @@ void Hooker::FindGameRules() {
 }
 
 void Hooker::FindRankReveal() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x55\x48\x89\xE5\x53\x48\x89\xFB\x48\x83\xEC\x08\xE8\x00\x00\x00\x00\x48\x8D\x00\x00\x00\x00\x00\x48\x8B\x10\x48\x89\xC7\xFF\x52\x28" ),
                                                                  XORSTR( "xxxxxxxxxxxxx????xx?????xxxxxxxxx" ) );
@@ -182,7 +182,7 @@ void Hooker::FindRankReveal() {
 }
 
 void Hooker::FindSendClanTag() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "engine_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_ENGINE_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x55\x48\x89\xE5\x48\x89\x5D\xE8\x4C\x89\x65\xF0\x49\x89\xFC\xBF\x48\x00\x00\x00\x4C\x89\x6D\xF8\x48\x83\xEC\x20\x49" ),
                                                                  XORSTR( "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) );
@@ -191,7 +191,7 @@ void Hooker::FindSendClanTag() {
 }
 
 void Hooker::FindViewRender() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\xB8\xFF\xFF\x7F\x7F\x31\xD2\x55\x89\x05\x00\x00\x00\x00\x48\x8D\x3D\x00\x00\x00\x00" ),
                                                                  XORSTR( "xxxxxxxxxx????xxx????" ) );
@@ -200,7 +200,7 @@ void Hooker::FindViewRender() {
 }
 
 void Hooker::FindSendPacket() {
-    uintptr_t bool_address = PatternFinder::FindPatternInModule( XORSTR( "engine_client.so" ),
+    uintptr_t bool_address = PatternFinder::FindPatternInModule( LIB_ENGINE_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x41\xBD\x01\x00\x00\x00\xE9\x2A\xFE" ),
                                                                  XORSTR( "xxx???xxx" ) );
@@ -211,15 +211,15 @@ void Hooker::FindSendPacket() {
 }
 
 void Hooker::FindPrediction() {
-    uintptr_t seed_instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t seed_instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                           ( unsigned char* ) XORSTR(
                                                                                   "\x48\x8B\x05\x00\x00\x00\x00\xF3\x0F\x11\x45\xDC\xF3" ),
                                                                           XORSTR( "xxx????xxxxxx" ) );
-    uintptr_t helper_instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t helper_instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                             ( unsigned char* ) XORSTR(
                                                                                     "\x00\x48\x89\x3D\x00\x00\x00\x00\xC3" ),
                                                                             XORSTR( "xxxx????x" ) );
-    uintptr_t movedata_instruction_addr = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t movedata_instruction_addr = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                               ( unsigned char* ) XORSTR(
                                                                                       "\x48\x8B\x0D\x00\x00\x00\x00\x4C\x89\xF2" ),
                                                                               XORSTR( "xxx????xxx" ) );
@@ -230,7 +230,7 @@ void Hooker::FindPrediction() {
 }
 
 void Hooker::FindIsReadyCallback() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x48\x83\x3D\x00\x00\x00\x00\x00\x74\x34\x48\x8B\x05" ),
                                                                  XORSTR( "xxx????xxxxxx" ) );
@@ -239,13 +239,13 @@ void Hooker::FindIsReadyCallback() {
 }
 
 void Hooker::FindSurfaceDrawing() {
-    uintptr_t start_func_address = PatternFinder::FindPatternInModule( XORSTR( "vguimatsurface_client.so" ),
+    uintptr_t start_func_address = PatternFinder::FindPatternInModule( LIB_VGUIMATSURFACE,
                                                                        ( unsigned char* ) XORSTR(
                                                                                "\x55\x48\x89\xE5\x53\x48\x89\xFB\x48\x83\xEC\x28\x80" ),
                                                                        XORSTR( "xxxxxxxxxxxxx" ) );
     StartDrawing = reinterpret_cast<StartDrawingFn> (start_func_address);
 
-    uintptr_t finish_func_address = PatternFinder::FindPatternInModule( XORSTR( "vguimatsurface_client.so" ),
+    uintptr_t finish_func_address = PatternFinder::FindPatternInModule( LIB_VGUIMATSURFACE,
                                                                         ( unsigned char* ) XORSTR(
                                                                                 "\x55\x31\xFF\x48\x89" ),
                                                                         XORSTR( "xxxxx" ) );
@@ -258,14 +258,14 @@ void Hooker::FindGetLocalClient() {
 }
 
 void Hooker::FindLineGoesThroughSmoke() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR( "\x55\x40\x0F\xB6\xFF" ),
                                                                  XORSTR( "xxxxx" ) );
     LineGoesThroughSmoke = reinterpret_cast<LineGoesThroughSmokeFn> (func_address);
 }
 
 void Hooker::FindInitKeyValues() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x81\x27\x00\x00\x00\xFF\x55\x48\x89\xE5\x5D" ),
                                                                  XORSTR( "xx???xxxxxx" ) );
@@ -273,7 +273,7 @@ void Hooker::FindInitKeyValues() {
 }
 
 void Hooker::FindLoadFromBuffer() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x55\x48\x89\xE5\x48\x89\x5D\xD8\x48\x89\xD3\x4C\x89\x65\xE0\x4D\x89\xCC" ),
                                                                  XORSTR( "xxxxxxxxxxxxxxxxxx" ) );
@@ -296,7 +296,7 @@ void Hooker::FindVstdlibFunctions()
  */
 
 void Hooker::FindOverridePostProcessingDisable() {
-    uintptr_t bool_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t bool_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x80\x3D\x00\x00\x00\x00\x00\x0F\x85\x00\x00\x00\x00\x85\xC9" ),
                                                                  XORSTR( "xx????xxx????xx" ) );
@@ -306,7 +306,7 @@ void Hooker::FindOverridePostProcessingDisable() {
 }
 
 void Hooker::FindCrosshairWeaponTypeCheck() {
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t byte_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x83\xF8\x05\x0F\x84\x00\x00\x00\x00\x48\x8B\x55\xB8" ),
                                                                  XORSTR( "xxxxx????xxxx" ) );
@@ -316,7 +316,7 @@ void Hooker::FindCrosshairWeaponTypeCheck() {
 }
 
 void Hooker::FindCamThinkSvCheatsCheck() {
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
+    uintptr_t byte_address = PatternFinder::FindPatternInModule( LIB_CLIENT_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x74\x00\x49\x83\x00\x00\x00\x00\x00\x00\x00\x0F\x84\x00\x00\x00\x00\x49\x8B" ),
                                                                  XORSTR( "x?xx??????xxx????xx" ) );
@@ -342,7 +342,7 @@ void Hooker::HookPollEvent() {
 }
 
 void Hooker::FindSDLInput() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "launcher_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_LAUNCHER_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x55\x48\x89\xE5\x53\x48\x83\xEC\x18" ),
                                                                  XORSTR( "xxxxxxxxx" ) );
@@ -351,7 +351,7 @@ void Hooker::FindSDLInput() {
 }
 
 void Hooker::FindSetNamedSkybox() {
-    uintptr_t func_address = PatternFinder::FindPatternInModule( XORSTR( "engine_client.so" ),
+    uintptr_t func_address = PatternFinder::FindPatternInModule( LIB_ENGINE_CLIENT,
                                                                  ( unsigned char* ) XORSTR(
                                                                          "\x55\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x48\x89\xE5\x41\x55\x41\x54\x49\x89\xFD" ),
                                                                  XORSTR( "x??????????????xxxxxxxxxx" ) );
