@@ -451,7 +451,7 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
 
         case AntiAimType_Y::TANK1:
             if (!(pLocal->GetVelocity().x < 0.1f && pLocal->GetVelocity().x > -0.1f))
-                yFlip ? angle.y -= 165 : angle.y -= 195;
+                yFlip ? angle.y -= 165 : angle.y += 195;
             if (!(pLocal->GetFlags() & FL_ONGROUND))
                 yFlip ? angle.y += 90 : angle.y -= 90;
 
