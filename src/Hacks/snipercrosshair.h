@@ -3,8 +3,7 @@
 #include "../interfaces.h"
 #include "../settings.h"
 
-/*namespace SniperCrosshair {
+namespace SniperCrosshair {
     //Hooks
     void BeginFrame();
 };
-*/

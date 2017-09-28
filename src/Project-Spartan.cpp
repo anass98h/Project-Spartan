@@ -33,11 +33,12 @@ int __attribute__ ((constructor)) Startup() {
     Hooker::FindLoadFromBuffer();
     //Hooker::FindVstdlibFunctions();
     Hooker::FindOverridePostProcessingDisable();
-    //Hooker::FindCrosshairWeaponTypeCheck();
+    Hooker::FindCrosshairWeaponTypeCheck();
     Hooker::FindCamThinkSvCheatsCheck();
     Hooker::HookSwapWindow();
     Hooker::HookPollEvent();
     TracerEffect::RestoreTracers();
+
 
     ModSupport::OnInit();
 
