@@ -2,7 +2,7 @@
 
 bool Settings::SniperCrosshair::enabled = false;
 
-void SniperCrosshair::BeginFrame() {
+/*void SniperCrosshair::BeginFrame() {
     if ( !engine->IsInGame() )
         return;
 
@@ -21,3 +21,4 @@ void SniperCrosshair::BeginFrame() {
 
     *CrosshairWeaponTypeCheck = Settings::SniperCrosshair::enabled && !localplayer->IsScoped() ? 255 : 5;
 }
+*/

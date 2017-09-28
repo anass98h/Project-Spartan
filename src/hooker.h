@@ -62,7 +62,7 @@ namespace Hooker {
     //void FindVstdlibFunctions();
     void FindOverridePostProcessingDisable();
 
-    void FindCrosshairWeaponTypeCheck();
+    //void FindCrosshairWeaponTypeCheck();
 
     void FindCamThinkSvCheatsCheck();
 
