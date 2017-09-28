@@ -4,7 +4,6 @@ bool* bSendPacket = nullptr;
 int* nPredictionRandomSeed = nullptr;
 CMoveData* g_MoveData = nullptr;
 bool* s_bOverridePostProcessingDisable = nullptr;
-uint8_t* CrosshairWeaponTypeCheck = nullptr;
 uint8_t* CamThinkSvCheatsCheck = nullptr;
 
 VMT* panelVMT = nullptr;
@@ -303,16 +302,6 @@ void Hooker::FindOverridePostProcessingDisable() {
     bool_address = GetAbsoluteAddress( bool_address, 2, 7 );
 
     s_bOverridePostProcessingDisable = reinterpret_cast<bool*> (bool_address);
-}
-
-void Hooker::FindCrosshairWeaponTypeCheck() {
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
-                                                                 ( unsigned char* ) XORSTR(
-                                                                         "\x83\xF8\x05\x0F\x84\x00\x00\x00\x00\x48\x8B\x55\xB8" ),
-                                                                 XORSTR( "xxxxx????xxxx" ) );
-
-    CrosshairWeaponTypeCheck = reinterpret_cast<uint8_t*> (byte_address + 2);
-    Util::ProtectAddr( CrosshairWeaponTypeCheck, PROT_READ | PROT_WRITE | PROT_EXEC );
 }
 
 void Hooker::FindCamThinkSvCheatsCheck() {

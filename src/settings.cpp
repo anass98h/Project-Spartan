@@ -637,6 +637,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "NoScopeBorder" )][XORSTR( "enabled" )] = Settings::NoScopeBorder::enabled;
 
     settings[XORSTR( "SniperCrosshair" )][XORSTR( "enabled" )] = Settings::SniperCrosshair::enabled;
+    LoadColor( settings[XORSTR( "SniperCrosshair" )][XORSTR( "color" )], Settings::SniperCrosshair::color );
 
     settings[XORSTR( "Autoblock" )][XORSTR( "enabled" )] = Settings::Autoblock::enabled;
     settings[XORSTR( "Autoblock" )][XORSTR( "key" )] = Settings::Autoblock::key;
@@ -1318,6 +1319,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NoScopeBorder" )][XORSTR( "enabled" )], &Settings::NoScopeBorder::enabled );
 
     GetVal( settings[XORSTR( "SniperCrosshair" )][XORSTR( "enabled" )], &Settings::SniperCrosshair::enabled );
+    GetVal( settings[XORSTR( "SniperCrosshair" )][XORSTR( "color" )], &Settings::SniperCrosshair::color );
 
     GetVal( settings[XORSTR( "Autoblock" )][XORSTR( "enabled" )], &Settings::Autoblock::enabled );
     GetButtonCode( settings[XORSTR( "Autoblock" )][XORSTR( "key" )], &Settings::Autoblock::key );

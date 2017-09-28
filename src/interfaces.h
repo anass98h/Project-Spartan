@@ -71,7 +71,6 @@ extern int* nPredictionRandomSeed;
 extern bool* bSendPacket;
 extern CMoveData* g_MoveData;
 extern bool* s_bOverridePostProcessingDisable;
-extern uint8_t* CrosshairWeaponTypeCheck;
 extern uint8_t* CamThinkSvCheatsCheck;
 
 extern uintptr_t oSwapWindow;

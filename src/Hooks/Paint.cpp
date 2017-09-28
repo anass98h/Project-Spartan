@@ -23,6 +23,7 @@ void Hooks::Paint( void* thisptr, PaintMode_t mode ) {
 
 
 void Hooks::PaintImGui() {
+    SniperCrosshair::PaintImGui();
     lbyindicator::PaintImGui();
     AngleIndicator::PaintImGui();
     SpeedIndicator::PaintImGui();

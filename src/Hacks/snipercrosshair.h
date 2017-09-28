@@ -5,5 +5,5 @@
 
 namespace SniperCrosshair {
     //Hooks
-    void BeginFrame();
+    void PaintImGui();
 };

@@ -1112,6 +1112,7 @@ namespace Settings {
 
     namespace SniperCrosshair {
         extern bool enabled;
+        extern ColorVar color;
     }
 
     namespace AutoDefuse {

@@ -89,13 +89,14 @@ void Colors::RenderWindow() {
             { "Glow - Team",                   &Settings::ESP::Glow::allyColor },
             { "Glow - Enemy",                  &Settings::ESP::Glow::enemyColor },
             { "Glow - Enemy Visible",          &Settings::ESP::Glow::enemyVisibleColor },
-            { "Glow - LocalPlayer",            &Settings::ESP::Glow::localplayerColor },
-            { "Glow - Weapon",                 &Settings::ESP::Glow::weaponColor },
-            { "Glow - Grenade",                &Settings::ESP::Glow::grenadeColor },
-            { "Glow - Defuser",                &Settings::ESP::Glow::defuserColor },
-            { "Glow - Chicken",                &Settings::ESP::Glow::chickenColor },
-            { "Sky",                           &Settings::NoSky::color },
-            { "Walls",                         &Settings::ASUSWalls::color },
+            { "Glow - LocalPlayer", &Settings::ESP::Glow::localplayerColor },
+            { "Glow - Weapon",      &Settings::ESP::Glow::weaponColor },
+            { "Glow - Grenade",     &Settings::ESP::Glow::grenadeColor },
+            { "Glow - Defuser",     &Settings::ESP::Glow::defuserColor },
+            { "Glow - Chicken",     &Settings::ESP::Glow::chickenColor },
+            { "Sky",                &Settings::NoSky::color },
+            { "Walls",              &Settings::ASUSWalls::color },
+            { "Sniper Crosshair",   &Settings::SniperCrosshair::color },
     };
 
     const char* colorNames[IM_ARRAYSIZE( colors )];
