@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include "SDK/vector.h"
+#include "../../../../../../usr/include/c++/5/cstddef"
 
 struct COffsets {
     struct {
@@ -127,6 +128,7 @@ struct COffsets {
         std::ptrdiff_t m_nResetEventsParity;
         std::ptrdiff_t m_nMuzzleFlashParity;
         std::ptrdiff_t m_hLightingOrigin;
+        std::ptrdiff_t m_Activity;
     } DT_BaseAnimating;
     struct {
         std::ptrdiff_t m_flCycle;

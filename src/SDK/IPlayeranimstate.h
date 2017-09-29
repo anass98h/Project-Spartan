@@ -14,26 +14,26 @@ typedef enum
 
 
 class IPlayerAnimState
-        {
-                public:
-                virtual void Release() = 0;
+{
+public:
+    virtual void Release() = 0;
 
-                // Update() and DoAnimationEvent() together maintain the entire player's animation state.
-                //
-                // Update() maintains the the lower body animation (the player's m_nSequence)
-                // and the upper body overlay based on the player's velocity and look direction.
-                //
-                // It also modulates these based on events triggered by DoAnimationEvent.
-                virtual void Update( float eyeYaw, float eyePitch ) = 0;
+    // Update() and DoAnimationEvent() together maintain the entire player's animation state.
+    //
+    // Update() maintains the the lower body animation (the player's m_nSequence)
+    // and the upper body overlay based on the player's velocity and look direction.
+    //
+    // It also modulates these based on events triggered by DoAnimationEvent.
+    virtual void Update( float eyeYaw, float eyePitch ) = 0;
 
-                // This is called by the client when a new player enters the PVS to clear any events
-                // the dormant version of the entity may have been playing.
-                virtual void ClearAnimationState() = 0;
+    // This is called by the client when a new player enters the PVS to clear any events
+    // the dormant version of the entity may have been playing.
+    virtual void ClearAnimationState() = 0;
 
-                // The client uses this to figure out what angles to render the entity with (since as the guy turns,
-                // it will change his body_yaw pose parameter before changing his rendered angle).
-                virtual const QAngle& GetRenderAngles() = 0;
-        };
+    // The client uses this to figure out what angles to render the entity with (since as the guy turns,
+    // it will change his body_yaw pose parameter before changing his rendered angle).
+    virtual const QAngle& GetRenderAngles() = 0;
+};
 
 
 #endif // IPLAYERANIMSTATE_H
@@ -73,10 +73,10 @@ public:
             float flCurTime
     );
 
-  //  void RemoveAll( void ) { m_animationQueue.RemoveAll(); }; enable this
+    //  void RemoveAll( void ) { m_animationQueue.RemoveAll(); }; enable this
 
 public:
-   // CUtlVector< CAnimationLayer >	m_animationQueue; enabled this
+    // CUtlVector< CAnimationLayer >	m_animationQueue; enabled this
 };
 
 #endif // SEQUENCE_TRANSITIONER_H
@@ -132,18 +132,18 @@ class CBasePlayerAnimState : virtual public IPlayerAnimState
 public:
 
 
-enum
-{
-    TURN_NONE = 0,
-    TURN_LEFT,
-    TURN_RIGHT
-};
+    enum
+    {
+        TURN_NONE = 0,
+        TURN_LEFT,
+        TURN_RIGHT
+    };
 
-CBasePlayerAnimState();
-virtual ~CBasePlayerAnimState();
+    CBasePlayerAnimState();
+    virtual ~CBasePlayerAnimState();
 
-void Init( CBaseAnimatingOverlay *pPlayer, const CModAnimConfig &config );
-virtual void Release();
+    void Init( CBaseAnimatingOverlay *pPlayer, const CModAnimConfig &config );
+    virtual void Release();
 
 // Update() and DoAnimationEvent() together maintain the entire player's animation state.
 //
@@ -151,31 +151,31 @@ virtual void Release();
 // and the upper body overlay based on the player's velocity and look direction.
 //
 // It also modulates these based on events triggered by DoAnimationEvent.
-virtual void Update( float eyeYaw, float eyePitch );
+    virtual void Update( float eyeYaw, float eyePitch );
 
 // This is called by the client when a new player enters the PVS to clear any events
 // the dormant version of the entity may have been playing.
-virtual void ClearAnimationState();
+    virtual void ClearAnimationState();
 
 // This is called every frame to prepare the animation layers to be filled with data
 // since we reconstruct them every frame (in case they get stomped by the networking
 // or anything else).
-virtual void ClearAnimationLayers();
+    virtual void ClearAnimationLayers();
 
 // The client uses this to figure out what angles to render the entity with (since as the guy turns,
 // it will change his body_yaw pose parameter before changing his rendered angle).
-virtual const QAngle& GetRenderAngles();
+    virtual const QAngle& GetRenderAngles();
 
 
 // Overrideables.
 public:
 
-virtual bool ShouldUpdateAnimState();
+    virtual bool ShouldUpdateAnimState();
 
 // This is called near the start of each frame.
 // The base class figures out the main sequence and the aim sequence, and derived
 // classes can overlay whatever other animations they want.
-virtual void ComputeSequences( studiohdr_t *pStudioHdr );
+    virtual void ComputeSequences( studiohdr_t *pStudioHdr );
 
 // This is called to figure out what the main activity is. The mod-specific class
 // overrides this to handle events like jumping, firing, etc.
@@ -183,40 +183,40 @@ virtual void ComputeSequences( studiohdr_t *pStudioHdr );
 
 // This is called to calculate the aim layer sequence. It usually figures out the
 // animation prefixes and suffixes and calls CalcSequenceIndex().
-virtual int CalcAimLayerSequence( float *flCycle, float *flAimSequenceWeight, bool bForceIdle ) = 0;
+    virtual int CalcAimLayerSequence( float *flCycle, float *flAimSequenceWeight, bool bForceIdle ) = 0;
 
 // This lets server-controlled idle sequences to play unchanged on the client
-virtual bool ShouldChangeSequences( void ) const;
+    virtual bool ShouldChangeSequences( void ) const;
 
 // If this returns true, then it will blend the current aim layer sequence with an idle aim layer
 // sequence based on how fast the character is moving, so it doesn't play the upper-body run at
 // full speed if he's moving really slowly.
 //
 // We return false on this for animations that don't have blends, like reloads.
-virtual bool ShouldBlendAimSequenceToIdle();
+    virtual bool ShouldBlendAimSequenceToIdle();
 
 // For the body left/right rotation, some models use a pose parameter and some use a bone controller.
-virtual float SetOuterBodyYaw( float flValue );
+    virtual float SetOuterBodyYaw( float flValue );
 
 // Return true if the player is allowed to move.
-virtual bool CanThePlayerMove();
+    virtual bool CanThePlayerMove();
 
 // This is called every frame to see what the maximum speed the player can move is.
 // It is used to determine where to put the move_x/move_y pose parameters or to
 // determine the animation playback rate, based on the player's movement speed.
 // The return value from here is interpolated so the playback rate or pose params don't move sharply.
-virtual float GetCurrentMaxGroundSpeed() = 0;
+    virtual float GetCurrentMaxGroundSpeed() = 0;
 
 // Display Con_NPrint output about the animation state. This is called if
 // we're on the client and if cl_showanimstate holds the current entity's index.
-void DebugShowAnimStateFull( int iStartLine );
+    void DebugShowAnimStateFull( int iStartLine );
 
-virtual void DebugShowAnimState( int iStartLine );
+    virtual void DebugShowAnimState( int iStartLine );
 //void AnimStatePrintf( int iLine, PRINTF_FORMAT_STRING const char *pMsg, ... );   PRINTF_FORMAT_STRING 404/
 //void AnimStateLog( PRINTF_FORMAT_STRING const char *pMsg, ... );
 
 // Calculate the playback rate for movement layer
-virtual float CalcMovementPlaybackRate( bool *bIsMoving );
+    virtual float CalcMovementPlaybackRate( bool *bIsMoving );
 
 // Allow inheriting classes to translate their desired activity, while keeping all
 // internal ACT comparisons using the base activity
@@ -229,9 +229,9 @@ public:
 
 // void				GetPoseParameters( studiohdr_t *pStudioHdr, float poseParameter[MAXSTUDIOPOSEPARAM] ); <- got this in ivmodelinfo.h
 
-CBaseAnimatingOverlay	*GetOuter() const;
+    CBaseAnimatingOverlay	*GetOuter() const;
 
-void				RestartMainSequence();
+    void				RestartMainSequence();
 
 
 // Helpers for the derived classes to use.
@@ -243,108 +243,108 @@ protected:
 
 //Activity GetCurrentMainSequenceActivity() const;
 
-void				GetOuterAbsVelocity( Vector& vel ) const;
-float				GetOuterXYSpeed() const;
+    void				GetOuterAbsVelocity( Vector& vel ) const;
+    float				GetOuterXYSpeed() const;
 
 // How long has it been since we cleared the animation state?
-float				TimeSinceLastAnimationStateClear() const;
+    float				TimeSinceLastAnimationStateClear() const;
 
-float				GetEyeYaw() const { return m_flEyeYaw; }
-
-protected:
-
-CModAnimConfig		m_AnimConfig;
-CBaseAnimatingOverlay	*m_pOuter;
+    float				GetEyeYaw() const { return m_flEyeYaw; }
 
 protected:
-int					ConvergeAngles( float goal,float maxrate, float maxgap, float dt, float& current );
-virtual void		ComputePoseParam_MoveYaw( studiohdr_t *pStudioHdr );
-virtual void		ComputePoseParam_BodyPitch( studiohdr_t *pStudioHdr );
-virtual void		ComputePoseParam_BodyYaw();
 
-virtual void		ResetGroundSpeed( void );
+    CModAnimConfig		m_AnimConfig;
+    CBaseAnimatingOverlay	*m_pOuter;
+
+protected:
+    int					ConvergeAngles( float goal,float maxrate, float maxgap, float dt, float& current );
+    virtual void		ComputePoseParam_MoveYaw( studiohdr_t *pStudioHdr );
+    virtual void		ComputePoseParam_BodyPitch( studiohdr_t *pStudioHdr );
+    virtual void		ComputePoseParam_BodyYaw();
+
+    virtual void		ResetGroundSpeed( void );
 
 protected:
 // The player's eye yaw and pitch angles.
-float m_flEyeYaw;
-float m_flEyePitch;
+    float m_flEyeYaw;
+    float m_flEyePitch;
 
 // The following variables are used for tweaking the yaw of the upper body when standing still and
 //  making sure that it smoothly blends in and out once the player starts moving
 // Direction feet were facing when we stopped moving
-float				m_flGoalFeetYaw;
+    float				m_flGoalFeetYaw;
 
-float				m_flCurrentFeetYaw;
-bool				m_bCurrentFeetYawInitialized;
+    float				m_flCurrentFeetYaw;
+    bool				m_bCurrentFeetYawInitialized;
 
-float				m_flCurrentTorsoYaw;
+    float				m_flCurrentTorsoYaw;
 
 // To check if they are rotating in place
-float				m_flLastYaw;
+    float				m_flLastYaw;
 
 // Time when we stopped moving
-float				m_flLastTurnTime;
+    float				m_flLastTurnTime;
 
 // One of the above enums
-int					m_nTurningInPlace;
+    int					m_nTurningInPlace;
 
-QAngle				m_angRender;
+    QAngle				m_angRender;
 
 private:
 
 // Update the prone state machine.
-void		UpdateProneState();
+    void		UpdateProneState();
 
 // Get the string that's appended to animation names for the player's current weapon.
-const char* GetWeaponSuffix();
+    const char* GetWeaponSuffix();
 
 //Activity			BodyYawTranslateActivity( Activity activity );
 
-void				SetOuterPoseParameter( int iParam, float flValue );
+    void				SetOuterPoseParameter( int iParam, float flValue );
 
 
-void				EstimateYaw();
+    void				EstimateYaw();
 
-virtual bool		ShouldResetMainSequence( int iCurrentSequence, int iNewSequence );
-void				ComputeMainSequence();
-void				ComputeAimSequence();
+    virtual bool		ShouldResetMainSequence( int iCurrentSequence, int iNewSequence );
+    void				ComputeMainSequence();
+    void				ComputeAimSequence();
 
-void				ComputePlaybackRate();
+    void				ComputePlaybackRate();
 
-void UpdateInterpolators();
-float GetInterpolatedGroundSpeed();
+    void UpdateInterpolators();
+    float GetInterpolatedGroundSpeed();
 
 private:
 
-float m_flMaxGroundSpeed;
+    float m_flMaxGroundSpeed;
 
-float m_flLastAnimationStateClearTime;
+    float m_flLastAnimationStateClearTime;
 
 // If he's using 8-way blending, then we blend to this idle
-int m_iCurrent8WayIdleSequence;
-int m_iCurrent8WayCrouchIdleSequence;
+    int m_iCurrent8WayIdleSequence;
+    int m_iCurrent8WayCrouchIdleSequence;
 
 // Last activity we've used on the lower body. Used to determine if animations should restart.
 //Activity m_eCurrentMainSequenceActivity;
 
-float				m_flGaitYaw;
-float				m_flStoredCycle;
+    float				m_flGaitYaw;
+    float				m_flStoredCycle;
 
-Vector2D			m_vLastMovePose;
+    Vector2D			m_vLastMovePose;
 
-void UpdateAimSequenceLayers(
-        float flCycle,
-        int iFirstLayer,
-        bool bForceIdle,
-        CSequenceTransitioner *pTransitioner,
-        float flWeightScale
-);
+    void UpdateAimSequenceLayers(
+            float flCycle,
+            int iFirstLayer,
+            bool bForceIdle,
+            CSequenceTransitioner *pTransitioner,
+            float flWeightScale
+    );
 
-void OptimizeLayerWeights( int iFirstLayer, int nLayers );
+    void OptimizeLayerWeights( int iFirstLayer, int nLayers );
 
 // This gives us smooth transitions between aim anim sequences on the client.
-CSequenceTransitioner	m_IdleSequenceTransitioner;
-CSequenceTransitioner	m_SequenceTransitioner;
+    CSequenceTransitioner	m_IdleSequenceTransitioner;
+    CSequenceTransitioner	m_SequenceTransitioner;
 };
 
 extern float g_flLastBodyPitch, g_flLastBodyYaw, m_flLastMoveYaw;
