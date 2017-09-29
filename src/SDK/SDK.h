@@ -50,3 +50,4 @@
 #include "CTickRecord.h"
 #include "INetChannel.h"
 #include "IPlayeranimstate.h"
+#include "ai_activity.h"
