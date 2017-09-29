@@ -64,8 +64,10 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
                     lastUpdate = curTime + 0.3f;
+                    backtrackingLby = true;
                 } else if ( lastUpdate < curTime ) {
                     PushLagRecord( i, target );
+                    backtrackingLby = false;
                 }
             } else {
                 PushLagRecord( i, target );
