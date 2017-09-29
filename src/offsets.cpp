@@ -242,6 +242,8 @@ void Offsets::GetOffsets() {
                                                                     XORSTR("m_hLightingOrigin"));
     offsets.DT_BaseAnimating.m_Activity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                           XORSTR("m_Activity"));
+    offsets.DT_BaseAnimating.m_IdealActivity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                   XORSTR("m_IdealActivity"));
 
     offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex = NetVarManager::GetOffset( tables,
                                                                                        XORSTR( "DT_BaseAttributableItem" ),
