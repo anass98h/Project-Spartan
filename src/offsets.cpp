@@ -244,6 +244,8 @@ void Offsets::GetOffsets() {
                                                                           XORSTR("m_Activity"));
     offsets.DT_BaseAnimating.m_IdealActivity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                    XORSTR("m_IdealActivity"));
+    offsets.DT_BaseAnimating.m_eCurrentMainSequenceActivity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                        XORSTR("m_eCurrentMainSequenceActivity"));
 
     offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex = NetVarManager::GetOffset( tables,
                                                                                        XORSTR( "DT_BaseAttributableItem" ),

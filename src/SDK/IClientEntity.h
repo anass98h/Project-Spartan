@@ -235,6 +235,11 @@ public:
         this + offsets.DT_BaseAnimating.m_IdealActivity);
     }
 
+    Activity GetCurrentMainSequenceActivity() {
+        return *( Activity* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_eCurrentMainSequenceActivity);
+    }
+
     float GetCycle() {
         return *( float* ) ( ( uintptr_t )
         this + offsets.DT_ServerAnimationData.m_flCycle);
