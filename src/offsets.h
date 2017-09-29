@@ -128,6 +128,7 @@ struct COffsets {
         std::ptrdiff_t m_nMuzzleFlashParity;
         std::ptrdiff_t m_hLightingOrigin;
         std::ptrdiff_t m_Activity;
+        std::ptrdiff_t m_IdealActivity;
     } DT_BaseAnimating;
     struct {
         std::ptrdiff_t m_flCycle;
