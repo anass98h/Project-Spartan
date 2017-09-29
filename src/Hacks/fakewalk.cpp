@@ -10,38 +10,40 @@ bool Settings::SlowMo::enabled;
 ButtonCode_t Settings::SlowMo::key = ButtonCode_t::KEY_C;
 
 
+ButtonCode_t W = ButtonCode_t::KEY_W;
+ButtonCode_t A = ButtonCode_t::KEY_A;
+ButtonCode_t S = ButtonCode_t::KEY_S;
+ButtonCode_t D = ButtonCode_t::KEY_D;
+
+bool Wpressed = inputSystem->IsButtonDown( W );
+bool Apressed = inputSystem->IsButtonDown( A );
+bool Spressed = inputSystem->IsButtonDown( S );
+bool Dpressed = inputSystem->IsButtonDown( D );
+
+
 void Fakewalk::CreateMove( CUserCmd* cmd ) {
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
     if ( !localplayer || !localplayer->GetAlive() )
         return;
 
     if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
-        bool isForward = cmd->buttons & IN_FORWARD;
-        bool isBack = cmd->buttons & IN_BACK;
-        bool isRight = cmd->buttons & IN_RIGHT;
-        bool isLeft = cmd->buttons & IN_LEFT;
-
-        if ( isForward )
+        if ( W )
             cmd->forwardmove = 10;
 
-        if ( isBack )
+        if ( S )
             cmd->forwardmove = -10;
 
-        if ( isRight )
+        if ( D )
             cmd->sidemove = 10;
 
-        if ( isLeft )
+        if ( A )
             cmd->sidemove = -10;
 
     } else if ( Settings::Fakewalk::enabled && inputSystem->IsButtonDown( Settings::Fakewalk::key ) ) {
-        bool isForward = cmd->buttons & IN_FORWARD;
-        bool isBack = cmd->buttons & IN_BACK;
-        bool isRight = cmd->buttons & IN_RIGHT;
-        bool isLeft = cmd->buttons & IN_LEFT;
         bool inAttack = cmd->buttons & IN_ATTACK;
 
         if ( !inAttack ) {
-            if ( isForward ) {
+            if ( W ) {
                 static int ChokingPacketsW = -1;
                 if ( ChokingPacketsW > 5 ) {
                     cmd->forwardmove = -1;
@@ -53,7 +55,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
                 }
             }
 
-            if ( isBack ) {
+            if ( S ) {
                 static int ChokingPacketsS = -1;
                 if ( ChokingPacketsS > 5 ) {
                     cmd->forwardmove = 1;
@@ -65,7 +67,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
                 }
             }
 
-            if ( isLeft ) {
+            if ( A ) {
                 static int ChokingPacketsA = -1;
                 if ( ChokingPacketsA > 5 ) {
                     cmd->sidemove = 1;
@@ -77,7 +79,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
                 }
             }
 
-            if ( isRight ) {
+            if ( D ) {
                 static int ChokingPacketsD = -1;
                 if ( ChokingPacketsD > 5 ) {
                     cmd->sidemove = -1;
