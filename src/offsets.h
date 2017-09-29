@@ -2,7 +2,6 @@
 
 #include <cstdio>
 #include "SDK/vector.h"
-#include "../../../../../../usr/include/c++/5/cstddef"
 
 struct COffsets {
     struct {
