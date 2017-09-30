@@ -566,6 +566,12 @@ void Aimbot::AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* l
     if ( !Settings::Aimbot::AutoCockRevolver::enabled )
         return;
 
+    if ( !localplayer || !localplayer->GetAlive() )
+        return;
+
+    if ( localplayer->GetFrozen() )
+        return;
+
     if ( cmd->buttons & IN_RELOAD )
         return;
 
