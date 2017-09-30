@@ -46,6 +46,10 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 //push record with blank coords
             }
             if ( Settings::Resolver::LagComp ) {
+                INetChannelInfo *nci = engine->GetNetChannelInfo();
+
+                float outgoingPing = nci->GetLatency(FLOW_OUTGOING);
+
                 static bool lbyUpdated = false;
 
                 bool onGround = ( target->GetFlags() & FL_ONGROUND );
@@ -63,7 +67,7 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 if ( lbyUpdated ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
-                    lastUpdate = curTime + 0.3f;
+                    lastUpdate = curTime + 0.2f + outgoingPing;
                     backtrackingLby = true;
                 } else if ( lastUpdate < curTime ) {
                     PushLagRecord( i, target );
