@@ -77,73 +77,76 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
     switch ( Settings::Resolver::Hugtype ) {
         case ResolverHugtype::RASP: {
-            if ( HasStaticRealAngle( cur ) ) {
-                player->GetEyeAngles()->y = player->GetPoseParameter()[1] * 360 - 180;
-            } else if ( HasSteadyDifference( cur ) ) {
-                float tickdif = static_cast<float> (cur.front().tickcount - cur.at( 1 ).tickcount);
-                float lbydif = GetDelta( cur.front().m_flLowerBodyYawTarget, cur.at( 1 ).m_flLowerBodyYawTarget );
-                float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
-                int num4 = Shotsmissed % 6;
-                switch ( num4 ) {
-                    case 0:
-                        player->GetEyeAngles()->y -= 90.0f;
-                        num4++;
-                        break;
-                    case 1:
-                        player->GetEyeAngles()->y = 45.0f;
-                        num4++;
-                        break;
-                    case 2:
-                        player->GetEyeAngles()->y = -90.0f;
-                        num4++;
-                        break;
-                    case 3:
-                        player->GetEyeAngles()->y = 75.0f;
-                        num4++;
-                        break;
-                    case 4:
-                        player->GetEyeAngles()->y = -180.0f;
-                        num4++;
-                        break;
-                    case 5:
-                        player->GetEyeAngles()->y = -30.0f;
-                        num4 = 0;
-                        break;
-                }
-            } else if ( LBYKeepsChanging( cur ) )
-                player->GetEyeAngles()->y = GetLBYByComparingTicks( cur );
+            static bool lbyUpdated = false;
 
-            else if ( !( LowerBodyYawChanged( player ) ) ) {
-                float fwyaw = 0;
-                float LBY = ( cur.front().m_flLowerBodyYawTarget );
+            float curTime = globalVars->curtime;
+            bool onGround = ( player->GetFlags() & FL_ONGROUND );
+            bool isMoving = ( player->GetVelocity().Length2D() > 1 );
+            static float nextUpdate;
 
-                if ( player->GetEyeAngles()->y == LBY || player->GetEyeAngles()->y == ( LBY + 90 ) ||
-                     player->GetEyeAngles()->y == ( LBY - 90 ) ) {
-                    int numa = Shotsmissed % 4;
-                    switch ( numa ) {
+            static float lastUpdate;
+
+            float LBY = *player->GetLowerBodyYawTarget();
+
+            bool staticAngle = ( HasStaticRealAngle( cur, 0.f ) );
+
+            static int shotsmissedSave = 0;
+            static float shotsmissedTime = 0.f;
+
+            if ( Shotsmissed > 0 && Shotsmissed != shotsmissedSave ) {
+                shotsmissedTime = curTime + 4.f;
+                shotsmissedSave = Shotsmissed;
+            } else if ( shotsmissedTime > curTime && Shotsmissed == 0 ) {
+                shotsmissedSave = 0;
+            }
+
+            if ( onGround && curTime > nextUpdate || onGround && isMoving )
+                lbyUpdated = true;
+            else
+                lbyUpdated = false;
+
+            if ( lbyUpdated ) {
+                player->GetEyeAngles()->y = *player->GetLowerBodyYawTarget();
+                nextUpdate = curTime + 1.1f;
+                lastUpdate = curTime + 0.3f;
+            } else {
+                if (HasStaticRealAngle(cur)) {
+                    player->GetEyeAngles()->y = player->GetPoseParameter()[1] * 360 - 180;
+                } else if (HasSteadyDifference(cur)) {
+                    float tickdif = static_cast<float> (cur.front().tickcount - cur.at(1).tickcount);
+                    float lbydif = GetDelta(cur.front().m_flLowerBodyYawTarget, cur.at(1).m_flLowerBodyYawTarget);
+                    float ntickdif = static_cast<float> (globalVars->tickcount - cur.front().tickcount);
+                    int num4 = Shotsmissed % 6;
+                    switch (num4) {
                         case 0:
-                            player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget ) - 15;
+                            player->GetEyeAngles()->y -= 90.0f;
+                            num4++;
                             break;
                         case 1:
-                            player->GetEyeAngles()->y += 40;
+                            player->GetEyeAngles()->y = 45.0f;
+                            num4++;
                             break;
                         case 2:
-                            player->GetEyeAngles()->y += 15;
+                            player->GetEyeAngles()->y = -90.0f;
+                            num4++;
                             break;
                         case 3:
-                            player->GetEyeAngles()->y -= 40;
+                            player->GetEyeAngles()->y = 75.0f;
+                            num4++;
+                            break;
+                        case 4:
+                            player->GetEyeAngles()->y = -180.0f;
+                            num4++;
+                            break;
+                        case 5:
+                            player->GetEyeAngles()->y = -30.0f;
+                            num4 = 0;
                             break;
                     }
-
-                }
-            } else {
-                if ( player->GetVelocity().x > 1 || player->GetVelocity().x < 1 ) {
-
-                    player->GetEyeAngles()->y = ( cur.front().m_flLowerBodyYawTarget );
-                }
+                } else if (LBYKeepsChanging(cur))
+                    player->GetEyeAngles()->y = GetLBYByComparingTicks(cur);
             }
             break;
-
         }
         case ResolverHugtype::BRUTEHIV: {
 

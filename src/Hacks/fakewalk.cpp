@@ -22,10 +22,10 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
         bool isLeft = cmd->buttons & IN_LEFT;
 
         if ( isForward )
-            cmd->forwardmove = 10;
+            cmd->forwardmove = -10;
 
         if ( isBack )
-            cmd->forwardmove = -10;
+            cmd->forwardmove = 10;
 
         if ( isRight )
             cmd->sidemove = 10;
@@ -55,7 +55,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( isBack ) {
                 static int ChokingPacketsS = -1;
-                if ( ChokingPacketsS > 5 ) {
+                if ( ChokingPacketsS > 3 ) {
                     cmd->forwardmove = 1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsS = -1;
@@ -67,7 +67,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( isLeft ) {
                 static int ChokingPacketsA = -1;
-                if ( ChokingPacketsA > 5 ) {
+                if ( ChokingPacketsA > 3 ) {
                     cmd->sidemove = 1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsA = -1;
@@ -79,7 +79,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( isRight ) {
                 static int ChokingPacketsD = -1;
-                if ( ChokingPacketsD > 5 ) {
+                if ( ChokingPacketsD > 3 ) {
                     cmd->sidemove = -1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsD = -1;
