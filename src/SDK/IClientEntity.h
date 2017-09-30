@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector.h"
+#include "ai_activity.h"
 
 #define MAX_SHOOT_SOUNDS 16
 #define MAX_WEAPON_STRING 80
@@ -222,6 +223,21 @@ public:
     bool GetClientSideRagdoll() {
         return *( bool* ) ( ( uintptr_t )
         this + offsets.DT_BaseAnimating.m_bClientSideRagdoll);
+    }
+
+    Activity GetActivity() {
+        return *( Activity* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_Activity);
+    }
+
+    Activity GetIdealActivity() {
+        return *( Activity* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_IdealActivity);
+    }
+
+    Activity GetCurrentMainSequenceActivity() {
+        return *( Activity* ) ( ( uintptr_t )
+        this + offsets.DT_BaseAnimating.m_eCurrentMainSequenceActivity);
     }
 
     float GetCycle() {

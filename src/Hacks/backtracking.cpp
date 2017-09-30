@@ -4,6 +4,7 @@ std::map<int, std::deque<CTickRecord>> Backtracking::lagRecords;
 float previousInterp = -1.0f;
 int previousInterpolate = -1;
 int previousLagCompensation = -1;
+bool Backtracking::backtrackingLby = false;
 
 void Backtracking::RestorePosition( int playerIndex, int tickDiff ) {
     return;
@@ -46,6 +47,10 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 //push record with blank coords
             }
             if ( Settings::Resolver::LagComp ) {
+                INetChannelInfo *nci = engine->GetNetChannelInfo();
+
+                float outgoingPing = nci->GetLatency(FLOW_OUTGOING);
+
                 static bool lbyUpdated = false;
 
                 bool onGround = ( target->GetFlags() & FL_ONGROUND );
@@ -63,9 +68,11 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 if ( lbyUpdated ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
-                    lastUpdate = curTime + 0.3f;
+                    lastUpdate = curTime + 0.2f + outgoingPing;
+                    Backtracking::backtrackingLby = true;
                 } else if ( lastUpdate < curTime ) {
                     PushLagRecord( i, target );
+                    Backtracking::backtrackingLby = false;
                 }
             } else {
                 PushLagRecord( i, target );

@@ -1,5 +1,6 @@
 #include "offsets.h"
 #include "Utils/netvarmanager.h"
+#include "SDK/SDK.h"
 
 COffsets offsets;
 
@@ -237,8 +238,14 @@ void Offsets::GetOffsets() {
                                                                     XORSTR("m_nResetEventsParity"));
     offsets.DT_BaseAnimating.m_nMuzzleFlashParity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_nMuzzleFlashParity"));
-    offsets.DT_BaseAnimating.m_hLightingOrigin = NetVarManager::GetOffset(tables, XORSTR("m_hLightingOrigin"),
+    offsets.DT_BaseAnimating.m_hLightingOrigin = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_hLightingOrigin"));
+    offsets.DT_BaseAnimating.m_Activity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                          XORSTR("m_Activity"));
+    offsets.DT_BaseAnimating.m_IdealActivity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                   XORSTR("m_IdealActivity"));
+    offsets.DT_BaseAnimating.m_eCurrentMainSequenceActivity = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                        XORSTR("m_eCurrentMainSequenceActivity"));
 
     offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex = NetVarManager::GetOffset( tables,
                                                                                        XORSTR( "DT_BaseAttributableItem" ),

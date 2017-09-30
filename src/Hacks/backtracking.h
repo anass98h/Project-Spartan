@@ -12,6 +12,8 @@ namespace Backtracking {
 
     extern std::map<int, std::deque<CTickRecord>> lagRecords; // PlayerID, TickRecord
 
+    extern bool backtrackingLby;
+
     void RestorePosition( int playerIndex, int tickDiff );
 
     void ToggleRequiredCVars( bool activate = true );
