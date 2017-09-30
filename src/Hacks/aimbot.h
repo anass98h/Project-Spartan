@@ -16,6 +16,8 @@ namespace Aimbot {
     extern std::vector<int64_t> baim;
     extern int targetAimbot;
 
+    extern bool shootingRevolver;
+
     void AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* localplayer, CUserCmd* cmd );
 
     bool HitChance( const Vector& point, bool teamCheck, C_BasePlayer* localplayer );

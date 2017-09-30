@@ -77,6 +77,8 @@ QAngle RCSLastPunch;
 int Aimbot::targetAimbot = -1;
 const int HEAD_VECTORS = 11;
 
+bool Aimbot::shootingRevolver = false;
+
 static xdo_t* xdo = xdo_new( NULL );
 
 std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons =
@@ -560,25 +562,41 @@ static void RCS( QAngle& angle, C_BasePlayer* player, CUserCmd* cmd ) {
     RCSLastPunch = CurrentPunch;
 }
 
-void Aimbot::AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* localplayer, CUserCmd* cmd ) {
+void Aimbot::AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* player, CUserCmd* cmd ) {
     if ( !Settings::Aimbot::AutoCockRevolver::enabled )
         return;
 
     if ( cmd->buttons & IN_RELOAD )
         return;
 
+    if ( !player->GetAlive() )
+        return;
+
     if ( *activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER )
         return;
-    static int timer = 0;
+
+    if ( activeWeapon->GetAmmo() == 0 )
+        return;
+    /*static int timer = 0;
     timer++;
 
     if ( timer <= 15 )
         cmd->buttons |= IN_ATTACK;
 
     else
-        timer = 0;
+        timer = 0;*/
 
-
+    Aimbot::shootingRevolver = false;
+    cmd->buttons |= IN_ATTACK;
+    float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
+    if (cmd->buttons & IN_ATTACK2) {
+        cmd->buttons |= IN_ATTACK;
+        Aimbot::shootingRevolver = true;
+    }
+    else if (postponeFireReady > 0 && postponeFireReady < globalVars->curtime)
+    {
+        cmd->buttons &= ~IN_ATTACK;
+    }
 }
 
 
@@ -793,21 +811,21 @@ static void AutoShoot( C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* ac
 
     float nextPrimaryAttack = activeWeapon->GetNextPrimaryAttack();
 
-    if ( nextPrimaryAttack > globalVars->curtime ) {
-        if ( *activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER )
+    if (nextPrimaryAttack > globalVars->curtime)
+    {
+        if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
             cmd->buttons &= ~IN_ATTACK2;
         else
-
             cmd->buttons &= ~IN_ATTACK;
-    } else {
-        if ( *activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER )
+    }
+    else
+    {
+        if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 && !localplayer->IsScoped())
             cmd->buttons |= IN_ATTACK2;
-        else if ( Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 &&
-                  !localplayer->IsScoped() ) {
-            cmd->buttons &= ~IN_ATTACK;
-        } else {
+        else if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
+            cmd->buttons |= IN_ATTACK2;
+        else
             cmd->buttons |= IN_ATTACK;
-        }
     }
 
     if ( Settings::SmartAim::enabled ) {
