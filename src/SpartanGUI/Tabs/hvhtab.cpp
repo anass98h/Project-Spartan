@@ -6,15 +6,6 @@ int Settings::customYaw2::value = 1;
 bool Settings::customYaw::lby;
 bool Settings::customYaw2::lby;
 
-const char* HvH::yTypes[] = {
-        "No AA", "Forwards", "Backwards", "Spin", "Fake Sideways", "Backjitter", "FJitter", "LBY Jitter", "LBY Spin",
-        "LBY", "LBY Breaker", "Fake LBY", "LBY on Ground", "Tank 1", "Tank 2", "Tank 2", "Myrrib's eap",
-        "Richi's eap", "Rasp 1", "Rasp 2", "FeetWiggle", "Legit Trolling 1", "Legit Trolling 2", "Custom 1", "Custom 2"
-};
-const char* HvH::lbyTypes[] = { "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "Myrrib", "None" };
-const char* HvH::zTypes[] = { "TEST" };
-const char* HvH::xTypes[] = { "Up", "Flip", "Down", "Fake Zer0", "Fake Up" };
-
 static int page = 0;
 
 const char* tabs[] = {

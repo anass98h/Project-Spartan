@@ -93,6 +93,7 @@ enum class AntiAimType_Y : int {
     LBYBREAK,
     FAKELBY,
     LBYONGROUND,
+    MASTERLOOSER,
     TANK1,
     TANK2,
     TANK3,

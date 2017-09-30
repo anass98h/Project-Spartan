@@ -841,44 +841,62 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 }
 
                 break;
-                case AntiAimType_Y::FEETWIGGLE:
-                    float Diff ;
+                case AntiAimType_Y::FEETWIGGLE: {
+                    float Diff;
                     bool MarcisAWeeb;
-                float oldyaw = *((C_BasePlayer *) entityList->GetClientEntity(
-                        engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
+                    float oldyaw = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
 
-                if (MarcisAWeeb) {
-                    angle.y -= 145.0f;
+                    if ( MarcisAWeeb ) {
+                        angle.y -= 145.0f;
 
-                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() += 45.0f;
+                        *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() += 45.0f;
 
-                    Diff =  *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget()   - angle.y;
+                        Diff = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() - angle.y;
 
-                    MarcisAWeeb = false;
-                } else {
-                    angle.y += 145.0f;
+                        MarcisAWeeb = false;
+                    } else {
+                        angle.y += 145.0f;
 
-                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= 45.0f ;
+                        *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() -= 45.0f;
 
-                    Diff =  *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget()   - angle.y;
+                        Diff = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() - angle.y;
 
-                    MarcisAWeeb = true;
-                }
+                        MarcisAWeeb = true;
+                    }
 
 
-                if (oldyaw == *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget()) {
+                    if ( oldyaw == *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() ) {
 
-                    angle.y += oldyaw / 2 + 83;
-                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= oldyaw / 3 + 93;
-                }
+                        angle.y += oldyaw / 2 + 83;
+                        *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() -= oldyaw / 3 + 93;
+                    }
 
-                if ( std::abs( Diff ) <= 35.0f )
-                {
-                    angle.y +=  55.0f ;
-                    *((C_BasePlayer *) entityList->GetClientEntity( engine->GetLocalPlayer()))->GetLowerBodyYawTarget() -= 75.0f;
-                        
+                    if ( std::abs( Diff ) <= 35.0f ) {
+                        angle.y += 55.0f;
+                        *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() -= 75.0f;
+
+                    }
                 }
                 break;
+                case AntiAimType_Y::MASTERLOOSER: {
+                    int value = rand() % 361;
+                    float clamped = Math::ClampYaw(*pLocal->GetLowerBodyYawTarget() + value);
+                    if (fabsf(*pLocal->GetLowerBodyYawTarget() - clamped) < 45)
+                        value += 50;
+                    else if (fabsf(*pLocal->GetLowerBodyYawTarget() - clamped) > 310)
+                        value -= 50;
+
+                    angle.y = Math::ClampYaw(*pLocal->GetLowerBodyYawTarget() + value) - 180;
+                }
+                    break;
             }
     }
 
