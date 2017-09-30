@@ -13,6 +13,7 @@ public:
 
     void FireGameEvent( IGameEvent* event ) {
         Aimbot::FireGameEvent( event );
+        AntiAim::FireGameEvent( event );
         Hitmarkers::FireGameEvent( event );
         NameStealer::FireGameEvent( event );
         Resolver::FireGameEvent( event );
