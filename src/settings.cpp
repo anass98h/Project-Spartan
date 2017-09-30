@@ -614,14 +614,13 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "View" )][XORSTR( "NoViewPunch" )][XORSTR( "enabled" )] = Settings::View::NoViewPunch::enabled;
     settings[XORSTR( "View" )][XORSTR( "NoAimPunch" )][XORSTR( "enabled" )] = Settings::View::NoAimPunch::enabled;
 
-    settings[XORSTR( "FakeLag" )][XORSTR( "enabled" )] = Settings::FakeLag::enabled;
+    settings[XORSTR( "FakeLag" )][XORSTR( "type" )] = ( int ) Settings::FakeLag::type;
     settings[XORSTR( "FakeLag" )][XORSTR( "value" )] = Settings::FakeLag::value;
     settings[XORSTR( "spinFactor" )][XORSTR( "value" )] = Settings::spinFactor::value;
     settings[XORSTR( "customYaw" )][XORSTR( "value" )] = Settings::customYaw::value;
     settings[XORSTR( "customYaw2" )][XORSTR( "value" )] = Settings::customYaw2::value;
     settings[XORSTR( "customYawLby" )][XORSTR( "enabled" )] = Settings::customYaw::lby;
     settings[XORSTR( "customYaw2Lby" )][XORSTR( "enabled" )] = Settings::customYaw2::lby;
-    settings[XORSTR( "FakeLag" )][XORSTR( "adaptive" )] = Settings::FakeLag::adaptive;
 
     settings[XORSTR( "AutoAccept" )][XORSTR( "enabled" )] = Settings::AutoAccept::enabled;
 
@@ -1299,10 +1298,9 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "View" )][XORSTR( "NoAimPunch" )][XORSTR( "enabled" )],
             &Settings::View::NoAimPunch::enabled );
 
-    GetVal( settings[XORSTR( "FakeLag" )][XORSTR( "enabled" )], &Settings::FakeLag::enabled );
+    GetVal( settings[XORSTR( "FakeLag" )][XORSTR( "type" )], ( int* ) &Settings::FakeLag::type );
     GetVal( settings[XORSTR( "FakeLag" )][XORSTR( "value" )], &Settings::FakeLag::value );
     GetVal( settings[XORSTR( "spinFactor" )][XORSTR( "value" )], &Settings::spinFactor::value );
-    GetVal( settings[XORSTR( "FakeLag" )][XORSTR( "adaptive" )], &Settings::FakeLag::adaptive );
 
     GetVal( settings[XORSTR( "AutoAccept" )][XORSTR( "enabled" )], &Settings::AutoAccept::enabled );
 

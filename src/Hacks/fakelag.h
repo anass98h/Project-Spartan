@@ -6,7 +6,7 @@
 #include "../Utils/util.h"
 
 namespace FakeLag {
-    extern bool pSilent;
+
     extern bool bFlipping;
 
     //Hooks

@@ -1002,11 +1002,8 @@ void Aimbot::CreateMove( CUserCmd* cmd ) {
     if ( activeWeapon->GetNextPrimaryAttack() > globalVars->curtime )
         bulletTime = false;
 
-    FakeLag::pSilent = false;
-
     if ( Settings::Aimbot::pSilent ) {
         if ( cmd->buttons & IN_ATTACK && bulletTime ) {
-            FakeLag::pSilent = true;
             CreateMove::sendPacket = false;
         } else {
             cmd->buttons &= ~IN_ATTACK; // hands up, don't shoot.

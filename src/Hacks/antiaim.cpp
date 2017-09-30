@@ -1145,7 +1145,7 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
          !Settings::AntiAim::Moving::Pitch::enabled) ||
         (AntiAim::IsAirborne() && !Settings::AntiAim::Airborne::Yaw::enabled &&
          !Settings::AntiAim::Airborne::Pitch::enabled)) {
-        if (Settings::FakeLag::enabled) {
+        if ( Settings::FakeLag::type != FakeLagType::OFF ) {
             FakeLag::bFlipping = true;
         }
         return;
@@ -1291,7 +1291,7 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
             DoAntiAimY(angle, cmd->command_number, bFlip, shouldClamp);
             Math::NormalizeAngles(angle);
         }
-        if (!Settings::FakeLag::enabled)
+        if ( Settings::FakeLag::type != FakeLagType::OFF )
             CreateMove::sendPacket = bFlip;
         if ((IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
              IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :

@@ -9,6 +9,7 @@ void Misc::RenderTab() {
     const char* teams[] = { "Allies", "Enemies", "Both" };
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
                                   "void MarcIsAWeeb", "Custom negro" };
+    const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive" };
 
     ImGui::Columns( 2, NULL, true );
     {
@@ -258,8 +259,8 @@ void Misc::RenderTab() {
                 ImGui::Text( XORSTR( "Animation Speed" ) );
                 ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
 
-                if(Settings::ClanTagChanger::preset == valueType::CUSTOM) {
-                    ImGui::Text(XORSTR("Custom Clan Tag"));
+                if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
+                    ImGui::Text( XORSTR( "Custom Clan Tag" ) );
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                 }
 
@@ -274,8 +275,8 @@ void Misc::RenderTab() {
                                        2000 ) )
                     ClanTagChanger::UpdateClanTagCallback();
 
-                if(Settings::ClanTagChanger::preset == valueType::CUSTOM) {
-                    if(ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 )) {
+                if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
+                    if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) ) {
                         ClanTagChanger::UpdateClanTagCallback();
                     }
                 }
@@ -330,12 +331,35 @@ void Misc::RenderTab() {
 
             ImGui::Columns( 1 );
             ImGui::Separator();
+
+            ImGui::Text( XORSTR( "Fake Lag" ) );
+            ImGui::Separator();
+            ImGui::Columns( 2, NULL, true );
+            {
+                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                ImGui::Text( XORSTR( "Type" ) );
+                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                ImGui::Text( XORSTR( "Choke Amount" ) );
+                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+            }
+            ImGui::NextColumn();
+            {
+                ImGui::PushItemWidth( -3 );
+                ImGui::Combo( XORSTR( "##FAKELAGTYPE" ), ( int* ) &Settings::FakeLag::type,
+                              lagTypes, IM_ARRAYSIZE( lagTypes ) );
+                ImGui::PopItemWidth();
+                ImGui::PushItemWidth( -1 );
+                ImGui::SliderInt( XORSTR( "##FAKELAGAMOUNT" ), &Settings::FakeLag::value, 0, 16,
+                                  XORSTR( "Amount: %0.f" ) );
+                ImGui::PopItemWidth();
+            }
+            ImGui::EndColumns();
+            ImGui::Separator();
+
             ImGui::Text( XORSTR( "Other" ) );
             ImGui::Separator();
             ImGui::Columns( 2, NULL, true );
             {
-                ImGui::Checkbox( XORSTR( "Fake Lag" ), &Settings::FakeLag::enabled );
-                ImGui::Checkbox( XORSTR( "Adaptive Fake Lag" ), &Settings::FakeLag::adaptive );
                 ImGui::Checkbox( XORSTR( "Auto Accept" ), &Settings::AutoAccept::enabled );
                 SetTooltip( XORSTR( "WARNING: This may crash your game." ) );
                 ImGui::Checkbox( XORSTR( "AirStuck" ), &Settings::Airstuck::enabled );
@@ -347,18 +371,14 @@ void Misc::RenderTab() {
             }
             ImGui::NextColumn();
             {
-                ImGui::PushItemWidth( -1 );
-                ImGui::SliderInt( XORSTR( "##FAKELAGAMOUNT" ), &Settings::FakeLag::value, 0, 16,
-                                  XORSTR( "Amount: %0.f" ) );
-                ImGui::PopItemWidth();
                 ImGui::Checkbox( XORSTR( "Show Ranks" ), &Settings::ShowRanks::enabled );
-                ImGui::Checkbox( XORSTR( "Screenshot Cleaner" ), &Settings::ScreenshotCleaner::enabled );
                 UI::KeyBindButton( &Settings::Airstuck::key );
                 UI::KeyBindButton( &Settings::Autoblock::key );
                 UI::KeyBindButton( &Settings::JumpThrow::key );
                 //ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);
                 ImGui::Checkbox( XORSTR( "Silent Defuse" ), &Settings::AutoDefuse::silent );
                 ImGui::Checkbox( XORSTR( "Event Logger" ), &Settings::EventLogger::enabled );
+                ImGui::Checkbox( XORSTR( "Screenshot Cleaner" ), &Settings::ScreenshotCleaner::enabled );
             }
             ImGui::Columns( 1 );
             ImGui::Separator();
