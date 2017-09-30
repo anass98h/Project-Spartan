@@ -888,15 +888,15 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 break;
                 case AntiAimType_Y::MASTERLOOSER: {
                     int value = rand() % 361;
-                    float clamped = Math::ClampYaw(*pLocal->GetLowerBodyYawTarget() + value);
-                    if (fabsf(*pLocal->GetLowerBodyYawTarget() - clamped) < 45)
+                    float clamped = Math::ClampYaw( *pLocal->GetLowerBodyYawTarget() + value );
+                    if ( fabsf( *pLocal->GetLowerBodyYawTarget() - clamped ) < 45 )
                         value += 50;
-                    else if (fabsf(*pLocal->GetLowerBodyYawTarget() - clamped) > 310)
+                    else if ( fabsf( *pLocal->GetLowerBodyYawTarget() - clamped ) > 310 )
                         value -= 50;
 
-                    angle.y = Math::ClampYaw(*pLocal->GetLowerBodyYawTarget() + value) - 180;
+                    angle.y = Math::ClampYaw( *pLocal->GetLowerBodyYawTarget() + value ) - 180;
                 }
-                    break;
+                break;
             }
     }
 
