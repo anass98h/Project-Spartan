@@ -223,7 +223,14 @@ enum class ResolverHugtype : int {
 enum class cFont : int {
     Arial,
     SegoeUI,
+};
 
+enum class FakeLagType : int {
+    OFF,
+    TUX,
+    KMETH,
+    STEP,
+    REACTIVE,
 };
 
 struct AimbotWeapon_t {
@@ -1070,9 +1077,8 @@ namespace Settings {
     }
 
     namespace FakeLag {
-        extern bool enabled;
+        extern FakeLagType type;
         extern int value;
-        extern bool adaptive;
     }
 
     namespace spinFactor {
