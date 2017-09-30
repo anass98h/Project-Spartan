@@ -562,20 +562,14 @@ static void RCS( QAngle& angle, C_BasePlayer* player, CUserCmd* cmd ) {
     RCSLastPunch = CurrentPunch;
 }
 
-void Aimbot::AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* player, CUserCmd* cmd ) {
-    if ( !Settings::Aimbot::AutoCockRevolver::enabled )
+void Aimbot::AutoCockRevolver( C_BaseCombatWeapon* activeWeapon, C_BasePlayer* localplayer, CUserCmd* cmd ) {
+    if (!Settings::Aimbot::AutoCockRevolver::enabled)
         return;
 
-    if ( cmd->buttons & IN_RELOAD )
+    if (cmd->buttons & IN_RELOAD)
         return;
 
-    if ( !player->GetAlive() )
-        return;
-
-    if ( *activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER )
-        return;
-
-    if ( activeWeapon->GetAmmo() == 0 )
+    if (*activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER)
         return;
     /*static int timer = 0;
     timer++;
