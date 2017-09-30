@@ -4,6 +4,7 @@ std::map<int, std::deque<CTickRecord>> Backtracking::lagRecords;
 float previousInterp = -1.0f;
 int previousInterpolate = -1;
 int previousLagCompensation = -1;
+bool Backtracking::backtrackingLby = false;
 
 void Backtracking::RestorePosition( int playerIndex, int tickDiff ) {
     return;
@@ -68,10 +69,10 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                     PushLagRecord( i, target );
                     nextUpdate = curTime + 1.1f;
                     lastUpdate = curTime + 0.2f + outgoingPing;
-                    backtrackingLby = true;
+                    Backtracking::backtrackingLby = true;
                 } else if ( lastUpdate < curTime ) {
                     PushLagRecord( i, target );
-                    backtrackingLby = false;
+                    Backtracking::backtrackingLby = false;
                 }
             } else {
                 PushLagRecord( i, target );
