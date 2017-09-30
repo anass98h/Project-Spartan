@@ -352,11 +352,9 @@ bool NextLBYUpdate() {
         return false;
     }
 
-    if ((LastLBYUpdateTime + 1 - (GetLatency() * 2) < flServerTime) &&
+    if ((LastLBYUpdateTime + 1.125 + (GetLatency() * 2) > flServerTime) &&
         (LocalPlayer->GetFlags() & FL_ONGROUND)) {
-        if (LastLBYUpdateTime + 1.125 - (GetLatency() * 2) < flServerTime) {
-            LastLBYUpdateTime += 1.125;
-        }
+
         return true;
     }
     return false;
@@ -838,23 +836,20 @@ static void DoAntiAimY(QAngle &angle, int command_number, bool bFlip, bool &clam
                 static float last;
                 angle.y = AntiAim::lastFakeYaw + 180;
                 if (NextLBYUpdate()) {
-                flip1 = false;
-                }
-
-                else
-                    flip1 = false;
-                if (flip1) {
                     last = AntiAim::lastRealYaw;
                     angle.y = *((C_BasePlayer *) entityList->GetClientEntity(
                             engine->GetLocalPlayer()))->GetLowerBodyYawTarget();
-                    angle.y = last;
-                    flip1 = false;
+                    angle.y = AntiAim::lastFakeYaw + 180;
+
                 }
                 else {
                     angle.y = AntiAim::lastFakeYaw + 180;
                 }
 
                 break;
+                case AntiAimType_Y::JITTER:
+                    yFlip ? angle.y -= 90.0f : angle.y -= 270.0f;
+                    break;
                 case AntiAimType_Y::FEETWIGGLE:
                     float Diff ;
                     bool MarcisAWeeb;

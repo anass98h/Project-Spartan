@@ -24,6 +24,11 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
     bool Spressed = inputSystem->IsButtonDown( S );
     bool Dpressed = inputSystem->IsButtonDown( D );
 
+        if ( isForward )
+            cmd->forwardmove = -10;
+
+        if ( isBack )
+            cmd->forwardmove = 10;
     if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
         if ( Wpressed )
             cmd->forwardmove = 10;
@@ -55,7 +60,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( Spressed ) {
                 static int ChokingPacketsS = -1;
-                if ( ChokingPacketsS > 5 ) {
+                if ( ChokingPacketsS > 3 ) {
                     cmd->forwardmove = 1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsS = -1;
@@ -67,7 +72,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( Apressed ) {
                 static int ChokingPacketsA = -1;
-                if ( ChokingPacketsA > 5 ) {
+                if ( ChokingPacketsA > 3 ) {
                     cmd->sidemove = 1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsA = -1;
@@ -79,7 +84,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
 
             if ( Dpressed ) {
                 static int ChokingPacketsD = -1;
-                if ( ChokingPacketsD > 5 ) {
+                if ( ChokingPacketsD > 3 ) {
                     cmd->sidemove = -1;
                     CreateMove::sendPacket = true;
                     ChokingPacketsD = -1;
