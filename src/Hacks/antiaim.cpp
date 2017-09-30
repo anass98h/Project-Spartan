@@ -92,8 +92,6 @@ float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
 long lastPress = 0;
 
-std::map<char[], float> AntiAim::savedAngles = {};
-
 static float Distance(Vector a, Vector b) {
     return (sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2)));
 }
@@ -183,18 +181,6 @@ static bool HasViableEnemy() {
     }
 
     return false;
-}
-
-void AntiAim::SaveAngle( IEngineClient::player_info_s player, float angle ) {
-    savedAngles.insert( { player.guid, angle } );
-}
-
-float AntiAim::RestoreAngle( IEngineClient::player_info_s player ) {
-    if ( savedAngles.find( player.guid ) != savedAngles.end() ) {
-        return savedAngles.find( player.guid )->second;
-    }
-
-    return 0.0f;
 }
 
 static float DoAAatTarget() {
@@ -1372,20 +1358,6 @@ void AntiAim::CreateMove(CUserCmd *cmd) {
     }
 
     Math::CorrectMovement(oldAngle, cmd, oldForward, oldSideMove);
-}
-
-void AntiAim::FireGameEvent( IGameEvent* event ) {
-    if ( !event )
-        return;
-
-    if ( strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) == 0 ||
-         strcmp( event->GetName(), XORSTR( "player_connect_full" ) ) == 0 ) {
-        if ( event->GetInt( XORSTR( "userid" ) ) &&
-             engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) ) != engine->GetLocalPlayer() )
-            return;
-
-        AntiAim::savedAngles.clear();
-    }
 }
 
 bool AntiAim::IsStanding() {

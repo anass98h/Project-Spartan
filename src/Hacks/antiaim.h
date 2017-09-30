@@ -13,12 +13,6 @@
 
 namespace AntiAim {
 
-    extern std::map<char[], float> savedAngles;
-
-    void SaveAngle( IEngineClient::player_info_s player, float angle );
-
-    float RestoreAngle( IEngineClient::player_info_s player );
-
     extern bool isAntiAiming;
     extern float lastRealYaw;
     extern float lastFakeYaw;
@@ -33,6 +27,4 @@ namespace AntiAim {
 
     //Hooks
     void CreateMove( CUserCmd* cmd );
-
-    void FireGameEvent( IGameEvent* event );
 }
