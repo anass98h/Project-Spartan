@@ -44,7 +44,7 @@ Download the required dependencies:
 Then execute the following:
 
 ```bash
-$ git clone https://github.com/anass98h/Project-Spartan
+$ git clone --recursive https://github.com/anass98h/Project-Spartan
 $ ./build.sh
 # Open CS:GO
 $ ./load.sh
