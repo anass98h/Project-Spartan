@@ -947,12 +947,12 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
 
                     static bool switch1 = false;
 
-                    if (inputSystem->IsButtonDown(LeftArrow)) {
+                    if ( inputSystem->IsButtonDown( LeftArrow ) ) {
                         angle.y += 90;
-                    } else if (inputSystem->IsButtonDown(RightArrow)) {
+                    } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
                         angle.y -= 90;
                     } else {
-                        if (AntiAim::canEdge) {
+                        if ( AntiAim::canEdge ) {
                             float headAngEdge = HeadEdgeAng();
                             angle.y = headAngEdge + 180;
                         } else {
@@ -964,12 +964,12 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                                 else
                                     angle.y -= 90 + x;
                             } else {
-                                if (isDucked) {
+                                if ( isDucked ) {
                                     angle.y -= 90;
                                 } else {
                                     int spin = -180;
                                     spin++;
-                                    if (spin > 180)
+                                    if ( spin > 180 )
                                         spin = -180;
 
                                     angle.y = spin;
@@ -988,20 +988,20 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     ButtonCode_t LeftArrow = KEY_LEFT;
                     ButtonCode_t RightArrow = KEY_RIGHT;
 
-                    if (inputSystem->IsButtonDown(LeftArrow)) {
+                    if ( inputSystem->IsButtonDown( LeftArrow ) ) {
                         angle.y -= 90;
-                    } else if (inputSystem->IsButtonDown(RightArrow)) {
+                    } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
                         angle.y += 90;
                     } else {
-                        if (AntiAim::canEdge) {
+                        if ( AntiAim::canEdge ) {
                             float headAngEdge = HeadEdgeAng();
                             angle.y = headAngEdge;
                         } else {
-                            if (!hasHelmet) {
+                            if ( !hasHelmet ) {
                                 int x = rand() % 21 - 10;
                                 angle.y -= 180 + x;
                             } else {
-                                if (isDucked) {
+                                if ( isDucked ) {
                                     int y = rand() % 181;
                                     angle.y += y;
                                 } else {
