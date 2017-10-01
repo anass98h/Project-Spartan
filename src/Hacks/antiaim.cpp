@@ -92,6 +92,8 @@ float AntiAim::lastFakeYaw = 0.0f;
 bool AntiAim::isAntiAiming = false;
 long lastPress = 0;
 
+bool AntiAim::canEdge = false;
+
 static float Distance( Vector a, Vector b ) {
     return ( sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) + pow( a.z - b.z, 2 ) ) );
 }
@@ -151,6 +153,44 @@ static bool GetBestHeadAngle( QAngle& angle ) {
     }
 
     return closest_distance < ( radius - 0.1f );
+}
+
+static float HeadEdgeAng() {
+    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+
+    Vector position = localplayer->GetVecOrigin() + localplayer->GetVecViewOffset();
+
+    float closest_distance = 100.0f;
+
+    float radius = 30.f;
+
+    float step = M_PI * 2.0 / 8;
+
+    float finalAngleY = 0.f;
+
+    for ( float a = 0; a < ( M_PI * 2.0 ); a += step ) {
+        Vector location( radius * cos( a ) + position.x, radius * sin( a ) + position.y, position.z );
+
+        Ray_t ray;
+        trace_t tr;
+        ray.Init( position, location );
+        CTraceFilter traceFilter;
+        traceFilter.pSkip = localplayer;
+        trace->TraceRay( ray, 0x4600400B, &traceFilter, &tr );
+
+        float distance = Distance( position, tr.endpos );
+
+        if ( distance < closest_distance ) {
+            closest_distance = distance;
+            AntiAim::canEdge = true;
+            //angle.y = RAD2DEG( a );
+            finalAngleY = RAD2DEG( a );
+        } else
+            AntiAim::canEdge = false;
+    }
+
+    //return closest_distance < ( radius - 0.1f );
+    return finalAngleY;
 }
 
 static bool HasViableEnemy() {
@@ -894,6 +934,83 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                         value -= 50;
 
                     angle.y = Math::ClampYaw( *pLocal->GetLowerBodyYawTarget() + value ) - 180;
+                }
+                break;
+                case AntiAimType_Y::PAAFAKE: {
+                    bool isDucked = pLocal->GetFlags() & FL_DUCKING;
+                    int shotsFired = pLocal->GetShotsFired();
+                    bool hasHelmet = pLocal->HasHelmet();
+                    float lby = *pLocal->GetLowerBodyYawTarget();
+
+                    ButtonCode_t LeftArrow = KEY_LEFT;
+                    ButtonCode_t RightArrow = KEY_RIGHT;
+
+                    static bool switch1 = false;
+
+                    if ( inputSystem->IsButtonDown( LeftArrow ) ) {
+                        angle.y += 90;
+                    } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
+                        angle.y -= 90;
+                    } else {
+                        float headAngEdge = HeadEdgeAng();
+                        if ( AntiAim::canEdge ) {
+                            angle.y = headAngEdge + 180;
+                        } else {
+                            if ( !hasHelmet ) {
+                                int x = rand() % 41 - 20;
+                                switch1 = !switch1;
+                                if ( switch1 )
+                                    angle.y += 90 + x;
+                                else
+                                    angle.y -= 90 + x;
+                            } else {
+                                if ( isDucked ) {
+                                    angle.y -= 90;
+                                } else {
+                                    int spin = -180;
+                                    spin++;
+                                    if ( spin > 180 )
+                                        spin = -180;
+
+                                    angle.y = spin;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+                case AntiAimType_Y::PAAREAL: {
+                    bool isDucked = pLocal->GetFlags() & FL_DUCKING;
+                    int shotsFired = pLocal->GetShotsFired();
+                    bool hasHelmet = pLocal->HasHelmet();
+                    float lby = *pLocal->GetLowerBodyYawTarget();
+
+                    ButtonCode_t LeftArrow = KEY_LEFT;
+                    ButtonCode_t RightArrow = KEY_RIGHT;
+
+                    if ( inputSystem->IsButtonDown( LeftArrow ) ) {
+                        angle.y -= 90;
+                    } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
+                        angle.y += 90;
+                    } else {
+                        float headAngEdge = HeadEdgeAng();
+                        if ( AntiAim::canEdge ) {
+                            angle.y = headAngEdge;
+                        } else {
+                            if ( !hasHelmet ) {
+                                int x = rand() % 21 - 10;
+                                angle.y -= 180 + x;
+                            } else {
+                                if ( isDucked ) {
+                                    int y = rand() % 181;
+                                    angle.y += y;
+                                } else {
+                                    int z = 90 + rand() % 91;
+                                    angle.y = lby + z;
+                                }
+                            }
+                        }
+                    }
                 }
                 break;
             }
