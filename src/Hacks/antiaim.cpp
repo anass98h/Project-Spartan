@@ -952,8 +952,8 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
                         angle.y -= 90;
                     } else {
+                        float headAngEdge = HeadEdgeAng();
                         if ( AntiAim::canEdge ) {
-                            float headAngEdge = HeadEdgeAng();
                             angle.y = headAngEdge + 180;
                         } else {
                             if ( !hasHelmet ) {
@@ -993,8 +993,8 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     } else if ( inputSystem->IsButtonDown( RightArrow ) ) {
                         angle.y += 90;
                     } else {
+                        float headAngEdge = HeadEdgeAng();
                         if ( AntiAim::canEdge ) {
-                            float headAngEdge = HeadEdgeAng();
                             angle.y = headAngEdge;
                         } else {
                             if ( !hasHelmet ) {
