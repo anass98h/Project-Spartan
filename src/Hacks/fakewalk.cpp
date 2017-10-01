@@ -3,95 +3,60 @@
 bool Settings::FakewalkAW::enabled;
 ButtonCode_t Settings::FakewalkAW::key = ButtonCode_t::KEY_C;
 bool Settings::Fakewalk::enabled;
-ButtonCode_t Settings::Fakewalk::key = ButtonCode_t::KEY_C;
+ButtonCode_t Settings::Fakewalk::key = ButtonCode_t::KEY_Y;
 bool Settings::ChokePackets::enabled;
 ButtonCode_t Settings::ChokePackets::key = ButtonCode_t::KEY_X;
 bool Settings::SlowMo::enabled;
 ButtonCode_t Settings::SlowMo::key = ButtonCode_t::KEY_C;
-
-ButtonCode_t W = ButtonCode_t::KEY_W;
-ButtonCode_t A = ButtonCode_t::KEY_A;
-ButtonCode_t S = ButtonCode_t::KEY_S;
-ButtonCode_t D = ButtonCode_t::KEY_D;
 
 void Fakewalk::CreateMove( CUserCmd* cmd ) {
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
     if ( !localplayer || !localplayer->GetAlive() )
         return;
 
-    bool Wpressed = inputSystem->IsButtonDown( W );
-    bool Apressed = inputSystem->IsButtonDown( A );
-    bool Spressed = inputSystem->IsButtonDown( S );
-    bool Dpressed = inputSystem->IsButtonDown( D );
-
     if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
-        if ( Wpressed )
-            cmd->forwardmove = 10;
+      static int iChoked = -1;
+      iChoked++;
 
-        if ( Spressed )
-            cmd->forwardmove = -10;
+      if ( iChoked < 1 )
+      {
+        CreateMove::sendPacket = false;
 
-        if ( Dpressed )
-            cmd->sidemove = 10;
+        cmd->tick_count += 10;
+        cmd->command_number += 7 + cmd->tick_count % 2 ? 0 : 1;
 
-        if ( Apressed )
-            cmd->sidemove = -10;
+        cmd->buttons |= localplayer->GetMoveType() == IN_BACK;
+        cmd->forwardmove = cmd->sidemove = 0.f;
+      } else {
+        CreateMove::sendPacket = true;
+        iChoked = -1;
 
+        globalVars->frametime *= ( localplayer->GetVelocity().Length2D() ) / 1.f;
+        cmd->buttons |= localplayer->GetMoveType() == IN_FORWARD;
+      }
     } else if ( Settings::Fakewalk::enabled && inputSystem->IsButtonDown( Settings::Fakewalk::key ) ) {
         bool inAttack = cmd->buttons & IN_ATTACK;
 
+        static int chokedPackets = 0;
         if ( !inAttack ) {
-            if ( Wpressed ) {
-                static int ChokingPacketsW = -1;
-                if ( ChokingPacketsW > 5 ) {
-                    cmd->forwardmove = -1;
+            chokedPackets++;
+            if ( chokedPackets > 6 ) {
+                cmd->sidemove = cmd->forwardmove = 0;
+            } else {
+                if ( chokedPackets > 9 ) {
                     CreateMove::sendPacket = true;
-                    ChokingPacketsW = -1;
+                    chokedPackets = 0;
                 } else {
-                    cmd->forwardmove = 35;
                     CreateMove::sendPacket = false;
-                }
-            }
-
-            if ( Spressed ) {
-                static int ChokingPacketsS = -1;
-                if ( ChokingPacketsS > 5 ) {
-                    cmd->forwardmove = 1;
-                    CreateMove::sendPacket = true;
-                    ChokingPacketsS = -1;
-                } else {
-                    cmd->forwardmove = -35;
-                    CreateMove::sendPacket = false;
-                }
-            }
-
-            if ( Apressed ) {
-                static int ChokingPacketsA = -1;
-                if ( ChokingPacketsA > 5 ) {
-                    cmd->sidemove = 1;
-                    CreateMove::sendPacket = true;
-                    ChokingPacketsA = -1;
-                } else {
-                    cmd->sidemove = -35;
-                    CreateMove::sendPacket = false;
-                }
-            }
-
-            if ( Dpressed ) {
-                static int ChokingPacketsD = -1;
-                if ( ChokingPacketsD > 5 ) {
-                    cmd->sidemove = -1;
-                    CreateMove::sendPacket = true;
-                    ChokingPacketsD = -1;
-                } else {
-                    cmd->sidemove = 35;
-                    CreateMove::sendPacket = false;
+                    if ( localplayer->GetVelocity().Length2D() > 15.f ) {
+                        cmd->sidemove = cmd->forwardmove = 0;
+                    }
                 }
             }
         }
     } else if ( Settings::ChokePackets::enabled && inputSystem->IsButtonDown( Settings::ChokePackets::key ) ) {
         static bool chokedPackets = 0;
-        if ( chokedPackets > 10000 ) {
+        if ( chokedPackets > 1000 ) {
             CreateMove::sendPacket = true;
             chokedPackets = 0;
         } else {
@@ -121,11 +86,3 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
     } else
         return;
 }
- 
-
-
-
-
-
-
-

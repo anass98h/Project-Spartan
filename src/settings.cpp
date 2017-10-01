@@ -559,10 +559,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "Airstuck" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Airstuck::key );
     settings[XORSTR( "FakewalkAW" )][XORSTR( "enabled" )] = Settings::FakewalkAW::enabled;
     settings[XORSTR( "FakewalkAW" )][XORSTR( "key" )] = Util::GetButtonName( Settings::FakewalkAW::key );
-    settings[XORSTR( "Fakewalk" )][XORSTR( "enabled" )] = Settings::ChokePackets::enabled;
-    settings[XORSTR( "Fakewalk" )][XORSTR( "key" )] = Util::GetButtonName( Settings::ChokePackets::key );
-    settings[XORSTR( "ChokePackets" )][XORSTR( "enabled" )] = Settings::Fakewalk::enabled;
-    settings[XORSTR( "ChokePackets" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Fakewalk::key );
+    settings[XORSTR( "Fakewalk" )][XORSTR( "enabled" )] = Settings::Fakewalk::enabled;
+    settings[XORSTR( "Fakewalk" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Fakewalk::key );
+    settings[XORSTR( "ChokePackets" )][XORSTR( "enabled" )] = Settings::ChokePackets::enabled;
+    settings[XORSTR( "ChokePackets" )][XORSTR( "key" )] = Util::GetButtonName( Settings::ChokePackets::key );
     settings[XORSTR( "SlowMo" )][XORSTR( "enabled" )] = Settings::SlowMo::enabled;
     settings[XORSTR( "SlowMo" )][XORSTR( "key" )] = Util::GetButtonName( Settings::SlowMo::key );
     settings[XORSTR( "CircleStrafe" )][XORSTR( "enabled" )] = Settings::CircleStrafe::enabled;
