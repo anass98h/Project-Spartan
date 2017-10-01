@@ -2,6 +2,9 @@
 
 #ifndef BASEANIMATING_H
 #define BASEANIMATING_H
+#ifdef _WIN32
+#pragma once
+#endif
 
 
 struct animevent_t;
@@ -13,10 +16,10 @@ FORWARD_DECLARE_HANDLE( memhandle_t );
 #define	BCF_NO_ANIMATION_SKIP	( 1 << 0 )	// Do not allow PVS animation skipping (mostly for attachments being critical to an entity)
 #define	BCF_IS_IN_SPAWN			( 1 << 1 )	// Is currently inside of spawn, always evaluate animations
 
-class CBaseAnimating : public C_BaseEntity
+class CBaseAnimating : public CBaseEntity
 {
 public:
-	DECLARE_CLASS( CBaseAnimating, C_BaseEntity );
+	DECLARE_CLASS( CBaseAnimating, CBaseEntity );
 
 	CBaseAnimating();
 	~CBaseAnimating();
@@ -44,6 +47,8 @@ public:
 	CStudioHdr *GetModelPtr( void );
 	void InvalidateMdlCache();
 
+	virtual CStudioHdr *OnNewModel();
+
 	virtual CBaseAnimating*	GetBaseAnimating() { return this; }
 
 	// Cycle access
@@ -59,7 +64,7 @@ public:
 
 	// Tells whether or not we're using client-side animation. Used for controlling
 	// the transmission of animtime.
-	bool	IsUsingClientSideAnimation()	{ return offsets.DT_BaseAnimating.m_bClientSideAnimation; }
+	bool	IsUsingClientSideAnimation()	{ return m_bClientSideAnimation; }
 
 
 	// Basic NPC Animation functions
@@ -72,17 +77,16 @@ public:
 	inline float					GetPlaybackRate();
 	inline void						SetPlaybackRate( float rate );
 
-	inline int GetSequence() { return offsets.DT_BaseAnimating.m_nSequence; }
-	// inline void SetSequence(int nSequence) { Assert( GetModelPtr( ) && nSequence >= 0 && nSequence < GetModelPtr( )->GetNumSeq() );  m_nSequence = nSequence; }
-	void SetSequence(int nSequence);
+	inline int GetSequence() { return m_nSequence; }
+	virtual void SetSequence(int nSequence);
 	/* inline */ void ResetSequence(int nSequence);
 	// FIXME: push transitions support down into CBaseAnimating?
-	virtual bool IsActivityFinished( void ) { return offsets.DT_BaseAnimating.m_bSequenceFinished; }
-	inline bool IsSequenceFinished( void ) { return offsets.DT_BaseAnimating.m_bSequenceFinished; }
-	inline bool SequenceLoops( void ) { return offsets.DT_BaseAnimating.m_bSequenceLoops; }
+	virtual bool IsActivityFinished( void ) { return m_bSequenceFinished; }
+	inline bool IsSequenceFinished( void ) { return m_bSequenceFinished; }
+	inline bool SequenceLoops( void ) { return m_bSequenceLoops; }
 	bool		 IsSequenceLooping( CStudioHdr *pStudioHdr, int iSequence );
 	inline bool	 IsSequenceLooping( int iSequence ) { return IsSequenceLooping(GetModelPtr(),iSequence); }
-	inline float SequenceDuration( void ) { return SequenceDuration( offsets.DT_BaseAnimating.m_nSequence ); }
+	inline float SequenceDuration( void ) { return SequenceDuration( m_nSequence ); }
 	float	SequenceDuration( CStudioHdr *pStudioHdr, int iSequence );
 	inline float SequenceDuration( int iSequence ) { return SequenceDuration(GetModelPtr(), iSequence); }
 	float	GetSequenceCycleRate( CStudioHdr *pStudioHdr, int iSequence );
@@ -109,7 +113,7 @@ public:
 
 	void ResetSequenceInfo ( );
 	// This will stop animation until you call ResetSequenceInfo() at some point in the future
-	inline void StopAnimation( void ) { offsets.DT_BaseAnimating.m_flPlaybackRate = 0; }
+	inline void StopAnimation( void ) { m_flPlaybackRate = 0; }
 
 	virtual void ClampRagdollForce( const Vector &vecForceIn, Vector *vecForceOut ) { *vecForceOut = vecForceIn; } // Base class does nothing.
 	virtual bool BecomeRagdollOnClient( const Vector &force );
@@ -250,10 +254,11 @@ public:
 	void				DrawServerHitboxes( float duration = 0.0f, bool monocolor = false );
 	void				DrawRawSkeleton( matrix3x4_t boneToWorld[], int boneMask, bool noDepthTest = true, float duration = 0.0f, bool monocolor = false );
 
-	void				SetModelWidthScale( float scale, float change_duration = 0.0f );
-	float				GetModelWidthScale() const;
+	void				SetModelScale( float scale, float change_duration = 0.0f );
+	float				GetModelScale() const { return m_flModelScale; }
 
-	void				UpdateModelWidthScale();
+	void				UpdateModelScale();
+	virtual	void		RefreshCollisionBounds( void );
 
 	// also calculate IK on server? (always done on client)
 	void EnableServerIK();
@@ -289,19 +294,19 @@ public:
 	void TransferDissolveFrom( CBaseAnimating *pAnim );
 
 	// animation needs
-	float				offsets.DT_BaseAnimating.m_flGroundSpeed;	// computed linear movement rate for current sequence
-	float				offsets.DT_BaseAnimating.m_flLastEventCheck;	// cycle index of when events were last checked
+	float				m_flGroundSpeed;	// computed linear movement rate for current sequence
+	float				m_flLastEventCheck;	// cycle index of when events were last checked
 
-	virtual void SetLightingOriginRelative( C_BaseEntity *pLightingOriginRelative );
+	virtual void SetLightingOriginRelative( CBaseEntity *pLightingOriginRelative );
 	void SetLightingOriginRelative( string_t strLightingOriginRelative );
-	C_BaseEntity *GetLightingOriginRelative();
+	CBaseEntity *GetLightingOriginRelative();
 
-	virtual void SetLightingOrigin( C_BaseEntity *pLightingOrigin );
+	virtual void SetLightingOrigin( CBaseEntity *pLightingOrigin );
 	void SetLightingOrigin( string_t strLightingOrigin );
-	C_BaseEntity *GetLightingOrigin();
+	CBaseEntity *GetLightingOrigin();
 
-	const float* GetPoseParameterArray() { return offsets.DT_BaseAnimating.m_flPoseParameter.Base(); }
-	const float* GetEncodedControllerArray() { return offsets.DT_BaseAnimating.m_flEncodedController.Base(); }
+	const float* GetPoseParameterArray() { return m_flPoseParameter.Base(); }
+	const float* GetEncodedControllerArray() { return m_flEncodedController.Base(); }
 
 	void BuildMatricesWithBoneMerge( const CStudioHdr *pStudioHdr, const QAngle& angles,
 		const Vector& origin, const Vector pos[MAXSTUDIOBONES],
@@ -310,9 +315,9 @@ public:
 
 	void	SetFadeDistance( float minFadeDist, float maxFadeDist );
 
-	int		GetBoneCacheFlags( void ) { return offsets.DT_BaseAnimating.m_fBoneCacheFlags; }
-	inline void	SetBoneCacheFlags( unsigned short fFlag ) { offsets.DT_BaseAnimating.m_fBoneCacheFlags |= fFlag; }
-	inline void	ClearBoneCacheFlags( unsigned short fFlag ) { offsets.DT_BaseAnimating.m_fBoneCacheFlags &= ~fFlag; }
+	int		GetBoneCacheFlags( void ) { return m_fBoneCacheFlags; }
+	inline void	SetBoneCacheFlags( unsigned short fFlag ) { m_fBoneCacheFlags |= fFlag; }
+	inline void	ClearBoneCacheFlags( unsigned short fFlag ) { m_fBoneCacheFlags &= ~fFlag; }
 
 	bool PrefetchSequence( int iSequence );
 
@@ -323,9 +328,23 @@ private:
 	void StudioFrameAdvanceInternal( CStudioHdr *pStudioHdr, float flInterval );
 	void InputSetLightingOriginRelative( inputdata_t &inputdata );
 	void InputSetLightingOrigin( inputdata_t &inputdata );
+	void InputSetModelScale( inputdata_t &inputdata );
 
 	bool CanSkipAnimation( void );
 
+public:
+	CNetworkVar( int, m_nForceBone );
+	CNetworkVector( m_vecForce );
+
+	CNetworkVar( int, m_nSkin );
+	CNetworkVar( int, m_nBody );
+	CNetworkVar( int, m_nHitboxSet );
+
+	// For making things thin during barnacle swallowing, e.g.
+	CNetworkVar( float, m_flModelScale );
+
+	// was pev->framerate
+	CNetworkVar( float, m_flPlaybackRate );
 
 public:
 	void InitStepHeightAdjust( void );
@@ -350,6 +369,7 @@ public:
 private:
 	bool				m_bSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
 	bool				m_bSequenceLoops;	// true if the sequence loops
+	bool				m_bResetSequenceInfoOnLoad; // true if a ResetSequenceInfo was queued up during dynamic load
 	float				m_flDissolveStartTime;
 
 	// was pev->frame
@@ -369,8 +389,8 @@ private:
 	// The client picks up the change and draws the flash.
 	CNetworkVar( unsigned char, m_nMuzzleFlashParity );
 
-	CNetworkHandle( C_BaseEntity, m_hLightingOrigin );
-	CNetworkHandle( C_BaseEntity, m_hLightingOriginRelative );
+	CNetworkHandle( CBaseEntity, m_hLightingOrigin );
+	CNetworkHandle( CBaseEntity, m_hLightingOriginRelative );
 
 	string_t m_iszLightingOriginRelative;	// for reading from the file only
 	string_t m_iszLightingOrigin;			// for reading from the file only
@@ -402,6 +422,9 @@ friend class CBlendingCycler;
 //-----------------------------------------------------------------------------
 inline CStudioHdr *CBaseAnimating::GetModelPtr( void )
 {
+	if ( IsDynamicModelLoading() )
+		return NULL;
+
 #ifdef _DEBUG
 	// GetModelPtr() is often called before OnNewModel() so go ahead and set it up first chance.
 	static IDataCacheSection *pModelCache = datacache->FindSection( "ModelData" );
@@ -446,22 +469,22 @@ inline void CBaseAnimating::SetPlaybackRate( float rate )
 	m_flPlaybackRate = rate;
 }
 
-inline void CBaseAnimating::SetLightingOrigin( C_BaseEntity *pLightingOrigin )
+inline void CBaseAnimating::SetLightingOrigin( CBaseEntity *pLightingOrigin )
 {
 	m_hLightingOrigin = pLightingOrigin;
 }
 
-inline C_BaseEntity *CBaseAnimating::GetLightingOrigin()
+inline CBaseEntity *CBaseAnimating::GetLightingOrigin()
 {
 	return m_hLightingOrigin;
 }
 
-inline void CBaseAnimating::SetLightingOriginRelative( C_BaseEntity *pLightingOriginRelative )
+inline void CBaseAnimating::SetLightingOriginRelative( CBaseEntity *pLightingOriginRelative )
 {
 	m_hLightingOriginRelative = pLightingOriginRelative;
 }
 
-inline C_BaseEntity *CBaseAnimating::GetLightingOriginRelative()
+inline CBaseEntity *CBaseAnimating::GetLightingOriginRelative()
 {
 	return m_hLightingOriginRelative;
 }
