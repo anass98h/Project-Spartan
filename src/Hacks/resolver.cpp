@@ -14,6 +14,8 @@ std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
 
+bool didDmg = false;
+
 bool Resolver::lbyUpdated = false;
 
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
@@ -47,12 +49,22 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 player->GetEyeAngles()->x = std::copysign( 89.0f, player->GetEyeAngles()->x );
         }
 
+        QAngle angle;
+
+        float LBY = *player->GetLowerBodyYawTarget();        
+
         float curTime = globalVars->curtime;        
 
         bool backtrackLby = Settings::Resolver::LagComp;
 
-        std::map<int, bool> breakingLby;
+        std::map<int, bool> breakingLby = {
+            { player->GetIndex(), false }
+        };
         
+        std::map<int, float> playerAngles = {
+            { player->GetIndex(), LBY }
+        };
+
         static int ShotsmissedSave = 0;
         static float ShotsmissedTime = 0.f;
         static float ShotsmissedSaveTime = 2.f;
@@ -66,8 +78,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
             ShotsmissedSave = 0;
         }
 
-        float LBY = *player->GetLowerBodyYawTarget();
-
         bool onGround = player->GetFlags() & FL_ONGROUND;
         bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 ); 
 
@@ -80,36 +90,62 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
         if ( Resolver::lbyUpdated ) {
             nextUpdate = curTime + 1.1f;
-            player->GetEyeAngles()->y = LBY;
+            angle.y = LBY;
         } else if ( backtrackLby && Backtracking::backtrackingLby ) {
-            player->GetEyeAngles()->y = LBY;
+            angle.y = LBY;
         } else {
             if ( breakingLby.find(player->GetIndex()) != breakingLby.end() ) { 
                 if ( breakingLby[player->GetIndex()] ) { 
-                    switch ( ShotsmissedSave % 8 ) {
-                        case 0: player->GetEyeAngles()->y = LBY + 180.f; break;
-                        case 1: player->GetEyeAngles()->y = LBY + 90.f; break;
-                        case 2: player->GetEyeAngles()->y = LBY - 90.f; break;
-                        case 3: player->GetEyeAngles()->y = LBY + 135.f; break;
-                        case 4: player->GetEyeAngles()->y = LBY - 135.f; break;
-                        case 5: player->GetEyeAngles()->y = LBY + 45.f; break;
-                        case 6: player->GetEyeAngles()->y = LBY - 45.f; break;
-                        case 7: player->GetEyeAngles()->y = LBY; break;
+                    if ( playerAngles[player->GetIndex()] == LBY ) {
+                        switch ( ShotsmissedSave % 8 ) {
+                            case 0: angle.y = LBY + 180.f; break;
+                            case 1: angle.y = LBY + 90.f; break;
+                            case 2: angle.y = LBY - 90.f; break;
+                            case 3: angle.y = LBY + 135.f; break;
+                            case 4: angle.y = LBY - 135.f; break;
+                            case 5: angle.y = LBY + 45.f; break;
+                            case 6: angle.y = LBY - 45.f; break;
+                            case 7: angle.y = LBY; break;
+                        }
+                    } else {
+                        if ( ShotsmissedSave > 1 ) {
+                            switch ( ShotsmissedSave % 8 ) {
+                                case 0: angle.y = LBY + 135.f; break;
+                                case 1: angle.y = LBY - 135.f; break;
+                                case 2: angle.y = LBY + 180.f; break;
+                                case 3: angle.y = LBY + 90.f; break;
+                                case 4: angle.y = LBY - 90.f; break;
+                                case 5: angle.y = LBY + 45.f; break;
+                                case 6: angle.y = LBY - 45.f; break;
+                                case 7: angle.y = LBY; break;
+                            }
+                        } else if ( ShotsmissedSave > 9 ) {
+                            breakingLby[player->GetIndex()] = false;
+                        } else {
+                            angle.y = playerAngles[player->GetIndex()];
+                        }
                     }
                 } else {
                     player->GetEyeAngles()->y = LBY;
-                    if ( ShotsmissedSave > 2 ) {
+                    if ( ShotsmissedSave > 1 ) {
                         breakingLby[player->GetIndex()] = true;
                     }
                 }
             } else {
-                player->GetEyeAngles()->y = LBY;
-                if ( ShotsmissedSave > 2 ) {
+                angle.y = LBY;
+                if ( ShotsmissedSave > 1 ) {
                     breakingLby[player->GetIndex()] = true;
                 } else {
                     breakingLby[player->GetIndex()] = false;
                 }
             }
+        }
+
+        player->GetEyeAngles()->y = angle.y;
+
+        if ( didDmg ) {
+            playerAngles[player->GetIndex()] = angle.y;
+            didDmg = false;
         }
     }
 }
@@ -317,6 +353,8 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
 
         IEngineClient::player_info_t hurtPlayerInfo;
         engine->GetPlayerInfo( hurt_player->GetIndex(), &hurtPlayerInfo );
+
+        didDmg = true;
 
         Shotsmissed = 0;
     }
