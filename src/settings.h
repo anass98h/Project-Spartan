@@ -628,6 +628,8 @@ namespace Settings {
 
             namespace HeadEdge {
                 extern bool enabled;
+                extern float realAdd;
+                extern float fakeAdd;
                 extern float distance;
             }
 
@@ -668,6 +670,8 @@ namespace Settings {
 
             namespace HeadEdge {
                 extern bool enabled;
+                extern float realAdd;
+                extern float fakeAdd;
                 extern float distance;
             }
 
@@ -708,6 +712,8 @@ namespace Settings {
 
             namespace HeadEdge {
                 extern bool enabled;
+                extern float realAdd;
+                extern float fakeAdd;
                 extern float distance;
             }
 

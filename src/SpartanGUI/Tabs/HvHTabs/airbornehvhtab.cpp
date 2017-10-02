@@ -165,12 +165,22 @@ void Airborne::RenderTab() {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text( XORSTR( "Distance" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text( XORSTR( "Real Add" ) );
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text( XORSTR( "Fake Add" ) );
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     }
                     ImGui::NextColumn();
                     {
                         ImGui::PushItemWidth( -1 );
                         ImGui::SliderFloat( XORSTR( "##EDGEDISTANCE" ),
                                             &Settings::AntiAim::Airborne::HeadEdge::distance, 20, 30,
+                                            "%0.f" );
+                        ImGui::SliderFloat( XORSTR( "##EDGEREALADD" ),
+                                            &Settings::AntiAim::Airborne::HeadEdge::realAdd, -180, 180,
+                                            "%0.f" );
+                        ImGui::SliderFloat( XORSTR( "##EDGEFAKEADD" ),
+                                            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd, -180, 180,
                                             "%0.f" );
                         ImGui::PopItemWidth();
                     }

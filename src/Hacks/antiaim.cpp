@@ -22,6 +22,8 @@ AntiAimType_LBY Settings::AntiAim::Standing::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Standing::HeadEdge::enabled = false;
 float Settings::AntiAim::Standing::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Standing::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Standing::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Standing::antiResolver = false;
 bool Settings::AntiAim::Standing::dynamicAA = false;
@@ -49,6 +51,8 @@ AntiAimType_LBY Settings::AntiAim::Moving::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Moving::HeadEdge::enabled = false;
 float Settings::AntiAim::Moving::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Moving::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Moving::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Moving::antiResolver = false;
 bool Settings::AntiAim::Moving::dynamicAA = false;
@@ -76,6 +80,8 @@ AntiAimType_LBY Settings::AntiAim::Airborne::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Airborne::HeadEdge::enabled = false;
 float Settings::AntiAim::Airborne::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Airborne::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Airborne::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Airborne::antiResolver = false;
 bool Settings::AntiAim::Airborne::dynamicAA = false;
@@ -117,12 +123,12 @@ static bool LBYUpdated() {
     return LBYUpdated;
 }
 
-static bool GetBestHeadAngle( QAngle& angle ) {
+static bool CanEdge () {
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
 
     Vector position = localplayer->GetVecOrigin() + localplayer->GetVecViewOffset();
 
-    float closest_distance = 100.0f;
+    float closest_distance = 50.0f;
 
     float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
     if ( AntiAim::IsMoving() ) {
@@ -148,11 +154,56 @@ static bool GetBestHeadAngle( QAngle& angle ) {
 
         if ( distance < closest_distance ) {
             closest_distance = distance;
-            angle.y = RAD2DEG( a );
         }
     }
 
     return closest_distance < ( radius - 0.1f );
+}
+
+static float GetBestHeadEdgeAngle() {
+    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    
+        Vector position = localplayer->GetVecOrigin() + localplayer->GetVecViewOffset();
+    
+        float closest_distance = 100.0f;
+    
+        float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
+        if ( AntiAim::IsMoving() ) {
+            radius = Settings::AntiAim::Moving::HeadEdge::distance + 0.1f;
+        }
+        if ( AntiAim::IsAirborne() ) {
+            radius = Settings::AntiAim::Airborne::HeadEdge::distance = 0.1;
+        }
+    
+        float step = M_PI * 2.0 / 8;
+    
+        static float returnAngle = 0.f;
+
+        for ( float a = 0; a < ( M_PI * 2.0 ); a += step ) {
+            Vector location( radius * cos( a ) + position.x, radius * sin( a ) + position.y, position.z );
+    
+            static bool bFlip = false;
+    
+            static float fakeAdd = 0.f;
+            static float realAdd = 0.f;
+
+            Ray_t ray;
+            trace_t tr;
+            ray.Init( position, location );
+            CTraceFilter traceFilter;
+            traceFilter.pSkip = localplayer;
+            trace->TraceRay( ray, 0x4600400B, &traceFilter, &tr );
+    
+            float distance = Distance( position, tr.endpos );
+    
+            if ( distance < closest_distance ) {
+                closest_distance = distance;
+            
+                returnAngle = Math::ClampYaw( RAD2DEG( a ) );          
+            }
+        }
+    
+        return returnAngle;
 }
 
 static float HeadEdgeAng() {
@@ -1358,10 +1409,10 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
     isAntiAiming = true;
     QAngle edge_angle = angle;
 
-    bool shouldEdge = AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
+    /*bool shouldEdge = AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
                       AntiAim::IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
                       Settings::AntiAim::Standing::HeadEdge::enabled;
-    shouldEdge = shouldEdge && GetBestHeadAngle( edge_angle );
+    shouldEdge = shouldEdge && GetBestHeadAngle( edge_angle );*/
 
     static bool bFlip;
 
@@ -1438,10 +1489,10 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
         }
         if ( Settings::FakeLag::type != FakeLagType::OFF )
             CreateMove::sendPacket = bFlip;
-        if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
+        /*if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
                IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
                Settings::AntiAim::Standing::HeadEdge::enabled ) && shouldEdge && !bFlip )
-            angle.y = edge_angle.y;
+            angle.y = edge_angle.y;*/
     }
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
 
@@ -1463,6 +1514,35 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
            IsMoving() ? Settings::AntiAim::Moving::Pitch::enabled :
            Settings::AntiAim::Standing::Pitch::enabled ) ) {
         DoAntiAimX( angle, bFlip, shouldClamp );
+    }
+
+    if (CanEdge()) { 
+        float angleYEdge = GetBestHeadEdgeAngle();
+        
+        static bool bFlip = false;
+        
+        static float fakeAdd = 0.f;
+        static float realAdd = 0.f;
+                        
+        if ( AntiAim::IsAirborne ) {
+            fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
+            realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
+        } else if ( AntiAim::IsMoving ) {
+            fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
+            realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
+        } else if ( AntiAim::IsStanding ) {
+            fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
+            realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
+        }
+                    
+        bFlip = !bFlip;
+        if ( !bFlip ) {
+            CreateMove::sendPacket = false;
+            angle.y = Math::ClampYaw( angleYEdge + realAdd );
+        } else {
+            CreateMove::sendPacket = true;
+            angle.y = Math::ClampYaw( angleYEdge + fakeAdd);
+        }        
     }
 
     Math::NormalizeAngles( angle );
