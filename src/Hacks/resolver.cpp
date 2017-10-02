@@ -49,7 +49,9 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 player->GetEyeAngles()->x = std::copysign( 89.0f, player->GetEyeAngles()->x );
         }
 
-        float angle.y = 0.f;
+        QAngle angle;
+
+        float LBY = *player->GetLowerBodyYawTarget();        
 
         float curTime = globalVars->curtime;        
 
@@ -75,8 +77,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
         if ( ShotsmissedTime < curTime ) {
             ShotsmissedSave = 0;
         }
-
-        float LBY = *player->GetLowerBodyYawTarget();
 
         bool onGround = player->GetFlags() & FL_ONGROUND;
         bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 ); 
