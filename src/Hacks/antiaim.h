@@ -18,8 +18,6 @@ namespace AntiAim {
     extern float lastFakeYaw;
     extern bool canEdge;
 
-    extern bool shouldFakeEdge;
-
     void SwitchAA( int state );
 
     bool IsStanding();
