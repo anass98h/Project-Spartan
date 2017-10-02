@@ -22,6 +22,8 @@ AntiAimType_LBY Settings::AntiAim::Standing::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Standing::HeadEdge::enabled = false;
 float Settings::AntiAim::Standing::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Standing::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Standing::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Standing::antiResolver = false;
 bool Settings::AntiAim::Standing::dynamicAA = false;
@@ -49,6 +51,8 @@ AntiAimType_LBY Settings::AntiAim::Moving::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Moving::HeadEdge::enabled = false;
 float Settings::AntiAim::Moving::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Moving::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Moving::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Moving::antiResolver = false;
 bool Settings::AntiAim::Moving::dynamicAA = false;
@@ -76,6 +80,8 @@ AntiAimType_LBY Settings::AntiAim::Airborne::LBY::type = AntiAimType_LBY::ONE;
 
 bool Settings::AntiAim::Airborne::HeadEdge::enabled = false;
 float Settings::AntiAim::Airborne::HeadEdge::distance = 25.0f;
+float Settings::AntiAim::Airborne::HeadEdge::fakeAdd = 0.f;
+float Settings::AntiAim::Airborne::HeadEdge::realAdd = 0.f;
 
 bool Settings::AntiAim::Airborne::antiResolver = false;
 bool Settings::AntiAim::Airborne::dynamicAA = false;
@@ -137,6 +143,11 @@ static bool GetBestHeadAngle( QAngle& angle ) {
     for ( float a = 0; a < ( M_PI * 2.0 ); a += step ) {
         Vector location( radius * cos( a ) + position.x, radius * sin( a ) + position.y, position.z );
 
+        static bool bFlip = false;
+
+        static float fakeAdd = 0.f;
+        static float realAdd = 0.f;
+
         Ray_t ray;
         trace_t tr;
         ray.Init( position, location );
@@ -148,7 +159,26 @@ static bool GetBestHeadAngle( QAngle& angle ) {
 
         if ( distance < closest_distance ) {
             closest_distance = distance;
-            angle.y = RAD2DEG( a );
+            
+            if ( AntiAim::IsAirborne ) {
+                fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
+            } else if ( AntiAim::IsMoving ) {
+                fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
+            } else if ( AntiAim::IsStanding ) {
+                fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
+            }
+            
+            bFlip = !bFlip;
+            if ( bFlip ) {
+                CreateMove::sendPacket = false;
+                angle.y = Math::ClampYaw( RAD2DEG( a ) + realAdd );
+            } else {
+                CreateMove::sendPacket = true;
+                angle.y = Math::ClampYaw( RAD2DEG( a ) + fakeAdd);
+            }
         }
     }
 
@@ -1438,10 +1468,10 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
         }
         if ( Settings::FakeLag::type != FakeLagType::OFF )
             CreateMove::sendPacket = bFlip;
-        if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
+        /*if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
                IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
                Settings::AntiAim::Standing::HeadEdge::enabled ) && shouldEdge && !bFlip )
-            angle.y = edge_angle.y;
+            angle.y = edge_angle.y;*/
     }
     /*if (Settings::AntiAim::Yaw::dynamicAA) {
 

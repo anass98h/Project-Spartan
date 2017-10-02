@@ -260,6 +260,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "enabled" )] = Settings::AntiAim::Standing::HeadEdge::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR(
             "distance" )] = Settings::AntiAim::Standing::HeadEdge::distance;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR(
+            "realAdd" )] = Settings::AntiAim::Standing::HeadEdge::realAdd;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR(
+            "fakeAdd" )] = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Standing::antiResolver;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Standing::dynamicAA;
@@ -298,6 +302,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "enabled" )] = Settings::AntiAim::Moving::HeadEdge::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR(
             "distance" )] = Settings::AntiAim::Moving::HeadEdge::distance;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR(
+            "realAdd" )] = Settings::AntiAim::Moving::HeadEdge::realAdd;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR(
+            "fakeAdd" )] = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Moving::antiResolver;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Moving::dynamicAA;
@@ -336,6 +344,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "enabled" )] = Settings::AntiAim::Airborne::HeadEdge::enabled;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR(
             "distance" )] = Settings::AntiAim::Airborne::HeadEdge::distance;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR(
+            "fakeAdd" )] = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR(
+            "realAdd" )] = Settings::AntiAim::Airborne::HeadEdge::realAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Airborne::antiResolver;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Airborne::dynamicAA;
@@ -869,6 +881,10 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Standing::HeadEdge::enabled );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )],
             &Settings::AntiAim::Standing::HeadEdge::distance );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR( "realAdd" )],
+            &Settings::AntiAim::Standing::HeadEdge::realAdd );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "HeadEdge" )][XORSTR( "fakeAdd" )],
+            &Settings::AntiAim::Standing::HeadEdge::fakeAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Standing::antiResolver );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "dynamicAA" )],
@@ -908,6 +924,10 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Moving::HeadEdge::enabled );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )],
             &Settings::AntiAim::Moving::HeadEdge::distance );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR( "realAdd" )],
+            &Settings::AntiAim::Moving::HeadEdge::realAdd );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "HeadEdge" )][XORSTR( "fakeAdd" )],
+            &Settings::AntiAim::Moving::HeadEdge::fakeAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Moving::antiResolver );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "dynamicAA" )],
@@ -947,6 +967,10 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Airborne::HeadEdge::enabled );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR( "distance" )],
             &Settings::AntiAim::Airborne::HeadEdge::distance );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR( "fakeAdd" )],
+            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "HeadEdge" )][XORSTR( "realAdd" )],
+            &Settings::AntiAim::Airborne::HeadEdge::realAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Airborne::antiResolver );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "dynamicAA" )],
