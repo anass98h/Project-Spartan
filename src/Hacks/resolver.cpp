@@ -23,7 +23,7 @@ static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
         Settings::Aimbot::backtrack = true;
 }
 
-void Resolver::Hug( C_BasePlayer* player ) {
+void Resolver::Hug( C_BasePlayer* player ) {    
     auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
@@ -52,8 +52,8 @@ void Resolver::Hug( C_BasePlayer* player ) {
         QAngle angle;
 
         float LBY = *player->GetLowerBodyYawTarget();        
-
-        float curTime = globalVars->curtime;        
+        
+        float serverTime = pLocal->GetTickBase() * globalVars->interval_per_tick;        
 
         bool backtrackLby = Settings::Resolver::LagComp;
 
@@ -79,17 +79,21 @@ void Resolver::Hug( C_BasePlayer* player ) {
         }
 
         bool onGround = player->GetFlags() & FL_ONGROUND;
-        bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 ); 
+        bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) > 0.1f ); 
+        float lbyTime = isMoving ? 0.22f : 1.1f;
 
-        static float nextUpdate = 0.f;
+        static float oldTime = 0.f;
 
-        if ( nextUpdate < curTime || isMoving )
+        if ( player->GetDormant() )
+            oldTime = 0.f;
+
+        if ( fabsf( serverTime - oldTime ) > lbyTime )
             Resolver::lbyUpdated = true;
         else 
             Resolver::lbyUpdated = false;
 
         if ( Resolver::lbyUpdated ) {
-            nextUpdate = curTime + 1.1f;
+            oldTime = serveTime;
             angle.y = LBY;
         } else if ( backtrackLby && Backtracking::backtrackingLby ) {
             angle.y = LBY;
@@ -97,29 +101,21 @@ void Resolver::Hug( C_BasePlayer* player ) {
             if ( breakingLby.find(player->GetIndex()) != breakingLby.end() ) { 
                 if ( breakingLby[player->GetIndex()] ) { 
                     if ( playerAngles[player->GetIndex()] == LBY ) {
-                        switch ( ShotsmissedSave % 8 ) {
+                        switch ( ShotsmissedSave % 4 ) {
                             case 0: angle.y = LBY + 180.f; break;
                             case 1: angle.y = LBY + 90.f; break;
                             case 2: angle.y = LBY - 90.f; break;
-                            case 3: angle.y = LBY + 135.f; break;
-                            case 4: angle.y = LBY - 135.f; break;
-                            case 5: angle.y = LBY + 45.f; break;
-                            case 6: angle.y = LBY - 45.f; break;
-                            case 7: angle.y = LBY; break;
+                            case 3: angle.y = LBY; break;
                         }
                     } else {
                         if ( ShotsmissedSave > 1 ) {
-                            switch ( ShotsmissedSave % 8 ) {
-                                case 0: angle.y = LBY + 135.f; break;
-                                case 1: angle.y = LBY - 135.f; break;
+                            switch ( ShotsmissedSave % 4 ) {
+                                case 0: angle.y = LBY + 90.f; break;
+                                case 1: angle.y = LBY - 90.f; break;
                                 case 2: angle.y = LBY + 180.f; break;
-                                case 3: angle.y = LBY + 90.f; break;
-                                case 4: angle.y = LBY - 90.f; break;
-                                case 5: angle.y = LBY + 45.f; break;
-                                case 6: angle.y = LBY - 45.f; break;
-                                case 7: angle.y = LBY; break;
+                                case 3: angle.y = LBY; break;
                             }
-                        } else if ( ShotsmissedSave > 9 ) {
+                        } else if ( ShotsmissedSave > 5 ) {
                             breakingLby[player->GetIndex()] = false;
                         } else {
                             angle.y = playerAngles[player->GetIndex()];
@@ -141,10 +137,12 @@ void Resolver::Hug( C_BasePlayer* player ) {
             }
         }
 
-        player->GetEyeAngles()->y = angle.y;
+        player->GetEyeAngles()->y = Math::ClampYaw( angle.y );
 
         if ( didDmg ) {
-            playerAngles[player->GetIndex()] = angle.y;
+            if ( angle.y != LBY )
+                playerAngles[player->GetIndex()] = angle.y;
+
             didDmg = false;
         }
     }
