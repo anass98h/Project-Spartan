@@ -174,13 +174,13 @@ void Standing::RenderTab() {
                     {
                         ImGui::PushItemWidth( -1 );
                         ImGui::SliderFloat( XORSTR( "##EDGEDISTANCE" ),
-                                            &Settings::AntiAim::Airborne::HeadEdge::distance, -180, 180,
+                                            &Settings::AntiAim::Airborne::HeadEdge::distance, 20, 30,
                                             "%0.f" );
                         ImGui::SliderFloat( XORSTR( "##EDGEREALADD" ),
                                             &Settings::AntiAim::Airborne::HeadEdge::realAdd, -180, 180,
                                             "%0.f" );
                         ImGui::SliderFloat( XORSTR( "##EDGEFAKEADD" ),
-                                            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd, 20, 30,
+                                            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd, -180, 180,
                                             "%0.f" );
                         ImGui::PopItemWidth();
                     }
