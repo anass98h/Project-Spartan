@@ -24,6 +24,8 @@ static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
 }
 
 void Resolver::Hug( C_BasePlayer* player ) {    
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );    
+
     auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
@@ -93,7 +95,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
             Resolver::lbyUpdated = false;
 
         if ( Resolver::lbyUpdated ) {
-            oldTime = serveTime;
+            oldTime = serverTime;
             angle.y = LBY;
         } else if ( backtrackLby && Backtracking::backtrackingLby ) {
             angle.y = LBY;
