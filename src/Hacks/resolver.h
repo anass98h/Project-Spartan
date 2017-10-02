@@ -30,6 +30,8 @@ namespace Resolver {
     extern std::vector<int64_t> playerAngleLogs;
     extern std::array<CResolveInfo, 32> m_arrInfos;
 
+    extern float lbyUpdated;
+
     void Hug( C_BasePlayer* Circlebian );
 
     void FrameStageNotify( ClientFrameStage_t stage );

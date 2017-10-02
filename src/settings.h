@@ -212,17 +212,6 @@ enum class SpammerType : int {
     SPAMMER_POSITIONS,
 };
 
-enum class ResolverHugtype : int {
-    OFF,
-    RASP,
-    BRUTEHIV,
-    BRUTE1,
-    AUTISM,
-    MYRRIBDELTA,
-    MYRRIBDELTA2,
-    LBYBACKTRACK,
-};
-
 enum class cFont : int {
     Arial,
     SegoeUI,

@@ -198,7 +198,6 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "LBYIndicator" )][XORSTR( "enabled" )] = Settings::lbyindicator::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "ticks" )] = Settings::Resolver::ticks;
     settings[XORSTR( "Resolver" )][XORSTR( "modulo" )] = Settings::Resolver::modulo;
-    settings[XORSTR( "Resolver" )][XORSTR( "Hugtype" )] = ( int ) Settings::Resolver::Hugtype;
     settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] = ( int ) Settings::Resolver::pitch;
     settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] = ( int ) Settings::Resolver::LagComp;
@@ -814,7 +813,6 @@ void Settings::LoadConfig( std::string path ) {
 
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "ticks" )], &Settings::Resolver::ticks );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "modulo" )], &Settings::Resolver::modulo );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "Hugtype" )], ( int* ) &Settings::Resolver::Hugtype );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], &Settings::Resolver::LagComp );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )], &Settings::AngleIndicator::enabled );
