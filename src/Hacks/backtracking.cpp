@@ -49,6 +49,8 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
             if ( Settings::Resolver::LagComp && Settings::Resolver::enabled ) {
                 INetChannelInfo *nci = engine->GetNetChannelInfo();
 
+                float curTime = globalVars->curtime;
+
                 float outgoingPing = nci->GetLatency(FLOW_OUTGOING);
 
                 static float lastUpdate = 0.f;

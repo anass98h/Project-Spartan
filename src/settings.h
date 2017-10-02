@@ -726,7 +726,6 @@ namespace Settings {
         extern bool enabled;
         extern float ticks;
         extern float modulo;
-        extern ResolverHugtype Hugtype;
         extern bool pitch;
     }
     namespace lbyindicator {

@@ -14,7 +14,7 @@ std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
 
-Resolver::lbyUpdated = false;
+bool Resolver::lbyUpdated = false;
 
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
     if ( !Settings::Aimbot::backtrack )
@@ -66,7 +66,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
             ShotsmissedSave = 0;
         }
 
-        float LBY = player->GetLowerBodyYawTarget();
+        float LBY = *player->GetLowerBodyYawTarget();
 
         bool onGround = player->GetFlags() & FL_ONGROUND;
         bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 ); 
