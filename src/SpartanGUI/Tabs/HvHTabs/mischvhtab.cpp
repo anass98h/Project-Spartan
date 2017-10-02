@@ -1,11 +1,5 @@
 #include "mischvhtab.h"
 
-const char* hugTypes[] = {
-
-        "OFF", "Rasp", "Brute Log EAP", "Bruteforce", "TapTipTopTupTep", "Myrrib's DELTA", "Myrrib Old", "LBY Backtrack"
-
-};
-
 void MiscHvHTab::RenderTab() {
     ImGui::Columns( 2, NULL, true );
     {
@@ -21,8 +15,6 @@ void MiscHvHTab::RenderTab() {
                     ImGui::Columns( 2, NULL, true );
                     {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text( XORSTR( "Type" ) );
-                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text( XORSTR( "Ticks" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text( XORSTR( "Modulo" ) );
@@ -30,10 +22,6 @@ void MiscHvHTab::RenderTab() {
                     }
                     ImGui::NextColumn();
                     {
-                        ImGui::PushItemWidth( -3 );
-                        ImGui::Combo( XORSTR( "##HUGTYPE" ), ( int* ) &Settings::Resolver::Hugtype,
-                                      hugTypes, IM_ARRAYSIZE( hugTypes ) );
-                        ImGui::PopItemWidth();
                         ImGui::PushItemWidth( -1 );
                         ImGui::SliderFloat( XORSTR( "##HUGTICKS" ), &Settings::Resolver::ticks, 0, 50,
                                             XORSTR( "%.1f" ) );
@@ -47,8 +35,8 @@ void MiscHvHTab::RenderTab() {
 
                     ImGui::Columns( 2, NULL, true );
                     {
-                        ImGui::Checkbox( XORSTR( "Lag Compensation" ), &Settings::Resolver::LagComp );
-                        SetTooltip( XORSTR( "WARNING: Needs testing." ) );
+                        ImGui::Checkbox( XORSTR( "BackTrack LBY" ), &Settings::Resolver::LagComp );
+                        SetTooltip( XORSTR( "Backtracks to latest LBY update." ) );
                     }
                     ImGui::NextColumn();
                     {
