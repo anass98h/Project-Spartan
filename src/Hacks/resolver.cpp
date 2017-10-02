@@ -71,10 +71,10 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
         if ( Shotsmissed > ShotsmissedSave ) {
             ShotsmissedSave = Shotsmissed;
-            ShotsmissedTime = curTime + ShotsmissedSaveTime;
+            ShotsmissedTime = serverTime + ShotsmissedSaveTime;
         }
 
-        if ( ShotsmissedTime < curTime ) {
+        if ( ShotsmissedTime < serverTime ) {
             ShotsmissedSave = 0;
         }
 
