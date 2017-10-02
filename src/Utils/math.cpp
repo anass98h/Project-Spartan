@@ -174,8 +174,8 @@ QAngle Math::CalcAngle( Vector src, Vector dst ) {
 }
 
 float Math::ClampYaw( float val ) {
-    while ( val < 0 ) val += 360.0f;
-    while ( val > 360.0f ) val -= 360.0f;
+    while ( val < -180.f ) val += 360.f;
+    while ( val > 180.f ) val -= 360.f;
     return val;
 }
 
