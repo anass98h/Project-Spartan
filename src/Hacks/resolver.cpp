@@ -167,9 +167,9 @@ void Resolver::Hug( C_BasePlayer* player ) {
         if ( didDmg ) {
             float tolerance = 15.f;
 
-            ang12diff = fabsf ( playerAngle1[Id] - playerAngle2[Id] );
-            ang13diff = fabsf ( playerAngle1[Id] - playerAngle3[Id] );
-            ang23diff = fabsf ( playerAngle2[Id] - playerAngle3[Id] );
+            float ang12diff = fabsf ( playerAngle1[Id] - playerAngle2[Id] );
+            float ang13diff = fabsf ( playerAngle1[Id] - playerAngle3[Id] );
+            float ang23diff = fabsf ( playerAngle2[Id] - playerAngle3[Id] );
 
             if ( ang12 < tolerance && ang13diff < tolerance && ang23diff < tolerance )
                 staticAngle[Id] = true;
