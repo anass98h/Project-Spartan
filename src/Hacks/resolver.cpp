@@ -171,7 +171,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
             float ang13diff = fabsf ( playerAngle1[Id] - playerAngle3[Id] );
             float ang23diff = fabsf ( playerAngle2[Id] - playerAngle3[Id] );
 
-            if ( ang12 < tolerance && ang13diff < tolerance && ang23diff < tolerance )
+            if ( ang12diff < tolerance && ang13diff < tolerance && ang23diff < tolerance )
                 staticAngle[Id] = true;
             if ( angle.y != LBY ) {
                 switch ( loopTrough[Id] ) {
