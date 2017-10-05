@@ -201,8 +201,6 @@ void Airborne::RenderTab() {
             {
                 ImGui::Checkbox( XORSTR( "Anti Resolver" ), &Settings::AntiAim::Airborne::antiResolver );
                 ImGui::Separator();
-                ImGui::Checkbox( XORSTR( "Anti Resolver 2" ), &Settings::AntiAim::Airborne::antiResolver2 );
-                ImGui::Separator();
                 ImGui::Checkbox( XORSTR( "Dynamic Anti-Aim" ), &Settings::AntiAim::Airborne::dynamicAA );
                 ImGui::Separator();
                 ImGui::Checkbox( XORSTR( "Untrusted angles" ), &Settings::AntiAim::Airborne::untrustedAngles );

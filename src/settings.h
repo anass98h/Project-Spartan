@@ -626,7 +626,6 @@ namespace Settings {
             }
 
             extern bool antiResolver;
-            extern bool antiResolver2;
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }
@@ -669,7 +668,6 @@ namespace Settings {
             }
 
             extern bool antiResolver;
-            extern bool antiResolver2;            
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }
@@ -712,7 +710,6 @@ namespace Settings {
             }
 
             extern bool antiResolver;
-            extern bool antiResolver2;            
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }

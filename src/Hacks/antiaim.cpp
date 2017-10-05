@@ -1615,25 +1615,6 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
                 Math::ClampAngles( cmd->viewangles );
             }
         }
-    } else if ( ( IsAirborne() ? Settings::AntiAim::Airborne::antiResolver2 :
-    IsMoving() ? Settings::AntiAim::Moving::antiResolver2 :
-    Settings::AntiAim::Standing::antiResolver2 ) ) {
-        static bool antiResFlip = false;
-
-        float lbyFakeDiff = fabsf ( *pLocal->GetLowerBodyYawTarget() - cmd->viewangles.y );
-
-        if ( lbyFakeDiff < 45 ) {
-            if ( antiResFlip )
-                cmd->viewangles.y = *pLocal->GetLowerBodyYawTarget() + 110.f;
-            else
-                cmd->viewangles.y = *pLocal->GetLowerBodyYawTarget() - 110.f;
-        }
-       
-        Math::NormalizeAngles( cmd->viewangles );
-        
-        if ( shouldClamp ) {
-            Math::ClampAngles( cmd->viewangles );
-        }
     }
 
     if ( bFlip ) {
