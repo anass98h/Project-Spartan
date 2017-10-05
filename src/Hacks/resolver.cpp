@@ -434,7 +434,10 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
     } else {
         C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );        
 
-        int ammo = localplayer->GetActiveWeapon()->GetAmmo();        
+        C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
+            localplayer->GetActiveWeapon() );
+        
+        int ammo = activeWeapon->GetAmmo();        
         static int ammoSave = ammo;
 
         if ( ammoSave != ammo ) {
