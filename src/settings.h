@@ -87,6 +87,7 @@ enum class AntiAimType_Y : int {
     FAKESIDEWAYS,
     BACKJITTER,
     FJITTER,
+    KIDUA,
     LBYJITTER,
     LBYSPIN,
     LOWERBODY,
@@ -118,6 +119,7 @@ enum class AntiAimType_LBY : int {
     FOUR,
     MYRRIB,
     MYRRIB2,
+    SUICIDE,
     NONE,
 };
 
@@ -624,6 +626,7 @@ namespace Settings {
             }
 
             extern bool antiResolver;
+            extern bool antiResolver2;
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }
@@ -666,6 +669,7 @@ namespace Settings {
             }
 
             extern bool antiResolver;
+            extern bool antiResolver2;            
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }
@@ -708,6 +712,7 @@ namespace Settings {
             }
 
             extern bool antiResolver;
+            extern bool antiResolver2;            
             extern bool dynamicAA;
             extern bool untrustedAngles;
         }

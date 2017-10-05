@@ -265,6 +265,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "fakeAdd" )] = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Standing::antiResolver;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR(
+            "antiResolver2" )] = Settings::AntiAim::Standing::antiResolver2;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Standing::dynamicAA;
     settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR(
             "untrustedAngles" )] = Settings::AntiAim::Standing::untrustedAngles;
@@ -307,6 +309,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "fakeAdd" )] = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Moving::antiResolver;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR(
+            "antiResolver2" )] = Settings::AntiAim::Moving::antiResolver2;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Moving::dynamicAA;
     settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR(
             "untrustedAngles" )] = Settings::AntiAim::Moving::untrustedAngles;
@@ -349,6 +353,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
             "realAdd" )] = Settings::AntiAim::Airborne::HeadEdge::realAdd;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR(
             "antiResolver" )] = Settings::AntiAim::Airborne::antiResolver;
+    settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR(
+            "antiResolver2" )] = Settings::AntiAim::Airborne::antiResolver2;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "dynamicAA" )] = Settings::AntiAim::Airborne::dynamicAA;
     settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR(
             "untrustedAngles" )] = Settings::AntiAim::Airborne::untrustedAngles;
@@ -885,6 +891,8 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Standing::HeadEdge::fakeAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Standing::antiResolver );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "antiResolver2" )],
+            &Settings::AntiAim::Standing::antiResolver2 );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "dynamicAA" )],
             &Settings::AntiAim::Standing::dynamicAA );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Standing" )][XORSTR( "untrustedAngles" )],
@@ -928,6 +936,8 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Moving::HeadEdge::fakeAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Moving::antiResolver );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "antiResolver2" )],
+            &Settings::AntiAim::Moving::antiResolver2 );        
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "dynamicAA" )],
             &Settings::AntiAim::Moving::dynamicAA );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Moving" )][XORSTR( "untrustedAngles" )],
@@ -971,6 +981,8 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::AntiAim::Airborne::HeadEdge::realAdd );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "antiResolver" )],
             &Settings::AntiAim::Airborne::antiResolver );
+    GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "antiResolver2" )],
+            &Settings::AntiAim::Airborne::antiResolver2 );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "dynamicAA" )],
             &Settings::AntiAim::Airborne::dynamicAA );
     GetVal( settings[XORSTR( "AntiAim" )][XORSTR( "Airborne" )][XORSTR( "untrustedAngles" )],

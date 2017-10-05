@@ -199,6 +199,8 @@ void Moving::RenderTab() {
             {
                 ImGui::Checkbox( XORSTR( "Anti Resolver" ), &Settings::AntiAim::Moving::antiResolver );
                 ImGui::Separator();
+                ImGui::Checkbox( XORSTR( "Anti Resolver 2" ), &Settings::AntiAim::Moving::antiResolver2 );
+                ImGui::Separator();
                 ImGui::Checkbox( XORSTR( "Dynamic Anti-Aim" ), &Settings::AntiAim::Moving::dynamicAA );
                 ImGui::Separator();
                 ImGui::Checkbox( XORSTR( "Untrusted angles" ), &Settings::AntiAim::Moving::untrustedAngles );
