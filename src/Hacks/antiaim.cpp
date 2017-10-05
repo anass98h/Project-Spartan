@@ -1064,6 +1064,30 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     }
                 }
                 break;
+                case AntiAimType_Y::KIDUA: {
+                    static bool bFlip = false;
+                    float flCurTime = globalVars->curtime;
+                    static float flTimeUpdate = 1.09f;
+                    static float flNextTimeUpdate = flCurTime + flTimeUpdate;
+                    static int state = 0;
+                    if ( flCurTime >= flNextTimeUpdate ) {
+                        bFlip = !bFlip;
+                        state = 0;
+                    }
+            
+                    if ( bFlip ) {
+                        angle.y = 90.f + state * 34.f;
+                        if ( state > 1 )
+                            angle.y = 90.f + 34.8f;
+                    }
+                    else {
+                        angle.y = -90.f - state * 34.f;
+                        if ( state > 1 )
+                            angle.y = -90.f - 34.8f;
+                    }
+                    state++;
+                }
+                break;
             }
     }
 
@@ -1314,6 +1338,23 @@ static void DoAntiAimLBY( QAngle& angle, int command_number, bool bFlip, bool& c
 
         }
             break;
+        case AntiAimType_LBY::SUICIDE: {
+            static bool willUpdate;
+            static float lastLbyUpdateTime = 0;
+            float serverTime = pLocal->GetTickBase() * globalVars->interval_per_tick;
+            if ( serverTime >= lastLbyUpdateTime )
+            {
+                lastLbyUpdateTime = serverTime + 1.125f;
+                willUpdate = true;
+                angle.y -= *pLocal->GetLowerBodyYawTarget() + rand() % 32 + 30;
+            }
+            else
+            {
+                willUpdate = false;
+                angle.y += *pLocal->GetLowerBodyYawTarget() - rand() % 181 + 180;
+            }
+        }
+        break;
         case AntiAimType_LBY::NONE:
             //Settings::AntiAim::Lby::enabled = false;
             break;

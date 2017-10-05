@@ -87,6 +87,7 @@ enum class AntiAimType_Y : int {
     FAKESIDEWAYS,
     BACKJITTER,
     FJITTER,
+    KIDUA,
     LBYJITTER,
     LBYSPIN,
     LOWERBODY,
@@ -118,6 +119,7 @@ enum class AntiAimType_LBY : int {
     FOUR,
     MYRRIB,
     MYRRIB2,
+    SUICIDE,
     NONE,
 };
 
