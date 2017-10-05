@@ -9,7 +9,7 @@ void Misc::RenderTab() {
     const char* teams[] = { "Allies", "Enemies", "Both" };
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
                                   "void MarcIsAWeeb", "Custom negro" };
-    const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive" };
+    const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear" };
 
     ImGui::Columns( 2, NULL, true );
     {

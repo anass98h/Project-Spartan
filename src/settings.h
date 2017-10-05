@@ -223,6 +223,7 @@ enum class FakeLagType : int {
     KMETH,
     STEP,
     REACTIVE,
+    NUCLEAR,
 };
 
 struct AimbotWeapon_t {

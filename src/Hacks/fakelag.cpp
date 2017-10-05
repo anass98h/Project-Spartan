@@ -88,6 +88,31 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
             }
             cmdCounter++;
             break;
+        case FakeLagType::NUCLEAR: {
+                float counter = Settings::FakeLag::value;
+                static int chokedTicks = 0;
+                static int maxChokedTicks = 0;
+                float speed = localplayer->GetVelocity().Length2D();
+                float multiplier = 0.9375;
+
+                if ( speed > 350 )
+                    maxChokedTicks = 10;
+                else if ( speed > 500 )
+                    maxChokedTicks = 8;
+                else if ( speed > 750 )
+                    maxChokedTicks = 6;
+                else
+                    maxChokedTicks = 15;
+
+                if ( chokedTicks > maxChokedTicks ) {
+                    CreateMove::sendPacket = true;
+                    chokedTicks = 0;
+                } else {
+                    CreateMove::sendPacket = false;
+                    chokedTicks++;
+                }
+            }
+            break;
         case FakeLagType::OFF:
             // If this gets called something very weird has happened that shouldn't happen
             *( int* ) 0 = 0;
