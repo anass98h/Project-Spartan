@@ -14,6 +14,8 @@ std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
 static float rSimTime[65];
 
+static int Shotsmiss = 0;
+
 bool didDmg = false;
 
 bool Resolver::lbyUpdated = false;
@@ -25,6 +27,8 @@ static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
 
 
 void Resolver::Hug( C_BasePlayer* player ) {
+    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );    
+    
     auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
@@ -86,15 +90,15 @@ void Resolver::Hug( C_BasePlayer* player ) {
         static float ShotsmissedTime = 0.f;
         static float ShotsmissedSaveTime = 2.f;
 
-        if ( Shotsmissed > ShotsmissedSave ) {
-            ShotsmissedSave = Shotsmissed;
+        if ( Shotsmiss > ShotsmissedSave ) {
+            ShotsmissedSave = Shotsmiss;
             ShotsmissedTime = curTime + ShotsmissedSaveTime;
         }
 
         if ( ShotsmissedTime < curTime ) {
             ShotsmissedSave = 0;
         }
-
+        
         bool onGround = player->GetFlags() & FL_ONGROUND;
         bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 );
 
@@ -425,6 +429,18 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         didDmg = true;
 
         Shotsmissed = 0;
+
+        Shotsmiss = 0;
+    } else {
+        C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );        
+
+        int ammo = localplayer->GetActiveWeapon()->GetAmmo();        
+        static int ammoSave = ammo;
+
+        if ( ammoSave != ammo ) {
+            Shotsmiss++;
+            ammoSave = ammo;
+        }
     }
 
     if ( strcmp( event->GetName(), "player_connect_full" ) != 0 &&
