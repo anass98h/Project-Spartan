@@ -397,6 +397,11 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
     if ( !event )
         return;
 
+    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );                
+
+    if ( !localplayer || !localplayer->GetAlive() )
+        return;
+
     if ( strcmp( event->GetName(), XORSTR( "player_hurt" ) ) == 0 ) {
         int hurt_player_id = event->GetInt( XORSTR( "userid" ) );
         int attacker_id = event->GetInt( XORSTR( "attacker" ) );
@@ -405,10 +410,6 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
             return;
 
         if ( engine->GetPlayerForUserID( attacker_id ) != engine->GetLocalPlayer() )
-            return;
-
-        C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-        if ( !localplayer )
             return;
 
         C_BasePlayer* hurt_player = ( C_BasePlayer* ) entityList->GetClientEntity(
@@ -430,8 +431,6 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
 
         shotsMiss = 0;
     } else {
-        C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );        
-
         C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
             localplayer->GetActiveWeapon() );
         
