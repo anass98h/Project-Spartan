@@ -9,7 +9,8 @@ Bone Settings::Aimbot::bone = Bone::BONE_HEAD;
 ButtonCode_t Settings::Aimbot::aimkey = ButtonCode_t::MOUSE_MIDDLE;
 bool Settings::Aimbot::aimkeyOnly = false;
 bool Settings::Aimbot::Smooth::enabled = false;
-float Settings::Aimbot::Smooth::value = 0.5f;
+float Settings::Aimbot::Smooth::valueMin = 0.5f;
+float Settings::Aimbot::Smooth::valueMax = 0.5f;
 SmoothType Settings::Aimbot::Smooth::type = SmoothType::SLOW_END;
 bool Settings::SmartAim::enabled = false;
 bool Settings::Aimbot::ErrorMargin::enabled = false;
@@ -83,7 +84,7 @@ static xdo_t* xdo = xdo_new( NULL );
 
 std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons =
         {
-                { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
+                { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f, 1.0f,
                                                         SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
                                                         false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
         };
@@ -102,6 +103,13 @@ static inline void ApplyOffsetToAngle( QAngle* angles, QAngle* offset ) {
 
 void Aimbot::XDOCleanup() {
     xdo_free( xdo );
+}
+
+float RandomFloat ( float min, float max ) {
+    float random = ( ( float ) rand() ) / ( float ) RAND_MAX;
+    float diff = max - min;
+    float r = random * diff;
+    return min + r;
 }
 
 bool Aimbot::HitChance( const Vector& point, bool teamCheck, C_BasePlayer* localplayer ) {
@@ -673,21 +681,29 @@ static void Smooth( C_BasePlayer* player, QAngle& angle, CUserCmd* cmd ) {
     QAngle delta = angle - viewAngles;
     Math::NormalizeAngles( delta );
 
-    float smooth = powf( Settings::Aimbot::Smooth::value, 0.4f ); // Makes more slider space for actual useful values
+    float smoothMin = powf( Settings::Aimbot::Smooth::valueMin, 0.4f ); // Makes more slider space for actual useful values
+    float smoothMax = powf( Settings::Aimbot::Smooth::valueMax, 0.4f ); // Makes more slider space for actual useful values    
 
-    smooth = std::min( 0.99f, smooth );
+    smoothMin = std::min( 0.99f, smoothMin );
+    smoothMax = std::min( 0.99f, smoothMax );    
 
-    if ( Settings::Aimbot::Smooth::Salting::enabled )
-        Salt( smooth );
+    if ( Settings::Aimbot::Smooth::Salting::enabled ) {
+        Salt( smoothMin );
+        Salt( smoothMax );        
+    }
 
     QAngle toChange = QAngle();
 
     SmoothType type = Settings::Aimbot::Smooth::type;
 
+    float smoothRand = RandomFloat(smoothMin, smoothMax);
+
+    float smoothFin = smoothMin + smoothRand;
+
     if ( type == SmoothType::SLOW_END )
-        toChange = delta - ( delta * smooth );
+        toChange = delta - ( delta * smoothFin );
     else if ( type == SmoothType::CONSTANT || type == SmoothType::FAST_END ) {
-        float coeff = ( 1.0f - smooth ) / delta.Length() * 4.f;
+        float coeff = ( 1.0f - smoothFin ) / delta.Length() * 4.f;
 
         if ( type == SmoothType::FAST_END )
             coeff = powf( coeff, 2.f ) * 10.f;
@@ -1115,7 +1131,8 @@ void Aimbot::UpdateValues() {
     Settings::Aimbot::aimkey = currentWeaponSetting.aimkey;
     Settings::Aimbot::aimkeyOnly = currentWeaponSetting.aimkeyOnly;
     Settings::Aimbot::Smooth::enabled = currentWeaponSetting.smoothEnabled;
-    Settings::Aimbot::Smooth::value = currentWeaponSetting.smoothAmount;
+    Settings::Aimbot::Smooth::valueMin = currentWeaponSetting.smoothAmountMin;
+    Settings::Aimbot::Smooth::valueMax = currentWeaponSetting.smoothAmountMax;    
     Settings::Aimbot::Smooth::type = currentWeaponSetting.smoothType;
     Settings::Aimbot::ErrorMargin::enabled = currentWeaponSetting.errorMarginEnabled;
     Settings::Aimbot::ErrorMargin::value = currentWeaponSetting.errorMarginValue;

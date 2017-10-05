@@ -232,12 +232,12 @@ struct AimbotWeapon_t {
     SmoothType smoothType;
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
-    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
+    float smoothAmountMin, smoothAmountMax, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
     bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
                     bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
-                    bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
+                    bool smoothEnabled, float smoothValueMin, float smoothValueMax, SmoothType smoothType, bool smoothSaltEnabled,
                     float smoothSaltMultiplier,
                     bool errorMarginEnabled, float errorMarginValue,
                     bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
@@ -261,7 +261,8 @@ struct AimbotWeapon_t {
         this->aimkey = aimkey;
         this->aimkeyOnly = aimkeyOnly;
         this->smoothEnabled = smoothEnabled;
-        this->smoothAmount = smoothValue;
+        this->smoothAmountMin = smoothValueMin;
+        this->smoothAmountMax = smoothValueMax;
         this->smoothType = smoothType;
         this->smoothSaltEnabled = smoothSaltEnabled;
         this->smoothSaltMultiplier = smoothSaltMultiplier;
@@ -325,7 +326,8 @@ struct AimbotWeapon_t {
                this->aimkey == another.aimkey &&
                this->aimkeyOnly == another.aimkeyOnly &&
                this->smoothEnabled == another.smoothEnabled &&
-               this->smoothAmount == another.smoothAmount &&
+               this->smoothAmountMin == another.smoothAmountMin &&
+               this->smoothAmountMax == another.smoothAmountMax &&
                this->smoothType == another.smoothType &&
                this->smoothSaltEnabled == another.smoothSaltEnabled &&
                this->smoothSaltMultiplier == another.smoothSaltMultiplier &&
@@ -440,7 +442,8 @@ namespace Settings {
 
         namespace Smooth {
             extern bool enabled;
-            extern float value;
+            extern float valueMin;
+            extern float valueMax;
             extern SmoothType type;
 
             namespace Salting {

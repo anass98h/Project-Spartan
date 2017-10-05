@@ -20,7 +20,8 @@ static Bone bone = Bone::BONE_HEAD;
 static ButtonCode_t aimkey = ButtonCode_t::MOUSE_MIDDLE;
 static bool aimkeyOnly = false;
 static bool smoothEnabled = false;
-static float smoothValue = 0.5f;
+static float smoothValueMin = 0.5f;
+static float smoothValueMax = 0.5f;
 static SmoothType smoothType = SmoothType::SLOW_END;
 static bool smoothSaltEnabled = false;
 static float smoothSaltMultiplier = 0.0f;
@@ -76,7 +77,8 @@ void UI::ReloadWeaponSettings() {
     aimkey = Settings::Aimbot::weapons.at( index ).aimkey;
     aimkeyOnly = Settings::Aimbot::weapons.at( index ).aimkeyOnly;
     smoothEnabled = Settings::Aimbot::weapons.at( index ).smoothEnabled;
-    smoothValue = Settings::Aimbot::weapons.at( index ).smoothAmount;
+    smoothValueMin = Settings::Aimbot::weapons.at( index ).smoothAmountMin;
+    smoothValueMax = Settings::Aimbot::weapons.at( index ).smoothAmountMax;    
     smoothType = Settings::Aimbot::weapons.at( index ).smoothType;
     smoothSaltEnabled = Settings::Aimbot::weapons.at( index ).smoothSaltEnabled;
     smoothSaltMultiplier = Settings::Aimbot::weapons.at( index ).smoothSaltMultiplier;
@@ -122,7 +124,7 @@ void UI::UpdateWeaponSettings() {
     AimbotWeapon_t settings = {
             enabled, silent, pSilent, friendly, closestBone,
             engageLock, engageLockTR, engageLockTTR, bone, aimkey,
-            aimkeyOnly, smoothEnabled, smoothValue, smoothType, smoothSaltEnabled,
+            aimkeyOnly, smoothEnabled, smoothValueMin, smoothValueMax, smoothType, smoothSaltEnabled,
             smoothSaltMultiplier, errorMarginEnabled, errorMarginValue, autoAimEnabled, autoAimValue,
             aimStepEnabled, aimStepMin, aimStepMax, rcsEnabled, rcsAlwaysOn,
             rcsAmountX, rcsAmountY, autoPistolEnabled, autoShootEnabled, autoScopeEnabled,
@@ -377,9 +379,7 @@ void AimbotAimTab::RenderTab() {
             ImGui::Text( XORSTR( "Humanizing" ) );
             ImGui::Separator();
             ImGui::Columns( 2, NULL, true );
-            {
-                if ( ImGui::Checkbox( XORSTR( "Smoothing" ), &smoothEnabled ) )
-                    UI::UpdateWeaponSettings();
+            {             
                 if ( ImGui::Checkbox( XORSTR( "Smooth Salting" ), &smoothSaltEnabled ) )
                     UI::UpdateWeaponSettings();
                 if ( ImGui::Checkbox( XORSTR( "Error Margin" ), &errorMarginEnabled ) )
@@ -393,13 +393,31 @@ void AimbotAimTab::RenderTab() {
             ImGui::NextColumn();
             {
                 ImGui::PushItemWidth( -1 );
-                if ( ImGui::SliderFloat( XORSTR( "##SMOOTH" ), &smoothValue, 0, 1 ) )
-                    UI::UpdateWeaponSettings();
-                if ( ImGui::SliderFloat( XORSTR( "##SALT" ), &smoothSaltMultiplier, 0, smoothValue ) )
+                ImGui::Text( XORSTR( "" ) );                
+
+                if ( ImGui::SliderFloat( XORSTR( "##SALT" ), &smoothSaltMultiplier, 0, smoothValueMax ) )
                     UI::UpdateWeaponSettings();
                 if ( ImGui::SliderFloat( XORSTR( "##ERROR" ), &errorMarginValue, 0, 2 ) )
                     UI::UpdateWeaponSettings();
                 ImGui::PopItemWidth();
+            }
+            ImGui::Checkbox( XORSTR( "Smoothing" ), &smoothEnabled );
+            {
+                ImGui::Separator();
+                ImGui::Columns( 2, NULL, true );{
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    ImGui::Text( XORSTR( "Min" ) );
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    ImGui::Text( XORSTR( "Max" ) );  
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );                   
+                }
+                ImGui::NextColumn();
+                {
+                    if ( ImGui::SliderFloat( XORSTR( "##SMOOTHMIN" ), &smoothValueMin, 0, 1 ) )
+                        UI::UpdateWeaponSettings();
+                    if ( ImGui::SliderFloat( XORSTR( "##SMOOTHMAX" ), &smoothValueMax, 0, 1 ) )
+                        UI::UpdateWeaponSettings();
+                }
             }
             ImGui::Columns( 1 );
             ImGui::Separator();
