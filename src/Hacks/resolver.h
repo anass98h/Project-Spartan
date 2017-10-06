@@ -32,6 +32,8 @@ namespace Resolver {
 
     extern bool lbyUpdated;
 
+    extern bool shouldBaim;
+
     void Hug( C_BasePlayer* Circlebian );
 
     void FrameStageNotify( ClientFrameStage_t stage );

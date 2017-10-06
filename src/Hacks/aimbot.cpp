@@ -1,5 +1,6 @@
 #include "aimbot.h"
 #include "autowall.h"
+#include "resolver.h"
 
 bool Settings::Aimbot::enabled = false;
 bool Settings::Aimbot::pSilent = false;
@@ -291,13 +292,37 @@ static Vector GetClosestSpot( CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePl
 
     Vector tempSpot = { 0, 0, 0 };
 
+    bool baimSpots[] =
+    {
+          //Head,  Neck,  Upper Spine, Middle Spine, Lower Spine, Pelvis, Hip
+            false, false, false,        true,         true,        true,   true, // center mass
+          //Collarbone, Shoulder, Armpit, Bicep, Elbow, Forearm, Wrist
+            false,      false,    false,  false, false, false,   false, // left arm
+          //Collarbone, Shoulder, Armpit, Bicep, Elbow, Forearm, Wrist
+            false,      false,    false,  false, false, false,   false, // right arm
+          //Buttcheek, Thigh, Knee,  Ankle, Sole
+            true,      true,  false, false, false, // left leg
+          //Buttcheek, Thigh, Knee,  Ankle, Sole
+            true,      true,  false, false, false // right leg
+    };
+
     const std::map<int, int>* modelType = Util::GetModelTypeBoneMap( enemy );
 
-    static int len =
-            sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
+    static int len = 0;
+
+    if ( Resolver::shouldBaim )
+        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );    
+    else
+        static int len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
+
     for ( int i = 0; i < len; i++ ) {
-        if ( !Settings::Aimbot::AutoAim::desiredBones[i] )
-            continue;
+        if ( Resolver::shouldBaim ) {
+            if ( !baimSpots[i] )
+                continue;
+        } else {
+            if ( !Settings::Aimbot::AutoAim::desiredBones[i] )
+                continue;
+        }
 
         int boneID = ( *modelType ).at( i );
         if ( boneID == ( int ) Bone::INVALID )

@@ -730,6 +730,7 @@ namespace Settings {
         extern float ticks;
         extern float modulo;
         extern bool pitch;
+        extern bool lbyOnly;
     }
     namespace lbyindicator {
         extern bool enabled;
@@ -814,6 +815,7 @@ namespace Settings {
             extern bool grabbingHostage;
             extern bool rescuing;
             extern bool location;
+            extern bool lby;
         }
 
         namespace Skeleton {

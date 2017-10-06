@@ -44,6 +44,7 @@ void MiscHvHTab::RenderTab() {
                     }
                     ImGui::Columns( 1 );
                 }
+                ImGui::Checkbox( XORSTR( "Headshot LBY only" ), &Settings::Resolver::lbyOnly );
                 ImGui::Separator();
 
                 ImGui::Text( XORSTR( "Disable" ) );

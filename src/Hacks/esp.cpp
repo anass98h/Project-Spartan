@@ -68,6 +68,7 @@ bool Settings::ESP::Info::defusing = false;
 bool Settings::ESP::Info::grabbingHostage = false;
 bool Settings::ESP::Info::rescuing = false;
 bool Settings::ESP::Info::location = false;
+bool Settings::ESP::Info::lby = false;
 bool Settings::ESP::Boxes::enabled = false;
 BoxType Settings::ESP::Boxes::type = BoxType::FRAME_2D;
 bool Settings::ESP::Bars::enabled = false;
@@ -987,6 +988,13 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
 
     if ( Settings::ESP::Info::rescuing && player->IsRescuing() )
         stringsToShow.push_back( XORSTR( "Rescuing" ) );
+
+    if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && Resolver::lbyUpdated )
+        stringsToShow.push_back( XORSTR( "LBY Updated" ) );
+    else if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && Backtracking::backtrackingLby )
+        stringsToShow.push_back( XORSTR( "LBY Backtracked" ) );
+    else if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && !Backtracking::backtrackingLby && !Resolver::lbyUpdated )
+        stringsToShow.push_back( XORSTR( "Can't backtrack LBY" ) );
 
     if ( Settings::ESP::Info::location )
         stringsToShow.push_back( player->GetLastPlaceName() );
