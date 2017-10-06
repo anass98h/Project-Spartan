@@ -730,6 +730,7 @@ namespace Settings {
         extern float ticks;
         extern float modulo;
         extern bool pitch;
+        extern bool lbyOnly;
     }
     namespace lbyindicator {
         extern bool enabled;
