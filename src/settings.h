@@ -815,6 +815,7 @@ namespace Settings {
             extern bool grabbingHostage;
             extern bool rescuing;
             extern bool location;
+            extern bool lby;
         }
 
         namespace Skeleton {
