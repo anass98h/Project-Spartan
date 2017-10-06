@@ -913,24 +913,17 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                     }
                 break;
                 case AntiAimType_Y::RASP2:  // get your own dank names :feelsmocked:
-                    static bool flip1 = false;
-                static float last;
-                angle.y = AntiAim::lastFakeYaw + 180;
-                if ( NextLBYUpdate() ) {
-                    flip1 = false;
-                } else
-                    flip1 = false;
-                if ( flip1 ) {
-                    last = AntiAim::lastRealYaw;
+                    angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
+                    if ( NextLBYUpdate() ) {
                     angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                             engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
-                    angle.y = last;
-                    flip1 = false;
-                } else {
-                    angle.y = AntiAim::lastFakeYaw + 180;
-                }
-
-                break;
+                        angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
+                } else
+                    angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
+                 break;
                 case AntiAimType_Y::FEETWIGGLE: {
                     float Diff;
                     bool MarcisAWeeb;
