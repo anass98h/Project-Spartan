@@ -67,11 +67,11 @@ void Resolver::Hug( C_BasePlayer* player ) {
             static bool lbyUpdated = false;
 
             if ( isMoving || nextUpdate > curTime )
-                lbyUpdated = true;
+                Resolver::lbyUpdated = true;
             else
-                lbyUpdated = false;
+                Resolver::lbyUpdated = false;
 
-            if ( lbyUpdated )
+            if ( Resolver::lbyUpdated )
                 Resolver::shouldBaim = false;
             else if ( Settings::Resolver::LagComp && Backtracking::backtrackingLby )
                 Resolver::shouldBaim = false;
