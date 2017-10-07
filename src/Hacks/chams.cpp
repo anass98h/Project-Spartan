@@ -27,6 +27,10 @@ IMaterial* materialChamsSpeechInfo;
 IMaterial* materialChamsFishNet;
 IMaterial* materialChamsLetters;
 IMaterial* materialChamsGloss;
+IMaterial* materialChamsAnimated;
+IMaterial* materialChamsBlink;
+IMaterial* materialChamsGlow;
+IMaterial* materialChamsGuerilla;
 IMaterial* materialChamsArms;
 IMaterial* materialChamsWeapons;
 
@@ -107,6 +111,22 @@ static void DrawPlayer( void* thisptr, void* context, void* state, const ModelRe
         case ChamsType::CHAMS_GLOSS:
             visible_material = materialChamsGloss;
             hidden_material = materialChamsGloss;
+            break;
+        case ChamsType::CHAMS_ANIMATED:
+            visible_material = materialChamsAnimated;
+            hidden_material = materialChamsAnimated;
+            break;
+        case ChamsType::CHAMS_BLINK:
+            visible_material = materialChamsBlink;
+            hidden_material = materialChamsBlink;
+            break;
+        case ChamsType::CHAMS_GLOW:
+            visible_material = materialChamsGlow;
+            hidden_material = materialChamsGlow;
+            break;
+        case ChamsType::CHAMS_GUERILLA:
+            visible_material = materialChamsGuerilla;
+            hidden_material = materialChamsGuerilla;
             break;
     }
 
@@ -242,6 +262,7 @@ static void DrawArms( const ModelRenderInfo_t& pInfo ) {
     }
 
     mat->SetMaterialVarFlag( MATERIAL_VAR_WIREFRAME, Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME );
+    mat->SetMaterialVarFlag( MATERIAL_VAR_ADDITIVE , Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME );
     mat->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW, Settings::ESP::Chams::Arms::type == ArmsType::NONE );
     modelRender->ForcedMaterialOverride( mat );
 }
@@ -288,6 +309,13 @@ void Chams::DrawModelExecute( void* thisptr, void* context, void* state, const M
                 "models/inventory_items/contributor_map_tokens/contributor_charset_color", TEXTURE_GROUP_OTHER );
         materialChamsGloss = material->FindMaterial( "models/inventory_items/trophy_majors/gloss",
                                                      TEXTURE_GROUP_OTHER );
+        materialChamsAnimated = material->FindMaterial( "models/inventory_items/music_kit/darude_01/mp3_detail" , TEXTURE_GROUP_OTHER);
+
+        materialChamsBlink = material->FindMaterial( "models/inventory_items/dogtags/dogtags_outline" , TEXTURE_GROUP_OTHER);
+
+        materialChamsGlow = material->FindMaterial( "vgui/achievements/glow" , TEXTURE_GROUP_OTHER );
+
+        materialChamsGuerilla = material->FindMaterial( "models/player/t_guerilla/t_guerilla" , TEXTURE_GROUP_OTHER );
 
         materialsCreated = true;
     }

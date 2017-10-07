@@ -151,6 +151,10 @@ enum class ChamsType : int {
     CHAMS_FISHNET,
     CHAMS_LETTERS,
     CHAMS_GLOSS,
+    CHAMS_ANIMATED,
+    CHAMS_BLINK,
+    CHAMS_GLOW,
+    CHAMS_GUERILLA,
 };
 
 enum class BoxType : int {
