@@ -3,4 +3,4 @@
 	url = git@github.com:Marc3842h/gravity.git
 [submodule "src/ImGUI"]
 	path = src/ImGUI
-url = https://github.com/Apostropheqq/imgui.git
+    url = git@github.com:Apostropheqq/imgui.git
