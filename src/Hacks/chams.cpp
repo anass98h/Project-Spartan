@@ -262,7 +262,6 @@ static void DrawArms( const ModelRenderInfo_t& pInfo ) {
     }
 
     mat->SetMaterialVarFlag( MATERIAL_VAR_WIREFRAME, Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME );
-    mat->SetMaterialVarFlag( MATERIAL_VAR_ADDITIVE , Settings::ESP::Chams::Arms::type == ArmsType::WIREFRAME );
     mat->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW, Settings::ESP::Chams::Arms::type == ArmsType::NONE );
     modelRender->ForcedMaterialOverride( mat );
 }

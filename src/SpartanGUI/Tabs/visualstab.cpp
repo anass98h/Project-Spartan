@@ -8,9 +8,9 @@ void Visuals::RenderTab() {
     const char* ArmorBarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above" };
     const char* TeamColorTypes[] = { "Absolute", "Relative" };
     const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass", "Crystal", "BlueCrystal",
-                                 "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" };
+                                 "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" ,"Animated", "Blink", "Glow", "Guerilla"  };
     const char* ArmsTypes[] = { "Default", "Glass", "Crystal", "BlueCrystal", "Gold", "Velvet", "Tree", "SpeechInfo",
-                                "FishNet", "Letters", "Gloss", "Animated", "Blink", "Glow", "Guerilla", "Wireframe", "None" };
+                                "FishNet", "Letters", "Gloss", "Wireframe", "None" };
 
     const char* SkyBoxes[] = {
             "cs_baggage_skybox_", // 0
