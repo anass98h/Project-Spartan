@@ -201,8 +201,6 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] = ( int ) Settings::Resolver::pitch;
     settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] = ( int ) Settings::Resolver::LagComp;
-    settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )] = ( int ) Settings::Resolver::angleFlipEnabled;
-    settings[XORSTR( "Resolver" )][XORSTR( "angleFlip" )] = Util::GetButtonName( Settings::Resolver::angleFlip );
     settings[XORSTR( "Triggerbot" )][XORSTR( "enabled" )] = Settings::Triggerbot::enabled;
     settings[XORSTR( "Triggerbot" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Triggerbot::key );
     settings[XORSTR( "Triggerbot" )][XORSTR( "Filters" )][XORSTR( "enemies" )] = Settings::Triggerbot::Filters::enemies;
@@ -817,10 +815,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "ticks" )], &Settings::Resolver::ticks );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "modulo" )], &Settings::Resolver::modulo );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "pitch" )], ( int* ) &Settings::Resolver::pitch );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], &Settings::Resolver::LagComp );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )], &Settings::Resolver::angleFlipEnabled );
-    GetButtonCode( settings[XORSTR( "Resolver" )][XORSTR( "angleFlip" )], &Settings::Resolver::angleFlip );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )], &Settings::AngleIndicator::enabled );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "Veloc" )], &Settings::AngleIndicator::Veloc );
     GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "enabled" )], &Settings::EventLogger::enabled );
