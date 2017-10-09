@@ -41,10 +41,23 @@ void MiscHvHTab::RenderTab() {
                     ImGui::NextColumn();
                     {
                         ImGui::Checkbox( XORSTR( "Resolve Pitch" ), &Settings::Resolver::pitch );
+                        SetTooltip( XORSTR( "Resolve enemy pitch." ) );
+                    }
+                    ImGui::Columns( 1 );
+
+                    ImGui::Columns( 2, NULL, true );
+                    {
+                        ImGui::Checkbox( XORSTR( "Flip angles" ), &Settings::Resolver::angleFlipEnabled );
+                        SetTooltip( XORSTR( "Adds 180 to the enemy yaw angle." ) );
+                        ImGui::Checkbox( XORSTR( "Headshot LBY only" ), &Settings::Resolver::lbyOnly );
+                        SetTooltip( XORSTR( "If LBY is updated hitscan whole body, else baim." ) );
+                    }
+                    ImGui::NextColumn();
+                    {
+                        UI::KeyBindButton( &Settings::Resolver::angleFlip );
                     }
                     ImGui::Columns( 1 );
                 }
-                ImGui::Checkbox( XORSTR( "Headshot LBY only" ), &Settings::Resolver::lbyOnly );
                 ImGui::Separator();
 
                 ImGui::Text( XORSTR( "Disable" ) );
