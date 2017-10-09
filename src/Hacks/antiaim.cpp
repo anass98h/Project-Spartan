@@ -429,10 +429,10 @@ bool NextLBYUpdate() {
         return false;
     }
 
-    if ( ( LastLBYUpdateTime + 1 - ( GetLatency() * 2 ) < flServerTime ) &&
+    if ( ( LastLBYUpdateTime + 1 - ( GetLatency() * 2 ) < 1.1 ) &&
          ( LocalPlayer->GetFlags() & FL_ONGROUND ) ) {
-        if ( LastLBYUpdateTime + 1.125 - ( GetLatency() * 2 ) < flServerTime ) {
-            LastLBYUpdateTime += 1.125;
+        if ( LastLBYUpdateTime + 1.1 - ( GetLatency() * 2 ) < 1.1 ) {
+            LastLBYUpdateTime += 1.1;
         }
         return true;
     }
@@ -822,6 +822,9 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                         CreateMove::sendPacket = true;
                     }
                 break;
+                case AntiAimType_Y::BACKJITTER2:
+                    yFlip ? angle.y += 146 : angle.y -= 146;
+                    break;
                 case AntiAimType_Y::BACKWARDS:
                     angle.y -= 180.0f;
                 break;
