@@ -10,7 +10,6 @@ void Misc::RenderTab() {
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
                                   "void MarcIsAWeeb", "Custom negro" };
     const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear" };
-    const char* nameTypes[] = { "Spartan", "AimTux", "Interwebz", "Aimware", "Custom" };
 
     ImGui::Columns( 2, NULL, true );
     {

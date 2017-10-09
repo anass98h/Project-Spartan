@@ -128,7 +128,9 @@ void NameChanger::BeginFrame( float frameTime ) {
                     case nnType::Spartan:
                         if ( !switcher ) {
 
-                            SetName(Util::PadStringRight( XORSTR( "\230Project Spartan" ), strlen( XORSTR( "Project Spartan" ) ) + Util::RandomInt( 10, 50 ) ) );
+                            SetName( Util::PadStringRight( XORSTR( "\230Project Spartan" ),
+                                                           strlen( XORSTR( "Project Spartan" ) ) +
+                                                           Util::RandomInt( 10, 50 ) ) );
                             switcher = !switcher;
                         } else {
 
@@ -151,7 +153,7 @@ void NameChanger::BeginFrame( float frameTime ) {
                             switcher = !switcher;
                         } else {
 
-                            SetName(  XORSTR( "INTERWEBZ-" ));
+                            SetName( XORSTR( "INTERWEBZ-" ) );
                             switcher = !switcher;
                         }
 
@@ -159,11 +161,11 @@ void NameChanger::BeginFrame( float frameTime ) {
                     case nnType::Aimware:
                         if ( !switcher ) {
 
-                            SetName( XORSTR( "\xe1\xab\xa8 AIMWARE.net" ));
+                            SetName( XORSTR( "\xe1\xab\xa8 AIMWARE.net" ) );
                             switcher = !switcher;
                         } else {
 
-                            SetName(  XORSTR( "\xe1\xab\xa5 AIMWARE.net" ));
+                            SetName( XORSTR( "\xe1\xab\xa5 AIMWARE.net" ) );
                             switcher = !switcher;
                         }
 
@@ -182,7 +184,7 @@ void NameChanger::BeginFrame( float frameTime ) {
 
         return;
     }
-    if ( NameChanger::type != NC_Type::NC_RAINBOW ){
+    if ( NameChanger::type != NC_Type::NC_RAINBOW ) {
         switch ( NameChanger::type2 ) {
 
             case nnType::Spartan:
@@ -190,13 +192,13 @@ void NameChanger::BeginFrame( float frameTime ) {
 
                     SetName( Util::PadStringRight( XORSTR( "Project Spartan" ),
                                                    strlen( XORSTR( "Project Spartan" ) ) +
-                                                           changes ) );
+                                                   changes ) );
                     switcher = !switcher;
                 } else {
 
                     SetName( Util::PadStringRight( XORSTR( "cantvac.me" ),
                                                    strlen( XORSTR( "cantvac.me" ) ) +
-                                                           changes ) );
+                                                   changes ) );
                     switcher = !switcher;
                 }
 
@@ -204,16 +206,16 @@ void NameChanger::BeginFrame( float frameTime ) {
             case nnType::Aimtux:
                 SetName( Util::PadStringRight( XORSTR( "AIMTUX.NET" ),
                                                strlen( XORSTR( "AIMTUX.NET" ) ) +
-                                                       changes ) );
+                                               changes ) );
                 break;
             case nnType::Interwebz:
                 if ( !switcher ) {
 
-                    SetName(  XORSTR( "-INTERWEBZ" ) );
+                    SetName( XORSTR( "-INTERWEBZ" ) );
                     switcher = !switcher;
                 } else {
 
-                    SetName(  XORSTR( "INTERWEBZ-" ) );
+                    SetName( XORSTR( "INTERWEBZ-" ) );
                     switcher = !switcher;
                 }
 
@@ -221,11 +223,11 @@ void NameChanger::BeginFrame( float frameTime ) {
             case nnType::Aimware:
                 if ( !switcher ) {
 
-                    SetName(  XORSTR( "\xe1\xab\xa8 AIMWARE.net" ) );
+                    SetName( XORSTR( "\xe1\xab\xa8 AIMWARE.net" ) );
                     switcher = !switcher;
                 } else {
 
-                    SetName(  XORSTR( "\xe1\xab\xa5 AIMWARE.net" ) );
+                    SetName( XORSTR( "\xe1\xab\xa5 AIMWARE.net" ) );
                     switcher = !switcher;
                 }
 
@@ -233,7 +235,6 @@ void NameChanger::BeginFrame( float frameTime ) {
 
 
         }
-
 
 
     }
