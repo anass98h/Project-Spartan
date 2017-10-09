@@ -296,9 +296,19 @@ void Misc::RenderTab() {
             if ( ImGui::Button( XORSTR( "Glitch Name" ) ) )
                 NameChanger::SetName( "\n\xAD\xAD\xAD" );
             ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "No Name" ) ) ) {
-                NameChanger::changes = 0;
-                NameChanger::type = NameChanger::NC_Type::NC_NORMAL;
+            if ( ImGui::Button( XORSTR( "No Name" ) ) )
+                ImGui::OpenPopup( XORSTR( "optionNoName" ) );
+            ImGui::SetNextWindowSize( ImVec2( 150, 100 ), ImGuiCond_Always );
+            if ( ImGui::BeginPopup( XORSTR ( "optionNoName" ) ) ) {
+                ImGui::PushItemWidth( -1 );
+                for ( auto& it : NameChanger::nntypes ) {
+                    if ( ImGui::Button( it.second, ImVec2( -1, 0 ) ) )
+                        NameChanger::InitNoName( NameChanger::NC_Type::NC_NORMAL, it.first );
+
+                }
+                ImGui::PopItemWidth();
+
+                ImGui::EndPopup();
             }
 
             ImGui::SameLine();

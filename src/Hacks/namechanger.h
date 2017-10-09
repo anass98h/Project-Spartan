@@ -22,7 +22,14 @@ namespace NameChanger {
         RED,
         ORANGE,
     };
+    enum class nnType {
 
+        Spartan,
+        Aimtux,
+        Interwebz,
+        Aimware,
+
+    };
     enum class NC_Type {
         NC_NORMAL,
         NC_RAINBOW,
@@ -31,15 +38,19 @@ namespace NameChanger {
 
     extern int changes;
     extern NC_Type type;
+    extern nnType type2;
     extern std::string origName;
     extern Colors color;
     extern std::vector<std::pair<NameChanger::Colors, const char*>> colors;
+    extern std::vector<std::pair<NameChanger::nnType, const char*>> nntypes;
 
     void AyywareCrash();
 
     void SetName( const char* name );
 
     void InitColorChange( NC_Type type, Colors color = Colors::LIGHT_RED );
+
+    void InitNoName( NC_Type type, nnType type2 );
 
     //Hooks
     void BeginFrame( float frameTime );
