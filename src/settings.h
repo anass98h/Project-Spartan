@@ -736,8 +736,6 @@ namespace Settings {
         extern float modulo;
         extern bool pitch;
         extern bool lbyOnly;
-        extern bool angleFlipEnabled;
-        extern ButtonCode_t angleFlip;
     }
     namespace lbyindicator {
         extern bool enabled;
