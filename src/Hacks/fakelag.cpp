@@ -32,7 +32,7 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
         return;
     }
 
-    if ( weapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_KNIFE ) {
+    if ( weapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE ) {
         *bSendPacket = true;
         return;
     }
