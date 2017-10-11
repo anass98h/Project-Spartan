@@ -33,7 +33,7 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
     }
 
     if ( weapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE ) {
-        *bSendPacket = true;
+        CreateMove::sendPacket = true;
         return;
     }
 
@@ -89,11 +89,9 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
             cmdCounter++;
             break;
         case FakeLagType::NUCLEAR: {
-                float counter = Settings::FakeLag::value;
                 static int chokedTicks = 0;
                 static int maxChokedTicks = 0;
                 float speed = localplayer->GetVelocity().Length2D();
-                float multiplier = 0.9375;
 
                 if ( speed > 350 )
                     maxChokedTicks = 10;
