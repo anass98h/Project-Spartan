@@ -1536,33 +1536,37 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
         DoAntiAimX( angle, bFlip, shouldClamp );
     }
 
-    if (CanEdge()) { 
-        float angleYEdge = GetBestHeadEdgeAngle();
-        
-        static bool bFlip = false;
-        
-        static float fakeAdd = 0.f;
-        static float realAdd = 0.f;
-                        
-        if ( AntiAim::IsAirborne ) {
-            fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
-            realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
-        } else if ( AntiAim::IsMoving ) {
-            fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
-            realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
-        } else if ( AntiAim::IsStanding ) {
-            fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
-            realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
+    if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
+           IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
+           Settings::AntiAim::Standing::HeadEdge::enabled ) ) {
+        if ( CanEdge() ) {
+            float angleYEdge = GetBestHeadEdgeAngle();
+
+            static bool bFlip = false;
+
+            static float fakeAdd = 0.f;
+            static float realAdd = 0.f;
+
+            if ( AntiAim::IsAirborne ) {
+                fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
+            } else if ( AntiAim::IsMoving ) {
+                fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
+            } else if ( AntiAim::IsStanding ) {
+                fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
+                realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
+            }
+
+            bFlip = !bFlip;
+            if ( !bFlip ) {
+                CreateMove::sendPacket = false;
+                angle.y = Math::ClampYaw( angleYEdge + realAdd );
+            } else {
+                CreateMove::sendPacket = true;
+                angle.y = Math::ClampYaw( angleYEdge + fakeAdd );
+            }
         }
-                    
-        bFlip = !bFlip;
-        if ( !bFlip ) {
-            CreateMove::sendPacket = false;
-            angle.y = Math::ClampYaw( angleYEdge + realAdd );
-        } else {
-            CreateMove::sendPacket = true;
-            angle.y = Math::ClampYaw( angleYEdge + fakeAdd);
-        }        
     }
 
     Math::NormalizeAngles( angle );
