@@ -767,16 +767,16 @@ AutoSlow( C_BasePlayer* player, float& forward, float& sideMove, float& bestDama
     if ( Settings::Aimbot::SpreadLimit::enabled ) {
         if ( ( activeWeapon->GetSpread() + activeWeapon->GetInaccuracy() ) > Settings::Aimbot::SpreadLimit::value ) {
             cmd->buttons |= IN_WALK;
-            forward = -forward;
-            sideMove = -sideMove;
+            forward = 0;
+            sideMove = 0;
             cmd->upmove = 0;
         }
     } else if ( localplayer->GetVelocity().Length() >
                 ( activeWeapon->GetCSWpnData()->GetMaxPlayerSpeed() / 3 ) ) // https://youtu.be/ZgjYxBRuagA
     {
         cmd->buttons |= IN_WALK;
-        forward = -forward;
-        sideMove = -sideMove;
+        forward = 0;
+        sideMove = 0;
         cmd->upmove = 0;
     }
 }

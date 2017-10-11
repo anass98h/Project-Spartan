@@ -186,8 +186,11 @@ void Resolver::Hug( C_BasePlayer* player ) {
                             staticReal[player->GetIndex()] = false;
                     }
                 }
+
             }
-        }        
+            if(player->GetVelocity().Length2D() > 5)
+                player->GetEyeAngles()->y = lby;
+        }
 
         if ( Settings::Resolver::pitch ) {
             if ( angle.x < -179.f ) angle.x += 360.f;
