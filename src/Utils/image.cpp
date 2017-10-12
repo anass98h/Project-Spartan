@@ -20,6 +20,10 @@ static const unsigned char oil_png[15710] = {
 #include "../assets/img/oil.txt"
 };
 
+static const unsigned char rearmirror_png[52325] = {
+#include "../assets/img/rearmirror.txt"
+};
+
 GLuint Image::LoadImage( const char* const path ) {
     SDL_Surface* surface = IMG_Load( path );
     if ( !surface ) {
@@ -113,4 +117,12 @@ void Image::InitImages() {
     }
     fwrite( oil_png, sizeof( char ), 15710, oil );
     fclose( oil );
+
+    FILE* rearmirror = fopen( XORSTR( "/tmp/rearmirror.png" ), "wb" );
+    if ( rearmirror  == NULL ) {
+        cvar->ConsoleDPrintf( XORSTR( "Error opening /tmp/rearmirror.png" ) );
+        return;
+    }
+    fwrite( rearmirror_png, sizeof( char ), 52325, rearmirror );
+    fclose( rearmirror );
 }

@@ -58,14 +58,14 @@ Util::CreateMaterial( std::string type, std::string texture, bool ignorez, bool 
     materialData << "\"" + type + "\"\n"
             "{\n"
             "\t\"$basetexture\" \"" + texture + "\"\n"
-                            "\t\"$ignorez\" \"" + std::to_string( ignorez ) + "\"\n"
-                            "\t\"$nofog\" \"" + std::to_string( nofog ) + "\"\n"
-                            "\t\"$model\" \"" + std::to_string( model ) + "\"\n"
-                            "\t\"$nocull\" \"" + std::to_string( nocull ) + "\"\n"
-                            "\t\"$halflambert\" \"" + std::to_string( halflambert ) + "\"\n"
-                            "}\n" << std::flush;
+            "\t\"$ignorez\" \"" + std::to_string( ignorez ) + "\"\n"
+            "\t\"$nofog\" \"" + std::to_string( nofog ) + "\"\n"
+            "\t\"$model\" \"" + std::to_string( model ) + "\"\n"
+            "\t\"$nocull\" \"" + std::to_string( nocull ) + "\"\n"
+            "\t\"$halflambert\" \"" + std::to_string( halflambert ) + "\"\n"
+            "}\n" << std::flush;
 
-    std::string materialName = XORSTR( "Project Spartan_" ) + std::to_string( RandomInt( 10, 100000 ) );
+    std::string materialName = XORSTR( "Project_Spartan_" ) + std::to_string( RandomInt( 10, 100000 ) );
     KeyValues* keyValues = new KeyValues( materialName.c_str() );
 
     InitKeyValues( keyValues, type.c_str() );

@@ -45,7 +45,8 @@ sudo gdb -n -q -batch-silent \
 if ! grep -q "Spartan.so" /proc/$csgo/maps; then
     echo -e "$success_prefix Project Spartan has been successfully uninjected."
 else
-    echo -e "$error_prefix Project Spartan has failed to uninject. Close CS:GO to uninject."
+    echo -e "$error_prefix Project Spartan has failed to uninject and CS:GO has gone rogue. Exterminating with extreme prejudice..."
+    ./zombies
 fi
 
 if [ -f "$(pwd)/gdb.txt" ]; then
