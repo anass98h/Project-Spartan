@@ -9,4 +9,5 @@
 namespace SpeedIndicator {
     //Hooks
     void PaintImGui();
+    void RenderView(void* thisptr, CViewSetup& setup, CViewSetup& hudViewSetup, unsigned int nClearFlags, int whatToDraw);
 }
