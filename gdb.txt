@@ -1,0 +1,30 @@
+[New LWP 4098]
+[New LWP 4099]
+[New LWP 4100]
+[New LWP 4101]
+[New LWP 4102]
+[New LWP 4107]
+[New LWP 4112]
+[New LWP 4113]
+[New LWP 4114]
+[New LWP 4120]
+[New LWP 4122]
+[New LWP 4123]
+[New LWP 4126]
+[New LWP 4127]
+[New LWP 4128]
+[New LWP 4131]
+[New LWP 4132]
+[New LWP 4133]
+[New LWP 4134]
+[New LWP 4135]
+[New LWP 4136]
+[New LWP 4137]
+[New LWP 4179]
+[New LWP 4180]
+warning: Could not load shared library symbols for bin/linux64/launcher_client.so.
+Do you need "set solib-search-path" or "set sysroot"?
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+Detaching from program: /home/raspbian/.steam/steam/steamapps/common/Counter-Strike Global Offensive/csgo_linux64, process 4095
+ptrace: No such process.
