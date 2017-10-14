@@ -274,7 +274,8 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "No Aim Punch" ), &Settings::View::NoAimPunch::enabled );
                 ImGui::Checkbox( XORSTR( "ASUS Walls" ), &Settings::ASUSWalls::enabled );
                 ImGui::Checkbox( XORSTR( "No Scope Border" ), &Settings::NoScopeBorder::enabled );
-                ImGui::Checkbox( XORSTR( "Autowall Debug" ), &Settings::ESP::AutoWall::debugView );
+                ImGui::Checkbox( XORSTR( "Autowall Debug" ), &Settings::Debug::AutoWall::drawDamage );
+                ImGui::Checkbox( XORSTR( "BoneMap Debug" ), &Settings::Debug::BoneMap::drawIDs );
                 ImGui::Checkbox( XORSTR( "Backtrack Indicator" ), &Settings::ESP::Backtracking::enabled );
             }
             ImGui::Columns( 1 );

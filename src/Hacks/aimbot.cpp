@@ -311,7 +311,7 @@ static Vector GetClosestSpot( CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePl
     static int len = 0;
 
     if ( Resolver::shouldBaim )
-        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );    
+        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );
     else
         static int len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
 
