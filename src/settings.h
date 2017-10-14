@@ -771,9 +771,6 @@ namespace Settings {
         extern ColorVar molotovColor;
         extern HealthColorVar localplayerColor;
 
-        namespace AutoWall {
-            extern bool debugView;
-        }
         namespace Backtracking {
             extern bool enabled;
         }
@@ -1201,7 +1198,14 @@ namespace Settings {
             extern bool allies;
         }
     }
-
+    namespace Debug {
+        namespace AutoWall {
+            extern bool drawDamage;
+        }
+        namespace BoneMap {
+            extern bool drawIDs;
+        }
+    }
 
     void LoadDefaultsOrSave( std::string path );
 
