@@ -3,7 +3,7 @@ compiler: gcc
 matrix:
   include:
       - os: linux
-      addons:
+      - addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
@@ -12,7 +12,7 @@ matrix:
             - g++-7
             - cmake-data
             - cmake
-      env:
+      - env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_install:
   - eval "${MATRIX_EVAL}"
@@ -28,3 +28,7 @@ addons:
     - libxdo-dev 
     - patchelf
     - libsdl2-image-dev
+  artifacts:
+    debug: true
+    paths:
+    - $(ls *.so)
