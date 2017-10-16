@@ -28,7 +28,6 @@ addons:
     - gdb 
     - libsdl2-dev 
     - zlib1g-dev 
-    - liblua5.3 
     - libxdo-dev 
     - patchelf
     - libsdl2-image-dev
