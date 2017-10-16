@@ -1,3 +1,4 @@
+sudo: required
 language: cpp
 compiler: gcc
 matrix:
@@ -17,6 +18,8 @@ matrix:
 before_install:
   - eval "${MATRIX_EVAL}"
   - echo -e "machine github.com\n  login anass98h\n  password $CI_USER_PASSWORD" >> ~/.netrc
+  - wget https://launchpad.net/~vbernat/+archive/ubuntu/haproxy-1.6/+files/liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
+  - sudo dpkg -i liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
 script: ./build.sh
 addons:
   apt:
