@@ -170,6 +170,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
         weaponSetting[XORSTR( "NoShoot" )][XORSTR( "Enabled" )] = i.second.noShootEnabled;
         weaponSetting[XORSTR( "IgnoreJump" )][XORSTR( "Enabled" )] = i.second.ignoreJumpEnabled;
         weaponSetting[XORSTR( "SmokeCheck" )][XORSTR( "Enabled" )] = i.second.smokeCheck;
+        weaponSetting[XORSTR( "legitMode" )][XORSTR( "Enabled" )] = i.second.legitMode;
         weaponSetting[XORSTR( "FlashCheck" )][XORSTR( "Enabled" )] = i.second.flashCheck;
         weaponSetting[XORSTR( "SpreadLimit" )][XORSTR( "Enabled" )] = i.second.spreadLimitEnabled;
         weaponSetting[XORSTR( "SpreadLimit" )][XORSTR( "Value" )] = i.second.spreadLimit;
@@ -406,6 +407,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ESP" )][XORSTR( "Filters" )][XORSTR(
             "visibility_check" )] = Settings::ESP::Filters::visibilityCheck;
     settings[XORSTR( "ESP" )][XORSTR( "Filters" )][XORSTR( "smoke_check" )] = Settings::ESP::Filters::smokeCheck;
+    settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )] = Settings::Aimbot::legitMode::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "Filters" )][XORSTR( "enemies" )] = Settings::ESP::Filters::enemies;
     settings[XORSTR( "ESP" )][XORSTR( "Filters" )][XORSTR( "allies" )] = Settings::ESP::Filters::allies;
     settings[XORSTR( "ESP" )][XORSTR( "Filters" )][XORSTR( "bomb" )] = Settings::ESP::Filters::bomb;
@@ -732,7 +734,7 @@ void Settings::LoadConfig( std::string path ) {
     Settings::Aimbot::weapons = {
             { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
                                                     SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                    false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
+                                                    false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
     };
 
     for ( Json::ValueIterator itr = settings[XORSTR( "Aimbot" )][XORSTR( "weapons" )].begin();
@@ -787,6 +789,7 @@ void Settings::LoadConfig( std::string path ) {
                 weaponSetting[XORSTR( "NoShoot" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "IgnoreJump" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "SmokeCheck" )][XORSTR( "Enabled" )].asBool(),
+                weaponSetting[XORSTR( "legitMode" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "FlashCheck" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "SpreadLimit" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "SpreadLimit" )][XORSTR( "Value" )].asFloat(),

@@ -11,8 +11,8 @@ void ThirdPerson::BeginFrame() {
         return;
 
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer || !localplayer->GetAlive() )
-        return;
+    /*if ( !localplayer || !localplayer->GetAlive() )
+        return;*/
 
     long millis = Util::GetEpochTime();
 
@@ -40,8 +40,8 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
         return;
 
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer )
-        return;
+    /*if ( !localplayer )
+        return;*/
 
     input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && localplayer->GetAlive();
     input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.f;

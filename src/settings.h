@@ -241,7 +241,7 @@ struct AimbotWeapon_t {
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
+    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, legitMode, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
                     bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
@@ -251,7 +251,7 @@ struct AimbotWeapon_t {
                     bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
                     bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
                     bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
+                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool legitMode, bool flashCheck,
                     bool spreadLimitEnabled, float spreadLimit,
                     bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
@@ -290,6 +290,7 @@ struct AimbotWeapon_t {
         this->noShootEnabled = noShootEnabled;
         this->ignoreJumpEnabled = ignoreJumpEnabled;
         this->smokeCheck = smokeCheck;
+        this->smokeCheck = legitMode;
         this->flashCheck = flashCheck;
         this->spreadLimitEnabled = spreadLimitEnabled;
         this->spreadLimit = spreadLimit;
@@ -354,6 +355,7 @@ struct AimbotWeapon_t {
                this->noShootEnabled == another.noShootEnabled &&
                this->ignoreJumpEnabled == another.ignoreJumpEnabled &&
                this->smokeCheck == another.smokeCheck &&
+                this->legitMode == another.legitMode &&
                this->flashCheck == another.flashCheck &&
                this->spreadLimitEnabled == another.spreadLimitEnabled &&
                this->spreadLimit == another.spreadLimit &&
@@ -446,6 +448,7 @@ namespace Settings {
         extern bool aimkeyOnly;
         extern bool moveMouse;
 
+
         namespace Smooth {
             extern bool enabled;
             extern float value;
@@ -461,7 +464,10 @@ namespace Settings {
             extern bool enabled;
             extern float value;
         }
+        namespace legitMode{
+            extern bool enabled;
 
+        }
         namespace AutoAim {
             extern bool enabled;
             extern float fov;
@@ -490,7 +496,6 @@ namespace Settings {
             extern float valueX;
             extern float valueY;
         }
-
         namespace AutoPistol {
             extern bool enabled;
         }
@@ -526,7 +531,6 @@ namespace Settings {
         namespace SmokeCheck {
             extern bool enabled;
         }
-
         namespace FlashCheck {
             extern bool enabled;
         }
@@ -562,6 +566,7 @@ namespace Settings {
             extern bool allies;
             extern bool walls;
             extern bool smokeCheck;
+            extern bool legitMode;
             extern bool flashCheck;
             extern bool head;
             extern bool chest;

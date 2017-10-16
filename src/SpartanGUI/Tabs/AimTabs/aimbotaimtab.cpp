@@ -55,6 +55,7 @@ static float hitChanceValue = 0.0f;
 static bool autoCockRevolver = false;
 static bool velocityCheck = false;
 static bool backtrack = false;
+static bool legitMode = false;
 
 
 void UI::ReloadWeaponSettings() {
@@ -97,6 +98,7 @@ void UI::ReloadWeaponSettings() {
     noShootEnabled = Settings::Aimbot::weapons.at( index ).noShootEnabled;
     ignoreJumpEnabled = Settings::Aimbot::weapons.at( index ).ignoreJumpEnabled;
     smokeCheck = Settings::Aimbot::weapons.at( index ).smokeCheck;
+    legitMode = Settings::Aimbot::weapons.at( index ).legitMode;
     flashCheck = Settings::Aimbot::weapons.at( index ).flashCheck;
     spreadLimitEnabled = Settings::Aimbot::weapons.at( index ).spreadLimitEnabled;
     spreadLimit = Settings::Aimbot::weapons.at( index ).spreadLimit;
@@ -126,7 +128,7 @@ void UI::UpdateWeaponSettings() {
             smoothSaltMultiplier, errorMarginEnabled, errorMarginValue, autoAimEnabled, autoAimValue,
             aimStepEnabled, aimStepMin, aimStepMax, rcsEnabled, rcsAlwaysOn,
             rcsAmountX, rcsAmountY, autoPistolEnabled, autoShootEnabled, autoScopeEnabled,
-            noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled,
+            noShootEnabled, ignoreJumpEnabled, smokeCheck,legitMode, flashCheck, spreadLimitEnabled,
             spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow,
             predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue,
             autoCockRevolver, velocityCheck, backtrack
@@ -505,6 +507,8 @@ void AimbotAimTab::RenderTab() {
                         UI::UpdateWeaponSettings();
                 }
                 if ( ImGui::Checkbox( XORSTR( "Smoke Check" ), &smokeCheck ) )
+                    UI::UpdateWeaponSettings();
+                if ( ImGui::Checkbox( XORSTR( "Legit Mode" ), &legitMode ) )
                     UI::UpdateWeaponSettings();
                 if ( ImGui::Checkbox( XORSTR( "pSilent" ), &pSilent ) )
                     UI::UpdateWeaponSettings();

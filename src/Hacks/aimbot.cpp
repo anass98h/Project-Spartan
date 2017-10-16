@@ -61,6 +61,7 @@ float Settings::Aimbot::HitChance::value = 0.5f;
 bool Settings::Aimbot::AutoCockRevolver::enabled = false;
 bool Settings::Aimbot::velocityCheck::enabled = false;
 bool Settings::Aimbot::backtrack = false;
+bool Settings::Aimbot::legitMode::enabled;
 
 
 bool Aimbot::aimStepInProgress = false;
@@ -86,7 +87,7 @@ std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefini
         {
                 { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
                                                         SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                        false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
+                                                        false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
         };
 
 static QAngle ApplyErrorToAngle( QAngle* angles, float margin ) {
@@ -946,6 +947,9 @@ void Aimbot::CreateMove( CUserCmd* cmd ) {
         Vector pVecTarget = localplayer->GetEyePosition();
 
         if ( Settings::Aimbot::SmokeCheck::enabled && LineGoesThroughSmoke( pVecTarget, eVecTarget, true ) )
+            skipPlayer = true;
+        if ( Settings::Aimbot::legitMode::enabled && Entity::IsVisible( player, ( int ) Bone::BONE_HEAD, 180.f,
+                                                                        Settings::ESP::Filters::smokeCheck))
             skipPlayer = true;
 
         if ( Settings::Aimbot::FlashCheck::enabled && localplayer->GetFlashBangTime() - globalVars->curtime > 2.0f )
