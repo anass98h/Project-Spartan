@@ -6,11 +6,6 @@ jobs:
       - image: ubuntu:16.04
     steps:
       - checkout
-      - run:
-          name: Init submodules
-          command: |
-            git submodule init
-            git submodule update
       - restore_cache:
           keys:
             - patchelf-{{ checksum "CMakeLists.txt" }}
@@ -41,6 +36,11 @@ jobs:
             if [ ! -d "/opt/cmake" ]; then bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license; fi
             if [ ! -d "/opt/cmake" ]; then ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake; fi
             cmake --version
+      - run:
+          name: Init submodules
+          command: |
+            git submodule init
+            git submodule update
       - run:
           name: Build Spartan
           command: |
