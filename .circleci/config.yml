@@ -6,15 +6,22 @@ jobs:
       - image: ubuntu:16.04
     steps:
       - checkout
+      - run:
+          name: Init submodules
+          command: |
+            git submodule init
+            git submodule update
       - restore_cache:
           keys:
             - patchelf-{{ checksum "CMakeLists.txt" }}
             - patchelf
+            - cmake-{{ checksum "CMakeLists.txt" }}
+            - cmake
       - run:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev
+            apt-get install -y g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev curl
       - run:
           name: Install Patchelf (install dependencies)
           command: |
@@ -25,6 +32,15 @@ jobs:
             if [ ! -d "patchelf" ]; then make; fi
             if [ ! -d "patchelf" ]; then make install; fi
             if [ ! -d "patchelf" ]; then cd ..; fi
+            patchelf --version
+      - run:
+          name: Install CMake (install dependencies)
+          command: |
+            if [ ! -d "/opt/cmake" ]; then wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh; fi
+            if [ ! -d "/opt/cmake" ]; then mkdir /opt/cmake; fi
+            if [ ! -d "/opt/cmake" ]; then bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license; fi
+            if [ ! -d "/opt/cmake" ]; then ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake; fi
+            cmake --version
       - run:
           name: Build Spartan
           command: |
@@ -33,6 +49,10 @@ jobs:
           key: patchelf-{{ checksum "CMakeLists.txt" }}
           paths:
             - patchelf
+      - save_cache:
+          key: cmake-{{ checksum "CMakeLists.txt" }}
+          paths:
+            - /opt/cmake
       - store_artifacts:
           path: ~/repo/Spartan.so
           destination: Spartan
