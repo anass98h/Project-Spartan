@@ -39,6 +39,7 @@ jobs:
       - run:
           name: Init submodules
           command: |
+            ssh-keyscan github.com >> ~/.ssh/config
             git submodule init
             git submodule update
       - run:
