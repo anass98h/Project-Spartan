@@ -48,7 +48,12 @@ jobs:
           command: |
             wget https://gist.githubusercontent.com/anass98h/b3110aa75bb8b815f7693924b422e7d2/raw/913a8108b607c1a138cf88d560cc1ec2d0ec3156/sdl2-config.cmake -O /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
       - run:
-          name: Build Spartan
+          name: Prepare building
+          command: |
+            echo "==> Showing remaining disk size"
+            df -h
+      - run:
+          name: Build
           command: |
             ./build.sh
       - save_cache:
