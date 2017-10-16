@@ -17,6 +17,7 @@ namespace AntiAim {
     extern float lastRealYaw;
     extern float lastFakeYaw;
     extern bool canEdge;
+    extern bool fakeTp;
 
     void SwitchAA( int state );
 

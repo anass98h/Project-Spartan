@@ -99,6 +99,7 @@ bool AntiAim::isAntiAiming = false;
 long lastPress = 0;
 
 bool AntiAim::canEdge = false;
+bool AntiAim::fakeTp = false;
 
 static float Distance( Vector a, Vector b ) {
     return ( sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) + pow( a.z - b.z, 2 ) ) );
@@ -1366,65 +1367,87 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
     QAngle angle = cmd->viewangles;
 
     C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !pLocal )
+    if ( !pLocal ) {
+        AntiAim::fakeTp = true;
         return;
+    }
 
     C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
             pLocal->GetActiveWeapon() );
-    if ( !activeWeapon )
+    if ( !activeWeapon ) {
+        AntiAim::fakeTp = true;
         return;
+    }
 
     if ( activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_GRENADE ) {
         C_BaseCSGrenade* csGrenade = ( C_BaseCSGrenade* ) activeWeapon;
 
-        if ( csGrenade->GetThrowTime() > 0.0f )
+        if ( csGrenade->GetThrowTime() > 0.0f ) {
+            AntiAim::fakeTp = true;
             return;
+        }
     }
 
-    if ( cmd->buttons & IN_USE )
+    if ( cmd->buttons & IN_USE ) {
+        AntiAim::fakeTp = true;
         return;
+    }
 
     if ( *activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER ) {
         if ( Settings::Aimbot::AutoCockRevolver::enabled ) {
-            if ( Aimbot::shootingRevolver )
+            if ( Aimbot::shootingRevolver ) {
+                AntiAim::fakeTp = true;
                 return;
+            }
         } else {
-            if ( cmd->buttons & IN_ATTACK2 || cmd->buttons & IN_ATTACK )
+            if ( cmd->buttons & IN_ATTACK2 || cmd->buttons & IN_ATTACK ) {
+                AntiAim::fakeTp = true;
                 return;
+            }
         }
     } else {
-        if ( cmd->buttons & IN_ATTACK )
+        if ( cmd->buttons & IN_ATTACK ) {
+            AntiAim::fakeTp = true;
             return;
+        }
     }
     // ^ This requires a rework for auto cock ^ working now?
 
-    if ( pLocal->GetMoveType() == MOVETYPE_LADDER || pLocal->GetMoveType() == MOVETYPE_NOCLIP )
+    if ( pLocal->GetMoveType() == MOVETYPE_LADDER || pLocal->GetMoveType() == MOVETYPE_NOCLIP ) {
+        AntiAim::fakeTp = true;
         return;
+    }
 
     // AutoDisable checks
 
     // Knife
     if ( Settings::AntiAim::Misc::AutoDisable::knifeHeld && pLocal->GetAlive() &&
          activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE ) {
-        return;
+            AntiAim::fakeTp = true;
+            return;
     }
 
     // Bomb
     if ( Settings::AntiAim::Misc::AutoDisable::bombHeld && pLocal->GetAlive() &&
          activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_C4 ) {
-        return;
+            AntiAim::fakeTp = true;
+            return;
     }
 
     // No Enemy
     if ( Settings::AntiAim::Misc::AutoDisable::noEnemy && pLocal->GetAlive() && !HasViableEnemy() ) {
+        AntiAim::fakeTp = true;
         return;
     }
 
     // Freezetime
     if ( Settings::AntiAim::Misc::AutoDisable::freezeTime &&
          ( ( *csGameRules ) && ( *csGameRules )->IsFreezeTime() ) ) {
-        return;
+            AntiAim::fakeTp = true;
+            return;
     }
+
+    AntiAim::fakeTp = false;
 
     isAntiAiming = true;
     QAngle edge_angle = angle;
