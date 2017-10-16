@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: ubuntu:16.04
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - patchelf-{{ checksum "CMakeLists.txt" }}
+            - patchelf
+      - run:
+          name: Install dependencies
+          command: |
+            apt-get update -qq
+            apt-get install -y cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev
+      - run:
+          name: Install Patchelf (install dependencies)
+          command: |
+            if [ ! -d "patchelf" ]; then git clone --recursive https://github.com/NixOS/patchelf.git; fi
+            if [ ! -d "patchelf" ]; then cd patchelf; fi
+            if [ ! -d "patchelf" ]; then chmod +x bootstrap.sh && ./bootstrap.sh; fi
+            if [ ! -d "patchelf" ]; then chmod +x configure && ./configure; fi
+            if [ ! -d "patchelf" ]; then make; fi
+            if [ ! -d "patchelf" ]; then make install; fi
+            if [ ! -d "patchelf" ]; then cd ..; fi
+      - run:
+          name: Build Spartan
+          command: |
+            ./build.sh
+      - save_cache:
+          key: patchelf-{{ checksum "CMakeLists.txt" }}
+          paths:
+            - patchelf
+      - store_artifacts:
+          path: ~/repo/Spartan.so
+          destination: Spartan
