@@ -39,8 +39,10 @@ jobs:
       - run:
           name: Init submodules
           command: |
+            if [ ! -d "~/.ssh/" ]; then mkdir ~/.ssh; fi
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             git submodule init
-            yes yes | git submodule update
+            git submodule update
       - run:
           name: Build Spartan
           command: |
