@@ -21,20 +21,20 @@ jobs:
           name: Install Patchelf (install dependencies)
           command: |
             if [ ! -d "patchelf" ]; then git clone --recursive https://github.com/NixOS/patchelf.git; fi
-            if [ ! -d "patchelf" ]; then cd patchelf; fi
-            if [ ! -d "patchelf" ]; then chmod +x bootstrap.sh && ./bootstrap.sh; fi
-            if [ ! -d "patchelf" ]; then chmod +x configure && ./configure; fi
-            if [ ! -d "patchelf" ]; then make; fi
-            if [ ! -d "patchelf" ]; then make install; fi
-            if [ ! -d "patchelf" ]; then cd ..; fi
+            cd patchelf
+            chmod +x bootstrap.sh && ./bootstrap.sh
+            chmod +x configure && ./configure
+            make
+            make install
+            cd ..
             patchelf --version
       - run:
           name: Install CMake (install dependencies)
           command: |
-            if [ ! -d "/opt/cmake" ]; then wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh; fi
             if [ ! -d "/opt/cmake" ]; then mkdir /opt/cmake; fi
-            if [ ! -d "/opt/cmake" ]; then bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license; fi
-            if [ ! -d "/opt/cmake" ]; then ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake; fi
+            wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
+            bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license
+            ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake; fi
             cmake --version
       - run:
           name: Init submodules
