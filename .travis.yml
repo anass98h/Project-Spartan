@@ -20,6 +20,11 @@ before_install:
   - echo -e "machine github.com\n  login anass98h\n  password $CI_USER_PASSWORD" >> ~/.netrc
   - wget https://launchpad.net/~vbernat/+archive/ubuntu/haproxy-1.6/+files/liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
   - sudo dpkg -i liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
+  - git clone https://github.com/NixOS/patchelf.git
+  - chmod +x bootstrap.sh && ./bootstrap.sh
+  - chmod +x configure && ./configure
+  - make
+  - sudo make install
 script: ./build.sh
 addons:
   apt:
@@ -29,7 +34,6 @@ addons:
     - libsdl2-dev 
     - zlib1g-dev 
     - libxdo-dev 
-    - patchelf
     - libsdl2-image-dev
   artifacts:
     debug: true
