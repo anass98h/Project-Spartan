@@ -4,15 +4,6 @@ compiler: gcc
 matrix:
   include:
       - os: linux
-      - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - george-edison55-precise-backports
-          packages:
-            - g++-7
-      - env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_install:
   - eval "${MATRIX_EVAL}"
   - echo -e "machine github.com\n  login anass98h\n  password $CI_USER_PASSWORD" >> ~/.netrc
@@ -30,6 +21,11 @@ before_install:
   - wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
   - chmod +x cmake-3.7.2-Linux-x86_64.sh
   - ./cmake-3.7.2-Linux-x86_64.sh --prefix=$HOME/usr --exclude-subdir --skip-license
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update
+  - sudo apt-get install gcc-6 g++-6
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
+  - git clean -fdx
 script: ./build.sh
 addons:
   apt:
