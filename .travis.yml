@@ -21,10 +21,12 @@ before_install:
   - wget https://launchpad.net/~vbernat/+archive/ubuntu/haproxy-1.6/+files/liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
   - sudo dpkg -i liblua5.3-0_5.3.1-1ppa1~trusty_amd64.deb
   - git clone https://github.com/NixOS/patchelf.git
+  - cd patchelf
   - chmod +x bootstrap.sh && ./bootstrap.sh
   - chmod +x configure && ./configure
   - make
   - sudo make install
+  - cd ..
 script: ./build.sh
 addons:
   apt:
