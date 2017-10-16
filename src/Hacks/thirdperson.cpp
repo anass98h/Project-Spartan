@@ -46,14 +46,15 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
     input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && localplayer->GetAlive();
     input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.f;
 
-    QAngle realAngles = QAngle(localplayer->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
+    QAngle angles = QAngle(0, 0, 0);
+
+    if ( CreateMove::sendPacket )
+        QAngle angles = QAngle(localplayer->GetEyeAngles()->x, localplayer->GetEyeAngles()->y, 0.f);
+    else
+        QAngle angles = QAngle(localplayer->GetEyeAngles()->x, localplayer->GetEyeAngles()->y, 0.f);
+    
 
     if ( Settings::ThirdPerson::enabled ) {
-        if ( Settings::ThirdPerson::realAngles && ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
-                (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
-                (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) )
-            *localplayer->GetVAngles() = realAngles;
-        else
-            *localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
+        *localplayer->GetVAngles() = angles;
     }
 }

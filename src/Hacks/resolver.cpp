@@ -93,14 +93,14 @@ void Resolver::Hug( C_BasePlayer* player ) {
             lbyDeltaMove[player->GetIndex()] = fabsf ( lby - player->GetEyeAngles()->y );
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;
-        } else if ( curTime > lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
+        } else if ( curTime == lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;
         } else
             Resolver::lbyUpdated = false;
 
         if ( inputSystem->IsButtonDown( Settings::Resolver::angleFlip ) )
-            angle.y += 180.f;
+            angle.y = lby + 180.f;
         else {
             if ( Settings::Resolver::lbyOnly ) {
                 if ( Resolver::lbyUpdated || Backtracking::backtrackingLby && Settings::Resolver::LagComp )
@@ -110,8 +110,8 @@ void Resolver::Hug( C_BasePlayer* player ) {
     
                 angle.y = lby;
             } else {
+                Resolver::shouldBaim = false;
                 if ( Resolver::lbyUpdated || Backtracking::backtrackingLby && Settings::Resolver::LagComp ) {
-                    Resolver::shouldBaim = false;
                     angle.y = lby;
                 } else {
                     bool sameAngle = ( playerAngle1[player->GetIndex()] == playerAngle2[player->GetIndex()] == playerAngle3[player->GetIndex()] == playerAngle4[player->GetIndex()] );
@@ -188,8 +188,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 }
 
             }
-            if(player->GetVelocity().Length2D() > 5)
-                player->GetEyeAngles()->y = lby;
         }
 
         if ( Settings::Resolver::pitch ) {
