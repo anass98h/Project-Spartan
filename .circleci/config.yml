@@ -34,7 +34,7 @@ jobs:
             if [ ! -d "/opt/cmake" ]; then mkdir /opt/cmake; fi
             wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
             bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license
-            ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake; fi
+            ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
             cmake --version
       - run:
           name: Init submodules
