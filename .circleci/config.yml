@@ -16,7 +16,7 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev curl autoconf
+            apt-get install -y g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf
       - run:
           name: Install Patchelf (install dependencies)
           command: |
