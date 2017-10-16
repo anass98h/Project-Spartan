@@ -21,10 +21,10 @@ before_install:
   - wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
   - chmod +x cmake-3.7.2-Linux-x86_64.sh
   - ./cmake-3.7.2-Linux-x86_64.sh --prefix=$HOME/usr --exclude-subdir --skip-license
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update
-  - sudo apt-get install gcc-6 g++-6
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -q
+  - sudo apt-get install gcc-6 g++-6 -y
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 -y
   - git clean -fdx
 script: ./build.sh
 addons:
