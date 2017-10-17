@@ -131,6 +131,8 @@ static bool CanEdge () {
 
     float closest_distance = 50.0f;
 
+    float radius = 0.f;
+
     if ( AntiAim::IsStanding() )
         float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
     else if ( AntiAim::IsMoving() )
