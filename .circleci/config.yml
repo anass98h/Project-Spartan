@@ -10,13 +10,11 @@ jobs:
           keys:
             - patchelf-{{ checksum "CMakeLists.txt" }}
             - patchelf
-            - cmake-{{ checksum "CMakeLists.txt" }}
-            - cmake
       - run:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh
+            apt-get install -y g++ cmake gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh
       - run:
           name: Install Patchelf (install dependencies)
           command: |
@@ -28,14 +26,6 @@ jobs:
             make install
             cd ..
             patchelf --version
-      - run:
-          name: Install CMake (install dependencies)
-          command: |
-            if [ ! -d "/opt/cmake" ]; then mkdir /opt/cmake; fi
-            wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
-            bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license
-            ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
-            cmake --version
       - run:
           name: Init submodules
           command: |
@@ -59,10 +49,6 @@ jobs:
           key: patchelf-{{ checksum "CMakeLists.txt" }}
           paths:
             - patchelf
-      - save_cache:
-          key: cmake-{{ checksum "CMakeLists.txt" }}
-          paths:
-            - /opt/cmake
       - store_artifacts:
           path: ~/repo/Spartan.so
           destination: Spartan
