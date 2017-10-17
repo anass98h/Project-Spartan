@@ -42,10 +42,18 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
-    make -j$(grep "^processor" /proc/cpuinfo | wc -l)
-    if [ $? -ne 0 ]; then
-        echo -e "$error_prefix Failed to build Project Spartan."
-        exit -1
+    if [ ${CI} == "true" ]; then
+        make -j$(grep "^processor" /proc/cpuinfo | wc -l)
+        if [ $? -ne 0 ]; then
+            echo -e "$error_prefix Failed to build Project Spartan."
+            exit -1
+        fi
+    else
+        make
+        if [ $? -ne 0 ]; then
+            echo -e "$error_prefix Failed to build Project Spartan."
+            exit -1
+        fi
     fi
 
     if [ target != "DEBUG" ]; then
