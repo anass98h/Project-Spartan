@@ -6,26 +6,11 @@ jobs:
       - image: ubuntu:rolling
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - patchelf-{{ checksum "CMakeLists.txt" }}
-            - patchelf
       - run:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ cmake gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh
-      - run:
-          name: Install Patchelf (install dependencies)
-          command: |
-            if [ ! -d "patchelf" ]; then git clone --recursive https://github.com/NixOS/patchelf.git; fi
-            cd patchelf
-            chmod +x bootstrap.sh && ./bootstrap.sh
-            chmod +x configure && ./configure
-            make
-            make install
-            cd ..
-            patchelf --version
+            apt-get install -y g++ cmake gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh patchelf
       - run:
           name: Init submodules
           command: |
@@ -45,10 +30,6 @@ jobs:
           name: Build
           command: |
             ./build.sh
-      - save_cache:
-          key: patchelf-{{ checksum "CMakeLists.txt" }}
-          paths:
-            - patchelf
       - store_artifacts:
           path: ~/repo/Spartan.so
           destination: Spartan
