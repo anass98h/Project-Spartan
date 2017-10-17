@@ -574,7 +574,7 @@ static void DrawAutoWall( C_BasePlayer* player ) {
             continue;
         Vector bone2D;
         Vector bone3D = player->GetBonePosition( boneIndex );
-        if ( debugOverlay->ScreenPosition( bone3D, bone2D ) );
+        if ( debugOverlay->ScreenPosition( bone3D, bone2D ) )
             continue;
 
         Autowall::FireBulletData data;

@@ -131,13 +131,12 @@ static bool CanEdge () {
 
     float closest_distance = 50.0f;
 
-    float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
-    if ( AntiAim::IsMoving() ) {
+    if ( AntiAim::IsStanding() )
+        float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
+    else if ( AntiAim::IsMoving() )
         radius = Settings::AntiAim::Moving::HeadEdge::distance + 0.1f;
-    }
-    if ( AntiAim::IsAirborne() ) {
-        radius = Settings::AntiAim::Airborne::HeadEdge::distance = 0.1;
-    }
+    else if ( AntiAim::IsAirborne() )
+        radius = Settings::AntiAim::Airborne::HeadEdge::distance + 0.1;
 
     float step = M_PI * 2.0 / 8;
 
@@ -168,13 +167,14 @@ static float GetBestHeadEdgeAngle() {
     
         float closest_distance = 100.0f;
     
-        float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
-        if ( AntiAim::IsMoving() ) {
+        float radius = 0.f;
+
+        if ( AntiAim::IsStanding() )
+            radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
+        else if ( AntiAim::IsMoving() )
             radius = Settings::AntiAim::Moving::HeadEdge::distance + 0.1f;
-        }
-        if ( AntiAim::IsAirborne() ) {
-            radius = Settings::AntiAim::Airborne::HeadEdge::distance = 0.1;
-        }
+        else if ( AntiAim::IsAirborne() )
+            radius = Settings::AntiAim::Airborne::HeadEdge::distance + 0.1;
     
         float step = M_PI * 2.0 / 8;
     
@@ -213,8 +213,15 @@ static float HeadEdgeAng() {
     Vector position = localplayer->GetVecOrigin() + localplayer->GetVecViewOffset();
 
     float closest_distance = 100.0f;
-
-    float radius = 30.f;
+        
+    float radius = 0.f;
+    
+    if ( AntiAim::IsStanding() )
+        radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
+    else if ( AntiAim::IsMoving() )
+        radius = Settings::AntiAim::Moving::HeadEdge::distance + 0.1f;
+    else if ( AntiAim::IsAirborne() )
+        radius = Settings::AntiAim::Airborne::HeadEdge::distance + 0.1;
 
     float step = M_PI * 2.0 / 8;
 
@@ -1570,13 +1577,13 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
             static float fakeAdd = 0.f;
             static float realAdd = 0.f;
 
-            if ( AntiAim::IsAirborne ) {
+            if ( AntiAim::IsAirborne() ) {
                 fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
                 realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
-            } else if ( AntiAim::IsMoving ) {
+            } else if ( AntiAim::IsMoving() ) {
                 fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
                 realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
-            } else if ( AntiAim::IsStanding ) {
+            } else if ( AntiAim::IsStanding() ) {
                 fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
                 realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
             }
