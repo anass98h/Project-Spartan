@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: ubuntu:rolling
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apt-get update -qq
+            apt-get install -y g++ cmake gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh patchelf
+      - run:
+          name: Init submodules
+          command: |
+            if [ ! -d "~/.ssh/" ]; then mkdir ~/.ssh; fi
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git submodule init
+            git submodule update
+      - run:
+          name: Fix for SDL 2 CMake bug
+          command: |
+            wget https://gist.githubusercontent.com/anass98h/b3110aa75bb8b815f7693924b422e7d2/raw/913a8108b607c1a138cf88d560cc1ec2d0ec3156/sdl2-config.cmake -O /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
+      - run:
+          name: Display remaining disk size
+          command: |
+            df -h
+      - run:
+          name: Build
+          command: |
+            ./build.sh
+      - store_artifacts:
+          path: ~/repo/Spartan.so
+          destination: Spartan
