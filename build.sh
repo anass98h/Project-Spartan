@@ -42,7 +42,7 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
-    if [ ${CI} == "true" ]; then
+    if [ ${CI} != "true" ]; then
         make -j$(grep "^processor" /proc/cpuinfo | wc -l)
         if [ $? -ne 0 ]; then
             echo -e "$error_prefix Failed to build Project Spartan."
