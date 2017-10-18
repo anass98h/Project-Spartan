@@ -131,7 +131,7 @@ static bool CanEdge () {
 
     float closest_distance = 50.0f;
 
-    float radius = 0.f;
+    float radius = 0.0f;
 
     if ( AntiAim::IsStanding() )
         float radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
@@ -169,7 +169,7 @@ static float GetBestHeadEdgeAngle() {
     
         float closest_distance = 100.0f;
     
-        float radius = 0.f;
+        float radius = 0.0f;
 
         if ( AntiAim::IsStanding() )
             radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
@@ -216,7 +216,7 @@ static float HeadEdgeAng() {
 
     float closest_distance = 100.0f;
         
-    float radius = 0.f;
+    float radius = 0.0f;
     
     if ( AntiAim::IsStanding() )
         radius = Settings::AntiAim::Standing::HeadEdge::distance + 0.1f;
