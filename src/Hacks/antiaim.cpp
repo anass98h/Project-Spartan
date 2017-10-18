@@ -411,33 +411,20 @@ float CurrentVelocity( C_BasePlayer* LocalPlayer ) {
     return vel;
 }
 
-bool NextLBYUpdate() {
-    C_BasePlayer* LocalPlayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-
-    float flServerTime = ( float ) ( LocalPlayer->GetTickBase() * globalVars->interval_per_tick );
-
-
-    if ( OldLBY != *LocalPlayer->GetLowerBodyYawTarget() ) {
-        LBYBreakerTimer++;
-        OldLBY = *LocalPlayer->GetLowerBodyYawTarget();
-        bSwitch = !bSwitch;
-        LastLBYUpdateTime = flServerTime;
-    }
-
-    if ( CurrentVelocity( LocalPlayer ) > 0.5 ) {
-        LastLBYUpdateTime = flServerTime;
-        return false;
-    }
-
-    if ( ( LastLBYUpdateTime + 1.1 - ( GetLatency() * 2 ) == 1.1 ) &&
-         ( LocalPlayer->GetFlags() & FL_ONGROUND ) ) {
-        if ( LastLBYUpdateTime + 1.1 - ( GetLatency() * 2 ) == 1.1 ) {
-            LastLBYUpdateTime += 1.1;
+        bool NextLBYUpdate()
+        {
+            C_BasePlayer* LocalPlayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+            //bool bSwitch = false;
+            float flServerTime = ( float ) ( LocalPlayer->GetTickBase() * globalVars->interval_per_tick );
+            //float flServerTime = (tick * Interfaces.Globals->interval_per_tick);
+            if (((LastLBYUpdateTime + 1.1 - GetOutgoingLatency()) <= flServerTime) && (LocalPlayer->GetFlags() & FL_ONGROUND))
+            {
+                LastLBYUpdateTime += 1.1;
+                bSwitch = !bSwitch;
+                return true;
+            }
+            return false;
         }
-        return true;
-    }
-    return false;
-}
 
 
 static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& clamp ) {
@@ -765,28 +752,9 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                           fmodf( globalVars->curtime * factor, 360.0 );
                 break;
                 case AntiAimType_Y::LBYJITTER:
-
-                    if ( pLocal->GetFlags() & FL_ONGROUND )
-                        angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + rand() % 35 + 165;
-                    else {
-                        random = rand() % 4;
-                        switch ( random ) {
-                            case 1:
-                                yFlip ? angle.y += 90.f : angle.y -= 90.0f;
-                                break;
-                            case 2:
-                                yFlip ? angle.y -= 120.0f : angle.y -= 210.0f;
-                                break;
-                            case 3:
-                                factor = 360.0 / M_PHI;
-                                factor *= 25;
-                                angle.y = fmodf( globalVars->curtime * factor, 360.0 );
-                                break;
-                            default:
-                                angle.y -= 180.0f;
-                        }
-                    }
+yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                                                                                         engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 35 : angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
+                                                                                                         engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() - 35;
                 break;
                 case AntiAimType_Y::NOAA:
                     break;
@@ -901,12 +869,13 @@ static void DoAntiAimY( QAngle& angle, int command_number, bool bFlip, bool& cla
                 case AntiAimType_Y::RASP2:  // get your own dank names :feelsmocked:
                     angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                             engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
-                    if ( NextLBYUpdate() ) {
-                    angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
+                   
+                    if(NextLBYUpdate){ 
                         angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
-                } else
+                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
+                    
+                }
+                else
                     angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                             engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
                  break;

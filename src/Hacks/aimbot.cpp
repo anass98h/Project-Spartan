@@ -61,6 +61,7 @@ float Settings::Aimbot::HitChance::value = 0.5f;
 bool Settings::Aimbot::AutoCockRevolver::enabled = false;
 bool Settings::Aimbot::velocityCheck::enabled = false;
 bool Settings::Aimbot::backtrack = false;
+bool Settings::Aimbot::legitMode = false;
 
 
 bool Aimbot::aimStepInProgress = false;
@@ -86,7 +87,7 @@ std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefini
         {
                 { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
                                                         SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                        false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
+                                                        false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
         };
 
 static QAngle ApplyErrorToAngle( QAngle* angles, float margin ) {
@@ -311,7 +312,7 @@ static Vector GetClosestSpot( CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePl
     static int len = 0;
 
     if ( Resolver::shouldBaim )
-        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );
+        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );    
     else
         static int len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
 
@@ -947,6 +948,8 @@ void Aimbot::CreateMove( CUserCmd* cmd ) {
 
         if ( Settings::Aimbot::SmokeCheck::enabled && LineGoesThroughSmoke( pVecTarget, eVecTarget, true ) )
             skipPlayer = true;
+        if ( Settings::Aimbot::legitMode && (!Entity::IsVisible( player, ( int ) Bone::BONE_HEAD, 180.f)))
+            skipPlayer = true;
 
         if ( Settings::Aimbot::FlashCheck::enabled && localplayer->GetFlashBangTime() - globalVars->curtime > 2.0f )
             skipPlayer = true;
@@ -1176,6 +1179,7 @@ void Aimbot::UpdateValues() {
     Settings::Aimbot::HitChance::enabled = currentWeaponSetting.hitChanceEnabled;
     Settings::Aimbot::AutoCockRevolver::enabled = currentWeaponSetting.autoCockRevolver;
     Settings::Aimbot::velocityCheck::enabled = currentWeaponSetting.velocityCheck;
+    Settings::Aimbot::legitMode = currentWeaponSetting.legitMode;
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
         Settings::Aimbot::AutoAim::desiredBones[bone] = currentWeaponSetting.desiredBones[bone];
 

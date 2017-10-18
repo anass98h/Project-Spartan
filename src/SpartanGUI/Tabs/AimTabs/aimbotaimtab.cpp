@@ -55,6 +55,7 @@ static float hitChanceValue = 0.0f;
 static bool autoCockRevolver = false;
 static bool velocityCheck = false;
 static bool backtrack = false;
+static bool legitMode = false;
 
 
 void UI::ReloadWeaponSettings() {
@@ -110,6 +111,7 @@ void UI::ReloadWeaponSettings() {
     hitChanceValue = Settings::Aimbot::weapons.at( index ).hitChanceValue;
     autoCockRevolver = Settings::Aimbot::weapons.at( index ).autoCockRevolver;
     velocityCheck = Settings::Aimbot::weapons.at( index ).velocityCheck;
+    legitMode = Settings::Aimbot::weapons.at( index ).legitMode;
 
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
         desiredBones[bone] = Settings::Aimbot::weapons.at( index ).desiredBones[bone];
@@ -129,7 +131,7 @@ void UI::UpdateWeaponSettings() {
             noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled,
             spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow,
             predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue,
-            autoCockRevolver, velocityCheck, backtrack
+            autoCockRevolver, velocityCheck, backtrack, legitMode
     };
 
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -505,6 +507,8 @@ void AimbotAimTab::RenderTab() {
                         UI::UpdateWeaponSettings();
                 }
                 if ( ImGui::Checkbox( XORSTR( "Smoke Check" ), &smokeCheck ) )
+                    UI::UpdateWeaponSettings();
+                if ( ImGui::Checkbox( XORSTR( "Legit Mode" ), &legitMode ) )
                     UI::UpdateWeaponSettings();
                 if ( ImGui::Checkbox( XORSTR( "pSilent" ), &pSilent ) )
                     UI::UpdateWeaponSettings();
