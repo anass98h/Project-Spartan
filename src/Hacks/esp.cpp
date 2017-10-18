@@ -529,6 +529,7 @@ static void DrawTracer( C_BasePlayer* player ) {
     Draw::Line( ( int ) ( src.x ), ( int ) ( src.y ), x, y,
                 Color::FromImColor( ESP::GetESPPlayerColor( player, bIsVisible ) ) );
 }
+
 static void DrawBoneMap( C_BasePlayer* player ) {
     static HFont boneMapFont = Draw::CreateFont( XORSTR( "Andale Mono" ), 10, (int)FontFlags::FONTFLAG_DROPSHADOW );
     static Vector bone2D;
@@ -542,11 +543,11 @@ static void DrawBoneMap( C_BasePlayer* player ) {
         char buffer[4];
         snprintf(buffer, 4, "%d\0", i);
         Draw::Text( Vector2D( bone2D.x, bone2D.y ), buffer, boneMapFont, Color( 255, 0, 255, 255 ) );
+        }
+        IEngineClient::player_info_t entityInformation;
+        engine->GetPlayerInfo( player->GetIndex(), &entityInformation );
+        cvar->ConsoleDPrintf( XORSTR( "(%s)-ModelName: %s, numBones: %d\n" ), entityInformation.name, pStudioModel->name, pStudioModel->numbones );
     }
-    IEngineClient::player_info_t entityInformation;
-    engine->GetPlayerInfo( player->GetIndex(), &entityInformation );
-    cvar->ConsoleDPrintf( XORSTR( "(%s)-ModelName: %s, numBones: %d\n" ), entityInformation.name, pStudioModel->name, pStudioModel->numbones );
-}
 
 static void DrawAutoWall( C_BasePlayer* player ) {
     const std::map<int, int>* modelType = Util::GetModelTypeBoneMap( player );
@@ -1007,12 +1008,21 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
     if ( Settings::ESP::Info::rescuing && player->IsRescuing() )
         stringsToShow.push_back( XORSTR( "Rescuing" ) );
 
-    if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && Resolver::lbyUpdated )
-        stringsToShow.push_back( XORSTR( "LBY Updated" ) );
-    else if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && Backtracking::backtrackingLby )
-        stringsToShow.push_back( XORSTR( "LBY Backtracked" ) );
-    else if ( Settings::ESP::Info::lby && Settings::Resolver::LagComp && !Backtracking::backtrackingLby && !Resolver::lbyUpdated )
-        stringsToShow.push_back( XORSTR( "Can't backtrack LBY" ) );
+    if ( localplayer->GetAlive() && localplayer->GetTeam() != player->GetTeam() && Settings::ESP::Info::lby ) {
+        if ( Settings::Resolver::LagComp ) {
+            if ( Resolver::lbyUpdated )
+                stringsToShow.push_back( XORSTR( "LBY Updated" ) );
+            else if ( Backtracking::backtrackingLby )
+                stringsToShow.push_back( XORSTR( "LBY Backtracked" ) );
+            else if ( !Backtracking::backtrackingLby && !Resolver::lbyUpdated )
+                stringsToShow.push_back( XORSTR( "Can't backtrack LBY" ) );
+        } else {
+            if ( Resolver::lbyUpdated )
+                stringsToShow.push_back( XORSTR( "LBY Updated" ) );
+            else
+                stringsToShow.push_back( XORSTR( "LBY Not Updated" ) );
+        }
+    }
 
     if ( Settings::ESP::Info::location )
         stringsToShow.push_back( player->GetLastPlaceName() );
@@ -1041,7 +1051,6 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         DrawAutoWall( player );
     if ( Settings::Debug::BoneMap::drawIDs )
         DrawBoneMap( player );
-
 }
 
 static void DrawBomb( C_BaseCombatWeapon* bomb ) {

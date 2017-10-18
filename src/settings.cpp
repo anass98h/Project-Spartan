@@ -196,9 +196,9 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "Aimbot" )][XORSTR( "AutoCrouch" )][XORSTR( "enabled" )] = Settings::Aimbot::AutoCrouch::enabled;
     //settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
     settings[XORSTR( "LBYIndicator" )][XORSTR( "enabled" )] = Settings::lbyindicator::enabled;
+    settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "ticks" )] = Settings::Resolver::ticks;
     settings[XORSTR( "Resolver" )][XORSTR( "modulo" )] = Settings::Resolver::modulo;
-    settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] = ( int ) Settings::Resolver::pitch;
     settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] = ( int ) Settings::Resolver::LagComp;
     settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )] = ( int ) Settings::Resolver::angleFlipEnabled;
@@ -814,9 +814,9 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::Aimbot::AutoCrouch::enabled );
     GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )], &Settings::Aimbot::velocityCheck::enabled );
 
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "ticks" )], &Settings::Resolver::ticks );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "modulo" )], &Settings::Resolver::modulo );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "pitch" )], ( int* ) &Settings::Resolver::pitch );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], &Settings::Resolver::LagComp );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )], &Settings::Resolver::angleFlipEnabled );
@@ -1363,6 +1363,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )], &Settings::ThirdPerson::realAngles );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 

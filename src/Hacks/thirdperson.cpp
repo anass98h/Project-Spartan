@@ -10,8 +10,8 @@ void ThirdPerson::BeginFrame() {
     if ( !engine->IsInGame() )
         return;
 
-    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer || !localplayer->GetAlive() )
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal || !pLocal->GetAlive() )
         return;
 
     long millis = Util::GetEpochTime();
@@ -39,21 +39,28 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
     if ( stage != ClientFrameStage_t::FRAME_RENDER_START )
         return;
 
-    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer )
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal )
         return;
 
-    input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && localplayer->GetAlive();
+    input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && pLocal->GetAlive();
     input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.f;
 
-    QAngle realAngles = QAngle(localplayer->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
+    QAngle angles = QAngle(0, 0, 0);
+
+    if ( Settings::ThirdPerson::realAngles & ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
+    (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
+    (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) ) {
+        if ( AntiAim::fakeTp )
+            angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.f);
+        else
+            angles = QAngle(pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
+    } else {
+        angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.f);
+    }
+    
 
     if ( Settings::ThirdPerson::enabled ) {
-        if ( Settings::ThirdPerson::realAngles && ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
-                (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
-                (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) )
-            *localplayer->GetVAngles() = realAngles;
-        else
-            *localplayer->GetVAngles() = CreateMove::lastTickViewAngles;
+        *pLocal->GetVAngles() = angles;
     }
 }
