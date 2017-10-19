@@ -32,4 +32,3 @@ jobs:
             ./build.sh
       - store_artifacts:
           path: ~/repo/Spartan.so
-          destination: Spartan
