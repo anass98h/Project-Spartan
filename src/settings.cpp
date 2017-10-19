@@ -149,7 +149,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
         weaponSetting[XORSTR( "AimKey" )] = Util::GetButtonName( i.second.aimkey );
         weaponSetting[XORSTR( "AimKeyOnly" )] = i.second.aimkeyOnly;
         weaponSetting[XORSTR( "Smooth" )][XORSTR( "Enabled" )] = i.second.smoothEnabled;
-        weaponSetting[XORSTR( "Smooth" )][XORSTR( "Amount" )] = i.second.smoothAmount;
+        weaponSetting[XORSTR( "Smooth" )][XORSTR( "AmountMin" )] = i.second.smoothAmountMin;
+        weaponSetting[XORSTR( "Smooth" )][XORSTR( "AmountMax" )] = i.second.smoothAmountMax;        
         weaponSetting[XORSTR( "Smooth" )][XORSTR( "Type" )] = ( int ) i.second.smoothType;
         weaponSetting[XORSTR( "Smooth" )][XORSTR( "Salting" )][XORSTR( "Enabled" )] = i.second.smoothSaltEnabled;
         weaponSetting[XORSTR( "Smooth" )][XORSTR( "Salting" )][XORSTR( "Multiplier" )] = i.second.smoothSaltMultiplier;
@@ -730,7 +731,7 @@ void Settings::LoadConfig( std::string path ) {
     Fonts::SetupFonts();
 
     Settings::Aimbot::weapons = {
-            { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
+            { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f, 1.0f,
                                                     SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
                                                     false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
     };
@@ -766,7 +767,8 @@ void Settings::LoadConfig( std::string path ) {
                 Util::GetButtonCode( weaponSetting[XORSTR( "AimKey" )].asCString() ),
                 weaponSetting[XORSTR( "AimKeyOnly" )].asBool(),
                 weaponSetting[XORSTR( "Smooth" )][XORSTR( "Enabled" )].asBool(),
-                weaponSetting[XORSTR( "Smooth" )][XORSTR( "Amount" )].asFloat(),
+                weaponSetting[XORSTR( "Smooth" )][XORSTR( "AmountMin" )].asFloat(),
+                weaponSetting[XORSTR( "Smooth" )][XORSTR( "AmountMax" )].asFloat(),                
                 ( SmoothType ) weaponSetting[XORSTR( "Smooth" )][XORSTR( "Type" )].asInt(),
                 weaponSetting[XORSTR( "Smooth" )][XORSTR( "Salting" )][XORSTR( "Enabled" )].asBool(),
                 weaponSetting[XORSTR( "Smooth" )][XORSTR( "Salting" )][XORSTR( "Multiplier" )].asFloat(),
