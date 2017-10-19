@@ -27,7 +27,9 @@ bool Hooks::CreateMove( void* thisptr, float flInputSampleTime, CUserCmd* cmd ) 
         AutoKnife::CreateMove( cmd );
         AntiAim::CreateMove( cmd );
         Airstuck::CreateMove( cmd );
+        ChokePackets::CreateMove( cmd );
         Fakewalk::CreateMove( cmd );
+        SlowMotion::CreateMove( cmd );
         CircleStrafe::CreateMove( cmd );
         FakeLag::CreateMove( cmd );
         ESP::CreateMove( cmd );

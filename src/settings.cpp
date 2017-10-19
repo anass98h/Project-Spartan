@@ -573,16 +573,19 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
 
     settings[XORSTR( "Airstuck" )][XORSTR( "enabled" )] = Settings::Airstuck::enabled;
     settings[XORSTR( "Airstuck" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Airstuck::key );
-    settings[XORSTR( "FakewalkAW" )][XORSTR( "enabled" )] = Settings::FakewalkAW::enabled;
-    settings[XORSTR( "FakewalkAW" )][XORSTR( "key" )] = Util::GetButtonName( Settings::FakewalkAW::key );
+
     settings[XORSTR( "Fakewalk" )][XORSTR( "enabled" )] = Settings::Fakewalk::enabled;
     settings[XORSTR( "Fakewalk" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Fakewalk::key );
+
     settings[XORSTR( "ChokePackets" )][XORSTR( "enabled" )] = Settings::ChokePackets::enabled;
     settings[XORSTR( "ChokePackets" )][XORSTR( "key" )] = Util::GetButtonName( Settings::ChokePackets::key );
+
     settings[XORSTR( "SlowMo" )][XORSTR( "enabled" )] = Settings::SlowMo::enabled;
     settings[XORSTR( "SlowMo" )][XORSTR( "key" )] = Util::GetButtonName( Settings::SlowMo::key );
+
     settings[XORSTR( "CircleStrafe" )][XORSTR( "enabled" )] = Settings::CircleStrafe::enabled;
     settings[XORSTR( "CircleStrafe" )][XORSTR( "key" )] = Util::GetButtonName( Settings::CircleStrafe::key );
+
     //settings[XORSTR("anglechange")][XORSTR("enabled")] = Settings::anglechange::enabled;
     //settings[XORSTR("anglechange")][XORSTR("key")] = Util::GetButtonName(Settings::anglechange::key);
 
@@ -1218,14 +1221,16 @@ void Settings::LoadConfig( std::string path ) {
 
     GetVal( settings[XORSTR( "Airstuck" )][XORSTR( "enabled" )], &Settings::Airstuck::enabled );
     GetButtonCode( settings[XORSTR( "Airstuck" )][XORSTR( "key" )], &Settings::Airstuck::key );
-    GetVal( settings[XORSTR( "FakewalkAW" )][XORSTR( "enabled" )], &Settings::FakewalkAW::enabled );
-    GetButtonCode( settings[XORSTR( "FakewalkAW" )][XORSTR( "key" )], &Settings::FakewalkAW::key );
+
     GetVal( settings[XORSTR( "Fakewalk" )][XORSTR( "enabled" )], &Settings::Fakewalk::enabled );
     GetButtonCode( settings[XORSTR( "Fakewalk" )][XORSTR( "key" )], &Settings::Fakewalk::key );
+
     GetVal( settings[XORSTR( "ChokePackets" )][XORSTR( "enabled" )], &Settings::ChokePackets::enabled );
     GetButtonCode( settings[XORSTR( "ChokePackets" )][XORSTR( "key" )], &Settings::ChokePackets::key );
+
     GetVal( settings[XORSTR( "SlowMo" )][XORSTR( "enabled" )], &Settings::SlowMo::enabled );
     GetButtonCode( settings[XORSTR( "SlowMo" )][XORSTR( "key" )], &Settings::SlowMo::key );
+
     GetVal( settings[XORSTR( "CircleStrafe" )][XORSTR( "enabled" )], &Settings::CircleStrafe::enabled );
     GetButtonCode( settings[XORSTR( "CircleStrafe" )][XORSTR( "key" )], &Settings::CircleStrafe::key );
 

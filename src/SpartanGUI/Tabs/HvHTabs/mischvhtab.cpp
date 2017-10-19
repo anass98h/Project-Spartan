@@ -121,14 +121,12 @@ void MiscHvHTab::RenderTab() {
 
                     ImGui::Columns( 2, NULL, true );
                     {
-                        ImGui::Checkbox( XORSTR( "Fakewalk - AIMWARE" ), &Settings::FakewalkAW::enabled );
-                        ImGui::Checkbox( XORSTR( "Fakewalk" ), &Settings::Fakewalk::enabled );
+                        ImGui::Checkbox( XORSTR( "Fake Walk" ), &Settings::Fakewalk::enabled );
                         ImGui::Checkbox( XORSTR( "Choke Packets" ), &Settings::ChokePackets::enabled );
                         ImGui::Checkbox( XORSTR( "Circle Strafer" ), &Settings::CircleStrafe::enabled );
                     }
                     ImGui::NextColumn();
                     {
-                        UI::KeyBindButton( &Settings::FakewalkAW::key );
                         UI::KeyBindButton( &Settings::Fakewalk::key );
                         UI::KeyBindButton( &Settings::ChokePackets::key );
                         UI::KeyBindButton( &Settings::CircleStrafe::key );
