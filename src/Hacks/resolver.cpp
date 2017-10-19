@@ -90,7 +90,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
     if ( Settings::Resolver::enabled ) {
         if ( isMoving ) {
-            lbyDeltaMove[player->GetIndex()] = fabsf ( lby - player->GetEyeAngles()->y );
+            angle.y = *player->GetLowerBodyYawTarget();
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;
         } else if ( curTime == lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
@@ -185,6 +185,8 @@ void Resolver::Hug( C_BasePlayer* player ) {
                         else
                             staticReal[player->GetIndex()] = false;
                     }
+                    else
+                        Resolver::shouldBaim = true;
                 }
 
             }

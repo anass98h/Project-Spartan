@@ -241,7 +241,7 @@ struct AimbotWeapon_t {
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck;
+    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode;
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
                     bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
@@ -255,7 +255,7 @@ struct AimbotWeapon_t {
                     bool spreadLimitEnabled, float spreadLimit,
                     bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                    bool autoCockRevolver, bool velocityCheck, bool backtrack ) {
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -303,6 +303,7 @@ struct AimbotWeapon_t {
         this->hitChanceValue = hitChanceValue;
         this->autoCockRevolver = autoCockRevolver;
         this->velocityCheck = velocityCheck;
+        this->legitMode = legitMode;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -367,7 +368,8 @@ struct AimbotWeapon_t {
                this->hitChanceRays == another.hitChanceRays &&
                this->hitChanceValue == another.hitChanceValue &&
                this->autoCockRevolver == another.autoCockRevolver &&
-               this->velocityCheck == another.velocityCheck;
+               this->velocityCheck == another.velocityCheck &&
+               this->legitMode == another.legitMode;
     }
 };
 
@@ -431,6 +433,7 @@ namespace Settings {
                 extern char* family;
                 extern int size;
                 extern int flags;
+                extern bool Autowall;
             }
         }
     }
@@ -445,6 +448,8 @@ namespace Settings {
         extern ButtonCode_t aimkey;
         extern bool aimkeyOnly;
         extern bool moveMouse;
+        extern bool legitMode;
+
 
         namespace Smooth {
             extern bool enabled;
@@ -472,7 +477,7 @@ namespace Settings {
             extern bool engageLockTR;
             extern int engageLockTTR;
         }
-
+        
         namespace AutoWall {
             extern bool enabled;
             extern float value;
@@ -1201,6 +1206,7 @@ namespace Settings {
     namespace Debug {
         namespace AutoWall {
             extern bool drawDamage;
+            extern bool debugView;
         }
         namespace BoneMap {
             extern bool drawIDs;

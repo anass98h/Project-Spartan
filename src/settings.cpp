@@ -178,6 +178,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
         weaponSetting[XORSTR( "AutoSlow" )][XORSTR( "enabled" )] = i.second.autoSlow;
         weaponSetting[XORSTR( "Prediction" )][XORSTR( "enabled" )] = i.second.predEnabled;
         weaponSetting[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )] = Settings::Aimbot::velocityCheck::enabled;
+        weaponSetting[XORSTR( "legitMode" )] = i.second.legitMode;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -194,6 +195,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     }
 
     settings[XORSTR( "Aimbot" )][XORSTR( "AutoCrouch" )][XORSTR( "enabled" )] = Settings::Aimbot::AutoCrouch::enabled;
+    //settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )][XORSTR( "enabled" )] = Settings::Aimbot::legitMode::enabled;
     //settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
     settings[XORSTR( "LBYIndicator" )][XORSTR( "enabled" )] = Settings::lbyindicator::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = ( int ) Settings::Resolver::enabled;
@@ -731,8 +733,8 @@ void Settings::LoadConfig( std::string path ) {
 
     Settings::Aimbot::weapons = {
             { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                                                    SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                    false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
+                                                        SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
+                                                        false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
     };
 
     for ( Json::ValueIterator itr = settings[XORSTR( "Aimbot" )][XORSTR( "weapons" )].begin();
@@ -801,7 +803,8 @@ void Settings::LoadConfig( std::string path ) {
                 weaponSetting[XORSTR( "HitChance" )][XORSTR( "value" )].asFloat(),
                 weaponSetting[XORSTR( "AutoCockRevolver" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "velocityCheck" )][XORSTR( "enabled" )].asBool(),
-                weaponSetting[XORSTR( "backtrack" )].asBool()
+                weaponSetting[XORSTR( "backtrack" )].asBool(),
+                weaponSetting[XORSTR( "legitMode" )].asBool()
 
         };
 
@@ -812,6 +815,8 @@ void Settings::LoadConfig( std::string path ) {
 
     GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "AutoCrouch" )][XORSTR( "enabled" )],
             &Settings::Aimbot::AutoCrouch::enabled );
+   // GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )][XORSTR( "enabled" )],
+     //       &Settings::Aimbot::legitMode::enabled );
     GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )], &Settings::Aimbot::velocityCheck::enabled );
 
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], ( int* ) &Settings::Resolver::enabled );
