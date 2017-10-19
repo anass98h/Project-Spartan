@@ -6,9 +6,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 [![State of Life](https://img.shields.io/badge/state-beta-orange.svg)][0]
-[![Circle CI](https://circleci.com/gh/anass98h/Project-Spartan/tree/master.svg?style=svg&circle-token=96b32ac4c7a0b03caa61f006d117c98a7b70a255)][4]
-[![Contributors](https://img.shields.io/badge/collaborators-3-green.svg)][1]
+[![Circle CI](https://img.shields.io/circleci/token/d414e4537f4abe5f1f6a9e269894e04662e1c160/project/github/anass98h/Project-Spartan/master.svg)][4]
+[![Contributors](https://img.shields.io/badge/collaborators-7-green.svg)][1]
 [![Join the Discord](https://img.shields.io/discord/336453128033533963.svg?label=discord)][2]
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -49,7 +50,7 @@ $ ./build.sh
 $ ./load.sh
 ```
 
-Prebuilt binaries are available on the [psBuild][3] repository.
+Prebuilt binaries are available on [psBuild][3] and [CircleCI][4].
 Please ship prebuilt binaries only over this repository.
 
 ## Usage
