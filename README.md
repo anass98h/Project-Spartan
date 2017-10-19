@@ -6,9 +6,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;
 [![State of Life](https://img.shields.io/badge/state-beta-orange.svg)][0]
+[![Circle CI](https://circleci.com/gh/anass98h/Project-Spartan/tree/master.svg?style=svg&circle-token=96b32ac4c7a0b03caa61f006d117c98a7b70a255)][4]
 [![Contributors](https://img.shields.io/badge/collaborators-3-green.svg)][1]
 [![Join the Discord](https://img.shields.io/discord/336453128033533963.svg?label=discord)][2]
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -100,3 +99,4 @@ GIGA Shoutout to Kisak.
 [1]: https://github.com/anass98h/Project-Spartan
 [2]: https://discord.gg/exTBFWz
 [3]: https://github.com/ikfe/psbuilds
+[4]: https://circleci.com/gh/anass98h/Project-Spartan/
