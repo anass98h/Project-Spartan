@@ -163,25 +163,33 @@ void Airborne::RenderTab() {
                     ImGui::Columns( 2, NULL, true );
                     {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text( XORSTR( "Distance" ) );
+                        ImGui::Text( XORSTR( "Edge Distance" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text( XORSTR( "Real Add" ) );
+                        ImGui::Text( XORSTR( "Edge Real Add" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text( XORSTR( "Fake Add" ) );
+                        ImGui::Text( XORSTR( "Edge Fake Add" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     }
                     ImGui::NextColumn();
                     {
                         ImGui::PushItemWidth( -1 );
                         ImGui::SliderFloat( XORSTR( "##EDGEDISTANCE" ),
-                                            &Settings::AntiAim::Airborne::HeadEdge::distance, 20, 30,
-                                            "%0.f" );
+                                            &Settings::AntiAim::Airborne::HeadEdge::distance, 20, 30
+                        );
                         ImGui::SliderFloat( XORSTR( "##EDGEREALADD" ),
-                                            &Settings::AntiAim::Airborne::HeadEdge::realAdd, -180, 180,
-                                            "%0.f" );
+                                            &Settings::AntiAim::Airborne::HeadEdge::realAdd,
+                                            Settings::AntiAim::Airborne::untrustedAngles ? -1000 : -180,
+                                            Settings::AntiAim::Airborne::untrustedAngles ? 1000 : 180,
+                                            XORSTR( Settings::AntiAim::Airborne::HeadEdge::realAdd > 0 ? "+%.1f"
+                                                                                                       : "%.1f" )
+                        );
                         ImGui::SliderFloat( XORSTR( "##EDGEFAKEADD" ),
-                                            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd, -180, 180,
-                                            "%0.f" );
+                                            &Settings::AntiAim::Airborne::HeadEdge::fakeAdd,
+                                            Settings::AntiAim::Airborne::untrustedAngles ? -1000 : -180,
+                                            Settings::AntiAim::Airborne::untrustedAngles ? 1000 : 180,
+                                            XORSTR( Settings::AntiAim::Airborne::HeadEdge::fakeAdd > 0 ? "+%.1f"
+                                                                                                       : "%.1f" )
+                        );
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );

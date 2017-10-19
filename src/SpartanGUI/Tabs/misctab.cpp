@@ -4,11 +4,11 @@ static char nickname[127] = "";
 
 void Misc::RenderTab() {
     const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
-    const char* animationTypes[] = { "Static", "Curtime", "Marquee", "Words", "Letters" };
+    const char* animationTypes[] = { "Static", "Current Time", "Marquee", "Words", "Letters" };
     const char* spammerTypes[] = { "None", "Normal", "Positions" };
     const char* teams[] = { "Allies", "Enemies", "Both" };
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
-                                  "void MarcIsAWeeb", "Custom negro" };
+                                  "void MarcIsAWeeb", "Custom" };
     const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear" };
 
     ImGui::Columns( 2, NULL, true );

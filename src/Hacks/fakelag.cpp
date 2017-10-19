@@ -26,16 +26,6 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
         return;
     }
 
-    C_BaseCombatWeapon* weapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-            localplayer->GetActiveWeapon() );
-    if ( !weapon ) {
-        return;
-    }
-
-    if ( weapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_KNIFE ) {
-        *bSendPacket = true;
-        return;
-    }
 
     switch ( Settings::FakeLag::type ) {
         case FakeLagType::TUX:

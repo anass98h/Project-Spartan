@@ -1,72 +1,85 @@
 #include "hooks.h"
 
-enum ClearFlags_t {
-    VIEW_CLEAR_COLOR = 0x1, // 1
-    VIEW_CLEAR_DEPTH = 0x2, // 2
-    VIEW_CLEAR_FULL_TARGET = 0x4, // 4
-    VIEW_NO_DRAW = 0x8, // 8
-    VIEW_CLEAR_OBEY_STENCIL = 0x10,// 16 Draws a quad allowing stencil test to clear through portals
-    VIEW_CLEAR_STENCIL = 0x20,// 32
-};
-
-enum RenderViewInfo_t {
-    RENDERVIEW_UNSPECIFIED = 0,
-    RENDERVIEW_DRAWVIEWMODEL = ( 1 << 0 ), // 1
-    RENDERVIEW_DRAWHUD = ( 1 << 1 ), // 2
-    RENDERVIEW_SUPPRESSMONITORRENDERING = ( 1 << 2 ), // 4
-};
-
 void Hooks::RenderView( void* thisptr, CViewSetup& setup, CViewSetup& hudViewSetup, unsigned int nClearFlags,
                         int whatToDraw ) {
 
-    /** This is for the Rear-View Mirror. Not quite ready yet **/
-    /*
-	if( inputSystem->IsButtonDown(ButtonCode_t::KEY_F) )
-	{
-		C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-		if( localplayer && localplayer->GetAlive() )
-		{
-            CViewSetup backup = setup;
-            CViewSetup hudBackup = hudViewSetup;
-            setup.width /= 2;
-            setup.height /= 2;
-            hudViewSetup.width /= 2;
-            hudViewSetup.height /= 2;
-            float yawTemp = setup.angles.y;
-            yawTemp += 180.0f;
-            Math::NormalizeYaw(yawTemp);
-            setup.angles.y = yawTemp;
-            setup.angles.x = -setup.angles.x;
 
-			cvar->ConsoleDPrintf("------------\n&setup %p\n", &setup);
-			cvar->ConsoleDPrintf("width(%d), height(%d), X(%f), Y(%f), Z(%f), angX(%f), angY(%f), angZ(%f), fov(%f)\n",
-								 setup.width, setup.height, setup.origin.x, setup.origin.y, setup.origin.z, setup.angles.x, setup.angles.y, setup.angles.z, setup.fov);
-
-			cvar->ConsoleDPrintf("&HUDsetup %p\n", &hudViewSetup);
-			cvar->ConsoleDPrintf("width(%d), height(%d), X(%f), Y(%f), Z(%f), angX(%f), angY(%f), angZ(%f), fov(%f)\n",
-								 hudViewSetup.width, hudViewSetup.height, hudViewSetup.origin.x, hudViewSetup.origin.y, hudViewSetup.origin.z,
-								 hudViewSetup.angles.x, hudViewSetup.angles.y, hudViewSetup.angles.z, hudViewSetup.fov);
-            cvar->ConsoleDPrintf("nClearFlags (%d) - whatToDraw(%d)\n", nClearFlags, whatToDraw);
-
-            // Works but models are in front of the Rear-view
-            //viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, setup, hudViewSetup, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH | VIEW_CLEAR_FULL_TARGET | VIEW_CLEAR_OBEY_STENCIL | VIEW_CLEAR_STENCIL, 0);
-            //viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, backup, hudBackup, 0, RENDERVIEW_DRAWVIEWMODEL | RENDERVIEW_DRAWHUD);
-
-            //Works but Regular view is black
-            //viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, backup, hudBackup, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH | VIEW_CLEAR_FULL_TARGET | VIEW_CLEAR_OBEY_STENCIL | VIEW_CLEAR_STENCIL,
-            //                                                  RENDERVIEW_DRAWVIEWMODEL | RENDERVIEW_DRAWHUD);
-            //viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, setup, hudViewSetup, 0, 0);
-
-
-            viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, setup, hudViewSetup, 0, 0);
-            viewRenderVMT->GetOriginalMethod<RenderViewFn>(6)(thisptr, backup, hudBackup, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH | VIEW_CLEAR_OBEY_STENCIL | VIEW_CLEAR_STENCIL
-                                                                                        , RENDERVIEW_DRAWVIEWMODEL | RENDERVIEW_DRAWHUD);
-
-        }
-	}
-	else
-	{
-     */
     viewRenderVMT->GetOriginalMethod<RenderViewFn>( 6 )( thisptr, setup, hudViewSetup, nClearFlags, whatToDraw );
-    //}
+    SpeedIndicator::RenderView(thisptr, setup, hudViewSetup, nClearFlags, whatToDraw);
+    /*
+    if( !Settings::SpeedIndicator::enabled || !engine->IsInGame() )
+        return;
+    C_BasePlayer* localPlayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !localPlayer || !localPlayer->GetAlive() )
+        return;
+    CViewSetup rearView = setup;
+    rearView.x = rearView.oldX = 0;
+    rearView.y = rearView.oldY = 0;
+    rearView.width = rearView.oldWidth = (setup.width/2);
+    rearView.height = rearView.oldHeight = (setup.height/2);
+    rearView.angles = Vector(-setup.angles.x, (setup.angles.y-180), setup.angles.z);
+    rearView.m_flAspectRatio = float(rearView.width) / float(rearView.height);
+
+
+    static ITexture* mirrorTexture = NULL;
+    static std::string textureName = XORSTR( "RearView" );
+    if( !mirrorTexture ) {
+        material->forceBeginRenderTargetAllocation();
+        cvar->ConsoleDPrintf("ImageFormat: %d\n", material->GetBackBufferFormat());
+        mirrorTexture = material->createFullFrameRenderTarget(textureName.c_str(), rearView.width, rearView.height);
+        //material->forceEndRenderTargetAllocation(); // Causes texture handles to go HAM. scrambles textures.
+        if( mirrorTexture ) {
+            cvar->ConsoleDPrintf("MirrorTexture \"%s\"Set! -(%p)\n", textureName.c_str(), (void*)mirrorTexture);
+        }
+        else {
+            cvar->ConsoleDPrintf("MirrorTexture Not Set.\n");
+            return;
+        }
+    }
+
+    IMatRenderContext *renderCtx = material->GetRenderContext();
+    if( !renderCtx )
+        return;
+
+    renderCtx->PushRenderTargetAndViewport();
+    renderCtx->SetRenderTarget(mirrorTexture);
+
+    viewRenderVMT->GetOriginalMethod<RenderViewFn>( 6 )( thisptr, rearView, hudViewSetup,
+                                                         VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH | VIEW_CLEAR_FULL_TARGET | VIEW_CLEAR_OBEY_STENCIL | VIEW_CLEAR_STENCIL,
+                                                         0);
+
+    static IMaterial *rearViewMat = NULL;
+    if( !rearViewMat )
+    {
+        std::stringstream materialData;
+        materialData << "\"" << "UnlitGeneric" << "\"\n" <<
+                     "{\n" <<
+                     "\t\"$basetexture\" \"" << textureName.c_str() << "\"\n"
+                             "}\n" << std::flush;
+
+        std::string materialName = XORSTR( "KisakSucks" );
+        KeyValues* keyValues = new KeyValues( "UnlitGeneric" );
+
+        InitKeyValues( keyValues, "UnlitGeneric" );
+        LoadFromBuffer( keyValues, materialName.c_str(), materialData.str().c_str(), nullptr, NULL, nullptr );
+
+        rearViewMat = material->CreateMaterial( materialName.c_str(), keyValues );
+        rearViewMat->AlphaModulate(1.0f);
+
+        if( !rearViewMat ){
+            cvar->ConsoleDPrintf("Could not Create Rear View Material! (%s)\n", materialName.c_str());
+            //renderCtx->Release();
+            return;
+        }
+    }
+
+    renderCtx->PopRenderTargetAndViewport();
+    renderCtx->DrawScreenSpaceRectangle(rearViewMat, 0, 0, rearView.width, rearView.height,
+                                        0.0f, 0.0f, float(rearView.width), float(rearView.height),
+                                        mirrorTexture->GetActualWidth(), mirrorTexture->GetActualHeight(),
+                                        NULL, 1, 1);
+
+    renderCtx->Release();
+
+*/
 }

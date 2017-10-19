@@ -138,6 +138,8 @@ const std::map<int, int>* Util::GetModelTypeBoneMap( C_BasePlayer* player ) {
             {
                 return &BoneMapT_Leet;
             }
+        case 85: // Leet Krew 2
+            return &BoneMapT_Leet2;
         case 86: // Balkan, Phoenix, and Separatists
             if ( memchr( pStudioModel->name, 'h', sizeof( pStudioModel->name ) ) != NULL ) // Phoenix
             {
@@ -176,7 +178,7 @@ const std::map<int, int>* Util::GetModelTypeBoneMap( C_BasePlayer* player ) {
             return &BoneMapCT_SAS;
         default:
             cvar->ConsoleDPrintf(
-                    XORSTR( "(Util::GetModelTypeBoneMap)- Warning. Model type Unknown. Using Generic boneMap\n" ) );
+                    XORSTR( "(Util::GetModelTypeBoneMap)- Warning. Model type \"%s\" Unknown. Using Generic boneMap\n" ), pStudioModel->name );
             return &BoneMapGeneric;
     }
 }
@@ -193,6 +195,8 @@ ModelType Util::GetModelTypeID( C_BasePlayer* player ) {
             {
                 return ModelType::LEETKREW;
             }
+        case 85:
+            return ModelType::LEETKREW2;
         case 86: // Balkan, Phoenix, and Separatists
             if ( memchr( pStudioModel->name, 'h', sizeof( pStudioModel->name ) ) != NULL ) // Phoenix
             {

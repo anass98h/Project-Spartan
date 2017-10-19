@@ -92,7 +92,8 @@ float Settings::ESP::HeadDot::size = 2.f;
 bool Settings::ESP::Spread::enabled = false;
 bool Settings::ESP::Spread::spreadLimit = false;
 
-bool Settings::ESP::AutoWall::debugView = false;
+bool Settings::Debug::AutoWall::drawDamage = false;
+bool Settings::Debug::BoneMap::drawIDs = false;
 bool Settings::ESP::Backtracking::enabled = false;
 
 struct Footstep {
@@ -528,6 +529,24 @@ static void DrawTracer( C_BasePlayer* player ) {
     Draw::Line( ( int ) ( src.x ), ( int ) ( src.y ), x, y,
                 Color::FromImColor( ESP::GetESPPlayerColor( player, bIsVisible ) ) );
 }
+static void DrawBoneMap( C_BasePlayer* player ) {
+    static HFont boneMapFont = Draw::CreateFont( XORSTR( "Andale Mono" ), 10, (int)FontFlags::FONTFLAG_DROPSHADOW );
+    static Vector bone2D;
+    static Vector bone3D;
+    studiohdr_t* pStudioModel = modelInfo->GetStudioModel( player->GetModel() );
+
+    for( unsigned int i = 1; i < pStudioModel->numbones; i++ ){
+        bone3D = player->GetBonePosition( i );
+        if ( debugOverlay->ScreenPosition( bone3D, bone2D ) )
+            continue;
+        char buffer[4];
+        snprintf(buffer, 4, "%d\0", i);
+        Draw::Text( Vector2D( bone2D.x, bone2D.y ), buffer, boneMapFont, Color( 255, 0, 255, 255 ) );
+    }
+    IEngineClient::player_info_t entityInformation;
+    engine->GetPlayerInfo( player->GetIndex(), &entityInformation );
+    cvar->ConsoleDPrintf( XORSTR( "(%s)-ModelName: %s, numBones: %d\n" ), entityInformation.name, pStudioModel->name, pStudioModel->numbones );
+}
 
 static void DrawAutoWall( C_BasePlayer* player ) {
     const std::map<int, int>* modelType = Util::GetModelTypeBoneMap( player );
@@ -548,14 +567,13 @@ static void DrawAutoWall( C_BasePlayer* player ) {
     Draw::Text(Vector2D(bone2D.x, bone2D.y), output.c_str(), autowallFont, Color(255, 0, 255, 255)); // hot pink
      */
 
-    static int len = 31;
-    for ( int i = 0; i < len; i++ ) {
+    for ( int i = 0; i < 31; i++ ) {
         int boneIndex = ( *modelType ).at( i );
         if ( boneIndex == ( int ) Bone::INVALID )
             continue;
         Vector bone2D;
         Vector bone3D = player->GetBonePosition( boneIndex );
-        if ( debugOverlay->ScreenPosition( Vector( bone3D.x, bone3D.y, bone3D.z ), bone2D ) )
+        if ( debugOverlay->ScreenPosition( bone3D, bone2D ) )
             continue;
 
         Autowall::FireBulletData data;
@@ -1019,8 +1037,11 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         DrawHeaddot( player );
     if ( Settings::ESP::Backtracking::enabled )
         DrawBacktrackIndicator( player );
-    if ( Settings::ESP::AutoWall::debugView )
+    if ( Settings::Debug::AutoWall::drawDamage )
         DrawAutoWall( player );
+    if ( Settings::Debug::BoneMap::drawIDs )
+        DrawBoneMap( player );
+
 }
 
 static void DrawBomb( C_BaseCombatWeapon* bomb ) {
