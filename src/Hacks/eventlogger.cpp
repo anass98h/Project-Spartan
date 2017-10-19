@@ -5,6 +5,8 @@ bool Settings::EventLogger::enabled = false;
 const char* team[]{ "", "", " (T)", " (CT)" };
 const char* defKit[]{ "without a defuse kit.", "with a defuse kit." };
 std::map<int, const char*> bombsites = {
+        { 275, "Bombsite A" }, // Dust 2 v2
+        { 276, "Bombsite B" }, // Dust 2 v2
         { 369, "Bombsite A" }, // Dust 2
         { 366, "Bombsite B" }, // Dust 2
         { 451, "Bombsite A" }, // Mirage
