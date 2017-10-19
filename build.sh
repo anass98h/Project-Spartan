@@ -42,14 +42,18 @@ if [ -d ".git" ]; then
         exit -1
     fi
 
-    if [ ${CI} != "true" ]; then
+    if [ -z $CI ]; then
+        echo -e "$prefix Building using $(grep "^processor" /proc/cpuinfo | wc -l) threads."
+
         make -j$(grep "^processor" /proc/cpuinfo | wc -l)
         if [ $? -ne 0 ]; then
             echo -e "$error_prefix Failed to build Project Spartan."
             exit -1
         fi
     else
-        make
+        echo -e "$prefix CircleCI detected! Building using 2 threads."
+
+        make -j 2
         if [ $? -ne 0 ]; then
             echo -e "$error_prefix Failed to build Project Spartan."
             exit -1
