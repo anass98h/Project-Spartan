@@ -12,6 +12,7 @@ VMT* clientVMT = nullptr;
 VMT* modelRenderVMT = nullptr;
 VMT* clientModeVMT = nullptr;
 VMT* gameEventsVMT = nullptr;
+VMT* gameMovementVMT = nullptr;
 VMT* viewRenderVMT = nullptr;
 VMT* inputInternalVMT = nullptr;
 VMT* materialVMT = nullptr;
@@ -89,6 +90,7 @@ void Hooker::InitializeVMHooks() {
     clientVMT = new VMT( client );
     modelRenderVMT = new VMT( modelRender );
     gameEventsVMT = new VMT( gameEvents );
+    gameMovementVMT = new VMT( gameMovement );
     viewRenderVMT = new VMT( viewRender );
     inputInternalVMT = new VMT( inputInternal );
     materialVMT = new VMT( material );

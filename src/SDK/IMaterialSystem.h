@@ -91,6 +91,13 @@ enum MaterialRenderTargetDepth_t
     MATERIAL_RT_DEPTH_ONLY	   = 0x3,
 };
 
+enum MaterialFogMode_t
+{
+    MATERIAL_FOG_NONE,
+    MATERIAL_FOG_LINEAR,
+    MATERIAL_FOG_LINEAR_BELOW_FOG_Z,
+};
+
 #define CREATERENDERTARGETFLAGS_HDR				0x00000001
 #define CREATERENDERTARGETFLAGS_AUTOMIPMAP		0x00000002
 #define CREATERENDERTARGETFLAGS_UNFILTERABLE_OK 0x00000004
@@ -112,6 +119,21 @@ public:
         typedef void (* oSetRenderTarget)( void*, ITexture* );
         return getvfunc<oSetRenderTarget>( this, 6 )( this, pTexture );
     }
+    // 14? - SetAmbientLight()
+
+    void FogMode( MaterialFogMode_t fogMode ){
+        typedef void (* oFogMode)( void*, MaterialHandle_t );
+        return getvfunc<oFogMode>( this, 49 )( this, fogMode );
+    }
+    void FogColor( float r, float g, float b ){
+        typedef void (* oFogColor)( void*, float ,float ,float );
+        return getvfunc<oFogColor>( this, 54 )( this, r, g, b );
+    }
+    void GetFogColor( unsigned char *rgb ){
+        typedef void (* oGetFogColor)( void*, unsigned char * );
+        return getvfunc<oGetFogColor>( this, 58 )( this, rgb );
+    }
+
     void PushRenderTargetAndViewport( ) {
         typedef void (* oPushRenderTargetAndViewport)( void* );
         return getvfunc<oPushRenderTargetAndViewport>( this, 115 )( this );
@@ -195,10 +217,6 @@ public:
         EndRenderTargetAllocation();
         *GetGameStarted() = oldState;
     }
-    IMatRenderContext* GetRenderContext() {
-        typedef IMatRenderContext* (* oGetRenderContext)( void* );
-        return getvfunc<oGetRenderContext>( this, 115 )( this );
-    }
     ITexture* CreateNamedRenderTargetTextureEx( const char* name, int w, int h, RenderTargetSizeMode_t sizeMode,
                                                        ImageFormat format, MaterialRenderTargetDepth_t depth,
                                                        unsigned int textureFlags, unsigned int renderTargetFlags )
@@ -213,6 +231,10 @@ public:
                 name, width, height, RT_SIZE_DEFAULT, GetBackBufferFormat(),
                 MATERIAL_RT_DEPTH_SHARED, 0, CREATERENDERTARGETFLAGS_HDR
         );
+    }
+    IMatRenderContext* GetRenderContext() {
+        typedef IMatRenderContext* (* oGetRenderContext)( void* );
+        return getvfunc<oGetRenderContext>( this, 115 )( this );
     }
 
     bool* GetGameStarted() {

@@ -920,6 +920,11 @@ namespace Settings {
         }
     }
 
+    namespace MaterialConfig {
+        extern bool enabled;
+        extern MaterialSystem_Config_t config;
+    }
+
     namespace Dlights {
         extern bool enabled;
         extern float radius;
@@ -1113,9 +1118,13 @@ namespace Settings {
         extern ColorVar color;
     }
 
+    namespace NoFog {
+        extern bool enabled;
+    }
+
     namespace SkyBox {
         extern bool enabled;
-        extern int skyBoxNumber; // number in skyBoxNames
+        extern int skyBoxNumber; // index in skyBoxNames
     }
 
     namespace ASUSWalls {

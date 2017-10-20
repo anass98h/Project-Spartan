@@ -39,52 +39,56 @@ int __attribute__ ((constructor)) Startup() {
     Hooker::HookPollEvent();
     TracerEffect::RestoreTracers();
 
-
     ModSupport::OnInit();
 
     clientVMT->HookVM( ( void* ) Hooks::IN_KeyEvent, 20 );
     clientVMT->HookVM( ( void* ) Hooks::FrameStageNotify, 36 );
     clientVMT->ApplyVMT();
 
-    panelVMT->HookVM( ( void* ) Hooks::PaintTraverse, 42 );
-    panelVMT->ApplyVMT();
-
-    modelRenderVMT->HookVM( ( void* ) Hooks::DrawModelExecute, 21 );
-    modelRenderVMT->ApplyVMT();
-
+    clientModeVMT->HookVM( ( void* ) Hooks::ShouldDrawFog, 18 );
     clientModeVMT->HookVM( ( void* ) Hooks::OverrideView, 19 );
     clientModeVMT->HookVM( ( void* ) Hooks::CreateMove, 25 );
     clientModeVMT->HookVM( ( void* ) Hooks::GetViewModelFOV, 36 );
     clientModeVMT->ApplyVMT();
 
+    engineVGuiVMT->HookVM( ( void* ) Hooks::Paint, 15 );
+    engineVGuiVMT->ApplyVMT();
+
     gameEventsVMT->HookVM( ( void* ) Hooks::FireEvent, 9 );
     gameEventsVMT->HookVM( ( void* ) Hooks::FireEventClientSide, 10 );
     gameEventsVMT->ApplyVMT();
 
-    viewRenderVMT->HookVM( ( void* ) Hooks::RenderView, 6 );
-    viewRenderVMT->HookVM( ( void* ) Hooks::RenderSmokePostViewmodel, 41 );
-    viewRenderVMT->ApplyVMT();
+    gameMovementVMT->HookVM( ( void* ) Hooks::ProcessMovement, 2 );
+    gameMovementVMT->ApplyVMT();
 
     inputInternalVMT->HookVM( ( void* ) Hooks::SetKeyCodeState, 92 );
     inputInternalVMT->HookVM( ( void* ) Hooks::SetMouseCodeState, 93 );
     inputInternalVMT->ApplyVMT();
 
+    launcherMgrVMT->HookVM( ( void* ) Hooks::PumpWindowsMessageLoop, 19 );
+    launcherMgrVMT->ApplyVMT();
+
+    materialVMT->HookVM( ( void* ) Hooks::OverrideConfig, 21 );
     materialVMT->HookVM( ( void* ) Hooks::BeginFrame, 42 );
     materialVMT->ApplyVMT();
+
+    modelRenderVMT->HookVM( ( void* ) Hooks::DrawModelExecute, 21 );
+    modelRenderVMT->ApplyVMT();
+
+    panelVMT->HookVM( ( void* ) Hooks::PaintTraverse, 42 );
+    panelVMT->ApplyVMT();
 
     surfaceVMT->HookVM( ( void* ) Hooks::PlaySound, 82 );
     surfaceVMT->HookVM( ( void* ) Hooks::OnScreenSizeChanged, 116 );
     surfaceVMT->ApplyVMT();
 
-    launcherMgrVMT->HookVM( ( void* ) Hooks::PumpWindowsMessageLoop, 19 );
-    launcherMgrVMT->ApplyVMT();
-
-    engineVGuiVMT->HookVM( ( void* ) Hooks::Paint, 15 );
-    engineVGuiVMT->ApplyVMT();
-
     soundVMT->HookVM( ( void* ) Hooks::EmitSound1, 5 );
     soundVMT->HookVM( ( void* ) Hooks::EmitSound2, 6 );
     soundVMT->ApplyVMT();
+
+    viewRenderVMT->HookVM( ( void* ) Hooks::RenderView, 6 );
+    viewRenderVMT->HookVM( ( void* ) Hooks::RenderSmokePostViewmodel, 41 );
+    viewRenderVMT->ApplyVMT();
 
     eventListener = new EventListener({
                                               "cs_game_disconnected", "player_connect_full", "player_death",
@@ -146,17 +150,18 @@ void __attribute__ ((destructor)) Shutdown() {
     NoSmoke::Cleanup();
 
     clientVMT->ReleaseVMT();
-    panelVMT->ReleaseVMT();
-    modelRenderVMT->ReleaseVMT();
     clientModeVMT->ReleaseVMT();
-    gameEventsVMT->ReleaseVMT();
-    viewRenderVMT->ReleaseVMT();
-    inputInternalVMT->ReleaseVMT();
-    materialVMT->ReleaseVMT();
-    surfaceVMT->ReleaseVMT();
-    launcherMgrVMT->ReleaseVMT();
     engineVGuiVMT->ReleaseVMT();
+    gameEventsVMT->ReleaseVMT();
+    gameMovementVMT->ReleaseVMT();
+    inputInternalVMT->ReleaseVMT();
+    launcherMgrVMT->ReleaseVMT();
+    materialVMT->ReleaseVMT();
+    modelRenderVMT->ReleaseVMT();
+    panelVMT->ReleaseVMT();
     soundVMT->ReleaseVMT();
+    surfaceVMT->ReleaseVMT();
+    viewRenderVMT->ReleaseVMT();
 
     input->m_fCameraInThirdPerson = false;
     input->m_vecCameraOffset.z = 150.f;

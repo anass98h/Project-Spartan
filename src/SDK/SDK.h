@@ -53,3 +53,4 @@
 #include "ai_activity.h"
 #include "actanimating.h"
 #include "baseanimating.h"
+#include "materialsystem_config.h"

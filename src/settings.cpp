@@ -640,6 +640,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
 
     settings[XORSTR( "AutoAccept" )][XORSTR( "enabled" )] = Settings::AutoAccept::enabled;
 
+    settings[XORSTR( "NoFog" )][XORSTR( "enabled" )] = Settings::NoFog::enabled;
     settings[XORSTR( "NoSky" )][XORSTR( "enabled" )] = Settings::NoSky::enabled;
     LoadColor( settings[XORSTR( "NoSky" )][XORSTR( "color" )], Settings::NoSky::color );
 
@@ -1337,6 +1338,8 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "spinFactor" )][XORSTR( "value" )], &Settings::spinFactor::value );
 
     GetVal( settings[XORSTR( "AutoAccept" )][XORSTR( "enabled" )], &Settings::AutoAccept::enabled );
+
+    GetVal( settings[XORSTR( "NoFog" )][XORSTR( "enabled" )], &Settings::NoFog::enabled);
 
     GetVal( settings[XORSTR( "NoSky" )][XORSTR( "enabled" )], &Settings::NoSky::enabled );
     GetVal( settings[XORSTR( "NoSky" )][XORSTR( "color" )], &Settings::NoSky::color );

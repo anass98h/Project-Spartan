@@ -654,6 +654,11 @@ public:
         this + 0x1B0);
     }
 
+    float *GetMaxPlayerSpeedPtr() {
+        return ( float* ) ( ( uintptr_t )
+        this + 0x1B0);
+    }
+
     int GetZoomLevels() {
         return *( int* ) ( ( uintptr_t )
         this + 0x240);
