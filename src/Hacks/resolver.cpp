@@ -24,6 +24,10 @@ bool Resolver::lbyUpdated = false;
 
 bool Resolver::shouldBaim = false;
 
+std::map<int, int> Resolver::shotsMiss = {
+    { -1, 0 }
+};
+
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
     if ( !Settings::Aimbot::backtrack )
         Settings::Aimbot::backtrack = true;
