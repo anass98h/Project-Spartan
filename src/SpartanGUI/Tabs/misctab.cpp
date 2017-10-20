@@ -206,7 +206,7 @@ void Misc::RenderTab() {
                 }
                 ImGui::Columns( 1 );
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Clean the menu" ) );
+                ImGui::Text( XORSTR( "Grenade Helper" ) );
                 ImGui::Separator();
                 ImGui::Columns( 2, NULL, true );
                 {
@@ -214,20 +214,25 @@ void Misc::RenderTab() {
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::Checkbox( XORSTR( "Force Update ###match" ), &Settings::GrenadeHelper::onlyMatchingInfos );
+                    ImGui::Checkbox( XORSTR( "Only matching###Match" ), &Settings::GrenadeHelper::onlyMatchingInfos );
                 }
-                ImGui::Columns( 1 );
                 ImGui::Columns( 2 );
                 {
-                    ImGui::Button( XORSTR( "Clean the menu" ), ImVec2( -1, 0 ) );
-
-
-                }
-                ImGui::NextColumn();
-                {
-                    ImGui::Text( XORSTR( "Clean the menu" ) );
-
-
+                    if ( ImGui::Button( XORSTR( "Aimassist" ), ImVec2( -1, 0 ) ) )
+                        ImGui::OpenPopup( XORSTR( "optionAimAssist" ) );
+                    ImGui::SetNextWindowSize( ImVec2( 200, 120 ), ImGuiSetCond_Always );
+                    if ( ImGui::BeginPopup( XORSTR( "optionAimAssist" ) ) ) {
+                        ImGui::PushItemWidth( -1 );
+                        ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::GrenadeHelper::aimAssist );
+                        ImGui::SliderFloat( XORSTR( "###aimstep" ), &Settings::GrenadeHelper::aimStep, 0, 10,
+                                            "Speed: %0.3f" );
+                        ImGui::SliderFloat( XORSTR( "###aimfov" ), &Settings::GrenadeHelper::aimFov, 0, 180,
+                                            "Fov: %0.2f" );
+                        ImGui::SliderFloat( XORSTR( "###aimdistance" ), &Settings::GrenadeHelper::aimDistance, 0, 100,
+                                            "Distance: %0.2f" );
+                        ImGui::PopItemWidth();
+                        ImGui::EndPopup();
+                    }
                 }
             }
             ImGui::Columns( 1 );

@@ -82,7 +82,7 @@ pstring GetGhConfigDirectory() {
     if ( !DoesDirectoryExist( directory.c_str() ) )
         mkdir( directory.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
 
-    directory << XORSTR( "/Project SpartanGH/" );
+    directory << XORSTR( "/Project Spartan Grenade Helper/" );
 
     if ( !DoesDirectoryExist( directory.c_str() ) )
         mkdir( directory.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
