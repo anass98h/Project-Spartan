@@ -12,10 +12,6 @@ std::array<CResolveInfo, 32> Resolver::m_arrInfos;
 ButtonCode_t Settings::Resolver::angleFlip = ButtonCode_t::KEY_F;
 bool Settings::Resolver::angleFlipEnabled = false;
 
-extern std::map<int, int> shotsMiss = {
-    { -1, 0 }
-};
-
 int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
@@ -51,7 +47,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
     float velocity = fabsf( player->GetVelocity().Length2D() );
     bool onGround = player->GetFlags() & FL_ONGROUND;
     bool isMoving = ( onGround & velocity != 0 );
-    bool maybeFakeWalking = ( velocity != 0 && velocity < 35.0f );
+    bool maybeFakeWalking = ( isMoving && velocity < 35.0f );
     float lbyUpdateTime = isMoving ? 0.22f : 1.1f;
 
     std::map<int, float> lbyDeltaMove = {
