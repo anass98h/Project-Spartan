@@ -30,6 +30,8 @@ namespace Resolver {
     extern std::vector<int64_t> playerAngleLogs;
     extern std::array<CResolveInfo, 32> m_arrInfos;
 
+    extern std::map<int, int> shotsMiss;
+
     extern bool lbyUpdated;
 
     extern bool shouldBaim;
