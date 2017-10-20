@@ -10,6 +10,8 @@ void Misc::RenderTab() {
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
                                   "void MarcIsAWeeb", "Custom" };
     const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear" };
+    const char* grenadeTypes[] = { "Flashbang", "Smoke Grenade", "Molotov", "HE Grenade" };
+    const char* throwTypes[] = { "Standing", "Running", "Jumping", "Walk" };
 
     ImGui::Columns( 2, NULL, true );
     {
@@ -231,6 +233,78 @@ void Misc::RenderTab() {
                         ImGui::SliderFloat( XORSTR( "###aimdistance" ), &Settings::GrenadeHelper::aimDistance, 0, 100,
                                             "Distance: %0.2f" );
                         ImGui::PopItemWidth();
+                        ImGui::EndPopup();
+                    }
+                }
+                ImGui::NextColumn();
+                {
+                    if ( ImGui::Button( XORSTR( "Add Info" ), ImVec2( -1, 0 ) ) )
+                        ImGui::OpenPopup( XORSTR( "addinfo_throw" ) );
+
+                    ImGui::SetNextWindowSize( ImVec2( 565, 268 ), ImGuiSetCond_Always );
+                    if ( ImGui::BeginPopup( XORSTR( "addinfo_throw" ) ) ) {
+                        static int throwMessageCurrent = -1;
+                        static char inputName[40];
+                        static int tType = ( int ) ThrowType::NORMAL;
+                        static int gType = ( int ) GrenadeType::SMOKE;
+
+                        if ( engine->IsInGame() ) {
+                            C_BasePlayer* localPlayer = ( C_BasePlayer* ) entityList->GetClientEntity(
+                                    engine->GetLocalPlayer() );
+                            if ( localPlayer ) {
+                                C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
+                                        localPlayer->GetActiveWeapon() );
+                                if ( activeWeapon &&
+                                     activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_GRENADE )
+                                    gType = ( int ) GetGrenadeType( activeWeapon );
+                            }
+                        }
+                        ImGui::Columns( 1 );
+                        ImGui::PushItemWidth( 500 );
+                        ImGui::InputText( "", inputName, sizeof( inputName ) );
+                        ImGui::PopItemWidth();
+                        ImGui::SameLine();
+                        if ( ImGui::Button( XORSTR( "Add" ) ) && engine->IsInGame() &&
+                             Settings::GrenadeHelper::actMapName.length() > 0 ) {
+                            C_BasePlayer* localPlayer = ( C_BasePlayer* ) entityList->GetClientEntity(
+                                    engine->GetLocalPlayer() );
+                            if ( strlen( inputName ) > 0 ) {
+                                GrenadeInfo n = GrenadeInfo( ( GrenadeType ) gType, localPlayer->GetEyePosition(),
+                                                             *localPlayer->GetVAngles(), ( ThrowType ) tType,
+                                                             inputName );
+                                Settings::GrenadeHelper::grenadeInfos.push_back( n );
+                                pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
+                                if ( !DoesFileExist( path.c_str() ) )
+                                    mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+                                Settings::SaveGrenadeInfo( path << XORSTR( "/config.json" ) );
+                            }
+                            strcpy( inputName, "" );
+                        }
+                        ImGui::Columns( 2 );
+                        ImGui::Combo( XORSTR( "###Throwtype" ), &tType, throwTypes, IM_ARRAYSIZE( throwTypes ) );
+                        ImGui::NextColumn();
+                        ImGui::Combo( XORSTR( "###Grenadetype" ), &gType, grenadeTypes, IM_ARRAYSIZE( grenadeTypes ) );
+                        ImGui::Columns( 1 );
+                        ImGui::Separator();
+                        ImGui::PushItemWidth( 550 );
+                        auto lambda = []( void* data, int idx, const char** out_text ) {
+                            *out_text = Settings::GrenadeHelper::grenadeInfos.at( idx ).name.c_str();
+                            return *out_text != NULL;
+                        };
+                        ImGui::ListBox( "", &throwMessageCurrent, lambda, NULL,
+                                        Settings::GrenadeHelper::grenadeInfos.size(), 7 );
+                        ImGui::PopItemWidth();
+                        ImGui::Columns( 1 );
+                        if ( ImGui::Button( XORSTR( "Remove" ), ImVec2( ImGui::GetWindowWidth(), 30 ) ) )
+                            if ( throwMessageCurrent > -1 &&
+                                 ( int ) Settings::GrenadeHelper::grenadeInfos.size() > throwMessageCurrent ) {
+                                Settings::GrenadeHelper::grenadeInfos.erase(
+                                        Settings::GrenadeHelper::grenadeInfos.begin() + throwMessageCurrent );
+                                pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
+                                if ( !DoesFileExist( path.c_str() ) )
+                                    mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+                                Settings::SaveGrenadeInfo( path << XORSTR( "/config.json" ) );
+                            }
                         ImGui::EndPopup();
                     }
                 }
