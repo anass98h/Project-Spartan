@@ -8,9 +8,17 @@ bool Settings::customYaw2::lby;
 
 static int page = 0;
 
-const char* tabs[] = {
+static const char* tabs[] = {
         "Standing", "Moving", "Airborne", "Miscellaneous"
 };
+const char* HvH::lbyTypes[] = { "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "Myrrib", "Myrrib 2", "Suicide Breaker", "None" };
+const char* HvH::xTypes[] = { "Up", "Flip", "Down", "Fake Zer0", "Fake Up" };
+const char* HvH::yTypes[] = {
+"No AA", "Forwards", "Backwards", "Spin", "Fake Sideways", "Backjitter","Backjitter2", "FJitter", "Kidua AA", "LBY Jitter", "LBY Spin", "LBY", "LBY Breaker", "Fake LBY", "LBY on Ground", "MasterLooser", //LBY Based
+"Tank 1", "Tank 2", "Tank 3", "pAA Fake", "pAA Real", "Myrrib's eap", "Richi's eap", "Rasp 1", "Rasp 2", "FeetWiggle", "Legit Trolling 1", "Legit Trolling 2", "Custom 1", "Custom 2" // Other
+};
+const char* HvH::zTypes[] = { "TEST" };
+
 
 void HvH::RenderTab() {
     for ( int i = 0; i < IM_ARRAYSIZE( tabs ); i++ ) {

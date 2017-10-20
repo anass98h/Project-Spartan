@@ -178,6 +178,9 @@ void NameChanger::BeginFrame( float frameTime ) {
                 SetName( Util::PadStringRight( Colorize( origName, NameChanger::color ),
                                                origName.size() + Util::RandomInt( 10, 50 ) ) );
                 break;
+            case NC_Type::NC_RAINBOW:
+                // FIXME: Add the Rainbow Mode Here.
+                break;
         }
 
         changes = -1;

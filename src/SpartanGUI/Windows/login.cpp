@@ -1,8 +1,8 @@
 #include "login.h"
 
-static int page = 0;
+// static int page = 0; Unused
 bool Login::showWindow = false;
-static bool LoggedIn = false;
+// static bool LoggedIn = false; Unused
 
 void Login::RenderWindow() {
     if ( !Login::showWindow )

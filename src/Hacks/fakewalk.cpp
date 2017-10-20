@@ -55,7 +55,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
             }
         }
     } else if ( Settings::ChokePackets::enabled && inputSystem->IsButtonDown( Settings::ChokePackets::key ) ) {
-        static bool chokedPackets = 0;
+        static unsigned short chokedPackets = 0; // Hmm this was a bool :thinking:
         if ( chokedPackets > 1000 ) {
             CreateMove::sendPacket = true;
             chokedPackets = 0;

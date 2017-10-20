@@ -536,12 +536,12 @@ static void DrawBoneMap( C_BasePlayer* player ) {
     static Vector bone3D;
     studiohdr_t* pStudioModel = modelInfo->GetStudioModel( player->GetModel() );
 
-    for( unsigned int i = 1; i < pStudioModel->numbones; i++ ){
+    for( int i = 1; i < pStudioModel->numbones; i++ ){
         bone3D = player->GetBonePosition( i );
         if ( debugOverlay->ScreenPosition( bone3D, bone2D ) )
             continue;
         char buffer[4];
-        snprintf(buffer, 4, "%d\0", i);
+        snprintf(buffer, 4, "%d", i);
         Draw::Text( Vector2D( bone2D.x, bone2D.y ), buffer, boneMapFont, Color( 255, 0, 255, 255 ) );
         }
         IEngineClient::player_info_t entityInformation;

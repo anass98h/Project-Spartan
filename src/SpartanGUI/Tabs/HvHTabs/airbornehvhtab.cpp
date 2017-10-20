@@ -36,7 +36,7 @@ void Airborne::RenderTab() {
                         {
                             ImGui::PushItemWidth( -3 );
                             ImGui::Combo( XORSTR( "##YFAKE" ), ( int* ) &Settings::AntiAim::Airborne::Yaw::typeFake,
-                                          HvH::yTypes, IM_ARRAYSIZE( HvH::yTypes ) );
+                                          HvH::yTypes, (int)AntiAimType_Y::NUMBER_OF_TYPES );
                             ImGui::PopItemWidth();
                             ImGui::PushItemWidth( -1 );
                             ImGui::SliderFloat( XORSTR( "##YFAKECUSTOM" ),
@@ -51,7 +51,7 @@ void Airborne::RenderTab() {
                         {
                             ImGui::PushItemWidth( -3 );
                             ImGui::Combo( XORSTR( "##YREAL" ), ( int* ) &Settings::AntiAim::Airborne::Yaw::type,
-                                          HvH::yTypes, IM_ARRAYSIZE( HvH::yTypes ) );
+                                          HvH::yTypes, (int)AntiAimType_Y::NUMBER_OF_TYPES );
                             ImGui::PopItemWidth();
                             ImGui::PushItemWidth( -1 );
                             ImGui::SliderFloat( XORSTR( "##YCUSTOM" ), &Settings::AntiAim::Airborne::Yaw::typeAdd,
@@ -82,7 +82,7 @@ void Airborne::RenderTab() {
                     {
                         ImGui::PushItemWidth( -3 );
                         ImGui::Combo( XORSTR( "##XREAL" ), ( int* ) &Settings::AntiAim::Airborne::Pitch::type,
-                                      HvH::xTypes, IM_ARRAYSIZE( HvH::xTypes ) );
+                                      HvH::xTypes, (int)AntiAimType_X::NUMBER_OF_TYPES );
                         ImGui::PopItemWidth();
                         ImGui::PushItemWidth( -1 );
                         ImGui::SliderFloat( XORSTR( "##XCUSTOM" ), &Settings::AntiAim::Airborne::Pitch::custom,
@@ -110,7 +110,7 @@ void Airborne::RenderTab() {
                     {
                         ImGui::PushItemWidth( -3 );
                         ImGui::Combo( XORSTR( "##ZREAL" ), ( int* ) &Settings::AntiAim::Airborne::Roll::type,
-                                      HvH::zTypes, IM_ARRAYSIZE( HvH::zTypes ) );
+                                      HvH::zTypes, (int)AntiAimType_Z::NUMBER_OF_TYPES );
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );
@@ -149,7 +149,7 @@ void Airborne::RenderTab() {
                     {
                         ImGui::PushItemWidth( -3 );
                         ImGui::Combo( XORSTR( "##LBYREAL" ), ( int* ) &Settings::AntiAim::Airborne::LBY::type,
-                                      HvH::lbyTypes, IM_ARRAYSIZE( HvH::lbyTypes ) );
+                                      HvH::lbyTypes, (int)AntiAimType_LBY::NUMBER_OF_TYPES );
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );

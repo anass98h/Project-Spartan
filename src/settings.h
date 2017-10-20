@@ -80,7 +80,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-            NOAA,
+    NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -111,6 +111,7 @@ enum class AntiAimType_Y : int {
     CUSTOM,
     CUSTOM2,
 
+    NUMBER_OF_TYPES // Leave at bottom
 };
 
 enum class AntiAimType_LBY : int {
@@ -122,11 +123,14 @@ enum class AntiAimType_LBY : int {
     MYRRIB2,
     SUICIDE,
     NONE,
+
+    NUMBER_OF_TYPES // Leave at bottom
 };
 
 enum class AntiAimType_Z : int {
     TEST,
 
+    NUMBER_OF_TYPES // Leave at bottom
 };
 
 enum class AntiAimType_X : int {
@@ -135,6 +139,8 @@ enum class AntiAimType_X : int {
     STATIC_DOWN,
     FAKEZERO,
     FAKEUP,
+
+    NUMBER_OF_TYPES // Leave at bottom
 };
 
 enum class ChamsType : int {
