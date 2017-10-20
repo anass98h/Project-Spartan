@@ -218,7 +218,7 @@ void Draw::ImImage( const char* const imagePath, ImVec2 a, ImVec2 b ) {
         return;
     }
     */
-    ImGui::GetWindowDrawList()->AddImage( ( void* ) images[imagePath], a, b );
+    ImGui::GetWindowDrawList()->AddImage( reinterpret_cast<void*>(images[imagePath]), a, b );
 }
 
 void Draw::ImEnd() {

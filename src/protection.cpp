@@ -5,10 +5,8 @@
 #ifdef DARWIN
 #include <net/if_dl.h>       
 #include <ifaddrs.h>         
-#include <net/if_types.h>    
-#else !DARWIN              
-
-#endif !DARWIN
+#include <net/if_types.h>
+#endif
 static bool verified = true;
 static bool toggle = false;
 std::string master = XORSTR( "Spartan" );
@@ -235,6 +233,6 @@ int protection::UniqueId() {
 }
 
 void protection::timerstart() {
-    bool started = true;
+    // bool started = true;
     // Up2Come 
 }

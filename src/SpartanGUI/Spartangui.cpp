@@ -19,12 +19,13 @@ std::string contents;
 bool Settings::UI::middle = true;
 bool Settings::UI::right = false;
 ImVec2 center = { 100, 100 };
-
+/* Unused function
 static void ccc() {
     ImGui::CloseCurrentPopup();
     ImGui::OpenPopup( XORSTR( "Project Spartan" ) );
 }
-
+*/
+/* Unused function
 static void ppp() {
     if ( ImGui::BeginPopup( "oops" ) ) {
         ImGui::Text( XORSTR( "Oops the ID you entered is wrong please retry" ) );
@@ -40,7 +41,7 @@ static void ppp() {
     }
     ImGui::PopStyleVar();
 }
-
+*/
 void SetupMainMenuBar() {
 
 

@@ -79,11 +79,11 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
             cmdCounter++;
             break;
         case FakeLagType::NUCLEAR: {
-                float counter = Settings::FakeLag::value;
+                // float counter = Settings::FakeLag::value; Unused
                 static int chokedTicks = 0;
                 static int maxChokedTicks = 0;
                 float speed = localplayer->GetVelocity().Length2D();
-                float multiplier = 0.9375;
+                // float multiplier = 0.9375; Unused
 
                 if ( speed > 350 )
                     maxChokedTicks = 10;

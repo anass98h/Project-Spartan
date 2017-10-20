@@ -181,7 +181,7 @@ float Math::ClampYaw( float val ) {
 
 void Math::CalcAngleYawOnly( Vector src, Vector dst, Vector& angles ) {
     Vector delta = src - dst;
-    double hyp = delta.Length2D();
+    // double hyp = delta.Length2D();
     angles.y = ( atan( delta.y / delta.x ) * 57.295779513082f );
     //	angles.x = (atan(delta.z / hyp) * 57.295779513082f);
     angles[2] = 0.00;

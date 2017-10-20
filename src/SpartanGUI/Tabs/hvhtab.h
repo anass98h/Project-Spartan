@@ -4,13 +4,10 @@
 
 namespace HvH {
 
-    static const char* yTypes[] = {
-            "No AA", "Forwards", "Backwards", "Spin", "Fake Sideways", "Backjitter","Backjitter2", "FJitter", "Kidua AA", "LBY Jitter", "LBY Spin", "LBY", "LBY Breaker", "Fake LBY", "LBY on Ground", "MasterLooser", //LBY Based
-                    "Tank 1", "Tank 2", "Tank 3", "pAA Fake", "pAA Real", "Myrrib's eap", "Richi's eap", "Rasp 1", "Rasp 2", "FeetWiggle", "Legit Trolling 1", "Legit Trolling 2", "Custom 1", "Custom 2" // Other
-    };
-    static const char* lbyTypes[] = { "Breaker 1", "Breaker 2", "Breaker 3", "Avoz", "Myrrib", "Myrrib 2", "Suicide Breaker", "None" };
-    static const char* zTypes[] = { "TEST" };
-    static const char* xTypes[] = { "Up", "Flip", "Down", "Fake Zer0", "Fake Up" };
+    extern const char* yTypes[];
+    extern const char* lbyTypes[];
+    extern const char* zTypes[];
+    extern const char* xTypes[];
 
     void RenderTab();
     void MainRenderTab();

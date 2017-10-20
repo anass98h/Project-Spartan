@@ -24,7 +24,7 @@ void CircleStrafe::CreateMove( CUserCmd* cmd ) {
 
     float rotation = 4.f * Circle - globalVars->interval_per_tick;
 
-    QAngle storedview = cmd->viewangles;
+    // QAngle storedview = cmd->viewangles; UnUsed
 
     if ( inputSystem->IsButtonDown( Settings::CircleStrafe::key ) ) {
         cmd->forwardmove = 450.f;

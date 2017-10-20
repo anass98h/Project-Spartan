@@ -312,9 +312,9 @@ static Vector GetClosestSpot( CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePl
     static int len = 0;
 
     if ( Resolver::shouldBaim )
-        static int len = sizeof( baimSpots ) / sizeof( baimSpots[0] );    
+        len = sizeof( baimSpots ) / sizeof( baimSpots[0] );
     else
-        static int len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
+        len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
 
     for ( int i = 0; i < len; i++ ) {
         if ( Resolver::shouldBaim ) {
@@ -362,7 +362,7 @@ static Vector GetClosestBacktrack( CUserCmd* cmd, C_BasePlayer* localPlayer, C_B
     float tempFov = Settings::Aimbot::AutoAim::fov;
     Vector bestSpot = { 0, 0, 0 };
     Vector pVecTarget = localPlayer->GetEyePosition();
-    for ( int i = 1; i < Backtracking::lagRecords[enemy->GetIndex()].size(); i++ ) {
+    for ( unsigned int i = 1; i < Backtracking::lagRecords[enemy->GetIndex()].size(); i++ ) {
         float cbFov = Math::GetFov( viewAngles, Math::CalcAngle( pVecTarget,
                                                                  Backtracking::lagRecords[enemy->GetIndex()][i].headPos ) );
         if ( cbFov < tempFov ) {

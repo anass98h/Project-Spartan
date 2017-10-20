@@ -16,7 +16,7 @@ int Shotsmissed = 0;
 bool shotATT;
 std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
 std::random_device rd;
-static float rSimTime[65];
+// static float rSimTime[65]; Unused
 
 static int shotsMiss = 0;
 
@@ -33,6 +33,7 @@ static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
 
 void Resolver::Hug( C_BasePlayer* player ) {
     auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
+    /* None of these are Used
     float flYaw = 0;
     static float OldLowerBodyYaws[65];
     static float OldYawDeltas[65];
@@ -41,13 +42,14 @@ void Resolver::Hug( C_BasePlayer* player ) {
     static bool isLBYPredictited[65];
     INetChannelInfo* nci = engine->GetNetChannelInfo();
     float bodyeyedelta = player->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
+     */
 
     QAngle angle = *player->GetEyeAngles();    
 
     float lby = *player->GetLowerBodyYawTarget();
     float curTime = globalVars->curtime;
     bool onGround = player->GetFlags() & FL_ONGROUND;
-    bool isMoving = ( onGround & fabsf( player->GetVelocity().Length2D() ) != 0 );
+    bool isMoving = ( onGround && player->GetVelocity().Length2D() > 0.1f );
     float lbyUpdateTime = isMoving ? 0.22f : 1.1f;
 
     std::map<int, float> lbyDeltaMove = {
@@ -103,7 +105,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
             angle.y = lby + 180.f;
         else {
             if ( Settings::Resolver::lbyOnly ) {
-                if ( Resolver::lbyUpdated || Backtracking::backtrackingLby && Settings::Resolver::LagComp )
+                if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) )
                     Resolver::shouldBaim = false;
                 else
                     Resolver::shouldBaim = true;
@@ -111,10 +113,13 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 angle.y = lby;
             } else {
                 Resolver::shouldBaim = false;
-                if ( Resolver::lbyUpdated || Backtracking::backtrackingLby && Settings::Resolver::LagComp ) {
+                if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) ) {
                     angle.y = lby;
                 } else {
-                    bool sameAngle = ( playerAngle1[player->GetIndex()] == playerAngle2[player->GetIndex()] == playerAngle3[player->GetIndex()] == playerAngle4[player->GetIndex()] );
+                    // TODO: Can't compare floats like this. Change me
+                    bool sameAngle = ( playerAngle1[player->GetIndex()] == playerAngle2[player->GetIndex()] )
+                                     && ( playerAngle2[player->GetIndex()] == playerAngle3[player->GetIndex()] )
+                                     && ( playerAngle3[player->GetIndex()] == playerAngle4[player->GetIndex()] );
                     if ( staticReal[player->GetIndex()] && playerAngle1[player->GetIndex()] != lby) {
                         if ( sameAngle ) {
                             if ( shotsMissedSave > 1 ) {
