@@ -47,6 +47,7 @@ extern VMT* clientVMT;
 extern VMT* modelRenderVMT;
 extern VMT* clientModeVMT;
 extern VMT* gameEventsVMT;
+extern VMT* gameMovementVMT;
 extern VMT* viewRenderVMT;
 extern VMT* inputInternalVMT;
 extern VMT* materialVMT;
