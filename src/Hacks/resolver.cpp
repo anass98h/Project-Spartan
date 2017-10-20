@@ -126,10 +126,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
                     } else
                         Resolver::shouldBaim = false;
                 } else {
-                    // TODO: Can't compare floats like this. Change me
-                    bool sameAngle = ( playerAngle1[player->GetIndex()] == playerAngle2[player->GetIndex()] )
-                                     && ( playerAngle2[player->GetIndex()] == playerAngle3[player->GetIndex()] )
-                                     && ( playerAngle3[player->GetIndex()] == playerAngle4[player->GetIndex()] );
                     if ( staticReal[player->GetIndex()] && playerAngle1[player->GetIndex()] != lby) {
                             if ( shotsMissSave[player->GetIndex()] > 1 ) {
                                 switch ( shotsMissSave[player->GetIndex()] % 5 ) {
