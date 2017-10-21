@@ -749,6 +749,7 @@ namespace Settings {
         extern bool lbyOnly;
         extern bool angleFlipEnabled;
         extern ButtonCode_t angleFlip;
+        extern int baimAfter;
     }
     namespace lbyindicator {
         extern bool enabled;

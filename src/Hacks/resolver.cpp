@@ -6,6 +6,7 @@ float Settings::Resolver::ticks = 2;
 float Settings::Resolver::modulo = 2;
 bool Settings::Resolver::LagComp = false;
 bool Settings::Resolver::lbyOnly = false;
+int Settings::Resolver::baimAfter = -1;
 std::vector<int64_t> Resolver::playerAngleLogs = {};
 std::array<CResolveInfo, 32> Resolver::m_arrInfos;
 
@@ -114,17 +115,18 @@ void Resolver::Hug( C_BasePlayer* player ) {
     
                 angle.y = lby;
             } else {
-                Resolver::shouldBaim = false;
                 if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) ) {
                     angle.y = lby;
                     if ( maybeFakeWalking && hasFakeWalk[player->GetIndex()] && shotsMissSave[player->GetIndex()] > 1 ){
                         angle.y = lby + 180.0f;
-                        Resolver::shouldBaim = false;
                     } else if ( shotsMissSave[player->GetIndex()] > 2 ) {
-                        Resolver::shouldBaim = true;
+                        switch ( shotsMissSave[player->GetIndex()] % 3 ) {
+                            case 0: angle.y = lby + 180.f;
+                            case 1: angle.y = lby + 90.f;
+                            case 2: angle.y = lby - 90.f;
+                        }
                         hasFakeWalk[player->GetIndex()] = true;
-                    } else
-                        Resolver::shouldBaim = false;
+                    }
                 } else {
                     if ( staticReal[player->GetIndex()] && playerAngle1[player->GetIndex()] != lby) {
                             if ( shotsMissSave[player->GetIndex()] > 1 ) {
@@ -150,7 +152,10 @@ void Resolver::Hug( C_BasePlayer* player ) {
                             case 7: angle.y = lby - 90.f;
                         }
                     }
-                    if ( shotsMissSave[player->GetIndex()] > 8 )
+                    
+                    if ( Settings::Resolver::baimAfter == -1 )
+                        Resolver::shouldBaim = false;
+                    else if ( shotsMissSave[player->GetIndex()] > Settings::Resolver::baimAfter )
                         Resolver::shouldBaim = true;
                     else
                         Resolver::shouldBaim = false;
