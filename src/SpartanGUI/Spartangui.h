@@ -20,6 +20,7 @@
 #include "Windows/skinmodelchanger.h"
 #include "Windows/configs.h"
 #include "Windows/playerlist.h"
+#include "Windows/resolverinfo.h"
 #include "Windows/colors.h"
 #include "Windows/login.h"
 #include "Windows/main.h"
