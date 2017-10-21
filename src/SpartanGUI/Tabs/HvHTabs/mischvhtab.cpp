@@ -57,6 +57,23 @@ void MiscHvHTab::RenderTab() {
                         UI::KeyBindButton( &Settings::Resolver::angleFlip );
                     }
                     ImGui::Columns( 1 );
+
+                    ImGui::Separator();
+                    
+                    ImGui::Columns( 2, NULL, true );
+                    {
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text( XORSTR( "Smart Aim" ) );
+                        SetTooltip( XORSTR( "Will body aim after X shots. Put it on -1 to disable it." ) );
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    }
+                    ImGui::NextColumn();
+                    {
+                        ImGui::PushItemWidth( -1 );
+                        ImGui::SliderInt( XORSTR( "##BAIMAFTER" ), &Settings::Resolver::baimAfter, -1, 10);
+                        ImGui::PopItemWidth();
+                    }
+                    ImGui::Columns( 1 );
                 }
                 ImGui::Separator();
 
