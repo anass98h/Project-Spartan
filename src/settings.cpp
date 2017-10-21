@@ -434,7 +434,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "grabbing_hostage" )] = Settings::ESP::Info::grabbingHostage;
     settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "rescuing" )] = Settings::ESP::Info::rescuing;
     settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "location" )] = Settings::ESP::Info::location;
-    settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "lby" )] = Settings::ESP::Info::lby;    
+    settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "lby" )] = Settings::ESP::Info::lby;
+    settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "resolveInfo" )] = Settings::ESP::Info::resolveInfo;
     settings[XORSTR( "ESP" )][XORSTR( "Boxes" )][XORSTR( "enabled" )] = Settings::ESP::Boxes::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "Boxes" )][XORSTR( "type" )] = ( int ) Settings::ESP::Boxes::type;
     settings[XORSTR( "ESP" )][XORSTR( "Skeleton" )][XORSTR( "enabled" )] = Settings::ESP::Skeleton::enabled;
@@ -1069,7 +1070,8 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::ESP::Info::grabbingHostage );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "rescuing" )], &Settings::ESP::Info::rescuing );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "location" )], &Settings::ESP::Info::location );
-    GetVal( settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "lby" )], &Settings::ESP::Info::lby );    
+    GetVal( settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "lby" )], &Settings::ESP::Info::lby );
+    GetVal( settings[XORSTR( "ESP" )][XORSTR( "Info" )][XORSTR( "resolveInfo" )], &Settings::ESP::Info::resolveInfo );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Boxes" )][XORSTR( "enabled" )], &Settings::ESP::Boxes::enabled );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Boxes" )][XORSTR( "type" )], ( int* ) &Settings::ESP::Boxes::type );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Skeleton" )][XORSTR( "enabled" )], &Settings::ESP::Skeleton::enabled );

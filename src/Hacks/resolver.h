@@ -32,6 +32,11 @@ namespace Resolver {
 
     extern std::map<int, int> shotsMiss;
 
+    extern std::map<int, float> angForce;
+    extern std::map<int, float> lastHitAng;
+
+    extern int resolvingId;
+
     extern bool lbyUpdated;
 
     extern bool shouldBaim;
