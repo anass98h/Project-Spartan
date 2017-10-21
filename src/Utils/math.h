@@ -8,6 +8,8 @@ namespace Math {
     void AngleVectors( const QAngle& angles, Vector& forward );
 
     void NormalizeAngles( QAngle& angle );
+    
+    float ResNormalizeYaw( float yaw );
 
     void ClampAngles( QAngle& angle );
 

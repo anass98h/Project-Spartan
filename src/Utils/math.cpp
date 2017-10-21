@@ -48,6 +48,17 @@ void Math::NormalizeAngles( QAngle& angle ) {
         angle.y += 360.0f;
 }
 
+float Math::ResNormalizeYaw( float yaw ) {
+    float yaw2 = yaw;
+    
+    while ( yaw2 > 180.0f )
+        yaw2 -= 360.0f;
+    while ( yaw2 < -180.0f )
+        yaw2 += 360.0f;
+
+    return yaw2;
+}
+
 void Math::NormalizePitch( float& pitch ) {
     while ( pitch > 89.0f )
         pitch -= 180.0f;

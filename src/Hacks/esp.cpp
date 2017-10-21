@@ -69,6 +69,7 @@ bool Settings::ESP::Info::grabbingHostage = false;
 bool Settings::ESP::Info::rescuing = false;
 bool Settings::ESP::Info::location = false;
 bool Settings::ESP::Info::lby = false;
+bool Settings::ESP::Info::resolveInfo = false;
 bool Settings::ESP::Boxes::enabled = false;
 BoxType Settings::ESP::Boxes::type = BoxType::FRAME_2D;
 bool Settings::ESP::Bars::enabled = false;
@@ -1008,7 +1009,7 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
     if ( Settings::ESP::Info::rescuing && player->IsRescuing() )
         stringsToShow.push_back( XORSTR( "Rescuing" ) );
 
-    if ( localplayer->GetAlive() && localplayer->GetTeam() != player->GetTeam() && Settings::ESP::Info::lby ) {
+    if ( Settings::Resolver::enabled && localplayer->GetAlive() && Resolver::resolvingId == player->GetIndex() && Settings::ESP::Info::lby ) {
         if ( Settings::Resolver::LagComp ) {
             if ( Resolver::lbyUpdated )
                 stringsToShow.push_back( XORSTR( "LBY Updated" ) );
@@ -1022,6 +1023,13 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
             else
                 stringsToShow.push_back( XORSTR( "LBY Not Updated" ) );
         }
+    }
+
+    if ( Settings::Resolver::enabled && localplayer->GetAlive() && Settings::ESP::Info::resolveInfo && Resolver::resolvingId == player->GetIndex() ) {
+        std::string lH = std::to_string( Math::ResNormalizeYaw( Resolver::lastHitAng[player->GetIndex()] ) );
+        std::string aF = std::to_string( Math::ResNormalizeYaw( Resolver::angForce[player->GetIndex()] ) );
+        stringsToShow.push_back( XORSTR( "Last hit : " ) + lH );
+        stringsToShow.push_back( XORSTR( "Resolving  : " ) + aF );
     }
 
     if ( Settings::ESP::Info::location )

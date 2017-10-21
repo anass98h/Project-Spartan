@@ -832,6 +832,7 @@ namespace Settings {
             extern bool rescuing;
             extern bool location;
             extern bool lby;
+            extern bool resolveInfo;
         }
 
         namespace Skeleton {

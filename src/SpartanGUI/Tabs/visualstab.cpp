@@ -153,6 +153,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Defuse Kit" ), &Settings::ESP::Info::hasDefuser );
                 ImGui::Checkbox( XORSTR( "Grabbing Hostage" ), &Settings::ESP::Info::grabbingHostage );
                 ImGui::Checkbox( XORSTR( "Location" ), &Settings::ESP::Info::location );
+                ImGui::Checkbox( XORSTR( "Resolver Info" ), &Settings::ESP::Info::resolveInfo );
             }
             ImGui::NextColumn();
             {
