@@ -177,6 +177,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         if ( strcmp( event->GetName(), XORSTR( "player_connect_full" ) ) ||
              strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
 
+        }
     }
 }
 
