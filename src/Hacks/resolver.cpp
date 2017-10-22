@@ -66,6 +66,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         // For example
         // angle.y = HugLby( target );
         // TODO: Maybe add baim code here until we have something proper
+       angle.y = Resolver::HugBrute(target);
     }
 
     if ( didDmg ) {
@@ -101,7 +102,7 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     float lby = *target->GetLowerBodyYawTarget();
 
     switch ( Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
-        case 0: angle.y = lby; break;
+        case 0: angle.y = HugLby(target); break;
         case 1: angle.y = lby + 90.f; break;
         case 2: angle.y = lby - 90.f; break;
         case 3: angle.y = lby + 180.f; break;
