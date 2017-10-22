@@ -77,6 +77,7 @@ QAngle AimStepLastAngle;
 QAngle RCSLastPunch;
 
 int Aimbot::targetAimbot = -1;
+bool Aimbot::useAbTarget = false;
 const int HEAD_VECTORS = 11;
 
 bool Aimbot::shootingRevolver = false;
@@ -424,6 +425,8 @@ GetClosestPlayer( CUserCmd* cmd, bool visibleCheck, Vector& bestSpot, float& bes
         }
     }
 
+    Aimbot::useAbTarget = false;
+
     for ( int i = 1; i < engine->GetMaxClients(); ++i ) {
         C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity( i );
 
@@ -448,6 +451,7 @@ GetClosestPlayer( CUserCmd* cmd, bool visibleCheck, Vector& bestSpot, float& bes
         }
 
         Aimbot::targetAimbot = i;
+        Aimbot::useAbTarget = true;
 
         Vector eVecTarget = player->GetBonePosition( ( int ) Settings::Aimbot::bone );
 
