@@ -12,7 +12,14 @@ bool Settings::AngleFlip::enabled = false;
 ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
 // Variables
+bool didDmg = false;
+
+// extern
 bool Resolver::lbyUpdated = false;
+int Resolver::resolvingId = -1;
+std::map<int, int> shotsMissed = {
+    { -1, 0 }
+};
 
 void Resolver::Hug( C_BasePlayer* target ) {
     if ( Settings::Resolver::resolvePitch )
@@ -20,22 +27,40 @@ void Resolver::Hug( C_BasePlayer* target ) {
     
     QAngle angle = *target->GetEyeAngles();
 
+    Resolver::resolvingId = target->GetIndex();
+
+    // Put pCodenz here
+    // Call HugBrute(), etc. so we have clean code and not messy like before
+
+    if ( didDmg ) {
+        // You can save angles here, etc...
+
+        didDmg = false;
+    }
+
     target->GetEyeAngles()->y = angle.y;
 }
 
 void Resolver::HugLby( C_BasePlayer* target ) {
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
-    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == ACT_CSGO_IDLE_TURN_BALANCEADJUST ) {
-        // LBY broken
+    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == 979 ) { // lets use 979 instead of ACT_CSGO_IDLE_TURN_BALANCEADJUST, just to be sure
+        // LBY broken and is between LBY+120 & LBY-120
+        // Giving us range of 60 + 60 = 120
+        // We should force 180 first, cuz its the most common one AFAIK
     }
 }
 
 void Resolver::HugBrute( C_BasePlayer* target ) {
     float lby = *target->GetLowerBodyYawTarget();
+
+    // Put brutefore inhere
 }
 
 void Resolver::HugPitch( C_BasePlayer* target ) {
+    if ( !Settings::Resolver::resolvePitch )
+        return;
+
     QAngle angle = *target->GetEyeAngles();
 
     target->GetEyeAngles()->x = angle.x;
@@ -57,9 +82,64 @@ bool Resolver::LbyUpdated( C_BasePlayer* target ) {
         return false;
 }
 
-////////////////////////////////////////////////
-/// HOOKS
-////////////////////////////////////////////////
+////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\
+///                   HOOKS                   \\\
+////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\
+
+void Resolver::FireGameEvent( IGameEvent* event ) {
+    if ( !event )
+        return;
+
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );                
+
+    if ( !pLocal || !pLocal->GetAlive() )
+        return;
+
+    if ( strcmp( event->GetName(), XORSTR( "player_hurt" ) ) == 0 ) {
+        int hurt_player_id = event->GetInt( XORSTR( "userid" ) );
+        int attacker_id = event->GetInt( XORSTR( "attacker" ) );
+
+        if ( engine->GetPlayerForUserID( hurt_player_id ) == engine->GetLocalPlayer() )
+            return;
+
+        if ( engine->GetPlayerForUserID( attacker_id ) != engine->GetLocalPlayer() )
+            return;
+
+        C_BasePlayer* hurt_player = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( hurt_player_id ) );
+        if ( !hurt_player )
+            return;
+
+        IEngineClient::player_info_t localPlayerInfo;
+        engine->GetPlayerInfo( localplayer->GetIndex(), &localPlayerInfo );
+
+        IEngineClient::player_info_t hurtPlayerInfo;
+        engine->GetPlayerInfo( hurt_player->GetIndex(), &hurtPlayerInfo );
+
+        didDmg = true;
+
+        Resolver::shotsMissed[Resolver::resolvingId] = 0;
+    } else {
+        C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
+            localplayer->GetActiveWeapon() );
+        
+        int ammo = activeWeapon->GetAmmo();        
+        static int ammoSave = ammo;
+
+        if ( ammoSave != ammo ) {
+            Resolver::shotsMissed[Resolver::resolvingId]++;
+            ammoSave = ammo;
+        }
+    }
+
+    if ( strcmp( event->GetName(), "player_connect_full" ) != 0 &&
+         strcmp( event->GetName(), "cs_game_disconnected" ) != 0 )
+        return;
+
+    if ( event->GetInt( "userid" ) &&
+         engine->GetPlayerForUserID( event->GetInt( "userid" ) ) != engine->GetLocalPlayer() )
+        return;
+}
 
 void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
     if ( !Settings::Resolver::enabled || !engine->IsInGame() ) {
@@ -67,29 +147,49 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
     }
 
     C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    // Idea: Add Resolve When Dead feature?
     if ( !pLocal || !pLocal->GetAlive() ) {
         return;
     }
 
     switch ( stage ) {
         case ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START:
-            // Do your magic Myrrib & Rasp
+            // If we should use Aimbot target
+            if ( Aimbot::useAbTarget ) {
+                C_BasePlayer* abTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
+                Hug ( abTarget );
+            } else {
+                // If not, loop trough the entity list
+                for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
+                    C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
+        
+                    if ( !target
+                         || target == me
+                         || target->GetDormant()
+                         || !target->GetAlive()
+                         || target->GetImmune()
+                         || target->GetTeam() == me->GetTeam() )
+                        continue;
+        
+                    Hug ( target );
+                }
+            }
             break;
         case ClientFrameStage_t::FRAME_RENDER_END:
-            // Do your magic Myrrib & Rasp
+            // Nothing in here needed, I guess
             break;
     }
 }
 
 void Resolver::PostFrameStageNotify( ClientFrameStage_t stage ) {
-    // Do your magic Myrrib & Rasp
+    // Nothing in here needed, I guess
 }
 
 void Resolver::CreateMove( CUserCmd* cmd ) {
-    // Do your magic Myrrib & Rasp
+    // I guess nothing in here too
 }
 
 void Resolver::Paint() {
-    // This is if you want to paint some resolver info on screen, if you don't want it just remove it from here or leave
-    // it blank.
+    // I guess we dont need to draw anything, because we have Resolver Info Window
+    // We should draw everything there!
 }

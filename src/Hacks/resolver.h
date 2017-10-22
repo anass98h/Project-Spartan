@@ -27,6 +27,8 @@ namespace Resolver {
     // Variables
 
     extern bool lbyUpdated;
+    extern std::map<int, int> shotsMissed;
+    extern int resolvingId;
 
     // Hooks
 
