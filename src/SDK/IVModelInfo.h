@@ -51,8 +51,7 @@ struct mstudioseqdesc_t {
     int blendindex;
 
     inline unsigned short* pBlend( int i ) const {
-        return ( unsigned short* ) ( ( ( byte * )
-        this) +blendindex) +i;
+        return ( unsigned short* ) ( ( ( unsigned char* ) this ) + blendindex ) + i;
     };
 
     int seqgroup; // sequence group for demand loading
