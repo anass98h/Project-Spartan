@@ -20,41 +20,31 @@ void MiscHvHTab::RenderTab() {
                         ImGui::Text( XORSTR( "Modulo" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     }
-                    ImGui::NextColumn();
-                    {
-                        ImGui::PushItemWidth( -1 );
-                        ImGui::SliderFloat( XORSTR( "##HUGTICKS" ), &Settings::Resolver::ticks, 0, 50,
-                                            XORSTR( "%.1f" ) );
-                        ImGui::PopItemWidth();
-                        ImGui::PushItemWidth( -1 );
-                        ImGui::SliderFloat( XORSTR( "##HUGMODULO" ), &Settings::Resolver::modulo, 0, 50,
-                                            XORSTR( "%.1f" ) );
-                        ImGui::PopItemWidth();
-                    }
+
                     ImGui::Columns( 1 );
 
                     ImGui::Columns( 2, NULL, true );
                     {
-                        ImGui::Checkbox( XORSTR( "BackTrack LBY" ), &Settings::Resolver::LagComp );
+                        ImGui::Checkbox( XORSTR( "BackTrack LBY" ), &Settings::Resolver::lagCompensation );
                         SetTooltip( XORSTR( "Backtracks to latest LBY update." ) );
                     }
                     ImGui::NextColumn();
                     {
-                        ImGui::Checkbox( XORSTR( "Resolve Pitch" ), &Settings::Resolver::pitch );
+                        ImGui::Checkbox( XORSTR( "Resolve Pitch" ), &Settings::Resolver::resolvePitch );
                         SetTooltip( XORSTR( "Resolve enemy pitch." ) );
                     }
                     ImGui::Columns( 1 );
 
                     ImGui::Columns( 2, NULL, true );
                     {
-                        ImGui::Checkbox( XORSTR( "Flip angles" ), &Settings::Resolver::angleFlipEnabled );
+                        ImGui::Checkbox( XORSTR( "Flip angles" ), &Settings::AngleFlip::enabled );
                         SetTooltip( XORSTR( "Adds 180 to the enemy yaw angle." ) );
-                        ImGui::Checkbox( XORSTR( "Headshot LBY only" ), &Settings::Resolver::lbyOnly );
+                        ImGui::Checkbox( XORSTR( "Headshot LBY only" ), &Settings::Resolver::headshotLbyUpdateOnly );
                         SetTooltip( XORSTR( "If LBY is updated hitscan whole body, else baim." ) );
                     }
                     ImGui::NextColumn();
                     {
-                        UI::KeyBindButton( &Settings::Resolver::angleFlip );
+                        UI::KeyBindButton( &Settings::AngleFlip::key );
                     }
                     ImGui::Columns( 1 );
 
@@ -70,7 +60,7 @@ void MiscHvHTab::RenderTab() {
                     ImGui::NextColumn();
                     {
                         ImGui::PushItemWidth( -1 );
-                        ImGui::SliderInt( XORSTR( "##BAIMAFTER" ), &Settings::Resolver::baimAfter, -1, 10);
+                        ImGui::SliderInt( XORSTR( "##BAIMAFTER" ), &Settings::SmartAim::baimAfterMissed, -1, 10);
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns( 1 );

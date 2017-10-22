@@ -1010,7 +1010,7 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         stringsToShow.push_back( XORSTR( "Rescuing" ) );
 
     if ( Settings::Resolver::enabled && localplayer->GetAlive() && Resolver::resolvingId == player->GetIndex() && Settings::ESP::Info::lby ) {
-        if ( Settings::Resolver::LagComp ) {
+        if ( Settings::Resolver::lagCompensation ) {
             if ( Resolver::lbyUpdated )
                 stringsToShow.push_back( XORSTR( "LBY Updated" ) );
             else if ( Backtracking::backtrackingLby )
@@ -1025,12 +1025,12 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
         }
     }
 
-    if ( Settings::Resolver::enabled && localplayer->GetAlive() && Settings::ESP::Info::resolveInfo && Resolver::resolvingId == player->GetIndex() ) {
+  /*  if ( Settings::Resolver::enabled && localplayer->GetAlive() && Settings::ESP::Info::resolveInfo && Resolver::resolvingId == player->GetIndex() ) {
         std::string lH = std::to_string( Math::ResNormalizeYaw( Resolver::lastHitAng[player->GetIndex()] ) );
         std::string aF = std::to_string( Math::ResNormalizeYaw( Resolver::angForce[player->GetIndex()] ) );
         stringsToShow.push_back( XORSTR( "Last hit : " ) + lH );
         stringsToShow.push_back( XORSTR( "Resolving  : " ) + aF );
-    }
+    } TODO: fix errors in commented part, even this stuff isn't needed*/
 
     if ( Settings::ESP::Info::location )
         stringsToShow.push_back( player->GetLastPlaceName() );

@@ -43,7 +43,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
         lastShotsMissed = curTime;
-    } else if ( curTime > lastShotsMissed + shotsMissedTime ) {
+    }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
     }
@@ -60,7 +60,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
         // For example
-        // angle.y = HugLby( target );
+        angle.y = HugBrute( target );
     }
 
     if ( didDmg ) {
@@ -72,7 +72,8 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Settings::Resolver::resolvePitch ) {
         angle.x = HugPitch( target );
     }
-
+    if(!onGround)
+        Resolver::baimNextShot = true;
     Math::NormalizePitch( angle.x );
     Math::NormalizeYaw( angle.y );
 
