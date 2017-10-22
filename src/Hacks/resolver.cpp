@@ -47,7 +47,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Resolver::shotsMissed[target->GetIndex()] > shotsMissedS ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
-       // lastShotsMissed = curTime; Never used
+        lastShotsMissed = curTime; // CLion is retarded and shots this isn't used, but it is, if it wasn't this, shots missed wouldnt save etc...
     } else if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
