@@ -286,15 +286,15 @@ static bool HasViableEnemy() {
 
 static float DoAAatTarget() {
     static C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    static float Angle = 0.0f;
+    static float Angle = 0.f;
 
     if ( ( AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled ) ||
          ( AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled ) ||
-         ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::dynamicAA ) ) {
+         ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled ) ) {
         if ( ( AntiAim::IsStanding() && Settings::AntiAim::Standing::dynamicAA ) ||
              ( AntiAim::IsMoving() && Settings::AntiAim::Moving::dynamicAA ) ||
              ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::dynamicAA ) ) {
-            float bestDist = 999999999.f; // easy cuz im retarded
+            float bestDist = 999999.f; // easy cuz im retarded
             for ( int i = 1; i < engine->GetMaxClients(); ++i ) {
                 C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
 
@@ -308,13 +308,16 @@ static float DoAAatTarget() {
 
                 Vector eye_pos = pLocal->GetEyePosition();
                 Vector target_pos = target->GetEyePosition();
+                eye_pos = pLocal->GetEyePosition();
+                target_pos = target->GetEyePosition();
 
                 float tempDist = eye_pos.DistTo( target_pos );
+                tempDist = eye_pos.DistTo( target_pos );
 
-                if ( bestDist > tempDist ) {
+                if ( bestDist > tempDist || bestDist < tempDist ) {
                     bestDist = tempDist;
-                    Angle = Math::CalcAngle( eye_pos, target_pos ).y;
-                    return Angle;
+                    return Math::CalcAngle( eye_pos, target_pos ).y;
+                    
                 }
             }
         }
@@ -786,6 +789,12 @@ yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                     yFlip ? angle.y += 146 : angle.y -= 146;
                     break;
                 case AntiAimType_Y::BACKWARDS:
+                    if((Settings::AntiAim::Standing::dynamicAA ||Settings::AntiAim::Moving::dynamicAA || Settings::AntiAim::Airborne::dynamicAA) && HasViableEnemy() ){
+                        static float add = DoAAatTarget();
+                        add = DoAAatTarget();
+                        angle.y = add + 180;
+                    }
+                    else
                     angle.y -= 180.0f;
 
                 break;
