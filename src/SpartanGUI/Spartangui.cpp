@@ -277,12 +277,11 @@ void UI::SetupWindows() {
         Configs::RenderWindow();
         Colors::RenderWindow();
         PlayerList::RenderWindow();
-        ResolverInfo::RenderWindow();
         //         Fonts::RenderWindow();
     }
 
     ShowSpectators::RenderWindow();
     Radar::RenderWindow();
-
+    ResolverInfo::RenderWindow();
 
 }

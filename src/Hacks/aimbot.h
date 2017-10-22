@@ -15,6 +15,7 @@ namespace Aimbot {
     extern std::vector<int64_t> friends;
     extern std::vector<int64_t> baim;
     extern int targetAimbot;
+    extern bool useAbTarget;
 
     extern bool shootingRevolver;
 
