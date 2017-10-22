@@ -2,11 +2,27 @@
 
 bool Settings::Resolver::enabled = false;
 bool Settings::Resolver::deadResolve = false;
+bool Settings::Resolver::pitch = false;
 
+void Resolver::ResolveY( C_BASePlayer* pEntity ) {
+    if ( !Settings::Resolver::pitch )
+        return;
+
+    QAngle angle = *pEntity->GetViewAngles();
+
+    *pEntity->GetViewAngles()->x = angle.x;
+}
 
 void Resolver::Hug( C_BasePlayer* pEntity ) {
     if ( !Settings::Resolver::enabled )
         return;
+
+    if ( Settings::Resolver::pitch )
+        ResolveY( pEntity );
+
+    QAngle angle = *pEntity->GetViewAngles();
+
+    *pEntity->GetViewAngles()->y = angle.y;
 }
 
 void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
@@ -24,9 +40,9 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
         C_BasePlayer* aimbotTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
 
         if ( Aimbot::useAbTarget )
-            Hug ( aimbotTarget );
+            Hug( aimbotTarget );
         else {
-            for ( int i = 1; i < engine->GetMaxClients(); ++i ) {
+            for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
                 C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
 
                 if ( !target
@@ -37,7 +53,7 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
                      || target->GetTeam() == pLocal->GetTeam() )
                     continue;
 
-                Hug ( target );
+                Hug( target );
             }
         }
     }

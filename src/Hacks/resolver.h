@@ -18,4 +18,6 @@ namespace Resolver {
     void PostFrameStageNotify( ClientFrameStage_t stage );
 
     void CreateMove( CUserCmd* cmd );
+
+    void ResolveY( C_BasePlayer* pEntity );
 }

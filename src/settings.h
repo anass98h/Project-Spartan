@@ -743,14 +743,7 @@ namespace Settings {
     namespace Resolver {
         extern bool enabled;
         extern bool deadResolve;
-        extern bool LagComp;
-        extern float ticks;
-        extern float modulo;
         extern bool pitch;
-        extern bool lbyOnly;
-        extern bool angleFlipEnabled;
-        extern ButtonCode_t angleFlip;
-        extern int baimAfter;
     }
     namespace lbyindicator {
         extern bool enabled;
