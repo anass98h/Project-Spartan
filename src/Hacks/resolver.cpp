@@ -20,6 +20,9 @@ int Resolver::resolvingId = -1;
 std::map<int, int> shotsMissed = {
     { -1, 0 }
 };
+std::map<int, int> shotsMissedSave = {
+    { -1, 0 }
+};
 
 void Resolver::Hug( C_BasePlayer* target ) {
     if ( Settings::Resolver::resolvePitch )
@@ -33,15 +36,37 @@ void Resolver::Hug( C_BasePlayer* target ) {
     bool onGround = target->GetFlags() & FL_ONGROUND;
     bool isMoving = onGround && velocity > 35.f;
     float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
+    float curTime = globalVars->curTime;
     float lastLbyUpdate = 0;
+
+    float shotsMissedTime = 2.f;
+    float lastShotsMissed = 0;
+
+    static int shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
+
+    if ( Resolver::shotsMissed[target->GetIndex()] > shotsMissedS ) {
+        shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
+        Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
+        lastShotsMissed = curTime;
+    } else if ( curtime > lastShotsMissed + shotsMissedTime ) {
+        shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
+        Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
+    }
 
     Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
 
     if ( Resolver::lbyUpdated )
         lastLbyUpdate = serverTime;
 
-    // Put pCodenz here
-    // Call HugBrute(), etc. so we have clean code and not messy like before
+    if ( Resolver::lbyUpdated || Backtracking::backtrackingLby )
+        angle.y = lby;
+    else {
+        // Call the pCode here
+        // Call HugBrute(), etc. so we have clean code and not messy like before
+        // For example
+        // angle.y = HugLby( target );
+        
+    }
 
     if ( didDmg ) {
         // You can save angles here, etc...
@@ -52,20 +77,36 @@ void Resolver::Hug( C_BasePlayer* target ) {
     target->GetEyeAngles()->y = angle.y;
 }
 
-void Resolver::HugLby( C_BasePlayer* target ) {
+float Resolver::HugLby( C_BasePlayer* target ) {
+    QAngle angle = *target->GetEyeAngles();
+
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
-    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == 979 ) { // lets use 979 instead of ACT_CSGO_IDLE_TURN_BALANCEADJUST, just to be sure
+    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == 979 ) { // Let's use 979 instead of ACT_CSGO_IDLE_TURN_BALANCEADJUST, just to be sure
         // LBY broken and is between LBY+120 & LBY-120
         // Giving us range of 60 + 60 = 120
         // We should force 180 first, cuz its the most common one AFAIK
+        angle.y = lby + 180;
+    } else {
+       angle.y = lby; 
     }
+
+    return angle.y;
 }
 
-void Resolver::HugBrute( C_BasePlayer* target ) {
+float Resolver::HugBrute( C_BasePlayer* target ) {
+    QAngle angle = *target->GetEyeAngles();
+    
     float lby = *target->GetLowerBodyYawTarget();
 
-    // Put brutefore inhere
+    switch ( Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
+        case 0: angle.y = lby; break;
+        case 1: angle.y = lby + 90.f; break;
+        case 2: angle.y = lby - 90.f; break;
+        case 3: angle.y = lby + 180.f; break;
+    }
+
+    return angle.y;
 }
 
 void Resolver::HugPitch( C_BasePlayer* target ) {
