@@ -741,8 +741,9 @@ namespace Settings {
     }
 
     namespace Resolver {
-        extern bool LagComp;
         extern bool enabled;
+        extern bool deadResolve;
+        extern bool LagComp;
         extern float ticks;
         extern float modulo;
         extern bool pitch;
