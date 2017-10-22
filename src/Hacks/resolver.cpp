@@ -47,7 +47,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Resolver::shotsMissed[target->GetIndex()] > shotsMissedS ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
-        lastShotsMissed = curTime;
+       // lastShotsMissed = curTime; Never used
     } else if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
@@ -65,7 +65,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         // Call HugBrute(), etc. so we have clean code and not messy like before
         // For example
         // angle.y = HugLby( target );
-        
+        // TODO: Maybe add baim code here until we have something proper
     }
 
     if ( didDmg ) {
@@ -73,13 +73,14 @@ void Resolver::Hug( C_BasePlayer* target ) {
 
         didDmg = false;
     }
-
+    if(!onGround)
+        Resolver::baimNextShot;
     target->GetEyeAngles()->y = angle.y;
 }
 
 float Resolver::HugLby( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
-
+    float lby = *target->GetLowerBodyYawTarget();
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
     if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == 979 ) { // Let's use 979 instead of ACT_CSGO_IDLE_TURN_BALANCEADJUST, just to be sure
@@ -104,8 +105,8 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
         case 1: angle.y = lby + 90.f; break;
         case 2: angle.y = lby - 90.f; break;
         case 3: angle.y = lby + 180.f; break;
-    }
 
+    }
     return angle.y;
 }
 
@@ -147,7 +148,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
             return;
 
         IEngineClient::player_info_t localPlayerInfo;
-        engine->GetPlayerInfo( localplayer->GetIndex(), &localPlayerInfo );
+        engine->GetPlayerInfo( pLocal->GetIndex(), &localPlayerInfo );
 
         IEngineClient::player_info_t hurtPlayerInfo;
         engine->GetPlayerInfo( hurt_player->GetIndex(), &hurtPlayerInfo );
@@ -157,7 +158,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         Resolver::shotsMissed[Resolver::resolvingId] = 0;
     } else {
         C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-            localplayer->GetActiveWeapon() );
+            pLocal->GetActiveWeapon() );
         
         int ammo = activeWeapon->GetAmmo();        
         static int ammoSave = ammo;
@@ -200,11 +201,11 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
                     C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
         
                     if ( !target
-                         || target == me
+                         || target == pLocal
                          || target->GetDormant()
                          || !target->GetAlive()
                          || target->GetImmune()
-                         || target->GetTeam() == me->GetTeam() )
+                         || target->GetTeam() == pLocal->GetTeam() )
                         continue;
         
                     Hug ( target );

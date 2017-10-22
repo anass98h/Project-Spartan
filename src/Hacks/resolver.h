@@ -29,6 +29,7 @@ namespace Resolver {
     extern std::map<int, int> shotsMissed;
     extern std::map<int, int> shotsMissedSave;
     extern int resolvingId;
+    extern bool baimNextShot;
 
     // Hooks
 
