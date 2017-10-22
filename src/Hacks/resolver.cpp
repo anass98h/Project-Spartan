@@ -4,6 +4,8 @@ bool Settings::Resolver::enabled = false;
 bool Settings::Resolver::deadResolve = false;
 bool Settings::Resolver::pitch = false;
 
+bool Resolver::lbyUpdated = false;
+
 void Resolver::ResolveY( C_BASePlayer* pEntity ) {
     if ( !Settings::Resolver::pitch )
         return;
@@ -21,6 +23,17 @@ void Resolver::Hug( C_BasePlayer* pEntity ) {
         ResolveY( pEntity );
 
     QAngle angle = *pEntity->GetViewAngles();
+
+    float lby = *pEntity->GetLowerBodyYawTarget();
+    float serverTime = pEntity->GetTickBase() * globalVars->interval_per_tick;
+    float velocity = pEntity->GetVelocity().Lenght2D();
+    bool onGround = pEnity->GetFlags() & FL_ONGROUND;
+    bool isMoving = onGround && velocity > 0.1;
+
+    if ( isMoving )
+        Resolver::lbyUpdated = true;
+    else
+        Resolver::lbyUpdated = false;
 
     *pEntity->GetViewAngles()->y = angle.y;
 }

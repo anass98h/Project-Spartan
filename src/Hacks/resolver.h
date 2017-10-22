@@ -11,6 +11,8 @@
 #include <random>
 
 namespace Resolver {
+    extern bool lbyUpdated;
+
     void Hug( C_BasePlayer* pEntity );
 
     void FrameStageNotify( ClientFrameStage_t stage );
