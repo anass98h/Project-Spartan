@@ -12,7 +12,17 @@ bool Settings::AngleFlip::enabled = false;
 ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
 void Resolver::Hug( C_BasePlayer* target ) {
-    // Do your magic Myrrib & Rasp
+    //QAngle angle = *target->GetEyeAngles();
+    if(target->GetVelocity().Length2D() > 35 && target->GetFlags() & FL_ONGROUND) // TODO: Add fakewalk check
+        target->GetEyeAngles()->y = *target->GetLowerBodyYawTarget();
+    else
+    {
+        if(target->GetFlags() & FL_ONGROUND)
+
+
+    }
+
+
 }
 
 void Resolver::HugLby( C_BasePlayer* target ) {
