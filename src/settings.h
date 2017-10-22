@@ -741,22 +741,29 @@ namespace Settings {
     }
 
     namespace Resolver {
-        extern bool LagComp;
         extern bool enabled;
-        extern float ticks;
-        extern float modulo;
-        extern bool pitch;
-        extern bool lbyOnly;
-        extern bool angleFlipEnabled;
-        extern ButtonCode_t angleFlip;
-        extern int baimAfter;
+        extern bool resolvePitch;
+        extern bool lagCompensation;
+        extern bool headshotLbyUpdateOnly;
     }
+
+    namespace SmartAim {
+        extern int baimAfterMissed;
+    }
+
+    namespace AngleFlip {
+        extern bool enabled;
+        extern ButtonCode_t key;
+    }
+
     namespace lbyindicator {
         extern bool enabled;
     }
+
     namespace SpeedIndicator {
         extern bool enabled;
     }
+
     namespace ESP {
         extern bool enabled;
         extern ButtonCode_t key;
