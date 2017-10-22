@@ -196,6 +196,8 @@ void Offsets::GetOffsets() {
                                                                       XORSTR( "m_flFlashMaxAlpha" ) );
     offsets.DT_CSPlayer.m_flLowerBodyYawTarget = NetVarManager::GetOffset( tables, XORSTR( "DT_CSPlayer" ),
                                                                            XORSTR( "m_flLowerBodyYawTarget" ) );
+    offsets.DT_CSPlayer.m_nSequence = NetVarManager::GetOffset(tables, XORSTR("DT_CSPlayer"),
+                                                                           XORSTR("m_nSequence"));
 
     offsets.DT_ServerAnimationData.m_flCycle = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_flCycle"));
@@ -206,8 +208,6 @@ void Offsets::GetOffsets() {
     offsets.DT_ServerAnimationData.m_bSuppressAnimSounds = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                 XORSTR("m_bSuppressAnimSounds"));
 
-    offsets.DT_BaseAnimating.m_nSequence = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
-                                                                    XORSTR("m_nSequence"));
     offsets.DT_BaseAnimating.m_nForceBone = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                     XORSTR("m_nForceBone"));
     offsets.DT_BaseAnimating.m_vecForce = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),

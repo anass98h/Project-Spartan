@@ -162,7 +162,7 @@ public:
 
     int GetSequence() {
         return *( int* ) ( ( uintptr_t )
-        this + offsets.DT_BaseAnimating.m_nSequence);
+        this + offsets.DT_CSPlayer.m_nSequence);
     }
 
     int GetForceBone() {

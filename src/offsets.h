@@ -108,9 +108,9 @@ struct COffsets {
         std::ptrdiff_t m_flFlashDuration;
         std::ptrdiff_t m_flFlashMaxAlpha;
         std::ptrdiff_t m_flLowerBodyYawTarget;
+        std::ptrdiff_t m_nSequence;
     } DT_CSPlayer;
     struct {
-        std::ptrdiff_t m_nSequence;
         std::ptrdiff_t m_nForceBone;
         std::ptrdiff_t m_vecForce;
         std::ptrdiff_t m_nSkin;
