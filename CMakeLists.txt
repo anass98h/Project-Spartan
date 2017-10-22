@@ -51,5 +51,5 @@ add_definitions(-DLUA)
 
 include_directories(${INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-add_library(Spartan SHARED ${SOURCE_FILES} src/SpartanGUI/Windows/resolverinfo.cpp src/SpartanGUI/Windows/resolverinfo.h)
+add_library(Spartan SHARED ${SOURCE_FILES})
 target_link_libraries(Spartan GL dl xdo ${LUA_LIBRARY} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

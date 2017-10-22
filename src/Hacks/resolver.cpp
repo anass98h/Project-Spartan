@@ -196,8 +196,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
                             case 0: playerAngle1[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()]++; break;
                             case 1: playerAngle2[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()] = 0; break;
                         }
-                        
-                        Resolver::lastHitAng[player->GetIndex()] = angle.y;
 
                         float angle1 = playerAngle1[player->GetIndex()];
                         float angle2 = playerAngle2[player->GetIndex()];
@@ -211,6 +209,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                         else
                             staticReal[player->GetIndex()] = false;
                     }
+                    Resolver::lastHitAng[player->GetIndex()] = angle.y;
                 }
 
             }
@@ -230,7 +229,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 angle.x = std::copysign( 89.0f, angle.x );
         }
 
-        player->GetEyeAngles()->y = angle.y;
+        player->GetEyeAngles()->y = Math::ResNormalizeYaw( angle.y );
         player->GetEyeAngles()->x = angle.x;
     }
 }

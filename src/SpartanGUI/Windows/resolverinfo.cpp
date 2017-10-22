@@ -22,18 +22,18 @@ void ResolverInfo::RenderWindow() {
             char* name = playerInfo.name;
             char* guid = playerInfo.guid;
     
-            float lastHit = Resolver::lastHitAng[playerId];
-            float angForce = Resolver::angForce[playerId];
+            float lastHit = Math::ResNormalizeYaw( Resolver::lastHitAng[playerId] );
+            float angForce = Math::ResNormalizeYaw( Resolver::angForce[playerId] );
             const char* angForceTxt = Resolver::angForceTxt[playerId];
             int shotsMissed = Resolver::shotsMiss[playerId];
-            float lby = Resolver::lby[playerId];
+            float lby = Math::ResNormalizeYaw( Resolver::lby[playerId] );
     
             ImGui::Text( "%s [%s]\n", name, guid );
-            ImGui::Text( "Last hit - %i\n", lastHit );
-            ImGui::Text( "Trying Angle - %s [%i]\n", angForceTxt, angForce );
-            ImGui::Text( "Last Hit - %i\n", lastHit );
-            ImGui::Text( "Shots missed - %i\n", shotsMissed );
-            ImGui::Text( "LBY - %i\n", lby );
+            ImGui::Text( "Last hit - %.1f\n", lastHit );
+            ImGui::Text( "Trying Angle - %s [%.1f]\n", angForceTxt, angForce );
+            ImGui::Text( "Last Hit - %.1f\n", lastHit );
+            ImGui::Text( "Shots missed - %.0f\n", shotsMissed );
+            ImGui::Text( "LBY - %.1f\n", lby );
         }
         
         ImGui::End();
