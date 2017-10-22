@@ -47,8 +47,9 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Resolver::shotsMissed[target->GetIndex()] > shotsMissedS ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
-       // lastShotsMissed = curTime; Never used
-    } else if ( curTime > lastShotsMissed + shotsMissedTime ) {
+       lastShotsMissed = curTime;
+    }
+    if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
     }
