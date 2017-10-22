@@ -34,6 +34,8 @@ namespace Resolver {
 
     extern std::map<int, float> angForce;
     extern std::map<int, float> lastHitAng;
+    extern std::map<int, const char*> angForceTxt;
+    extern std::map<int, float> lby;
 
     extern int resolvingId;
 

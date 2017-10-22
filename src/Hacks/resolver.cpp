@@ -38,6 +38,14 @@ std::map<int, float> Resolver::lastHitAng = {
     { -1, 0 }
 };
 
+std::map<int, const char*> Resolver::angForceTxt = {
+    { -1, "None" }
+};
+
+std::map<int, float> Resolver::lby = {
+    { -1, 0 }
+};
+
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
     if ( !Settings::Aimbot::backtrack )
         Settings::Aimbot::backtrack = true;
@@ -96,6 +104,8 @@ void Resolver::Hug( C_BasePlayer* player ) {
         { player->GetIndex(), false }
     };
 
+    Resolver::lby[player->GetIndex()] = lby;
+
     float shotsMissSaveTime = 2.0f;
 
     if ( Resolver::shotsMiss[player->GetIndex()] > shotsMissSave[player->GetIndex()] ) {
@@ -106,7 +116,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
 
     if ( Settings::Resolver::enabled ) {
         if ( isMoving ) {
-            angle.y = *player->GetLowerBodyYawTarget();
+            lbyDeltaMove[player->GetIndex()] = fabsf ( lby - player->GetEyeAngles()->y );
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;
         } else if ( curTime == lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
@@ -118,6 +128,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
         if ( inputSystem->IsButtonDown( Settings::Resolver::angleFlip ) ) {
             angle.y = lby + 180.0f;
             Resolver::angForce[player->GetIndex()] = lby + 180.f;
+            Resolver::angForceTxt[player->GetIndex()] = "LBY + 180";
         }
         else {
             if ( Settings::Resolver::lbyOnly ) {
@@ -128,17 +139,20 @@ void Resolver::Hug( C_BasePlayer* player ) {
     
                 angle.y = lby;
                 Resolver::angForce[player->GetIndex()] = lby;
+                Resolver::angForceTxt[player->GetIndex()] = "LBY";
             } else {
                 if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) ) {
                     angle.y = lby;
+                    Resolver::angForceTxt[player->GetIndex()] = "LBY";
                     if ( maybeFakeWalking && hasFakeWalk[player->GetIndex()] && shotsMissSave[player->GetIndex()] > 1 ){
                         angle.y = lby + 180.0f;
                         Resolver::angForce[player->GetIndex()] = lby + 180.f;
+                        Resolver::angForceTxt[player->GetIndex()] = "LBY + 180";
                     } else if ( shotsMissSave[player->GetIndex()] > 2 ) {
                         switch ( shotsMissSave[player->GetIndex()] % 3 ) {
-                            case 0: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; break;
-                            case 1: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; break;
-                            case 2: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; break;
+                            case 0: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
+                            case 1: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
+                            case 2: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
                         }
                         hasFakeWalk[player->GetIndex()] = true;
                     }
@@ -146,24 +160,25 @@ void Resolver::Hug( C_BasePlayer* player ) {
                     if ( staticReal[player->GetIndex()] && playerAngle1[player->GetIndex()] != lby) {
                             if ( shotsMissSave[player->GetIndex()] > 1 ) {
                                 switch ( shotsMissSave[player->GetIndex()] % 5 ) {
-                                    case 0: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; break;
-                                    case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; break;
-                                    case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; break;
-                                    case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()]; break;
-                                    case 4: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; break;
+                                    case 0: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
+                                    case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
+                                    case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY + LBY Delta Move"; break;
+                                    case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()];  Resolver::angForceTxt[player->GetIndex()] = "LBY - LBY Delta Move";break;
+                                    case 4: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
                                 }
                              } else {
                                  angle.y = playerAngle1[player->GetIndex()];
                                  Resolver::angForce[player->GetIndex()] = playerAngle1[player->GetIndex()];
+                                 Resolver::angForceTxt[player->GetIndex()] = "Saved angle";
                              }
                     } else {
                         switch ( shotsMissSave[player->GetIndex()] % 7 ) {
-                            case 0: angle.y = lby; Resolver::angForce[player->GetIndex()] = lby; break;
-                            case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; break;
-                            case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; break;
-                            case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()]; break;
-                            case 5: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; break;
-                            case 6: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; break;
+                            case 0: angle.y = lby; Resolver::angForce[player->GetIndex()] = lby; Resolver::angForceTxt[player->GetIndex()] = "LBY"; break;
+                            case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
+                            case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY + LBY Delta Move"; break;
+                            case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY - LBY Delta Move"; break;
+                            case 5: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
+                            case 6: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
                         }
                     }
                     
@@ -181,8 +196,6 @@ void Resolver::Hug( C_BasePlayer* player ) {
                             case 0: playerAngle1[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()]++; break;
                             case 1: playerAngle2[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()] = 0; break;
                         }
-                        
-                        Resolver::lastHitAng[player->GetIndex()] = angle.y;
 
                         float angle1 = playerAngle1[player->GetIndex()];
                         float angle2 = playerAngle2[player->GetIndex()];
@@ -196,6 +209,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                         else
                             staticReal[player->GetIndex()] = false;
                     }
+                    Resolver::lastHitAng[player->GetIndex()] = angle.y;
                 }
 
             }
@@ -215,7 +229,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
                 angle.x = std::copysign( 89.0f, angle.x );
         }
 
-        player->GetEyeAngles()->y = angle.y;
+        player->GetEyeAngles()->y = Math::ResNormalizeYaw( angle.y );
         player->GetEyeAngles()->x = angle.x;
     }
 }
@@ -253,7 +267,12 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
                 shotATT = false;
             }
 
-            Hug ( target );
+            C_BasePlayer* aimbotTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
+
+            if ( Aimbot::useAbTarget )
+                Hug ( aimbotTarget );
+            else
+                Hug ( target );
         }
     } else if ( stage == ClientFrameStage_t::FRAME_RENDER_END ) {
         for ( unsigned long i = 0; i < player_data.size(); i++ ) {
