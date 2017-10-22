@@ -29,6 +29,17 @@ void Resolver::Hug( C_BasePlayer* target ) {
 
     Resolver::resolvingId = target->GetIndex();
 
+    float velocity = target->GetVelocity().Length2D();
+    bool onGround = target->GetFlags() & FL_ONGROUND;
+    bool isMoving = onGround && velocity > 35.f;
+    float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
+    float lastLbyUpdate = 0;
+
+    Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
+
+    if ( Resolver::lbyUpdated )
+        lastLbyUpdate = serverTime;
+
     // Put pCodenz here
     // Call HugBrute(), etc. so we have clean code and not messy like before
 
@@ -64,22 +75,6 @@ void Resolver::HugPitch( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
 
     target->GetEyeAngles()->x = angle.x;
-}
-
-bool Resolver::LbyUpdated( C_BasePlayer* target ) {
-    float velocity = target->GetVelocity().Length2D();
-    bool onGround = target->GetFlags() & FL_ONGROUND;
-    bool isMoving = onGround && velocity > 35.f;
-    float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
-    float lastLbyUpdate = 0;
-
-    Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
-
-    if ( Resolver::lbyUpdated ) {
-        lastLbyUpdate = serverTime;
-        return true;
-    } else
-        return false;
 }
 
 ////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\
