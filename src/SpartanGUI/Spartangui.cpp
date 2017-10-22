@@ -151,7 +151,7 @@ void SetupMainMenuBar() {
         if ( ImGui::Checkbox( "Middle click ", &Settings::UI::middle ) )
             Settings::UI::right = false;
 
-        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs" };
+        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs", "Resolver" };
         int items_count = sizeof( items ) / sizeof( *items );
 
 
@@ -196,10 +196,9 @@ void SetupMainMenuBar() {
                 Settings::ShowSpectators::enabled = !Settings::ShowSpectators::enabled;
                 break;
             }
-                /*       case 6:
-                       {
-                       Fonts::showWindow = !Fonts::showWindow;    
-                       }*/
+            case 6: {
+                ResolverInfo::showWindow = !ResolverInfo::showWindow;
+            }
         }
 
 
@@ -283,6 +282,6 @@ void UI::SetupWindows() {
 
     ShowSpectators::RenderWindow();
     Radar::RenderWindow();
-
+    ResolverInfo::RenderWindow();
 
 }
