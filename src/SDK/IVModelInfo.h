@@ -3,9 +3,117 @@
 class Quaternion;
 
 struct mstudioanimdesc_t;
-struct mstudioseqdesc_t;
 struct mstudiobodyparts_t;
 struct mstudiotexture_t;
+
+struct mstudioseqdesc_t {
+    int szlabelindex;
+
+    inline char* const pszLabel( void ) const { return ( ( char* ) this ) + szlabelindex; }
+
+    int szactivitynameindex;
+
+    inline char* const pszActivityName( void ) const { return ( ( char* ) this ) + szactivitynameindex; }
+
+    int flags;        // looping/non-looping flags
+
+    int activity;    // initialized at loadtime to game DLL values
+    int actweight;
+
+    int numevents;
+    int eventindex;
+
+    inline void* pEvent( int i ) const { return ( ( ( unsigned char* ) this ) + eventindex ) + i; };
+
+    Vector bbmin;        // per sequence bounding box
+    Vector bbmax;
+
+    //-------------------------------------------------------------------------
+    // Purpose: returns a model animation from the sequence group size and
+    //          blend index
+    // Note: this replaces GetAnimValue() that was previously in bone_setup
+    // Note: this also acts as a SetAnimValue() as it returns a reference to
+    //       the anim value in question
+    //-------------------------------------------------------------------------
+    inline unsigned short& pAnimValue( int nIndex0, int nIndex1 ) const {
+        // Clamp indexes
+        if ( nIndex0 >= groupsize[0] )
+            nIndex0 = groupsize[0] - 1;
+
+        if ( nIndex1 >= groupsize[1] )
+            nIndex1 = groupsize[1] - 1;
+
+        return *pBlend( nIndex1 * groupsize[0] + nIndex0 );
+    }
+
+    int numblends;
+
+    int blendindex;
+
+    inline unsigned short* pBlend( int i ) const {
+        return ( unsigned short* ) ( ( ( byte * )
+        this) +blendindex) +i;
+    };
+
+    int seqgroup; // sequence group for demand loading
+
+    int groupsize[2];
+    int paramindex[2];    // X, Y, Z, XR, YR, ZR
+    float paramstart[2];    // local (0..1) starting value
+    float paramend[2];    // local (0..1) ending value
+    int paramparent;
+
+    float fadeintime;    // ideal cross fate in time (0.2 default)
+    float fadeouttime;    // ideal cross fade out time (0.2 default)
+
+    int entrynode;    // transition node at entry
+    int exitnode;    // transition node at exit
+    int nodeflags;    // transition rules
+
+    float entryphase;    // used to match entry gait
+    float exitphase;    // used to match exit gait
+
+    float lastframe;    // frame that should generation EndOfSequence
+
+    int nextseq;    // auto advancing sequences
+    int pose;        // index of delta animation between end and nextseq
+
+    int numikrules;
+
+    int numautolayers;
+    int autolayerindex;
+
+    inline void* pAutolayer( int i ) const { return ( ( ( unsigned char* ) this ) + autolayerindex ) + i; };
+
+    int weightlistindex;
+
+    float* pBoneweight( int i ) const { return ( ( float* ) ( ( ( unsigned char* ) this ) + weightlistindex ) + i ); };
+
+    float weight( int i ) const { return *( pBoneweight( i ) ); };
+
+    int posekeyindex;
+
+    float* pPoseKey( int iParam, int iAnim ) const {
+        return ( float* ) ( ( ( unsigned char* ) this ) + posekeyindex ) + iParam * groupsize[0] + iAnim;
+    }
+
+    float poseKey( int iParam, int iAnim ) const { return *( pPoseKey( iParam, iAnim ) ); }
+
+    int numiklocks;
+    int iklockindex;
+
+    inline void* pIKLock( int i ) const { return ( ( ( unsigned char* ) this ) + iklockindex ) + i; };
+
+    // Key values
+    int keyvalueindex;
+    int keyvaluesize;
+
+    inline const char* KeyValueText( void ) const {
+        return keyvaluesize != 0 ? ( ( char* ) this ) + keyvalueindex : NULL;
+    }
+
+    int unused[3];        // remove/add as appropriate
+};
 
 class RadianEuler {
 public:
@@ -230,6 +338,13 @@ struct studiohdr_t {
     int localanimindex;        // animation descriptions
     int numlocalseq;                // sequences
     int localseqindex;
+
+    inline mstudioseqdesc_t* pSeqdesc( int i ) const {
+        if ( i < 0 || i >= GetNumSeq() )
+            i = 0;
+
+        return ( mstudioseqdesc_t* ) ( ( ( unsigned char* ) this ) + localseqindex ) + i;
+    };
 
     //public:
     bool SequencesAvailable() const;

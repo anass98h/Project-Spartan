@@ -20,34 +20,35 @@ void Resolver::Hug( C_BasePlayer* target ) {
     
     QAngle angle = *target->GetEyeAngles();
 
-    *target->GetEyeAngles()->y = angle.y;
+    target->GetEyeAngles()->y = angle.y;
 }
 
 void Resolver::HugLby( C_BasePlayer* target ) {
-    // Do your magic Myrrib & Rasp
+    studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
+
+    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == ACT_CSGO_IDLE_TURN_BALANCEADJUST ) {
+        // LBY broken
+    }
 }
 
 void Resolver::HugBrute( C_BasePlayer* target ) {
-    float lby = target->GetLowerBodyYawTarget();
+    float lby = *target->GetLowerBodyYawTarget();
 }
 
 void Resolver::HugPitch( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
 
-    *target->GetEyeAngles()->x = angle.x;
+    target->GetEyeAngles()->x = angle.x;
 }
 
 bool Resolver::LbyUpdated( C_BasePlayer* target ) {
     float velocity = target->GetVelocity().Length2D();
-    bool onGround = target->GetFlags() & ON_GROUND;
+    bool onGround = target->GetFlags() & FL_ONGROUND;
     bool isMoving = onGround && velocity > 35.f;
     float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
     float lastLbyUpdate = 0;
 
-    if ( isMoving || serverTime == lastLbyUpdate + 1.1f )
-        Resolver::lbyUpdated = true;
-    else
-        Resolver::lbyUpdated = false;
+    Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
 
     if ( Resolver::lbyUpdated ) {
         lastLbyUpdate = serverTime;
