@@ -36,9 +36,9 @@ void Resolver::Hug( C_BasePlayer* target ) {
     bool onGround = target->GetFlags() & FL_ONGROUND;
     bool isMoving = onGround && velocity > 35.f;
     float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
-    float curTime = globalVars->curTime;
+    float curTime = globalVars->curtime;
     float lastLbyUpdate = 0;
-
+    float lby = *target->GetLowerBodyYawTarget();
     float shotsMissedTime = 2.f;
     float lastShotsMissed = 0;
 
@@ -48,7 +48,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
         lastShotsMissed = curTime;
-    } else if ( curtime > lastShotsMissed + shotsMissedTime ) {
+    } else if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
         Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
     }
