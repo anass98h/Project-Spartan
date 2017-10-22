@@ -22,6 +22,12 @@ namespace Resolver {
 
     void HugPitch( C_BasePlayer* target );
 
+    bool LbyUpdated( C_BasePlayer* target );
+
+    // Variables
+
+    extern bool lbyUpdated;
+
     // Hooks
 
     void CreateMove( CUserCmd* cmd );

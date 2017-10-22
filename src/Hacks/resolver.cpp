@@ -11,18 +11,16 @@ int Settings::SmartAim::baimAfterMissed = 3;
 bool Settings::AngleFlip::enabled = false;
 ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
+// Variables
+bool Resolver::lbyUpdated = false;
+
 void Resolver::Hug( C_BasePlayer* target ) {
-    //QAngle angle = *target->GetEyeAngles();
-    if(target->GetVelocity().Length2D() > 35 && target->GetFlags() & FL_ONGROUND) // TODO: Add fakewalk check
-        target->GetEyeAngles()->y = *target->GetLowerBodyYawTarget();
-    else
-    {
-        if(target->GetFlags() & FL_ONGROUND)
+    if ( Settings::Resolver::resolvePitch )
+        HugPitch( target );
+    
+    QAngle angle = *target->GetEyeAngles();
 
-
-    }
-
-
+    *target->GetEyeAngles()->y = angle.y;
 }
 
 void Resolver::HugLby( C_BasePlayer* target ) {
@@ -30,11 +28,32 @@ void Resolver::HugLby( C_BasePlayer* target ) {
 }
 
 void Resolver::HugBrute( C_BasePlayer* target ) {
-    // Do your magic Myrrib & Rasp
+    float lby = target->GetLowerBodyYawTarget();
 }
 
 void Resolver::HugPitch( C_BasePlayer* target ) {
-    // Do your magic Myrrib & Rasp
+    QAngle angle = *target->GetEyeAngles();
+
+    *target->GetEyeAngles()->x = angle.x;
+}
+
+bool Resolver::LbyUpdated( C_BasePlayer* target ) {
+    float velocity = target->GetVelocity().Length2D();
+    bool onGround = target->GetFlags() & ON_GROUND;
+    bool isMoving = onGround && velocity > 35.f;
+    float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
+    float lastLbyUpdate = 0;
+
+    if ( isMoving || serverTime == lastLbyUpdate + 1.1f )
+        Resolver::lbyUpdated = true;
+    else
+        Resolver::lbyUpdated = false;
+
+    if ( Resolver::lbyUpdated ) {
+        lastLbyUpdate = serverTime;
+        return true;
+    } else
+        return false;
 }
 
 ////////////////////////////////////////////////
