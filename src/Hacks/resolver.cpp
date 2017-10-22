@@ -26,8 +26,6 @@ bool Resolver::lbyUpdated = false;
 
 bool Resolver::shouldBaim = false;
 
-float Resolver::lby = 0;
-
 std::map<int, int> Resolver::shotsMiss = {
     { -1, 0 }
 };
@@ -42,6 +40,10 @@ std::map<int, float> Resolver::lastHitAng = {
 
 std::map<int, const char*> Resolver::angForceTxt = {
     { -1, "None" }
+};
+
+std::map<int, float> Resolver::lby = {
+    { -1, 0 }
 };
 
 static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
@@ -102,7 +104,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
         { player->GetIndex(), false }
     };
 
-    Resolver::lby = lby;
+    Resolver::lby[player->GetIndex()] = lby;
 
     float shotsMissSaveTime = 2.0f;
 
