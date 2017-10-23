@@ -50,7 +50,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float lastShotsMissed = 0.0f;
 
     // Set maps in here
-    Settings::Resolver::[target->GetIndex()] = lby;
+    Settings::Resolver::lby[target->GetIndex()] = lby;
 
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
