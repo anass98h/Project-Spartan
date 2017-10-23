@@ -4,10 +4,7 @@ bool Settings::Resolver::enabled = false;
 bool Settings::Resolver::resolvePitch = false;
 bool Settings::Resolver::lagCompensation = false;
 bool Settings::Resolver::headshotLbyUpdateOnly = false;
-
-bool Settings::SmartAim::enabled = false;
-int Settings::SmartAim::baimAfterMissed = 3;
-
+bool Settings::Resolver::baimNextShot = false;
 bool Settings::AngleFlip::enabled = false;
 ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
@@ -18,13 +15,13 @@ std::map<int, int> shotsMissedSave = { { -1, 0 } };
 static int lastAmmo = -1;
 
 // Global variables
-bool Resolver::lbyUpdated = false;
-int Resolver::resolvingId = -1;
+bool Settings::Resolver::lbyUpdated = false;
+int Settings::Resolver::resolvingId = -1;
 
 void Resolver::Hug( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
 
-    Resolver::resolvingId = target->GetIndex();
+    Settings::Resolver::resolvingId = target->GetIndex();
 
     float velocity = target->GetVelocity().Length2D();
     bool onGround = target->GetFlags() & FL_ONGROUND;
@@ -37,24 +34,24 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float shotsMissedTime = 2.0f;
     float lastShotsMissed = 0.0f;
 
-    static int shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
+    static int shotsMissedS = shotsMissed[target->GetIndex()];
 
-    if ( Resolver::shotsMissed[target->GetIndex()] > shotsMissedS ) {
-        shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
-        Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
+    if ( shotsMissed[target->GetIndex()] > shotsMissedS ) {
+        shotsMissedS = shotsMissed[target->GetIndex()];
+        shotsMissedSave[target->GetIndex()] = shotsMissedSave[target->GetIndex()];
         lastShotsMissed = curTime;
     }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
-        shotsMissedS = Resolver::shotsMissed[target->GetIndex()];
-        Resolver::shotsMissedSave[target->GetIndex()] = Resolver::shotsMissed[target->GetIndex()];
+        shotsMissedS = shotsMissed[target->GetIndex()];
+        shotsMissed[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
 
-    Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
+    Settings::Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
 
-    if ( Resolver::lbyUpdated ) {
+    if ( Settings::Resolver::lbyUpdated ) {
         lastLbyUpdate = serverTime;
     }
 
-    if ( Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
         angle.y = *target->GetLowerBodyYawTarget();
     } else {
         // Call the pCode here
@@ -73,7 +70,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         angle.x = HugPitch( target );
     }
     if(!onGround)
-        Resolver::baimNextShot = true;
+        Settings::Resolver::baimNextShot = true;
     Math::NormalizePitch( angle.x );
     Math::NormalizeYaw( angle.y );
 
@@ -102,7 +99,7 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
     float lby = *target->GetLowerBodyYawTarget();
 
-    switch ( Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
+    switch ( shotsMissed[target->GetIndex()] % 4 ) {
         case 0:
             angle.y = lby;
             break;
@@ -157,7 +154,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         didDmg = true;
-        Resolver::shotsMissed[Resolver::resolvingId] = 0;
+        shotsMissed[Settings::Resolver::resolvingId] = 0;
         lastAmmo = -1;
     }
 
@@ -171,7 +168,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         if ( lastAmmo != ammo ) {
-            Resolver::shotsMissed[Resolver::resolvingId]++;
+            shotsMissed[Settings::Resolver::resolvingId]++;
             lastAmmo = ammo;
         }
 

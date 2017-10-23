@@ -203,6 +203,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "Resolver" )][XORSTR( "resolvePitch" )] = Settings::Resolver::resolvePitch;
     settings[XORSTR( "Resolver" )][XORSTR( "lagCompensation" )] = Settings::Resolver::lagCompensation;
     settings[XORSTR( "Resolver" )][XORSTR( "headshotLbyUpdateOnly" )] = Settings::Resolver::headshotLbyUpdateOnly;
+    settings[XORSTR( "Resolver" )][XORSTR( "baimNextShot" )] = Settings::Resolver::baimNextShot;
 
     settings[XORSTR( "SmartAim" )][XORSTR( "baimAfterMissed" )] = Settings::SmartAim::baimAfterMissed;
 
@@ -830,6 +831,8 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "lagCompensation" )], &Settings::Resolver::lagCompensation );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "headshotLbyUpdateOnly" )],
             &Settings::Resolver::headshotLbyUpdateOnly );
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "baimNextShot" )],
+            &Settings::Resolver::baimNextShot );
 
     GetVal( settings[XORSTR( "SmartAim" )][XORSTR( "baimAfterMissed" )], &Settings::SmartAim::baimAfterMissed );
 

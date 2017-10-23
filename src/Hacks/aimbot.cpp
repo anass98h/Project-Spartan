@@ -13,6 +13,7 @@ bool Settings::Aimbot::Smooth::enabled = false;
 float Settings::Aimbot::Smooth::value = 0.5f;
 SmoothType Settings::Aimbot::Smooth::type = SmoothType::SLOW_END;
 bool Settings::SmartAim::enabled = false;
+int Settings::SmartAim::baimAfterMissed = 3;
 bool Settings::Aimbot::ErrorMargin::enabled = false;
 float Settings::Aimbot::ErrorMargin::value = 0.0f;
 bool Settings::Aimbot::AutoAim::enabled = false;
@@ -312,13 +313,13 @@ static Vector GetClosestSpot( CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePl
 
     static int len = 0;
 
-    if ( Resolver::baimNextShot )
+    if ( Settings::Resolver::baimNextShot )
         len = sizeof( baimSpots ) / sizeof( baimSpots[0] );
     else
         len = sizeof( Settings::Aimbot::AutoAim::desiredBones ) / sizeof( Settings::Aimbot::AutoAim::desiredBones[0] );
 
     for ( int i = 0; i < len; i++ ) {
-        if ( Resolver::baimNextShot ) {
+        if ( Settings::Resolver::baimNextShot ) {
             if ( !baimSpots[i] )
                 continue;
         } else {

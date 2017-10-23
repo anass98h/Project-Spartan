@@ -1009,16 +1009,16 @@ static void DrawPlayer( int index, C_BasePlayer* player, IEngineClient::player_i
     if ( Settings::ESP::Info::rescuing && player->IsRescuing() )
         stringsToShow.push_back( XORSTR( "Rescuing" ) );
 
-    if ( Settings::Resolver::enabled && localplayer->GetAlive() && Resolver::resolvingId == player->GetIndex() && Settings::ESP::Info::lby ) {
+    if ( Settings::Resolver::enabled && localplayer->GetAlive() && Settings::Resolver::resolvingId == player->GetIndex() && Settings::ESP::Info::lby ) {
         if ( Settings::Resolver::lagCompensation ) {
-            if ( Resolver::lbyUpdated )
+            if ( Settings::Resolver::lbyUpdated )
                 stringsToShow.push_back( XORSTR( "LBY Updated" ) );
             else if ( Backtracking::backtrackingLby )
                 stringsToShow.push_back( XORSTR( "LBY Backtracked" ) );
-            else if ( !Backtracking::backtrackingLby && !Resolver::lbyUpdated )
+            else if ( !Backtracking::backtrackingLby && !Settings::Resolver::lbyUpdated )
                 stringsToShow.push_back( XORSTR( "Can't backtrack LBY" ) );
         } else {
-            if ( Resolver::lbyUpdated )
+            if ( Settings::Resolver::lbyUpdated )
                 stringsToShow.push_back( XORSTR( "LBY Updated" ) );
             else
                 stringsToShow.push_back( XORSTR( "LBY Not Updated" ) );

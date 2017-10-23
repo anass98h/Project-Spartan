@@ -745,6 +745,12 @@ namespace Settings {
         extern bool resolvePitch;
         extern bool lagCompensation;
         extern bool headshotLbyUpdateOnly;
+        extern bool baimNextShot;
+        extern bool lbyUpdated;
+        extern int resolvingId;
+        #define TIME_TO_TICKS( dt ) ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
+        #define TICKS_TO_TIME( t )  ( globalVars->interval_per_tick * ( t ) )
+        #define ACT_CSGO_IDLE_TURN_BALANCEADJUST 979
     }
 
     namespace SmartAim {
