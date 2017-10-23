@@ -23,9 +23,9 @@ void ResolverInfo::RenderWindow() {
             char* guid = playerInfo.guid;
     
             float lastHit = Math::ResNormalizeYaw( Settings::Resolver::lastHitAng[playerId] );
-            float angForce = Math::ResNormalizeYaw( Resolver::angForce[playerId] );
+            float angForce = Math::ResNormalizeYaw( Settings::Resolver::angForce[playerId] );
             const char* angForceTxt = Settings::Resolver::angForceTxt[playerId];
-            int shotsMissed = shotsMissedSave[playerId];
+            int shotsMissed = Settings::Resolver::shotsMissedSave[playerId];
             float lby = Math::ResNormalizeYaw( Settings::Resolver::lby[playerId] );
     
             ImGui::Text( "%s [%s]\n", name, guid );
