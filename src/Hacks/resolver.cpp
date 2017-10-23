@@ -31,29 +31,34 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float curTime = globalVars->curtime;
     float lastLbyUpdate = 0.0f;
 
+    float lby = *target->GetLowerBodyYawTarget();
+    static float lbySave = lby;
+
     float shotsMissedTime = 2.0f;
     float lastShotsMissed = 0.0f;
 
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
-    if ( shotsMissed[target->GetIndex()] > shotsMissedS ) {
-        shotsMissedS = shotsMissed[target->GetIndex()];
-        shotsMissedSave[target->GetIndex()] = shotsMissedSave[target->GetIndex()];
+    if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
+        shotsMissedS++;
+        shotsMissedSave[target->GetIndex()]++;
         lastShotsMissed = curTime;
     }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
         shotsMissed[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
 
-    Settings::Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
+    Settings::Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
 
-    if ( Settings::Resolver::lbyUpdated ) {
+    if ( lby != lbySave )
+        lbySave = lby;
+
+    if ( Settings::Resolver::lbyUpdated )
         lastLbyUpdate = serverTime;
-    }
 
-    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby )
         angle.y = *target->GetLowerBodyYawTarget();
-    } else {
+    else {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
         // For example
@@ -66,11 +71,12 @@ void Resolver::Hug( C_BasePlayer* target ) {
         didDmg = false;
     }
 
-    if ( Settings::Resolver::resolvePitch ) {
+    if ( Settings::Resolver::resolvePitch )
         angle.x = HugPitch( target );
-    }
+    
     if(!onGround)
         Settings::Resolver::baimNextShot = true;
+    
     Math::NormalizePitch( angle.x );
     Math::NormalizeYaw( angle.y );
 
@@ -88,9 +94,8 @@ float Resolver::HugLby( C_BasePlayer* target ) {
         // Giving us range of 60 + 60 = 120
         // We should force 180 first, cuz its the most common one AFAIK
         angle.y = *target->GetLowerBodyYawTarget() + 180;
-    } else {
+    } else
         angle.y = *target->GetLowerBodyYawTarget();
-    }
 
     return angle.y;
 }
