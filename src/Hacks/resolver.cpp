@@ -17,6 +17,18 @@ static int lastAmmo = -1;
 // Global variables
 bool Settings::Resolver::lbyUpdated = false;
 int Settings::Resolver::resolvingId = -1;
+std::map<int, float> Settings::Resolver::lby = {
+    { -1, 0 }
+};
+std::map<int, float> Settings::Resolver::lastHitAng = {
+    { -1, 0 }
+};
+std::map<int, float> Settings::Resolver::angForce = {
+    { -1, 0 }
+};
+std::map<int, const char*> Settings::Resolver::angForceTxt = {
+    { -1, "None" }
+};
 
 void Resolver::Hug( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
@@ -37,6 +49,9 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float shotsMissedTime = 2.0f;
     float lastShotsMissed = 0.0f;
 
+    // Set maps in here
+    Settings::Resolver::[target->GetIndex()] = lby;
+
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
     if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
@@ -56,17 +71,21 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Settings::Resolver::lbyUpdated )
         lastLbyUpdate = serverTime;
 
-    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby )
-        angle.y = *target->GetLowerBodyYawTarget();
-    else {
+    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+        angle.y = lby;
+        Settings::Resolver::angForce[target->GetIndex()] = lby;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
+    } else {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
         // For example
         angle.y = HugBrute( target );
     }
 
+    // THIS MUST BE AFTER WE SET ALL ANGLES!!!
     if ( didDmg ) {
         // You can save angles here, etc...
+        Settings::Resolver::lastHitAng[target->GetIndex()] = angle.y;
 
         didDmg = false;
     }
@@ -86,6 +105,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
 
 float Resolver::HugLby( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
+    float lby = *target->GetLowerBodyYawTarget();
 
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
@@ -93,9 +113,14 @@ float Resolver::HugLby( C_BasePlayer* target ) {
         // LBY broken and is between LBY+120 & LBY-120
         // Giving us range of 60 + 60 = 120
         // We should force 180 first, cuz its the most common one AFAIK
-        angle.y = *target->GetLowerBodyYawTarget() + 180;
-    } else
-        angle.y = *target->GetLowerBodyYawTarget();
+        angle.y = lby + 180;
+        Settings::Resolver::angForce[target->GetIndex()] = lby + 180;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+    } else {
+        angle.y = lby;
+        Settings::Resolver::angForce[target->GetIndex()] = lby;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
+    }
 
     return angle.y;
 }
@@ -107,15 +132,23 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     switch ( shotsMissed[target->GetIndex()] % 4 ) {
         case 0:
             angle.y = lby;
+            Settings::Resolver::angForce[target->GetIndex()] = lby;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
             break;
         case 1:
             angle.y = lby + 90.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby + 90.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
             break;
         case 2:
             angle.y = lby - 90.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby - 90.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
             break;
         case 3:
             angle.y = lby + 180.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby + 180.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
             break;
     }
 
