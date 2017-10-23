@@ -198,9 +198,11 @@ void Offsets::GetOffsets() {
                                                                            XORSTR( "m_flLowerBodyYawTarget" ) );
     offsets.DT_CSPlayer.m_nSequence = NetVarManager::GetOffset(tables, XORSTR("DT_CSPlayer"),
                                                                            XORSTR("m_nSequence"));
+    offsets.DT_CSPlayer.m_flCycle = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                           XORSTR("m_flCycle"));
+    offsets.DT_CSPlayer.m_flWeight = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
+                                                                           XORSTR("m_flWeight"));
 
-    offsets.DT_ServerAnimationData.m_flCycle = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
-                                                                    XORSTR("m_flCycle"));
     offsets.DT_ServerAnimationData.m_flFrozen = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),
                                                                      XORSTR("m_flFrozen"));
     offsets.DT_ServerAnimationData.m_ScaleType = NetVarManager::GetOffset(tables, XORSTR("DT_BaseAnimating"),

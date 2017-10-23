@@ -58,10 +58,12 @@ void Resolver::Hug( C_BasePlayer* target ) {
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
     if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
-        shotsMissedS++;
+        shotsMissedS = shotsMissed[target->GetIndex()];
         Settings::Resolver::shotsMissedSave[target->GetIndex()]++;
         lastShotsMissed = curTime;
-    }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
+    }
+    
+    if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
         Settings::Resolver::shotsMissedSave[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
