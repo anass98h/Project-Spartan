@@ -57,6 +57,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
         // For example
+        //angle.y = HugLby(target);
         angle.y = HugBrute( target );
     }
 
@@ -78,7 +79,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
     target->GetEyeAngles()->y = angle.y;
 }
 
-float Resolver::HugLby( C_BasePlayer* target ) {
+float Resolver::HugLby( C_BasePlayer* target ) { //TODO: Fix crashing of this
     QAngle angle = *target->GetEyeAngles();
 
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
