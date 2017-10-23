@@ -29,6 +29,9 @@ std::map<int, float> Settings::Resolver::angForce = {
 std::map<int, const char*> Settings::Resolver::angForceTxt = {
     { -1, "None" }
 };
+std::map<int, int> Settings::Resolver::shotsMissedSave = {
+    { -1, 0 }
+};
 
 void Resolver::Hug( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
@@ -56,11 +59,11 @@ void Resolver::Hug( C_BasePlayer* target ) {
 
     if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
         shotsMissedS++;
-        shotsMissedSave[target->GetIndex()]++;
+        Settings::Resolver::shotsMissedSave[target->GetIndex()]++;
         lastShotsMissed = curTime;
     }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
-        shotsMissed[target->GetIndex()] = shotsMissed[target->GetIndex()];
+        Settings::Resolver::shotsMissedSave[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
 
     Settings::Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
@@ -129,7 +132,7 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
     float lby = *target->GetLowerBodyYawTarget();
 
-    switch ( shotsMissed[target->GetIndex()] % 4 ) {
+    switch ( Settings::Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
         case 0:
             angle.y = lby;
             Settings::Resolver::angForce[target->GetIndex()] = lby;
