@@ -55,7 +55,7 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
 
                 static float lastUpdate = 0.f;
 
-                if ( Settings::Resolver::lbyUpdated ) {
+                if ( Resolver::lbyUpdated ) {
                     PushLagRecord( i, target );
                     lastUpdate = curTime + 0.2f + outgoingPing;
                     Backtracking::backtrackingLby = true;

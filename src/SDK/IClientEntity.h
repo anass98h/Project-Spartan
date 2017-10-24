@@ -242,7 +242,12 @@ public:
 
     float GetCycle() {
         return *( float* ) ( ( uintptr_t )
-        this + offsets.DT_ServerAnimationData.m_flCycle);
+        this + offsets.DT_CSPlayer.m_flCycle);
+    }
+
+    float GetWeight() {
+        return *( float* ) ( ( uintptr_t )
+        this + offsets.DT_CSPlayer.m_flWeight);
     }
 
     float GetFrozen() {

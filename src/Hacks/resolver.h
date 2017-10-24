@@ -10,9 +10,9 @@
 #include "backtracking.h"
 #include <random>
 
-/*#define TIME_TO_TICKS( dt ) ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
+#define TIME_TO_TICKS( dt ) ( (int)( 0.5f + (float)(dt) / globalVars->interval_per_tick ) )
 #define TICKS_TO_TIME( t )  ( globalVars->interval_per_tick * ( t ) )
-#define ACT_CSGO_IDLE_TURN_BALANCEADJUST 979*/
+#define ACT_CSGO_IDLE_TURN_BALANCEADJUST 979
 
 namespace Resolver {
 
@@ -26,7 +26,21 @@ namespace Resolver {
 
     // Variables
 
+    extern bool baimNextShot;
 
+    extern bool lbyUpdated;
+
+    extern int resolvingId;
+
+    extern std::map<int, float> lby;
+
+    extern std::map<int, float> lastHitAng;
+
+    extern std::map<int, float> angForce;
+
+    extern std::map<int, const char*> angForceTxt;
+
+    extern std::map<int, int> shotsMissedSave;
 
     // Hooks
 

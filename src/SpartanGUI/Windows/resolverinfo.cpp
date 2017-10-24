@@ -9,30 +9,30 @@ void ResolverInfo::RenderWindow() {
     ImGui::SetNextWindowSize( ImVec2( 200, 200 ), ImGuiCond_Always );
 
     if ( ImGui::Begin( XORSTR( "Resolver Info" ) ) ) {
-        if ( !engine->IsInGame() )
-            ImGui::Text( XORSTR( "Not in-game\n" ) );
-        else if ( !Settings::Resolver::enabled )
-            ImGui::Text( XORSTR( "Resolver not enabled\n" ) );
-        else {
-            int playerId = Settings::Resolver::resolvingId;
+        if ( !engine->IsInGame() ) {
+            ImGui::Text( XORSTR( "" ) );
+        } else if ( !Settings::Resolver::enabled ) {
+            ImGui::Text( XORSTR( "" ) );
+        } else {
+            int playerId = Resolver::resolvingId;
     
             IEngineClient::player_info_t playerInfo;
             engine->GetPlayerInfo( playerId, &playerInfo );
     
             char* name = playerInfo.name;
             char* guid = playerInfo.guid;
-    
-            float lastHit = Math::ResNormalizeYaw( Settings::Resolver::lastHitAng[playerId] );
-            float angForce = Math::ResNormalizeYaw( Resolver::angForce[playerId] );
-            const char* angForceTxt = Settings::Resolver::angForceTxt[playerId];
-            int shotsMissed = shotsMissedSave[playerId];
-            float lby = Math::ResNormalizeYaw( Settings::Resolver::lby[playerId] );
-    
-            ImGui::Text( "%s [%s]\n", name, guid );
-            ImGui::Text( "Trying Angle - %s [%.1f]\n", angForceTxt, angForce );
-            ImGui::Text( "Last Hit - %.1f\n", lastHit );
-            ImGui::Text( "Shots missed - %.0f\n", shotsMissed );
-            ImGui::Text( "LBY - %.1f\n", lby );
+
+            float lastHit = Math::RoundFloat( Resolver::lastHitAng[playerId] );
+            float angForce = Math::RoundFloat( Resolver::angForce[playerId] );
+            const char* angForceTxt = Resolver::angForceTxt[playerId];
+            int shotsMissed = Resolver::shotsMissedSave[playerId];
+            float lby = Math::RoundFloat( Resolver::lby[playerId] );
+
+            ImGui::Text( XORSTR( "%s [%s]" ), name, guid );
+            ImGui::Text( XORSTR( "Trying Angle - %s [%f]" ), angForceTxt, angForce );
+            ImGui::Text( XORSTR( "Last Hit - %f" ), lastHit );
+            ImGui::Text( XORSTR( "Shots missed - %f" ), shotsMissed );
+            ImGui::Text( XORSTR( "LBY - %f" ), lby );
         }
         
         ImGui::End();
