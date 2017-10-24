@@ -1047,6 +1047,161 @@ yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                     state++;
                 }
                 break;
+                case AntiAimType_Y::MANUALEDGEREAL: {
+                    float headAngEdge = HeadEdgeAng();
+                    float lby = *pLocal->GetLowerBodyYawTarget();
+                    float serverTime = pLocal->GetTickBase() * globalVars->interval_per_tick;
+
+                    bool onGround = pLocal->GetFlags() & FL_ONGROUND;
+                    bool isMoving = ( pLocal->GetVelocity().Length2D() > 0.1f && onGround );
+
+                    static int lbySave = lby;
+                    static float nextUpdate = 0.0f;
+
+                    if ( lbySave != lby ) {
+                        // We fucked up :cry:
+                        lbySave = lby;
+                    }
+
+                    static bool lbySwitch = false;
+                    static bool lbySwitch2 = false;
+                    static bool lbySwitch3 = false;
+
+                    if ( serverTime > nextUpdate ) {
+                        lbySwitch = !lbySwitch;
+                        float ran = rand() % 35;
+                        if ( lbySwitch )
+                            angle.y = lby + ran;
+                        else
+                            angle.y = lby - ran;
+                        
+                        nextUpdate = serverTime + 1.1f;
+                    } else {  
+                        ButtonCode_t leftArrow = KEY_LEFT;
+                        ButtonCode_t rightArrow = KEY_RIGHT;
+
+                        static bool switchJi = false;
+
+                        if ( isMoving ) {
+                            if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
+                                if ( AntiAim::canEdge )
+                                    angle.y = headAngEdge;
+                                else {
+                                    float ran = rand() % 90 + 30;
+                                    lbySwitch2 = !lbySwitch2;
+                                    if ( lbySwitch2 )
+                                        angle.y = lby + ran;
+                                    else
+                                        angle.y = lby - ran;
+                                }
+                            } else
+                                nextUpdate = serverTime + 1.1f;
+                            
+                            if ( AntiAim::canEdge )
+                                angle.y = headAngEdge;
+                            else
+                                angle.y += 180.0f;
+                        } else {
+                            if ( AntiAim::canEdge )
+                                angle.y = headAngEdge;
+                            else {
+                                if ( inputSystem->IsButtonDown( leftArrow ) ) {
+                                    float ran = rand() % 20;
+                                    switchJi = !switchJi;
+                                    if ( switchJi )
+                                        angle.y -= 90 + ran;
+                                    else
+                                        angle.y -= 90 - ran;
+                                } else if ( inputSystem->IsButtonDown( rightArrow ) ) {
+                                    float ran = rand() % 20;
+                                    switchJi = !switchJi;
+                                    if ( switchJi )
+                                        angle.y += 90 + ran;
+                                    else
+                                        angle.y += 90 - ran;
+                                } else {
+                                    float ran = rand() % 75 + 40;
+                                    lbySwitch3 = !lbySwitch3;
+                                    if ( lbySwitch3 )
+                                        angle.y = lby + ran;
+                                    else
+                                        angle.y = lby - ran;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+                case AntiAimType_Y::MANUALEDGEFAKE: {
+                    float headAngEdge = HeadEdgeAng();
+                    float lby = *pLocal->GetLowerBodyYawTarget();
+                    float serverTime = pLocal->GetTickBase() * globalVars->interval_per_tick;
+
+                    bool onGround = pLocal->GetFlags() & FL_ONGROUND;
+                    bool isMoving = ( pLocal->GetVelocity().Length2D() > 0.1f && onGround );
+
+                    static float nextUpdate = 0.0f;
+
+                    static bool lbySwitch = false;
+                    static bool lbySwitch2 = false;
+
+                    if ( serverTime > nextUpdate ) {
+                        angle.y = lby;  
+                        nextUpdate = serverTime + 1.1f;
+                    } else {  
+                        ButtonCode_t leftArrow = KEY_LEFT;
+                        ButtonCode_t rightArrow = KEY_RIGHT;
+
+                        static bool switchJi = false;
+
+                        if ( isMoving ) {
+                            if ( Settings::FakewalkAW::enabled && inputSystem->IsButtonDown( Settings::FakewalkAW::key ) ) {
+                                if ( AntiAim::canEdge )
+                                    angle.y = headAngEdge + 135.f;
+                                else {
+                                    float ran = rand() % 35;
+                                    lbySwitch = !lbySwitch;
+                                    if ( lbySwitch )
+                                        angle.y = lby + ran;
+                                    else
+                                        angle.y = lby - ran;
+                                }
+                            } else
+                                nextUpdate = serverTime + 1.1f;
+                            
+                            if ( AntiAim::canEdge )
+                                angle.y = headAngEdge + 135.f;
+                            else
+                                angle.y = lby + 25.f;
+                        } else {
+                            if ( AntiAim::canEdge )
+                                angle.y = headAngEdge - 135.f;
+                            else {
+                                if ( inputSystem->IsButtonDown( leftArrow ) ) {
+                                    switchJi = !switchJi;
+                                    if ( switchJi )
+                                        angle.y += 90;
+                                    else
+                                        angle.y += 90;
+                                } else if ( inputSystem->IsButtonDown( rightArrow ) ) {
+                                    switchJi = !switchJi;
+                                    if ( switchJi )
+                                        angle.y -= 90;
+                                    else
+                                        angle.y -= 90;
+                                } else {
+                                    float ran = rand() % 10;
+                                    lbySwitch2 = !lbySwitch2;
+                                    if ( lbySwitch2 )
+                                        angle.y = lby + ran;
+                                    else
+                                        angle.y = lby - ran;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
             }
         case AntiAimType_Y::NUMBER_OF_TYPES:break;
     }
