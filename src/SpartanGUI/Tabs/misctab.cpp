@@ -216,9 +216,10 @@ void Misc::RenderTab() {
                 }
                 ImGui::NextColumn();
                 {
-                    ImGui::Checkbox( XORSTR( "Only matching###Match" ), &Settings::GrenadeHelper::onlyMatchingInfos );
+                    ImGui::Checkbox( XORSTR( "Only matching ###match" ), &Settings::GrenadeHelper::onlyMatchingInfos );
                 }
-                ImGui::Columns( 2 );
+                ImGui::Columns( 1 );
+                ImGui::Columns( 2, NULL, true );
                 {
                     if ( ImGui::Button( XORSTR( "Aimassist" ), ImVec2( -1, 0 ) ) )
                         ImGui::OpenPopup( XORSTR( "optionAimAssist" ) );
@@ -273,10 +274,12 @@ void Misc::RenderTab() {
                                                              *localPlayer->GetVAngles(), ( ThrowType ) tType,
                                                              inputName );
                                 Settings::GrenadeHelper::grenadeInfos.push_back( n );
-                                pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
-                                if ( !DoesFileExist( path.c_str() ) )
-                                    mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
-                                Settings::SaveGrenadeInfo( path << XORSTR( "/config.json" ) );
+                                std::ostringstream path;
+                                path << GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
+                                if ( !DoesFileExist( path.str().c_str() ) )
+                                    mkdir( path.str().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+                                path << XORSTR( "/config.json" );
+                                Settings::SaveGrenadeInfo( path.str() );
                             }
                             strcpy( inputName, "" );
                         }
@@ -300,192 +303,194 @@ void Misc::RenderTab() {
                                  ( int ) Settings::GrenadeHelper::grenadeInfos.size() > throwMessageCurrent ) {
                                 Settings::GrenadeHelper::grenadeInfos.erase(
                                         Settings::GrenadeHelper::grenadeInfos.begin() + throwMessageCurrent );
-                                pstring path = GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
-                                if ( !DoesFileExist( path.c_str() ) )
-                                    mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
-                                Settings::SaveGrenadeInfo( path << XORSTR( "/config.json" ) );
+                                std::ostringstream path;
+                                path << GetGhConfigDirectory() << Settings::GrenadeHelper::actMapName;
+                                if ( !DoesFileExist( path.str().c_str() ) )
+                                    mkdir( path.str().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+                                path << XORSTR( "/config.json" );
+                                Settings::SaveGrenadeInfo( path.str() );
                             }
                         ImGui::EndPopup();
                     }
                 }
+                ImGui::Columns( 1 );
+                ImGui::Separator();
+                ImGui::EndChild();
             }
-            ImGui::Columns( 1 );
-            ImGui::Separator();
-            ImGui::EndChild();
         }
-
-    }
-    ImGui::NextColumn();
-    {
-        ImGui::BeginChild( XORSTR( "Child2" ), ImVec2( 0, 0 ), true );
+        ImGui::NextColumn();
         {
-            ImGui::Text( XORSTR( "Clantag" ) );
-            ImGui::Separator();
-            ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ClanTagChanger::enabled );
-            ImGui::Separator();
-            ImGui::Columns( 1 );
-
-            ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
+            ImGui::BeginChild( XORSTR( "Child2" ), ImVec2( 0, 0 ), true );
             {
-                ImGui::PushItemWidth( -1 );
-                if ( ImGui::Combo( XORSTR( "##PRESETTYPE" ), ( int* ) &Settings::ClanTagChanger::preset, presetTypes,
-                                   IM_ARRAYSIZE( presetTypes ) ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-                ImGui::PopItemWidth();
+                ImGui::Text( XORSTR( "Clantag" ) );
+                ImGui::Separator();
+                ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ClanTagChanger::enabled );
+                ImGui::Separator();
+                ImGui::Columns( 1 );
 
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                ImGui::Text( XORSTR( "Animation Speed" ) );
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                ImGui::Separator();
+                ImGui::Columns( 2, NULL, true );
+                {
+                    ImGui::PushItemWidth( -1 );
+                    if ( ImGui::Combo( XORSTR( "##PRESETTYPE" ), ( int* ) &Settings::ClanTagChanger::preset,
+                                       presetTypes,
+                                       IM_ARRAYSIZE( presetTypes ) ) )
+                        ClanTagChanger::UpdateClanTagCallback();
+                    ImGui::PopItemWidth();
 
-                if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
-                    ImGui::Text( XORSTR( "Custom Clan Tag" ) );
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    ImGui::Text( XORSTR( "Animation Speed" ) );
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+
+                    if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
+                        ImGui::Text( XORSTR( "Custom Clan Tag" ) );
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    }
+
+                }
+                ImGui::NextColumn();
+                {
+                    ImGui::PushItemWidth( -1 );
+                    if ( ImGui::Combo( XORSTR( "##ANIMATIONTYPE" ), ( int* ) &Settings::ClanTagChanger::type,
+                                       animationTypes, IM_ARRAYSIZE( animationTypes ) ) )
+                        ClanTagChanger::UpdateClanTagCallback();
+                    if ( ImGui::SliderInt( XORSTR( "##ANIMATIONSPEED" ), &Settings::ClanTagChanger::animationSpeed, 0,
+                                           2000 ) )
+                        ClanTagChanger::UpdateClanTagCallback();
+
+                    if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
+                        if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) ) {
+                            ClanTagChanger::UpdateClanTagCallback();
+                        }
+                    }
+                    ImGui::PopItemWidth();
+                }
+                ImGui::Columns( 1 );
+                ImGui::Separator();
+                ImGui::Text( XORSTR( "Nickname" ) );
+                ImGui::Separator();
+
+                ImGui::InputText( XORSTR( "##NICKNAME" ), nickname, 127 );
+
+                ImGui::SameLine();
+                if ( ImGui::Button( XORSTR( "Set Nickname" ), ImVec2( -1, 0 ) ) )
+                    NameChanger::SetName( std::string( nickname ).c_str() );
+
+                if ( ImGui::Button( XORSTR( "Glitch Name" ) ) )
+                    NameChanger::SetName( "\n\xAD\xAD\xAD" );
+                ImGui::SameLine();
+                if ( ImGui::Button( XORSTR( "No Name" ) ) )
+                    ImGui::OpenPopup( XORSTR( "optionNoName" ) );
+                ImGui::SetNextWindowSize( ImVec2( 150, 100 ), ImGuiCond_Always );
+                if ( ImGui::BeginPopup( XORSTR ( "optionNoName" ) ) ) {
+                    ImGui::PushItemWidth( -1 );
+                    for ( auto& it : NameChanger::nntypes ) {
+                        if ( ImGui::Button( it.second, ImVec2( -1, 0 ) ) )
+                            NameChanger::InitNoName( NameChanger::NC_Type::NC_NORMAL, it.first );
+
+                    }
+                    ImGui::PopItemWidth();
+
+                    ImGui::EndPopup();
+                }
+
+                ImGui::SameLine();
+                if ( ImGui::Button( XORSTR( "Inf Name Spam" ) ) )
+                    NameChanger::InitColorChange( NameChanger::NC_Type::NC_RAINBOW );
+
+                ImGui::SameLine();
+                if ( ImGui::Button( XORSTR( "Colorize Name" ), ImVec2( -1, 0 ) ) )
+                    ImGui::OpenPopup( XORSTR( "optionColorizeName" ) );
+                ImGui::SetNextWindowSize( ImVec2( 150, 300 ), ImGuiSetCond_Always );
+                if ( ImGui::BeginPopup( XORSTR( "optionColorizeName" ) ) ) {
+                    ImGui::PushItemWidth( -1 );
+                    for ( auto& it : NameChanger::colors ) {
+                        if ( ImGui::Button( it.second, ImVec2( -1, 0 ) ) )
+                            NameChanger::InitColorChange( NameChanger::NC_Type::NC_SOLID, it.first );
+                    }
+                    ImGui::PopItemWidth();
+
+                    ImGui::EndPopup();
+                }
+                ImGui::Columns( 2, NULL, true );
+                {
+                    if ( ImGui::Checkbox( XORSTR( "Name Stealer" ), &Settings::NameStealer::enabled ) )
+                        NameStealer::entityId = -1;
+                }
+                ImGui::NextColumn();
+                {
+                    ImGui::Combo( "", &Settings::NameStealer::team, teams, IM_ARRAYSIZE( teams ) );
+                }
+
+                ImGui::Columns( 1 );
+                ImGui::Separator();
+
+                ImGui::Text( XORSTR( "Fake Lag" ) );
+                ImGui::Separator();
+                ImGui::Columns( 2, NULL, true );
+                {
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    ImGui::Text( XORSTR( "Type" ) );
+                    ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    ImGui::Text( XORSTR( "Choke Amount" ) );
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                 }
-
-            }
-            ImGui::NextColumn();
-            {
-                ImGui::PushItemWidth( -1 );
-                if ( ImGui::Combo( XORSTR( "##ANIMATIONTYPE" ), ( int* ) &Settings::ClanTagChanger::type,
-                                   animationTypes, IM_ARRAYSIZE( animationTypes ) ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-                if ( ImGui::SliderInt( XORSTR( "##ANIMATIONSPEED" ), &Settings::ClanTagChanger::animationSpeed, 0,
-                                       2000 ) )
-                    ClanTagChanger::UpdateClanTagCallback();
-
-                if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
-                    if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) ) {
-                        ClanTagChanger::UpdateClanTagCallback();
-                    }
+                ImGui::NextColumn();
+                {
+                    ImGui::PushItemWidth( -3 );
+                    ImGui::Combo( XORSTR( "##FAKELAGTYPE" ), ( int* ) &Settings::FakeLag::type,
+                                  lagTypes, IM_ARRAYSIZE( lagTypes ) );
+                    ImGui::PopItemWidth();
+                    ImGui::PushItemWidth( -1 );
+                    ImGui::SliderInt( XORSTR( "##FAKELAGAMOUNT" ), &Settings::FakeLag::value, 0, 16,
+                                      XORSTR( "Amount: %0.f" ) );
+                    ImGui::PopItemWidth();
                 }
-                ImGui::PopItemWidth();
-            }
-            ImGui::Columns( 1 );
-            ImGui::Separator();
-            ImGui::Text( XORSTR( "Nickname" ) );
-            ImGui::Separator();
+                ImGui::EndColumns();
+                ImGui::Separator();
 
-            ImGui::InputText( XORSTR( "##NICKNAME" ), nickname, 127 );
-
-            ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "Set Nickname" ), ImVec2( -1, 0 ) ) )
-                NameChanger::SetName( std::string( nickname ).c_str() );
-
-            if ( ImGui::Button( XORSTR( "Glitch Name" ) ) )
-                NameChanger::SetName( "\n\xAD\xAD\xAD" );
-            ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "No Name" ) ) )
-                ImGui::OpenPopup( XORSTR( "optionNoName" ) );
-            ImGui::SetNextWindowSize( ImVec2( 150, 100 ), ImGuiCond_Always );
-            if ( ImGui::BeginPopup( XORSTR ( "optionNoName" ) ) ) {
-                ImGui::PushItemWidth( -1 );
-                for ( auto& it : NameChanger::nntypes ) {
-                    if ( ImGui::Button( it.second, ImVec2( -1, 0 ) ) )
-                        NameChanger::InitNoName( NameChanger::NC_Type::NC_NORMAL, it.first );
-
+                ImGui::Text( XORSTR( "Other" ) );
+                ImGui::Separator();
+                ImGui::Columns( 2, NULL, true );
+                {
+                    ImGui::Checkbox( XORSTR( "Auto Accept" ), &Settings::AutoAccept::enabled );
+                    SetTooltip( XORSTR( "WARNING: This may crash your game." ) );
+                    ImGui::Checkbox( XORSTR( "AirStuck" ), &Settings::Airstuck::enabled );
+                    ImGui::Checkbox( XORSTR( "Autoblock" ), &Settings::Autoblock::enabled );
+                    ImGui::Checkbox( XORSTR( "Jump Throw" ), &Settings::JumpThrow::enabled );
+                    ImGui::Checkbox( XORSTR( "Auto Defuse" ), &Settings::AutoDefuse::enabled );
+                    ImGui::Checkbox( XORSTR( "Sniper Crosshair" ), &Settings::SniperCrosshair::enabled );
+                    ImGui::Checkbox( XORSTR( "Disable post-processing" ), &Settings::DisablePostProcessing::enabled );
                 }
-                ImGui::PopItemWidth();
-
-                ImGui::EndPopup();
-            }
-
-            ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "Inf Name Spam" ) ) )
-                NameChanger::InitColorChange( NameChanger::NC_Type::NC_RAINBOW );
-
-            ImGui::SameLine();
-            if ( ImGui::Button( XORSTR( "Colorize Name" ), ImVec2( -1, 0 ) ) )
-                ImGui::OpenPopup( XORSTR( "optionColorizeName" ) );
-            ImGui::SetNextWindowSize( ImVec2( 150, 300 ), ImGuiSetCond_Always );
-            if ( ImGui::BeginPopup( XORSTR( "optionColorizeName" ) ) ) {
-                ImGui::PushItemWidth( -1 );
-                for ( auto& it : NameChanger::colors ) {
-                    if ( ImGui::Button( it.second, ImVec2( -1, 0 ) ) )
-                        NameChanger::InitColorChange( NameChanger::NC_Type::NC_SOLID, it.first );
+                ImGui::NextColumn();
+                {
+                    ImGui::Checkbox( XORSTR( "Show Ranks" ), &Settings::ShowRanks::enabled );
+                    UI::KeyBindButton( &Settings::Airstuck::key );
+                    UI::KeyBindButton( &Settings::Autoblock::key );
+                    UI::KeyBindButton( &Settings::JumpThrow::key );
+                    //ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);
+                    ImGui::Checkbox( XORSTR( "Silent Defuse" ), &Settings::AutoDefuse::silent );
+                    ImGui::Checkbox( XORSTR( "Event Logger" ), &Settings::EventLogger::enabled );
+                    ImGui::Checkbox( XORSTR( "Screenshot Cleaner" ), &Settings::ScreenshotCleaner::enabled );
                 }
-                ImGui::PopItemWidth();
+                ImGui::Columns( 1 );
+                ImGui::Separator();
 
-                ImGui::EndPopup();
+                ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 210, 85 ) );
+                if ( ImGui::BeginPopupModal( XORSTR( "Error###UNTRUSTED_FEATURE" ) ) ) {
+                    ImGui::Text( XORSTR( "You cannot use this feature on a VALVE server." ) );
+
+                    ImGui::Checkbox( XORSTR( "This is not a VALVE server" ), &ValveDSCheck::forceUT );
+
+                    if ( ImGui::Button( XORSTR( "OK" ) ) )
+                        ImGui::CloseCurrentPopup();
+
+                    ImGui::EndPopup();
+                }
+                ImGui::PopStyleVar();
+
+                ImGui::EndChild();
             }
-            ImGui::Columns( 2, NULL, true );
-            {
-                if ( ImGui::Checkbox( XORSTR( "Name Stealer" ), &Settings::NameStealer::enabled ) )
-                    NameStealer::entityId = -1;
-            }
-            ImGui::NextColumn();
-            {
-                ImGui::Combo( "", &Settings::NameStealer::team, teams, IM_ARRAYSIZE( teams ) );
-            }
-
-            ImGui::Columns( 1 );
-            ImGui::Separator();
-
-            ImGui::Text( XORSTR( "Fake Lag" ) );
-            ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
-            {
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                ImGui::Text( XORSTR( "Type" ) );
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                ImGui::Text( XORSTR( "Choke Amount" ) );
-                ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-            }
-            ImGui::NextColumn();
-            {
-                ImGui::PushItemWidth( -3 );
-                ImGui::Combo( XORSTR( "##FAKELAGTYPE" ), ( int* ) &Settings::FakeLag::type,
-                              lagTypes, IM_ARRAYSIZE( lagTypes ) );
-                ImGui::PopItemWidth();
-                ImGui::PushItemWidth( -1 );
-                ImGui::SliderInt( XORSTR( "##FAKELAGAMOUNT" ), &Settings::FakeLag::value, 0, 16,
-                                  XORSTR( "Amount: %0.f" ) );
-                ImGui::PopItemWidth();
-            }
-            ImGui::EndColumns();
-            ImGui::Separator();
-
-            ImGui::Text( XORSTR( "Other" ) );
-            ImGui::Separator();
-            ImGui::Columns( 2, NULL, true );
-            {
-                ImGui::Checkbox( XORSTR( "Auto Accept" ), &Settings::AutoAccept::enabled );
-                SetTooltip( XORSTR( "WARNING: This may crash your game." ) );
-                ImGui::Checkbox( XORSTR( "AirStuck" ), &Settings::Airstuck::enabled );
-                ImGui::Checkbox( XORSTR( "Autoblock" ), &Settings::Autoblock::enabled );
-                ImGui::Checkbox( XORSTR( "Jump Throw" ), &Settings::JumpThrow::enabled );
-                ImGui::Checkbox( XORSTR( "Auto Defuse" ), &Settings::AutoDefuse::enabled );
-                ImGui::Checkbox( XORSTR( "Sniper Crosshair" ), &Settings::SniperCrosshair::enabled );
-                ImGui::Checkbox( XORSTR( "Disable post-processing" ), &Settings::DisablePostProcessing::enabled );
-            }
-            ImGui::NextColumn();
-            {
-                ImGui::Checkbox( XORSTR( "Show Ranks" ), &Settings::ShowRanks::enabled );
-                UI::KeyBindButton( &Settings::Airstuck::key );
-                UI::KeyBindButton( &Settings::Autoblock::key );
-                UI::KeyBindButton( &Settings::JumpThrow::key );
-                //ImGui::Checkbox(XORSTR("Smart Aim"), &Settings::SmartAim::enabled);
-                ImGui::Checkbox( XORSTR( "Silent Defuse" ), &Settings::AutoDefuse::silent );
-                ImGui::Checkbox( XORSTR( "Event Logger" ), &Settings::EventLogger::enabled );
-                ImGui::Checkbox( XORSTR( "Screenshot Cleaner" ), &Settings::ScreenshotCleaner::enabled );
-            }
-            ImGui::Columns( 1 );
-            ImGui::Separator();
-
-            ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 210, 85 ) );
-            if ( ImGui::BeginPopupModal( XORSTR( "Error###UNTRUSTED_FEATURE" ) ) ) {
-                ImGui::Text( XORSTR( "You cannot use this feature on a VALVE server." ) );
-
-                ImGui::Checkbox( XORSTR( "This is not a VALVE server" ), &ValveDSCheck::forceUT );
-
-                if ( ImGui::Button( XORSTR( "OK" ) ) )
-                    ImGui::CloseCurrentPopup();
-
-                ImGui::EndPopup();
-            }
-            ImGui::PopStyleVar();
-
-            ImGui::EndChild();
         }
     }
 }
