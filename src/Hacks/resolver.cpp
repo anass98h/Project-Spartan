@@ -17,6 +17,18 @@ static int lastAmmo = -1;
 // Global variables
 bool Settings::Resolver::lbyUpdated = false;
 int Settings::Resolver::resolvingId = -1;
+std::map<int, float> Settings::Resolver::lby = {
+    { -1, 0 }
+};
+std::map<int, float> Settings::Resolver::lastHitAng = {
+    { -1, 0 }
+};
+std::map<int, float> Settings::Resolver::angForce = {
+    { -1, 0 }
+};
+std::map<int, const char*> Settings::Resolver::angForceTxt = {
+    { -1, "None" }
+};
 
 void Resolver::Hug( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
@@ -31,28 +43,38 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float curTime = globalVars->curtime;
     float lastLbyUpdate = 0.0f;
 
+    float lby = *target->GetLowerBodyYawTarget();
+    static float lbySave = lby;
+
     float shotsMissedTime = 2.0f;
     float lastShotsMissed = 0.0f;
 
+    // Set maps in here
+    Settings::Resolver::lby[target->GetIndex()] = lby;
+
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
-    if ( shotsMissed[target->GetIndex()] > shotsMissedS ) {
-        shotsMissedS = shotsMissed[target->GetIndex()];
-        shotsMissedSave[target->GetIndex()] = shotsMissedSave[target->GetIndex()];
+    if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
+        shotsMissedS++;
+        shotsMissedSave[target->GetIndex()]++;
         lastShotsMissed = curTime;
     }  if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
         shotsMissed[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
 
-    Settings::Resolver::lbyUpdated = isMoving || serverTime == lastLbyUpdate + 1.1f;
+    Settings::Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
 
-    if ( Settings::Resolver::lbyUpdated ) {
+    if ( lby != lbySave )
+        lbySave = lby;
+
+    if ( Settings::Resolver::lbyUpdated )
         lastLbyUpdate = serverTime;
-    }
 
     if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
-        angle.y = *target->GetLowerBodyYawTarget();
+        angle.y = lby;
+        Settings::Resolver::angForce[target->GetIndex()] = lby;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
     } else {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
@@ -61,17 +83,20 @@ void Resolver::Hug( C_BasePlayer* target ) {
         angle.y = HugBrute( target );
     }
 
+    // THIS MUST BE AFTER WE SET ALL ANGLES!!!
     if ( didDmg ) {
         // You can save angles here, etc...
+        Settings::Resolver::lastHitAng[target->GetIndex()] = angle.y;
 
         didDmg = false;
     }
 
-    if ( Settings::Resolver::resolvePitch ) {
+    if ( Settings::Resolver::resolvePitch )
         angle.x = HugPitch( target );
-    }
+    
     if(!onGround)
         Settings::Resolver::baimNextShot = true;
+    
     Math::NormalizePitch( angle.x );
     Math::NormalizeYaw( angle.y );
 
@@ -81,6 +106,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
 
 float Resolver::HugLby( C_BasePlayer* target ) { //TODO: Fix crashing of this
     QAngle angle = *target->GetEyeAngles();
+    float lby = *target->GetLowerBodyYawTarget();
 
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
@@ -88,9 +114,13 @@ float Resolver::HugLby( C_BasePlayer* target ) { //TODO: Fix crashing of this
         // LBY broken and is between LBY+120 & LBY-120
         // Giving us range of 60 + 60 = 120
         // We should force 180 first, cuz its the most common one AFAIK
-        angle.y = *target->GetLowerBodyYawTarget() + 180;
+        angle.y = lby + 180;
+        Settings::Resolver::angForce[target->GetIndex()] = lby + 180;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
     } else {
-        angle.y = *target->GetLowerBodyYawTarget();
+        angle.y = lby;
+        Settings::Resolver::angForce[target->GetIndex()] = lby;
+        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
     }
 
     return angle.y;
@@ -103,15 +133,23 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     switch ( shotsMissed[target->GetIndex()] % 4 ) {
         case 0:
             angle.y = lby;
+            Settings::Resolver::angForce[target->GetIndex()] = lby;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
             break;
         case 1:
             angle.y = lby + 90.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby + 90.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
             break;
         case 2:
             angle.y = lby - 90.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby - 90.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
             break;
         case 3:
             angle.y = lby + 180.f;
+            Settings::Resolver::angForce[target->GetIndex()] = lby + 180.f;
+            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
             break;
     }
 
