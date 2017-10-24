@@ -4,43 +4,47 @@ bool Settings::Resolver::enabled = false;
 bool Settings::Resolver::resolvePitch = false;
 bool Settings::Resolver::lagCompensation = false;
 bool Settings::Resolver::headshotLbyUpdateOnly = false;
-bool Settings::Resolver::baimNextShot = false;
 bool Settings::AngleFlip::enabled = false;
 ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
 // Local variables
 bool didDmg = false;
-std::map<int, int> shotsMissed = { { -1, 0 } };
-std::map<int, int> shotsMissedSave = { { -1, 0 } };
+std::map<int, int> shotsMissed = {
+        { -1, 0 }
+};
+std::map<int, int> shotsMissedSave = {
+        { -1, 0 }
+};
 static int lastAmmo = -1;
 
 // Global variables
-bool Settings::Resolver::lbyUpdated = false;
-int Settings::Resolver::resolvingId = -1;
-std::map<int, float> Settings::Resolver::lby = {
-    { -1, 0 }
+bool Resolver::lbyUpdated = false;
+bool Resolver::baimNextShot = false;
+int Resolver::resolvingId = -1;
+std::map<int, float> Resolver::lby = {
+        { -1, 0.0f }
 };
-std::map<int, float> Settings::Resolver::lastHitAng = {
-    { -1, 0 }
+std::map<int, float> Resolver::lastHitAng = {
+        { -1, 0.0f }
 };
-std::map<int, float> Settings::Resolver::angForce = {
-    { -1, 0 }
+std::map<int, float> Resolver::angForce = {
+        { -1, 0.0f }
 };
-std::map<int, const char*> Settings::Resolver::angForceTxt = {
-    { -1, "None" }
+std::map<int, const char*> Resolver::angForceTxt = {
+        { -1, "None" }
 };
-std::map<int, int> Settings::Resolver::shotsMissedSave = {
-    { -1, 0 }
+std::map<int, int> Resolver::shotsMissedSave = {
+        { -1, 0 }
 };
 
 void Resolver::Hug( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
 
-    Settings::Resolver::resolvingId = target->GetIndex();
+    Resolver::resolvingId = target->GetIndex();
 
     float velocity = target->GetVelocity().Length2D();
     bool onGround = target->GetFlags() & FL_ONGROUND;
-    bool isMoving = onGround && velocity > 35.f;
+    bool isMoving = onGround && velocity > 35.0f;
 
     float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
     float curTime = globalVars->curtime;
@@ -53,33 +57,34 @@ void Resolver::Hug( C_BasePlayer* target ) {
     float lastShotsMissed = 0.0f;
 
     // Set maps in here
-    Settings::Resolver::lby[target->GetIndex()] = lby;
+    Resolver::lby[target->GetIndex()] = lby;
 
     static int shotsMissedS = shotsMissed[target->GetIndex()];
 
     if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
-        Settings::Resolver::shotsMissedSave[target->GetIndex()]++;
+        Resolver::shotsMissedSave[target->GetIndex()]++;
         lastShotsMissed = curTime;
     }
     
     if ( curTime > lastShotsMissed + shotsMissedTime ) {
         shotsMissedS = shotsMissed[target->GetIndex()];
-        Settings::Resolver::shotsMissedSave[target->GetIndex()] = shotsMissed[target->GetIndex()];
+        Resolver::shotsMissedSave[target->GetIndex()] = shotsMissed[target->GetIndex()];
     }
 
-    Settings::Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
+    Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
 
-    if ( lby != lbySave )
-        lbySave = lby;
+    // If it is already the same value, we just set it again to the same. No need for an if-clause.
+    lbySave = lby;
 
-    if ( Settings::Resolver::lbyUpdated )
+    if ( Resolver::lbyUpdated ) {
         lastLbyUpdate = serverTime;
+    }
 
-    if ( Settings::Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+    if ( Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
         angle.y = lby;
-        Settings::Resolver::angForce[target->GetIndex()] = lby;
-        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
+        Resolver::angForce[target->GetIndex()] = lby;
+        Resolver::angForceTxt[target->GetIndex()] = "LBY";
     } else {
         // Call the pCode here
         // Call HugBrute(), etc. so we have clean code and not messy like before
@@ -87,19 +92,21 @@ void Resolver::Hug( C_BasePlayer* target ) {
         angle.y = HugBrute( target );
     }
 
+    if ( Settings::Resolver::resolvePitch ) {
+        angle.x = HugPitch( target );
+    }
+
     // THIS MUST BE AFTER WE SET ALL ANGLES!!!
     if ( didDmg ) {
         // You can save angles here, etc...
-        Settings::Resolver::lastHitAng[target->GetIndex()] = angle.y;
+        Resolver::lastHitAng[target->GetIndex()] = angle.y;
 
         didDmg = false;
     }
 
-    if ( Settings::Resolver::resolvePitch )
-        angle.x = HugPitch( target );
-    
-    if(!onGround)
-        Settings::Resolver::baimNextShot = true;
+    if ( !onGround ) {
+        Resolver::baimNextShot = true;
+    }
     
     Math::NormalizePitch( angle.x );
     Math::NormalizeYaw( angle.y );
@@ -112,19 +119,22 @@ float Resolver::HugLby( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
     float lby = *target->GetLowerBodyYawTarget();
 
+    // ldd -r Spartan.so complains that GetNumSeq() is not defined (used in pSeqdesc) - requires changing
+    // Still injects tho!
+
     studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
-    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == 979 ) { // Let's use 979 instead of ACT_CSGO_IDLE_TURN_BALANCEADJUST, just to be sure
+    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == ACT_CSGO_IDLE_TURN_BALANCEADJUST ) {
         // LBY broken and is between LBY+120 & LBY-120
         // Giving us range of 60 + 60 = 120
         // We should force 180 first, cuz its the most common one AFAIK
         angle.y = lby + 180;
-        Settings::Resolver::angForce[target->GetIndex()] = lby + 180;
-        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+        Resolver::angForce[target->GetIndex()] = lby + 180;
+        Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
     } else {
         angle.y = lby;
-        Settings::Resolver::angForce[target->GetIndex()] = lby;
-        Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
+        Resolver::angForce[target->GetIndex()] = lby;
+        Resolver::angForceTxt[target->GetIndex()] = "LBY";
     }
 
     return angle.y;
@@ -134,26 +144,32 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
     float lby = *target->GetLowerBodyYawTarget();
 
-    switch ( Settings::Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
+    switch ( Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
         case 0:
-            angle.y = lby;
-            Settings::Resolver::angForce[target->GetIndex()] = lby;
-            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY";
+            angle.y = lby; // Nice Fuzion resolver you got there
+            Resolver::angForce[target->GetIndex()] = lby;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY";
             break;
         case 1:
-            angle.y = lby + 90.f;
-            Settings::Resolver::angForce[target->GetIndex()] = lby + 90.f;
-            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+            angle.y = lby + 90.0f;
+            Resolver::angForce[target->GetIndex()] = lby + 90.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
             break;
         case 2:
-            angle.y = lby - 90.f;
-            Settings::Resolver::angForce[target->GetIndex()] = lby - 90.f;
-            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+            angle.y = lby - 90.0f;
+            Resolver::angForce[target->GetIndex()] = lby - 90.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
             break;
         case 3:
-            angle.y = lby + 180.f;
-            Settings::Resolver::angForce[target->GetIndex()] = lby + 180.f;
-            Settings::Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+            // Didn't we brute this as first
+            angle.y = lby + 180.0f;
+            Resolver::angForce[target->GetIndex()] = lby + 180.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+            break;
+        case 4:
+            angle.y = lby - 180.0f;
+            Resolver::angForce[target->GetIndex()] = lby - 180.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY - 180";
             break;
     }
 
@@ -162,6 +178,8 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
 
 float Resolver::HugPitch( C_BasePlayer* target ) {
     QAngle angle = *target->GetEyeAngles();
+
+    // TODO: NoSpread Pitch resolver
 
     return angle.x;
 }
@@ -197,7 +215,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         didDmg = true;
-        shotsMissed[Settings::Resolver::resolvingId] = 0;
+        shotsMissed[Resolver::resolvingId] = 0;
         lastAmmo = -1;
     }
 
@@ -211,14 +229,14 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         if ( lastAmmo != ammo ) {
-            shotsMissed[Settings::Resolver::resolvingId]++;
+            shotsMissed[Resolver::resolvingId]++;
             lastAmmo = ammo;
         }
+    }
 
-        if ( strcmp( event->GetName(), XORSTR( "player_connect_full" ) ) ||
-             strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
+    if ( strcmp( event->GetName(), XORSTR( "player_connect_full" ) ) ||
+         strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
 
-        }
     }
 }
 
@@ -254,6 +272,14 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
             break;
         case ClientFrameStage_t::FRAME_RENDER_END:
             // Nothing in here needed, I guess
+            break;
+        case ClientFrameStage_t::FRAME_UNDEFINED:
+        case ClientFrameStage_t::FRAME_START:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_START:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_END:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_END:
+        case ClientFrameStage_t::FRAME_RENDER_START:
+            // Not needed.
             break;
     }
 }
