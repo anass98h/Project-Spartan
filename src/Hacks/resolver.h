@@ -34,7 +34,11 @@ namespace Resolver {
 
     extern std::map<int, float> lby;
 
+    extern std::map<int, bool> hasFakeWalk;
+
     extern std::map<int, float> lastHitAng;
+
+    extern std::map<int, const char*> lastHitAngTxt;    
 
     extern std::map<int, float> angForce;
 

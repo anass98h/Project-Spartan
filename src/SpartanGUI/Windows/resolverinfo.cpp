@@ -6,13 +6,13 @@ void ResolverInfo::RenderWindow() {
     if ( !ResolverInfo::showWindow )
         return;
 
-    ImGui::SetNextWindowSize( ImVec2( 200, 200 ), ImGuiCond_Always );
+    ImGui::SetNextWindowSize( ImVec2( 250, 150 ), ImGuiCond_Always );
 
     if ( ImGui::Begin( XORSTR( "Resolver Info" ) ) ) {
         if ( !engine->IsInGame() ) {
-            ImGui::Text( XORSTR( "" ) );
+            ImGui::Text( XORSTR( "Not in-game" ) );
         } else if ( !Settings::Resolver::enabled ) {
-            ImGui::Text( XORSTR( "" ) );
+            ImGui::Text( XORSTR( "Resolver not enabled" ) );
         } else {
             int playerId = Resolver::resolvingId;
     
@@ -23,6 +23,7 @@ void ResolverInfo::RenderWindow() {
             char* guid = playerInfo.guid;
 
             float lastHit = Math::RoundFloat( Resolver::lastHitAng[playerId] );
+            const char* lastHitTxt = Resolver::lastHitAngTxt( Resolver::lastHitAngTxt[playerId] );
             float angForce = Math::RoundFloat( Resolver::angForce[playerId] );
             const char* angForceTxt = Resolver::angForceTxt[playerId];
             int shotsMissed = Resolver::shotsMissedSave[playerId];
@@ -30,7 +31,7 @@ void ResolverInfo::RenderWindow() {
 
             ImGui::Text( XORSTR( "%s [%s]" ), name, guid );
             ImGui::Text( XORSTR( "Trying Angle - %s [%f]" ), angForceTxt, angForce );
-            ImGui::Text( XORSTR( "Last Hit - %f" ), lastHit );
+            ImGui::Text( XORSTR( "Last Hit - %s [%f]" ), lastHitTxt, lastHit );
             ImGui::Text( XORSTR( "Shots missed - %f" ), shotsMissed );
             ImGui::Text( XORSTR( "LBY - %f" ), lby );
         }
