@@ -44,4 +44,8 @@ jobs:
           command: |
             rm -rf CMakeCache.txt
       - store_artifacts:
-          path: ~/repo/*.so
+          path: ~/repo/Spartan-GCC.so
+          destination: gcc/Spartan.so
+      - store_artifacts:
+          path: ~/repo/Spartan-CLang.so
+          destination: clang/Spartan.so
