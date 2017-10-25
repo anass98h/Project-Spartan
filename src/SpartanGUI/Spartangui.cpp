@@ -151,7 +151,8 @@ void SetupMainMenuBar() {
         if ( ImGui::Checkbox( "Middle click ", &Settings::UI::middle ) )
             Settings::UI::right = false;
 
-        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs", "Resolver" };
+           const char* items[] = { ICON_BEANER, ICON_CONFIGS, ICON_COLORS, ICON_SKINCHANGER, ICON_PLAYERLIST, ICON_SPECTATORS, ICON_WALKBOT };
+
         int items_count = sizeof( items ) / sizeof( *items );
 
 

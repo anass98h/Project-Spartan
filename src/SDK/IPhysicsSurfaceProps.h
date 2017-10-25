@@ -15,6 +15,9 @@ struct surfaceaudioparams_t {
     float roughThreshold;
     float hardThreshold;
     float hardVelocityThreshold;
+    float highToneOcclusion;
+    float midToneOcclusion;
+    float lowToneOcclusion;
 };
 
 struct surfacesoundnames_t {

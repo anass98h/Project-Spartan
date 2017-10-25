@@ -14,11 +14,10 @@ void Main::RenderWindow() {
                        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders ) ) {
 
         const char* tabs[] = {
-                "  " ICON_7 " \n  Aim",
-
-                "  " ICON_9 " \nVisuals",
-                ICON_8 "\nHvH",
-                ICON_12 "\nMisc"
+                ICON_7,
+                ICON_9,
+                ICON_8,
+                ICON_12
         };
 
 

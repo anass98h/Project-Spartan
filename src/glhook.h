@@ -106,4 +106,5 @@ namespace SDL2 {
 #define ICON_COLORS u8"\ue051"
 #define ICON_SETTINGS u8"\ue052"
 #define ICON_COLOURS u8"\ue053"
+#define ICON_WALKBOT u8"\ue04C"
 }
