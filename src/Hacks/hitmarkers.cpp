@@ -8,6 +8,7 @@ int Settings::ESP::Hitmarker::duration = 2000;
 int Settings::ESP::Hitmarker::size = 16;
 int Settings::ESP::Hitmarker::innerGap = 5;
 bool Settings::ESP::Hitmarker::Damage::enabled = false;
+bool Settings::ESP::Hitmarker::sound = true;
 
 // int - damage dealt, long - timestamp
 std::vector<std::pair<int, long>> damages;
@@ -119,4 +120,8 @@ void Hitmarkers::FireGameEvent( IGameEvent* event ) {
     long now = Util::GetEpochTime();
     lastHitmarkerTimestamp = now;
     damages.insert( damages.begin(), std::pair<int, long>( event->GetInt( XORSTR( "dmg_health" ) ), now ) );
+
+    if(Settings::ESP::Hitmarker::sound) {
+        engine->ClientCmd_Unrestricted(XORSTR("play \"hitsound\""));
+    }
 }

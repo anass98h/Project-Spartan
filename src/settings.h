@@ -910,6 +910,8 @@ namespace Settings {
             namespace Damage {
                 extern bool enabled;
             }
+
+            extern bool sound;
         }
 
         namespace HeadDot {

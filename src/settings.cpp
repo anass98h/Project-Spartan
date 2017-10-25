@@ -485,6 +485,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "inner_gap" )] = Settings::ESP::Hitmarker::innerGap;
     settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Damage" )][XORSTR(
             "enabled" )] = Settings::ESP::Hitmarker::Damage::enabled;
+    settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "sound" )] = Settings::ESP::Hitmarker::sound;
     settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "enabled" )] = Settings::ESP::HeadDot::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "size" )] = Settings::ESP::HeadDot::size;
     settings[XORSTR( "ESP" )][XORSTR( "Spread" )][XORSTR( "enabled" )] = Settings::ESP::Spread::enabled;
@@ -1138,6 +1139,7 @@ void Settings::LoadConfig( std::string path ) {
             &Settings::ESP::Hitmarker::innerGap );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Damage" )][XORSTR( "enabled" )],
             &Settings::ESP::Hitmarker::Damage::enabled );
+    GetVal(settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "sound" )], &Settings::ESP::Hitmarker::sound);
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "enabled" )], &Settings::ESP::HeadDot::enabled );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "size" )], &Settings::ESP::HeadDot::size );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Spread" )][XORSTR( "enabled" )], &Settings::ESP::Spread::enabled );

@@ -5,6 +5,7 @@
 #include "../Utils/entity.h"
 
 namespace Hitmarkers {
+
     //Hooks
     void FireGameEvent( IGameEvent* event );
 

@@ -110,8 +110,7 @@ int __attribute__ ((constructor)) Startup() {
 
     srand( time( NULL ) ); // Seed random # Generator so we can call rand() later
 
-
-    engine->ExecuteClientCmd( "clear;" );
+    engine->ExecuteClientCmd( XORSTR("clear;") );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
                               XORSTR( " )\\ )                      )              \n" ) );
@@ -134,6 +133,11 @@ int __attribute__ ((constructor)) Startup() {
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
 
     Image::InitImages();
+
+    Sound::InitSounds();
+    engine->ExecuteClientCmd(XORSTR("snd_rebuildaudiocache"));
+    // TODO: This fucks up on my machine idk - needs testing
+
     return 0;
 }
 
