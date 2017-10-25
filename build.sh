@@ -98,7 +98,7 @@ if [ -d ".git" ]; then
 
             mv libSpartan.so Spartan-Clang.so
             if [ $? -ne 0 ]; then
-                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m."
+                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan-Clang.so\e[0m."
                 exit -1
             fi
         else
@@ -106,24 +106,40 @@ if [ -d ".git" ]; then
 
             mv libSpartan.so Spartan-GCC.so
             if [ $? -ne 0 ]; then
-                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m."
+                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan-GCC.so\e[0m."
                 exit -1
             fi
         fi
     fi
 
-    patchelf --set-soname Spartan Spartan.so
-    if [ $? -ne 0 ]; then
-        echo -e "$error_prefix Failed to set .so name."
-        while true; do
-            echo -e -n "$error_prefix "
-            read -p $'Do you wish to continue? (y/N) ' yn
-            case $yn in
-                [Yy]* ) break;;
-                [Nn]* ) rm -rf Spartan.so; exit -1;;
-                * ) echo -e "$error_prefix Please answer yes or no.";;
-            esac
-        done
+    if [ -z $CI ]; then
+        patchelf --set-soname Spartan Spartan.so
+        if [ $? -ne 0 ]; then
+            echo -e "$error_prefix Failed to set .so name."
+            while true; do
+                echo -e -n "$error_prefix "
+                read -p $'Do you wish to continue? (y/N) ' yn
+                case $yn in
+                    [Yy]* ) break;;
+                    [Nn]* ) rm -rf Spartan.so; exit -1;;
+                    * ) echo -e "$error_prefix Please answer yes or no.";;
+                esac
+            done
+        fi
+    else
+        if [ "$useClang" = true ]; then
+            patchelf --set-soname Spartan Spartan-Clang.so
+            if [ $? -ne 0 ]; then
+                echo -e "$error_prefix Failed to set .so name."
+                exit -1
+            fi
+        else
+            patchelf --set-soname Spartan Spartan-GCC.so
+            if [ $? -ne 0 ]; then
+                echo -e "$error_prefix Failed to set .so name."
+                exit -1
+            fi
+        fi
     fi
 
     if [ "$useClang" = true ]; then
