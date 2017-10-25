@@ -23,7 +23,7 @@ void ResolverInfo::RenderWindow() {
             char* guid = playerInfo.guid;
 
             float lastHit = Math::RoundFloat( Resolver::lastHitAng[playerId] );
-            const char* lastHitTxt = Resolver::lastHitAngTxt( Resolver::lastHitAngTxt[playerId] );
+            const char* lastHitTxt = Resolver::lastHitAngTxt[playerId];
             float angForce = Math::RoundFloat( Resolver::angForce[playerId] );
             const char* angForceTxt = Resolver::angForceTxt[playerId];
             int shotsMissed = Resolver::shotsMissedSave[playerId];
