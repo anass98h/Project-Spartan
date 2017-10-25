@@ -10,25 +10,42 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ cmake gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget curl autoconf ssh patchelf
+            apt-get install -y g++ clang-5.0 cmake git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev libsdl2-image-dev wget ssh patchelf lsb-release
+      - run:
+          name: System informations
+          command: |
+            uname -romi
+            lsb_release -a
       - run:
           name: Init submodules
           command: |
             if [ ! -d "~/.ssh/" ]; then mkdir ~/.ssh; fi
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git submodule init
-            git submodule update
+            git submodule update --remote --merge --recursive
       - run:
           name: Fix for SDL 2 CMake bug
           command: |
             wget https://gist.githubusercontent.com/anass98h/b3110aa75bb8b815f7693924b422e7d2/raw/913a8108b607c1a138cf88d560cc1ec2d0ec3156/sdl2-config.cmake -O /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
       - run:
-          name: Display remaining disk size
+          name: Build using GCC
           command: |
-            df -h
+            ./build.sh -g
       - run:
-          name: Build
+          name: Cleanup GCC Compilation
           command: |
-            ./build.sh
+            rm -rf CMakeCache.txt
+      - run:
+          name: Build using Clang
+          command: |
+            ./build.sh -c
+      - run:
+          name: Cleanup Clang Compilation
+          command: |
+            rm -rf CMakeCache.txt
       - store_artifacts:
-          path: ~/repo/Spartan.so
+          path: ~/repo/Spartan-GCC.so
+          destination: gcc/Spartan.so
+      - store_artifacts:
+          path: ~/repo/Spartan-Clang.so
+          destination: clang/Spartan.so

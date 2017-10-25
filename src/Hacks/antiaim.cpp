@@ -892,7 +892,7 @@ yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                  break;
                 case AntiAimType_Y::FEETWIGGLE: {
                     float Diff;
-                    bool MarcisAWeeb;
+                    bool MarcisAWeeb = false;
                     float oldyaw = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                             engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
 
