@@ -40,7 +40,7 @@ if [ -d ".git" ]; then
     fi
 
     if [ "$useClang" = true ]; then
-        if [ -n "$(uname -a | grep Ubuntu)" ]; then
+        if [ -n "$(lsb_release -d | grep Ubuntu)" ]; then
             export CC=/usr/bin/clang-5.0
             export CXX=/usr/bin/clang++-5.0
         else
