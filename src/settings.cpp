@@ -738,9 +738,18 @@ void Settings::LoadConfig( std::string path ) {
     Fonts::SetupFonts();
 
     Settings::Aimbot::weapons = {
-            { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                                                        SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                        false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
+            { ItemDefinitionIndex::INVALID, { false, false, false, false, false,
+                                              false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE,
+                                              false, false, 1.0f, SmoothType::SLOW_END, false,
+                                              0.0f, false, 0.0f, true, 180.0f,
+                                              false, 25.0f, 35.0f, false, false,
+                                              2.0f, 2.0f, false, false, false,
+                                              false, false, false, false, false,
+                                              0.1f, false, 10.0f, false, false,
+                                              false, false, false, 100, 0.5f,
+                                              false, false, false, false
+                                            }
+            },
     };
 
     for ( Json::ValueIterator itr = settings[XORSTR( "Aimbot" )][XORSTR( "weapons" )].begin();

@@ -18,6 +18,6 @@ public:
     bool m_bClient;
     bool m_bRemoteClient;
 private:
-    int nTimestampNetworkingBase;
-    int nTimestampRandomizeWindow;
+    //int nTimestampNetworkingBase;
+    //int nTimestampRandomizeWindow;
 };

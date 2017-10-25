@@ -105,7 +105,9 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
             break;
         case FakeLagType::OFF:
             // If this gets called something very weird has happened that shouldn't happen
-            *( int* ) 0 = 0;
+            // *( int* ) 0 = 0;
+
+            // It's not possible to get to this point.
             break;
     }
 

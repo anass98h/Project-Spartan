@@ -68,7 +68,7 @@ void SDL2::SwapWindow( SDL_Window* window ) {
         config.MergeMode = true;
         config.PixelSnapH = true;
         //io.Fonts->AddFontFromMemoryCompressedBase85TTF(KaiGenGothicCNRegular_compressed_data_base85, 14.0f, &config, KaiGenGothicCNRegular_ranges);
-        io.Fonts->AddFontFromMemoryCompressedBase85TTF( Tux_compressed_data_base85, 88.0f, &config, icons_ranges );
+        io.Fonts->AddFontFromMemoryCompressedBase85TTF( Tux_compressed_data_base85, 32.0f, &config, icons_ranges );
         io.Fonts->AddFontFromMemoryCompressedBase85TTF( Tux2_compressed_data_base85, 28.0f, &config, icons_ranges2 );
 
 

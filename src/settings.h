@@ -249,17 +249,14 @@ struct AimbotWeapon_t {
     float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
     bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode;
 
-    AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone, bool engageLock,
-                    bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey, bool aimkeyOnly,
-                    bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
-                    float smoothSaltMultiplier,
-                    bool errorMarginEnabled, float errorMarginValue,
-                    bool autoAimEnabled, float autoAimValue, bool aimStepEnabled, float aimStepMin, float aimStepMax,
-                    bool rcsEnabled, bool rcsAlwaysOn, float rcsAmountX, float rcsAmountY,
-                    bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
-                    bool spreadLimitEnabled, float spreadLimit,
-                    bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
+    AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone,
+                    bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey,
+                    bool aimkeyOnly, bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
+                    float smoothSaltMultiplier, bool errorMarginEnabled, float errorMarginValue, bool autoAimEnabled, float autoAimValue,
+                    bool aimStepEnabled, float aimStepMin, float aimStepMax, bool rcsEnabled, bool rcsAlwaysOn,
+                    float rcsAmountX, float rcsAmountY, bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
+                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck, bool spreadLimitEnabled,
+                    float spreadLimit, bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
                     bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode ) {
         this->enabled = enabled;
@@ -313,7 +310,7 @@ struct AimbotWeapon_t {
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
-            this->desiredBones[bone] = ( desiredBones != nullptr ) ? desiredBones[bone] : false;
+            this->desiredBones[bone] = desiredBones[bone];
 
         this->autoAimRealDistance = autoAimRealDistance;
     }

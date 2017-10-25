@@ -126,9 +126,6 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
 
-        if ( !entityInfo.name )
-            return;
-
         std::string prefix( XORSTR( "weapon_" ) );
         if ( strncmp( weapon.c_str(), prefix.c_str(), prefix.size() ) == 0 ) {
             weapon = weapon.substr( prefix.size() );

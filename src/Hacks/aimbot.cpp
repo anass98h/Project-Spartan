@@ -86,11 +86,20 @@ bool Aimbot::shootingRevolver = false;
 static xdo_t* xdo = xdo_new( NULL );
 
 std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefinitionIndex>> Settings::Aimbot::weapons =
-        {
-                { ItemDefinitionIndex::INVALID, { false, false, false, false, false, false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE, false, false, 1.0f,
-                                                        SmoothType::SLOW_END, false, 0.0f, false, 0.0f, true, 180.0f, false, 25.0f, 35.0f, false, false, 2.0f, 2.0f,
-                                                        false, false, false, false, false, false, false, false, false, 0.1f, false, 10.0f, false, false, 5.0f, false, false, 100, 0.5f, false, false, false } },
-        };
+{
+        { ItemDefinitionIndex::INVALID, { false, false, false, false, false,
+                                          false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE,
+                                          false, false, 1.0f, SmoothType::SLOW_END, false,
+                                          0.0f, false, 0.0f, true, 180.0f,
+                                          false, 25.0f, 35.0f, false, false,
+                                          2.0f, 2.0f, false, false, false,
+                                          false, false, false, false, false,
+                                          0.1f, false, 10.0f, false, false,
+                                          false, false, false, 100, 0.5f,
+                                          false, false, false, false
+                                         }
+        },
+};
 
 static QAngle ApplyErrorToAngle( QAngle* angles, float margin ) {
     QAngle error;
@@ -858,10 +867,10 @@ static void AutoShoot( C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* ac
     if ( Settings::SmartAim::enabled ) {
         if ( sentShotToTarget ) {
             missedShots++;
-            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), "WE MISSED A SHOT! Missed Shots: " + missedShots );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "WE MISSED A SHOT! Missed Shots: %d" ), missedShots );
             sentShotToTarget = false;
         } else {
-            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), "Hitted Shots. Missed Shots: " + missedShots );
+            cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "Hitted Shots. Missed Shots: %d" ), missedShots );
         }
 
         sentShotToTarget = true;

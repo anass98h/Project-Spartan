@@ -22,7 +22,7 @@ class KeyValues;
 
 class CBaseClientState;
 
-struct CGlowObjectManager;
+class CGlowObjectManager;
 
 /* function prototypes */
 typedef void* (* CreateInterfaceFn)( const char*, int* );
