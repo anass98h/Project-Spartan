@@ -36,10 +36,10 @@ Spartan is a HvH orientated cheat, mainly focused on Spread.
 ## Installation
 
 Download the required dependencies:
-* **Debian-based**: `cmake g++ gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
-* **Arch**: `base-devel cmake gdb git sdl2 lua xdotool patchelf sdl2_image`
-* **Fedora**: `cmake gcc-c++ gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
-* **Gentoo**: `cmake dev-vcs/git gdb libsdl2 mesa lua xdotool patchelf sdl2-image`
+* **Debian-based**: `cmake g++ clang-5.0 gdb git libsdl2-dev zlib1g-dev liblua5.3 libxdo-dev patchelf`
+* **Arch**: `base-devel cmake clang gdb git sdl2 lua xdotool patchelf sdl2_image`
+* **Fedora**: `cmake gcc-c++ clang gdb git libstdc++-static mesa-libGL-devel SDL2-devel zlib-devel lua-devel libX11-devel libxdo-devel patchelf`
+* **Gentoo**: `cmake dev-vcs/git sys-devel/clang gdb libsdl2 mesa lua xdotool patchelf sdl2-image`
 
 Then execute the following:
 

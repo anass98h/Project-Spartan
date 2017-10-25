@@ -2,7 +2,8 @@
 
 #include "../ImGUI/imgui.h"
 
-struct Color {
+class Color {
+public:
     int r;
     int g;
     int b;
