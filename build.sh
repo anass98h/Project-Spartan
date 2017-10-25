@@ -19,11 +19,12 @@ success_prefix="\e[32m\e[1mSpartan >\e[0m"
 # ----------------------------------------------- #
 
 target="RELEASE"
-
+useClang=false
 for i in "$@"; do
     case $1 in
         -d|--debug) target="DEBUG"; shift ;;
         -r|--release) target="RELEASE"; shift ;;
+	-c|--clang) useClang=true; shift ;;
         -rwd|-rd|--releasewithdebug|--releasewithdebuginfo) target="RELWITHDEBINFO"; shift ;;
     esac
     shift
@@ -35,7 +36,11 @@ if [ -d ".git" ]; then
         echo -e "$error_prefix Failed to delete old Project Spartan file."
         exit -1
     fi
-
+    if [ "$useClang" = true ]; then
+	    echo -e "$success_prefix Using Clang"
+	    export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
+    fi
     cmake -DCMAKE_BUILD_TYPE="$target" .
     if [ $? -ne 0 ]; then
         echo -e "$error_prefix Failed to create CMake files."

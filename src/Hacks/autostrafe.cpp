@@ -47,7 +47,7 @@ static void RageStrafe( C_BasePlayer* localplayer, CUserCmd* cmd ) {
 
     C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
             localplayer->GetActiveWeapon() );
-    if ( activeWeapon && !activeWeapon->GetAmmo() == 0 && cmd->buttons & IN_ATTACK )
+    if ( activeWeapon && activeWeapon->GetAmmo() > 0 && cmd->buttons & IN_ATTACK )
         yaw_change = 0.0f;
 
     QAngle viewAngles;
