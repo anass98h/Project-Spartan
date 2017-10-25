@@ -20,11 +20,13 @@ success_prefix="\e[32m\e[1mSpartan >\e[0m"
 
 target="RELEASE"
 useClang=false
+
 for i in "$@"; do
     case $1 in
         -d|--debug) target="DEBUG"; shift ;;
         -r|--release) target="RELEASE"; shift ;;
-	-c|--clang) useClang=true; shift ;;
+	    -c|--clang) useClang=true; shift ;;
+	    -g|--gcc) useClang=false; shift ;;
         -rwd|-rd|--releasewithdebug|--releasewithdebuginfo) target="RELWITHDEBINFO"; shift ;;
     esac
     shift
@@ -36,11 +38,20 @@ if [ -d ".git" ]; then
         echo -e "$error_prefix Failed to delete old Project Spartan file."
         exit -1
     fi
+
     if [ "$useClang" = true ]; then
-	    echo -e "$success_prefix Using Clang"
-	    export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
+        if [ -n "$(uname -a | grep Ubuntu)" ]; then
+            export CC=/usr/bin/clang-5.0
+            export CXX=/usr/bin/clang++-5.0
+        else
+            export CC=/usr/bin/clang
+            export CXX=/usr/bin/clang++
+        fi
+    else
+        export CC=/usr/bin/gcc
+        export CXX=/usr/bin/g++
     fi
+
     cmake -DCMAKE_BUILD_TYPE="$target" .
     if [ $? -ne 0 ]; then
         echo -e "$error_prefix Failed to create CMake files."
@@ -73,10 +84,32 @@ if [ -d ".git" ]; then
         fi
     fi
 
-    mv libSpartan.so Spartan.so
-    if [ $? -ne 0 ]; then
-        echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m. Please move manually."
-        exit -1
+    if [ -z $CI ]; then
+        echo -e "$prefix Renaming \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m."
+
+        mv libSpartan.so Spartan.so
+        if [ $? -ne 0 ]; then
+            echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m. Please move manually."
+            exit -1
+        fi
+    else
+        if [ "$useClang" = true ]; then
+            echo -e "$prefix CircleCI detected! Renaming \e[2mlibSpartan.so\e[0m to \e[2mSpartan-Clang.so\e[0m."
+
+            mv libSpartan.so Spartan-Clang.so
+            if [ $? -ne 0 ]; then
+                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m."
+                exit -1
+            fi
+        else
+            echo -e "$prefix CircleCI detected! Renaming \e[2mlibSpartan.so\e[0m to \e[2mSpartan-GCC.so\e[0m."
+
+            mv libSpartan.so Spartan-GCC.so
+            if [ $? -ne 0 ]; then
+                echo -e "$error_prefix Failed to move \e[2mlibSpartan.so\e[0m to \e[2mSpartan.so\e[0m."
+                exit -1
+            fi
+        fi
     fi
 
     patchelf --set-soname Spartan Spartan.so
@@ -87,13 +120,17 @@ if [ -d ".git" ]; then
             read -p $'Do you wish to continue? (y/N) ' yn
             case $yn in
                 [Yy]* ) break;;
-                [Nn]* ) exit -1;;
+                [Nn]* ) rm -rf Spartan.so; exit -1;;
                 * ) echo -e "$error_prefix Please answer yes or no.";;
             esac
         done
     fi
 
-    echo -e "$success_prefix Successfully built Project Spartan with target \e[2m$target\e[0m."
+    if [ "$useClang" = true ]; then
+        echo -e "$success_prefix Successfully built Project Spartan with target \e[1m$target\e[0m using \e[1mClang\e[0m."
+    else
+        echo -e "$success_prefix Successfully built Project Spartan with target \e[1m$target\e[0m using \e[1mGCC\e[0m."
+    fi
 else
     echo -e "$error_prefix Building is only possible with the development version of Project Spartan."
 fi

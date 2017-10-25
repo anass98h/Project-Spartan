@@ -7,11 +7,11 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         message(FATAL_ERROR "Your GCC is outdated! Version 5.2 or greater is required.")
     endif()
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0) #4.0 is when it starts to get good
-        message(FATAL_ERROR "Your clang is outdated! Version 4.0 or greater is required")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0) # 4.0 is when it starts to get good
+        message(FATAL_ERROR "Your Clang is outdated! Version 4.0 or greater is required")
     endif()
 else()
-    message(FATAL_ERROR "You must have clang v4.0 or gcc/g++ v5.2 to build Project Spartan.")
+    message(FATAL_ERROR "You must have Clang v4.0 or GCC/G++ v5.2 to build Project Spartan.")
 endif()
 
 FUNCTION (EXCLUDE_FILES_FROM_DIR_IN_LIST _InFileList _excludeDirName _verbose)
@@ -21,7 +21,7 @@ FUNCTION (EXCLUDE_FILES_FROM_DIR_IN_LIST _InFileList _excludeDirName _verbose)
         endif ("${_verbose}")
 
         if ("${ITR}" MATCHES "(.*)${_excludeDirName}(.*)") # Check if the item matches the directory name in _excludeDirName
-            message(STATUS "Remove Item from List:${ITR}")
+            message(STATUS "Remove Item from List: ${ITR}")
             list (REMOVE_ITEM _InFileList ${ITR}) # Remove the item from the list
         endif ("${ITR}" MATCHES "(.*)${_excludeDirName}(.*)")
 
@@ -35,7 +35,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 else()
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -std=c++14 -Wall -Wno-maybe-uninitialized -Wno-unused-result")
 endif()
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -g -DNDEBUG -std=c++14 -Wall -Wno-maybe-uninitialized -Wno-unused-result")
+#set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -g -DNDEBUG -std=c++14 -Wall -Wno-maybe-uninitialized -Wno-unused-result")
 #set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -std=c++14 -Wall -Wno-maybe-uninitialized -Wno-unused-result")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libstdc++")
 
