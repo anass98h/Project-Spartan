@@ -151,7 +151,8 @@ void SetupMainMenuBar() {
         if ( ImGui::Checkbox( "Middle click ", &Settings::UI::middle ) )
             Settings::UI::right = false;
 
-        const char* items[] = { "Main", "Config", "Color", "Skins", "pList", "Specs", "Resolver" };
+           const char* items[] = { ICON_BEANER, ICON_CONFIGS, ICON_COLORS, ICON_SKINCHANGER, ICON_PLAYERLIST, ICON_SPECTATORS, ICON_WALKBOT };
+
         int items_count = sizeof( items ) / sizeof( *items );
 
 
@@ -168,7 +169,7 @@ void SetupMainMenuBar() {
             center = ImGui::GetIO().MouseClickedPos[1];
         }
 
-        int n = PiePopupSelectMenu( center, "##piepopup", items, items_count );
+        int n = ImGui::PiePopupSelectMenu( center, "##piepopup", items, items_count );
         switch ( n ) { // a switch for my love Myrrib
 
 
