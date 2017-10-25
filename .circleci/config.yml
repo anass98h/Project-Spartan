@@ -47,5 +47,5 @@ jobs:
           path: ~/repo/Spartan-GCC.so
           destination: gcc/Spartan.so
       - store_artifacts:
-          path: ~/repo/Spartan-CLang.so
+          path: ~/repo/Spartan-Clang.so
           destination: clang/Spartan.so
