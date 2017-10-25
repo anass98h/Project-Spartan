@@ -169,7 +169,7 @@ void SetupMainMenuBar() {
             center = ImGui::GetIO().MouseClickedPos[1];
         }
 
-        int n = ImGui::PiePopupSelectMenu( center, "##piepopup", items, items_count );
+        int n = ImGui::PiePopupSelectMenu( center, "##piepopup", items, items_count ,Settings::UI::mainColor.Color() , Settings::UI::accentColor.Color() , Settings::UI::fontColor.Color() );
         switch ( n ) { // a switch for my love Myrrib
 
 
