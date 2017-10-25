@@ -101,8 +101,6 @@ enum class AntiAimType_Y : int {
     TANK3,
     PAAFAKE,
     PAAREAL,
-    MANUALEDGEFAKE,
-    MANUALEDGEREAL,
     MYRRIB,
     richieap,
     RASP,
