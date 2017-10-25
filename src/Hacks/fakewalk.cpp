@@ -31,7 +31,7 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
         CreateMove::sendPacket = true;
         iChoked = -1;
 
-        globalVars->frametime *= ( localplayer->GetVelocity().Length2D() );
+        globalVars->frametime *= ( localplayer->GetVelocity().Length2D() ) / 1.f;
         cmd->buttons |= localplayer->GetMoveType() == IN_FORWARD;
       }
     } else if ( Settings::Fakewalk::enabled && inputSystem->IsButtonDown( Settings::Fakewalk::key ) ) {
