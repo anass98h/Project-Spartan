@@ -9,12 +9,7 @@ ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
 // Local variables
 bool didDmg = false;
-std::map<int, int> shotsMissed = {
-        { -1, 0 }
-};
-std::map<int, int> shotsMissedSave = {
-        { -1, 0 }
-};
+std::map<int, int> missedShots = {};
 static int lastAmmo = -1;
 
 // Global variables
@@ -68,19 +63,6 @@ void Resolver::Hug( C_BasePlayer* target ) {
     // Set maps in here
     Resolver::lby[target->GetIndex()] = lby;
 
-    static int shotsMissedS = shotsMissed[target->GetIndex()];
-
-    if ( shotsMissed[target->GetIndex()] != shotsMissedS && shotsMissed[target->GetIndex()] != 0 ) {
-        shotsMissedS = shotsMissed[target->GetIndex()];
-        Resolver::shotsMissedSave[target->GetIndex()]++;
-        lastShotsMissed = curTime;
-    }
-    
-    if ( curTime > lastShotsMissed + shotsMissedTime ) {
-        shotsMissedS = shotsMissed[target->GetIndex()];
-        Resolver::shotsMissedSave[target->GetIndex()] = shotsMissed[target->GetIndex()];
-    }
-
     Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
 
     // If it is already the same value, we just set it again to the same. No need for an if-clause.
@@ -119,29 +101,11 @@ void Resolver::Hug( C_BasePlayer* target ) {
             Resolver::angForceTxt[target->GetIndex()] = "LBY";
             Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
             if ( velocity < 100.0f && onGround ) {
-                if ( shotsMissed[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
-                    switch ( shotsMissed[target->GetIndex()] % 3 ) {
-                        case 0:
-                            angle.y = lby + 90;
-                            Resolver::angForce[target->GetIndex()] = lby + 90;
-                            Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
-                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYP90;
-                            break;
-                        case 1:
-                            angle.y = lby - 90;
-                            Resolver::angForce[target->GetIndex()] = lby - 90;
-                            Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
-                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYM90;
-                            break;
-                        case 2:
-                            angle.y = lby + 180;
-                            Resolver::angForce[target->GetIndex()] = lby + 180;
-                            Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
-                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
-                        break;
-                    }
-                } else if ( shotsMissed[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] )
+                if ( missedShots[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
+                    angle.y = HugBrute(target);
+                } else if ( missedShots[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] ) {
                     Resolver::hasFakeWalk[target->GetIndex()] = true;
+                }
             }
         } else {
             // Call the pCode here
@@ -156,10 +120,7 @@ void Resolver::Hug( C_BasePlayer* target ) {
         angle.x = HugPitch( target );
     }
 
-    if ( Resolver::shotsMissedSave[target->GetIndex()] > 4 )
-        Resolver::baimNextShot = true;
-    else    
-        Resolver::baimNextShot = false;
+    Resolver::baimNextShot = Resolver::shotsMissedSave[target->GetIndex()] > 4;
 
     if ( !onGround ) {
         Resolver::baimNextShot = true;
@@ -281,7 +242,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         didDmg = true;
-        shotsMissed[hurt->GetIndex()] = 0;
+        missedShots[hurt->GetIndex()] = 0;
         lastAmmo = -1;
     }
 
@@ -289,20 +250,48 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
                 pLocal->GetActiveWeapon() );
 
-        int ammo = activeWeapon->GetAmmo();
-        if ( lastAmmo == -1 ) {
-            lastAmmo = ammo;
+        C_BasePlayer* hurt = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        if(!hurt || !activeWeapon)
+            return;
+
+        float x = event->GetFloat(XORSTR("x"));
+
+        bool didHit = false;
+
+        for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
+            C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
+
+            Vector vector = target->GetBonePosition((int)Bone::BONE_PELVIS);
+
+            if(((vector.x - x) <= 10) || ((vector.x + x) <= 10)) {
+                didHit = true;
+            }
         }
 
-        if ( lastAmmo != ammo ) {
-            shotsMissed[Aimbot::targetAimbot]++;
-            lastAmmo = ammo;
+        if(!didHit) {
+            missedShots[Aimbot::targetAimbot]++;
         }
     }
 
-    if ( strcmp( event->GetName(), XORSTR( "player_connect_full" ) ) ||
-         strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
+    if(strcmp(event->GetName(), XORSTR( "player_connect_full" ) )) {
+        C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
 
+        missedShots[player->GetIndex()] = 0;
+    }
+
+    if ( strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
+        C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        if(missedShots.find(player->GetIndex()) != missedShots.end()) {
+            missedShots.erase(player->GetIndex());
+        }
     }
 }
 
