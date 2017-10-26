@@ -9,7 +9,7 @@ ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
 // Local variables
 bool didDmg = false;
-std::map<int, int> missedShots = {};
+std::map<int, int> missedShotsMap = {};
 static int lastAmmo = -1;
 
 // Global variables
@@ -101,9 +101,9 @@ void Resolver::Hug( C_BasePlayer* target ) {
             Resolver::angForceTxt[target->GetIndex()] = "LBY";
             Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
             if ( velocity < 100.0f && onGround ) {
-                if ( missedShots[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
+                if ( missedShotsMap[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
                     angle.y = HugBrute(target);
-                } else if ( missedShots[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] ) {
+                } else if ( missedShotsMap[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] ) {
                     Resolver::hasFakeWalk[target->GetIndex()] = true;
                 }
             }
@@ -242,7 +242,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         didDmg = true;
-        missedShots[hurt->GetIndex()] = 0;
+        missedShotsMap[hurt->GetIndex()] = 0;
         lastAmmo = -1;
     }
 
@@ -272,7 +272,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         if(!didHit) {
-            missedShots[Aimbot::targetAimbot]++;
+            missedShotsMap[Aimbot::targetAimbot]++;
         }
     }
 
@@ -281,7 +281,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
 
-        missedShots[player->GetIndex()] = 0;
+        missedShotsMap[player->GetIndex()] = 0;
     }
 
     if ( strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
@@ -289,8 +289,8 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
 
-        if(missedShots.find(player->GetIndex()) != missedShots.end()) {
-            missedShots.erase(player->GetIndex());
+        if(missedShotsMap.find(player->GetIndex()) != missedShotsMap.end()) {
+            missedShotsMap.erase(player->GetIndex());
         }
     }
 }
@@ -310,7 +310,7 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
             // If we should use Aimbot target
             if ( Aimbot::useAbTarget ) {
                 C_BasePlayer* abTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
-                Hug ( abTarget );
+                Hug( abTarget );
             } else {
                 // If not, loop trough the entity list
                 for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
@@ -321,7 +321,7 @@ void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
                         continue;
                     }
         
-                    Hug ( target );
+                    Hug( target );
                 }
             }
             break;
