@@ -64,9 +64,8 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
             chokedPackets++;
         }
     } else if ( Settings::SlowMo::enabled ) {
-
         C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-                localplayer->GetActiveWeapon() );
+            localplayer->GetActiveWeapon() );
         if ( !activeWeapon || activeWeapon->GetInReload() )
             return;
 
@@ -75,13 +74,11 @@ void Fakewalk::CreateMove( CUserCmd* cmd ) {
              weaponType == CSWeaponType::WEAPONTYPE_KNIFE )
             return;
 
-
         if ( inputSystem->IsButtonDown( Settings::SlowMo::key ) ) {
             static bool slowmo;
             slowmo = !slowmo;
-            if ( slowmo ) {
+            if ( slowmo )
                 cmd->tick_count = INT_MAX;
-            }
         }
     } else
         return;

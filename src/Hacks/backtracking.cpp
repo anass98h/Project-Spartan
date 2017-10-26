@@ -46,7 +46,7 @@ void Backtracking::FrameStageNotify( ClientFrameStage_t stage ) {
                 PushLagRecord( i, NULL );
                 //push record with blank coords
             }
-            if ( Settings::Resolver::LagComp && Settings::Resolver::enabled ) {
+            if ( Settings::Resolver::lagCompensation && Settings::Resolver::enabled ) {
                 INetChannelInfo *nci = engine->GetNetChannelInfo();
 
                 float curTime = globalVars->curtime;

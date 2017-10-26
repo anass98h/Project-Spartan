@@ -1,494 +1,353 @@
 #include "resolver.h"
 
 bool Settings::Resolver::enabled = false;
-bool Settings::Resolver::pitch = false;
-float Settings::Resolver::ticks = 2;
-float Settings::Resolver::modulo = 2;
-bool Settings::Resolver::LagComp = false;
-bool Settings::Resolver::lbyOnly = false;
-int Settings::Resolver::baimAfter = -1;
-int Resolver::resolvingId = -1;
-std::vector<int64_t> Resolver::playerAngleLogs = {};
-std::array<CResolveInfo, 32> Resolver::m_arrInfos;
+bool Settings::Resolver::resolvePitch = false;
+bool Settings::Resolver::lagCompensation = false;
+bool Settings::Resolver::headshotLbyUpdateOnly = false;
+bool Settings::AngleFlip::enabled = false;
+ButtonCode_t Settings::AngleFlip::key = ButtonCode_t::KEY_F;
 
-ButtonCode_t Settings::Resolver::angleFlip = ButtonCode_t::KEY_F;
-bool Settings::Resolver::angleFlipEnabled = false;
-
-int Shotsmissed = 0;
-bool shotATT;
-std::vector<std::pair<C_BasePlayer*, QAngle>> player_data;
-std::random_device rd;
-// static float rSimTime[65]; Unused
-
+// Local variables
 bool didDmg = false;
+std::map<int, int> missedShotsMap = {};
+static int lastAmmo = -1;
 
+// Global variables
 bool Resolver::lbyUpdated = false;
-
-bool Resolver::shouldBaim = false;
-
-std::map<int, int> Resolver::shotsMiss = {
-    { -1, 0 }
+bool Resolver::baimNextShot = false;
+int Resolver::resolvingId = -1;
+std::map<int, float> Resolver::lby = {
+    { -1, 0.0f }
 };
-
-std::map<int, float> Resolver::angForce = {
-    { -1, 0 }
+std::map<int, bool> Resolver::hasFakeWalk = {
+    { -1, false }
 };
-
 std::map<int, float> Resolver::lastHitAng = {
-    { -1, 0 }
+    { -1, 0.0f }
 };
-
+std::map<int, const char*> Resolver::lastHitAngTxt = {
+    { -1, "None" }
+};
+std::map<int, float> Resolver::angForce = {
+    { -1, 0.0f }
+};
 std::map<int, const char*> Resolver::angForceTxt = {
     { -1, "None" }
 };
-
-std::map<int, float> Resolver::lby = {
+std::map<int, int> Resolver::shotsMissedSave = {
     { -1, 0 }
 };
+std::map<int, Angle> Resolver::lastForceAng = {
+    { -1, LBY }
+};
 
-static void StartLagComp( C_BasePlayer* player, CUserCmd* cmd ) {
-    if ( !Settings::Aimbot::backtrack )
-        Settings::Aimbot::backtrack = true;
+void Resolver::Hug( C_BasePlayer* target ) {
+    QAngle angle = *target->GetEyeAngles();
+
+    Resolver::resolvingId = target->GetIndex();
+
+    float velocity = target->GetVelocity().Length2D();
+    bool onGround = target->GetFlags() & FL_ONGROUND;
+    bool isMoving = onGround && velocity > 1.0f;
+
+    float serverTime = target->GetTickBase() * globalVars->interval_per_tick;
+    float curTime = globalVars->curtime;
+    float lastLbyUpdate = 0.0f;
+
+    float lby = *target->GetLowerBodyYawTarget();
+    static float lbySave = lby;
+
+    float shotsMissedTime = 2.0f;
+    float lastShotsMissed = 0.0f;
+
+    // Set maps in here
+    Resolver::lby[target->GetIndex()] = lby;
+
+    Resolver::lbyUpdated = ( isMoving || serverTime == lastLbyUpdate + 1.1f || lby != lbySave );
+
+    // If it is already the same value, we just set it again to the same. No need for an if-clause.
+    lbySave = lby;
+
+    if ( Resolver::lbyUpdated )
+        lastLbyUpdate = serverTime;
+
+    if ( Settings::AngleFlip::enabled && inputSystem->IsButtonDown( Settings::AngleFlip::key ) ) {
+        switch ( Resolver::lastForceAng[target->GetIndex()] ) {
+            case Angle::LBY:
+                angle.y = lby + 180;
+                Resolver::angForce[target->GetIndex()] = lby + 180;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+                break;
+            case Angle::LBY180:
+                angle.y = lby;
+                Resolver::angForce[target->GetIndex()] = lby;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY";
+                break;
+            case Angle::LBYP90:
+                angle.y = lby - 90;
+                Resolver::angForce[target->GetIndex()] = lby - 90;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+                break;
+            case Angle::LBYM90:
+                angle.y = lby + 90;
+                Resolver::angForce[target->GetIndex()] = lby + 90;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+                break;
+        }
+    } else {
+        if ( Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+            angle.y = lby;
+            Resolver::angForce[target->GetIndex()] = lby;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
+            if ( velocity < 100.0f && onGround ) {
+                if ( missedShotsMap[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
+                    angle.y = HugBrute(target);
+                } else if ( missedShotsMap[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] ) {
+                    Resolver::hasFakeWalk[target->GetIndex()] = true;
+                }
+            }
+        } else {
+            // Call the pCode here
+            // Call HugBrute(), etc. so we have clean code and not messy like before
+            // For example
+            //angle.y = HugLby(target);
+            angle.y = HugBrute( target );
+        }
+    }
+
+    if ( Settings::Resolver::resolvePitch ) {
+        angle.x = HugPitch( target );
+    }
+
+    Resolver::baimNextShot = Resolver::shotsMissedSave[target->GetIndex()] > 4;
+
+    if ( !onGround ) {
+        Resolver::baimNextShot = true;
+    }
+    
+    Math::NormalizePitch( angle.x );
+    Math::NormalizeYaw( angle.y );
+
+    // THIS MUST BE AFTER WE SET ALL ANGLES!!!
+    if ( didDmg ) {
+        // You can save angles here, etc...
+        Resolver::lastHitAng[target->GetIndex()] = angle.y;
+        Resolver::lastHitAngTxt[target->GetIndex()] = Resolver::angForceTxt[target->GetIndex()];
+
+        didDmg = false;
+    }
+
+    target->GetEyeAngles()->x = angle.x;
+    target->GetEyeAngles()->y = angle.y;
 }
 
-void Resolver::Hug( C_BasePlayer* player ) {
-    auto cur = m_arrInfos.at( player->GetIndex() ).m_sRecords;
-    /* None of these are Used
-    float flYaw = 0;
-    static float OldLowerBodyYaws[65];
-    static float OldYawDeltas[65];
-    float CurYaw = *player->GetLowerBodyYawTarget();
-    static float oldTimer[65];
-    static bool isLBYPredictited[65];
-    INetChannelInfo* nci = engine->GetNetChannelInfo();
-    float bodyeyedelta = player->GetEyeAngles()->y - cur.front().m_flLowerBodyYawTarget;
-     */
+float Resolver::HugLby( C_BasePlayer* target ) { //TODO: Fix crashing of this
+    QAngle angle = *target->GetEyeAngles();
+    float lby = *target->GetLowerBodyYawTarget();
 
-    Resolver::resolvingId = player->GetIndex();
+    // ldd -r Spartan.so complains that GetNumSeq() is not defined (used in pSeqdesc) - requires changing
+    // Still injects tho!
 
-    QAngle angle = *player->GetEyeAngles();    
+    studiohdr_t* hdr = modelInfo->GetStudioModel( target->GetModel() );
 
-    float lby = *player->GetLowerBodyYawTarget();
-    float curTime = globalVars->curtime;
-    float velocity = fabsf( player->GetVelocity().Length2D() );
-    bool onGround = player->GetFlags() & FL_ONGROUND;
-    bool isMoving = ( onGround && player->GetVelocity().Length2D() > 0.1f );
-    bool maybeFakeWalking = ( isMoving && velocity < 35.0f );
-    float lbyUpdateTime = isMoving ? 0.22f : 1.1f;
+    if ( hdr && hdr->pSeqdesc( target->GetSequence() )->activity == ACT_CSGO_IDLE_TURN_BALANCEADJUST ) {
+        // LBY broken and is between LBY+120 & LBY-120
+        // Giving us range of 60 + 60 = 120
+        // We should force 180 first, cuz its the most common one AFAIK
+        angle.y = lby + 180;
+        Resolver::angForce[target->GetIndex()] = lby + 180;
+        Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+        Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
+    } else {
+        angle.y = lby;
+        Resolver::angForce[target->GetIndex()] = lby;
+        Resolver::angForceTxt[target->GetIndex()] = "LBY";
+        Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
+    }
 
-    std::map<int, float> lbyDeltaMove = {
-        { player->GetIndex(), 0.f }
-    };
-    std::map<int, float> lastUpdate = {
-        { player->GetIndex(), 0.f }
-    };
-    std::map<int, float> playerAngle1 = {
-        { player->GetIndex(), lby }
-    };
-    std::map<int, float> playerAngle2 = {
-        { player->GetIndex(), lby }
-    };
-    std::map<int, int> playerCounter = {
-        { player->GetIndex(), 0 }
-    };
-    std::map<int, bool> staticReal = {
-        { player->GetIndex(), false }
-    };
-    std::map<int, int> shotsMissSave = {
-        { player->GetIndex(), Resolver::shotsMiss[player->GetIndex()] }
-    };
-    std::map<int, float> shotsMissSaveLTime = {
-        { player->GetIndex(), curTime }
-    };
-    std::map<int, bool> hasFakeWalk = {
-        { player->GetIndex(), false }
-    };
+    return angle.y;
+}
 
-    Resolver::lby[player->GetIndex()] = lby;
+float Resolver::HugBrute( C_BasePlayer* target ) {
+    QAngle angle = *target->GetEyeAngles();
+    float lby = *target->GetLowerBodyYawTarget();
 
-    float shotsMissSaveTime = 2.0f;
-
-    if ( Resolver::shotsMiss[player->GetIndex()] > shotsMissSave[player->GetIndex()] ) {
-        shotsMissSave[player->GetIndex()] = Resolver::shotsMiss[player->GetIndex()];
-        shotsMissSaveLTime[player->GetIndex()] = curTime;
-    } else if ( shotsMissSaveLTime[player->GetIndex()] > curTime + shotsMissSaveTime )
-        shotsMissSave[player->GetIndex()] = Resolver::shotsMiss[player->GetIndex()];
-
-    if ( Settings::Resolver::enabled ) {
-        if ( isMoving ) {
-            lbyDeltaMove[player->GetIndex()] = fabsf ( lby - player->GetEyeAngles()->y );
-            Resolver::lbyUpdated = true;
-            lastUpdate[player->GetIndex()] = curTime;
-        } else if ( curTime == lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
-            Resolver::lbyUpdated = true;
-            lastUpdate[player->GetIndex()] = curTime;
-        } else
-            Resolver::lbyUpdated = false;
-
-        if ( inputSystem->IsButtonDown( Settings::Resolver::angleFlip ) ) {
+    switch ( Resolver::shotsMissedSave[target->GetIndex()] % 4 ) {
+        case 0:
+            angle.y = lby; // Nice Fuzion resolver you got there
+            Resolver::angForce[target->GetIndex()] = lby;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
+            break;
+        case 1:
             angle.y = lby + 180.0f;
-            Resolver::angForce[player->GetIndex()] = lby + 180.f;
-            Resolver::angForceTxt[player->GetIndex()] = "LBY + 180";
+            Resolver::angForce[target->GetIndex()] = lby + 180.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
+            break;
+        case 2:
+            angle.y = lby - 90.0f;
+            Resolver::angForce[target->GetIndex()] = lby - 90.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYM90;
+            break;
+        case 3:
+            angle.y = lby + 90.0f;
+            Resolver::angForce[target->GetIndex()] = lby + 90.0f;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYP90;
+            break;
+    }
+
+    return angle.y;
+}
+
+float Resolver::HugPitch( C_BasePlayer* target ) {
+    QAngle angle = *target->GetEyeAngles();
+
+    // TODO: NoSpread Pitch resolver
+
+    return angle.x;
+}
+
+/*
+    hooks
+*/
+
+void Resolver::FireGameEvent( IGameEvent* event ) {
+    if ( !Settings::Resolver::enabled || !event ) {
+        return;
+    }
+
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal || !pLocal->GetAlive() ) {
+        return;
+    }
+
+    if ( strcmp( event->GetName(), XORSTR( "player_hurt" ) ) ) {
+        C_BasePlayer* hurt = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+        C_BasePlayer* attacker = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "attacker" ) ) )
+        );
+
+        if ( !hurt || !attacker ) {
+            return;
         }
-        else {
-            if ( Settings::Resolver::lbyOnly ) {
-                if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) )
-                    Resolver::shouldBaim = false;
-                else
-                    Resolver::shouldBaim = true;
-    
-                angle.y = lby;
-                Resolver::angForce[player->GetIndex()] = lby;
-                Resolver::angForceTxt[player->GetIndex()] = "LBY";
-            } else {
-                if ( Resolver::lbyUpdated || ( Backtracking::backtrackingLby && Settings::Resolver::LagComp ) ) {
-                    angle.y = lby;
-                    Resolver::angForceTxt[player->GetIndex()] = "LBY";
-                    if ( maybeFakeWalking && hasFakeWalk[player->GetIndex()] && shotsMissSave[player->GetIndex()] > 1 ){
-                        angle.y = lby + 180.0f;
-                        Resolver::angForce[player->GetIndex()] = lby + 180.f;
-                        Resolver::angForceTxt[player->GetIndex()] = "LBY + 180";
-                    } else if ( shotsMissSave[player->GetIndex()] > 2 ) {
-                        switch ( shotsMissSave[player->GetIndex()] % 3 ) {
-                            case 0: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
-                            case 1: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
-                            case 2: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
-                        }
-                        hasFakeWalk[player->GetIndex()] = true;
-                    }
-                } else {
-                    if ( staticReal[player->GetIndex()] && playerAngle1[player->GetIndex()] != lby) {
-                            if ( shotsMissSave[player->GetIndex()] > 1 ) {
-                                switch ( shotsMissSave[player->GetIndex()] % 5 ) {
-                                    case 0: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
-                                    case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
-                                    case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY + LBY Delta Move"; break;
-                                    case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()];  Resolver::angForceTxt[player->GetIndex()] = "LBY - LBY Delta Move";break;
-                                    case 4: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
-                                }
-                             } else {
-                                 angle.y = playerAngle1[player->GetIndex()];
-                                 Resolver::angForce[player->GetIndex()] = playerAngle1[player->GetIndex()];
-                                 Resolver::angForceTxt[player->GetIndex()] = "Saved angle";
-                             }
-                    } else {
-                        switch ( shotsMissSave[player->GetIndex()] % 7 ) {
-                            case 0: angle.y = lby; Resolver::angForce[player->GetIndex()] = lby; Resolver::angForceTxt[player->GetIndex()] = "LBY"; break;
-                            case 1: angle.y = lby + 180.f; Resolver::angForce[player->GetIndex()] = lby + 180.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 180"; break;
-                            case 2: angle.y = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby + lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY + LBY Delta Move"; break;
-                            case 3: angle.y = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForce[player->GetIndex()] = lby - lbyDeltaMove[player->GetIndex()]; Resolver::angForceTxt[player->GetIndex()] = "LBY - LBY Delta Move"; break;
-                            case 5: angle.y = lby + 90.f; Resolver::angForce[player->GetIndex()] = lby + 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY + 90"; break;
-                            case 6: angle.y = lby - 90.f; Resolver::angForce[player->GetIndex()] = lby - 90.f; Resolver::angForceTxt[player->GetIndex()] = "LBY - 90"; break;
-                        }
-                    }
-                    
-                    if ( Settings::Resolver::baimAfter == -1 )
-                        Resolver::shouldBaim = false;
-                    else if ( shotsMissSave[player->GetIndex()] > Settings::Resolver::baimAfter )
-                        Resolver::shouldBaim = true;
-                    else
-                        Resolver::shouldBaim = false;
-                }
-    
-                if ( didDmg ) {
-                    if ( angle.y != lby ) {
-                        switch ( playerCounter[player->GetIndex()] ) {
-                            case 0: playerAngle1[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()]++; break;
-                            case 1: playerAngle2[player->GetIndex()] = angle.y; playerCounter[player->GetIndex()] = 0; break;
-                        }
 
-                        float angle1 = playerAngle1[player->GetIndex()];
-                        float angle2 = playerAngle2[player->GetIndex()];
-    
-                        float angDiff = fabsf ( angle1 - angle2 );
-    
-                        float tolerance = 15.f;
+        if ( hurt == pLocal || attacker != pLocal ) {
+            return;
+        }
 
-                        if ( angDiff < tolerance )
-                            staticReal[player->GetIndex()] = true;
-                        else
-                            staticReal[player->GetIndex()] = false;
-                    }
-                    Resolver::lastHitAng[player->GetIndex()] = angle.y;
-                }
+        didDmg = true;
+        missedShotsMap[hurt->GetIndex()] = 0;
+        lastAmmo = -1;
+    }
 
+    if ( strcmp( event->GetName(), XORSTR( "bullet_impact" ) ) ) {
+        C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
+                pLocal->GetActiveWeapon() );
+
+        C_BasePlayer* hurt = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        if(!hurt || !activeWeapon)
+            return;
+
+        float x = event->GetFloat(XORSTR("x"));
+
+        bool didHit = false;
+
+        for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
+            C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
+
+            Vector vector = target->GetBonePosition((int)Bone::BONE_PELVIS);
+
+            if(((vector.x - x) <= 10) || ((vector.x + x) <= 10)) {
+                didHit = true;
             }
         }
 
-        if ( Settings::Resolver::pitch ) {
-            if ( angle.x < -179.f ) angle.x += 360.f;
-            else if ( angle.x > 90.0 || angle.x < -90.0 )
-                angle.x = 89.f;
-            else if ( angle.x > 89.0 && angle.x < 91.0 )
-                angle.x -= 90.f;
-            else if ( angle.x > 179.0 && angle.x < 181.0 )
-                angle.x -= 180;
-            else if ( angle.x > -179.0 && angle.x < -181.0 )
-                angle.x += 180;
-            else if ( fabs( angle.x ) == 0 )
-                angle.x = std::copysign( 89.0f, angle.x );
+        if(!didHit) {
+            missedShotsMap[Aimbot::targetAimbot]++;
         }
+    }
 
-        player->GetEyeAngles()->y = Math::ResNormalizeYaw( angle.y );
-        player->GetEyeAngles()->x = angle.x;
+    if(strcmp(event->GetName(), XORSTR( "player_connect_full" ) )) {
+        C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        missedShotsMap[player->GetIndex()] = 0;
+    }
+
+    if ( strcmp( event->GetName(), XORSTR( "cs_game_disconnected" ) ) ) {
+        C_BasePlayer* player = ( C_BasePlayer* ) entityList->GetClientEntity(
+                engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
+        );
+
+        if(missedShotsMap.find(player->GetIndex()) != missedShotsMap.end()) {
+            missedShotsMap.erase(player->GetIndex());
+        }
     }
 }
 
 void Resolver::FrameStageNotify( ClientFrameStage_t stage ) {
-    if ( !Settings::Resolver::enabled || !engine->IsInGame() )
+    if ( !Settings::Resolver::enabled || !engine->IsInGame() ) {
         return;
+    }
 
-    C_BasePlayer* me = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !me || !me->GetAlive() )
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal || !pLocal->GetAlive() ) {
         return;
+    }
 
-    if ( stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START ) {
-        for ( int i = 1; i < engine->GetMaxClients(); ++i ) {
-            C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
+    switch ( stage ) {
+        case ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START:
+            // If we should use Aimbot target
+            if ( Aimbot::useAbTarget ) {
+                C_BasePlayer* abTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
+                Hug( abTarget );
+            } else {
+                // If not, loop trough the entity list
+                for ( int i = 1; i < engine->GetMaxClients(); i++ ) {
+                    C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( i );
 
-            if ( !target
-                 || target == me
-                 || target->GetDormant()
-                 || !target->GetAlive()
-                 || target->GetImmune()
-                 || target->GetTeam() == me->GetTeam() )
-                continue;
-
-            IEngineClient::player_info_t entityInformation;
-            engine->GetPlayerInfo( i, &entityInformation );
-
-            if ( std::find( Resolver::playerAngleLogs.begin(), Resolver::playerAngleLogs.end(),
-                            entityInformation.xuid ) == Resolver::playerAngleLogs.end() ) {
-                player_data.push_back( std::pair<C_BasePlayer*, QAngle>( target, *target->GetEyeAngles() ) );
+                    if ( !target || target == pLocal || target->GetDormant() || !target->GetAlive() ||
+                         target->GetImmune() || target->GetTeam() == pLocal->GetTeam() ) {
+                        continue;
+                    }
+        
+                    Hug( target );
+                }
             }
-
-            if ( shotATT ) {
-                Shotsmissed++;
-                shotATT = false;
-            }
-
-            C_BasePlayer* aimbotTarget = ( C_BasePlayer* ) entityList->GetClientEntity( Aimbot::targetAimbot );
-
-            if ( Aimbot::useAbTarget )
-                Hug ( aimbotTarget );
-            else
-                Hug ( target );
-        }
-    } else if ( stage == ClientFrameStage_t::FRAME_RENDER_END ) {
-        for ( unsigned long i = 0; i < player_data.size(); i++ ) {
-            std::pair<C_BasePlayer*, QAngle> player_aa_data = player_data[i];
-            *player_aa_data.first->GetEyeAngles() = player_aa_data.second;
-        }
-
-        player_data.clear();
+            break;
+        case ClientFrameStage_t::FRAME_RENDER_END:
+            // Nothing in here needed, I guess
+            break;
+        case ClientFrameStage_t::FRAME_UNDEFINED:
+        case ClientFrameStage_t::FRAME_START:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_START:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_END:
+        case ClientFrameStage_t::FRAME_NET_UPDATE_END:
+        case ClientFrameStage_t::FRAME_RENDER_START:
+            // Not needed.
+            break;
     }
 }
 
 void Resolver::PostFrameStageNotify( ClientFrameStage_t stage ) {
-}
-
-CTickRecord Resolver::GetShotRecord( C_BasePlayer* player ) {
-    for ( auto cur : m_arrInfos[player->GetIndex()].m_sRecords ) {
-        if ( cur.validtick )
-            return CTickRecord( cur );
-    }
-    return CTickRecord();
-}
-
-bool& Resolver::LowerBodyYawChanged( C_BasePlayer* player ) {
-    return m_arrInfos.at( player->GetIndex() ).m_bLowerBodyYawChanged;
-}
-
-void Resolver::StoreVars( C_BasePlayer* player ) {
-    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks ) {
-        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
-    }
-    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
-}
-
-void Resolver::StoreVars( C_BasePlayer* player, QAngle ang, float lby, float simtime, float tick ) {
-    if ( m_arrInfos.at( player->GetIndex() ).m_sRecords.size() >= Settings::Resolver::ticks )
-        m_arrInfos.at( player->GetIndex() ).m_sRecords.pop_back();
-    m_arrInfos.at( player->GetIndex() ).m_sRecords.push_front( CTickRecord( player ) );
-}
-
-bool& Resolver::BacktrackThisTick( C_BasePlayer* player ) {
-    return m_arrInfos.at( player->GetIndex() ).m_bBacktrackThisTick;
-}
-
-bool Resolver::HasStaticRealAngle( const std::deque<CTickRecord>& l, float tolerance ) {
-    auto minmax = std::minmax_element( std::begin( l ), std::end( l ),
-                                       []( const CTickRecord& t1, const CTickRecord& t2 ) {
-                                           return t1.m_flLowerBodyYawTarget < t2.m_flLowerBodyYawTarget;
-                                       } );
-    return ( fabs( minmax.first->m_flLowerBodyYawTarget - minmax.second->m_flLowerBodyYawTarget ) <= tolerance );
-}
-
-bool Resolver::HasStaticRealAngle( int index, float tolerance ) {
-    return HasStaticRealAngle( m_arrInfos[index].m_sRecords, tolerance );
-}
-
-bool Resolver::HasStaticYawDifference( const std::deque<CTickRecord>& l, float tolerance ) {
-    for ( auto i = l.begin(); i < l.end() - 1; ) {
-        if ( GetDelta( LBYDelta( *i ), LBYDelta( *++i ) ) > tolerance )
-            return false;
-    }
-    return true;
-}
-
-bool Resolver::HasSteadyDifference( const std::deque<CTickRecord>& l, float tolerance ) {
-    size_t misses = 0;
-    for ( size_t i = 0; i < l.size() - 1; i++ ) {
-        float tickdif = static_cast<float> (l.at( i ).m_flSimulationTime - l.at( i + 1 ).tickcount);
-        float lbydif = GetDelta( l.at( i ).m_flLowerBodyYawTarget, l.at( i + 1 ).m_flLowerBodyYawTarget );
-        float ntickdif = static_cast<float> (globalVars->tickcount - l.at( i ).tickcount);
-        if ( ( ( lbydif / tickdif ) * ntickdif ) > tolerance ) misses++;
-    }
-    return ( misses <= ( l.size() / 3 ) );
-}
-
-int Resolver::GetDifferentDeltas( const std::deque<CTickRecord>& l, float tolerance ) {
-    std::vector<float> vec;
-    for ( auto var : l ) {
-        float curdelta = LBYDelta( var );
-        bool add = true;
-        for ( auto fl : vec ) {
-            if ( !IsDifferent( curdelta, fl, tolerance ) )
-                add = false;
-        }
-        if ( add )
-            vec.push_back( curdelta );
-    }
-    return vec.size();
-}
-
-int Resolver::GetDifferentLBYs( const std::deque<CTickRecord>& l, float tolerance ) {
-    std::vector<float> vec;
-    for ( auto var : l ) {
-        float curyaw = var.m_flLowerBodyYawTarget;
-        bool add = true;
-        for ( auto fl : vec ) {
-            if ( !IsDifferent( curyaw, fl, tolerance ) )
-                add = false;
-        }
-        if ( add )
-            vec.push_back( curyaw );
-    }
-    return vec.size();
-}
-
-bool Resolver::DeltaKeepsChanging( const std::deque<CTickRecord>& cur, float tolerance ) {
-    return ( GetDifferentDeltas( cur ) > ( int ) cur.size() / 2 );
-}
-
-bool Resolver::LBYKeepsChanging( const std::deque<CTickRecord>& cur, float tolerance ) {
-    return ( GetDifferentLBYs( cur, tolerance ) > ( int ) cur.size() / 2 );
-}
-
-float Resolver::GetLBYByComparingTicks( const std::deque<CTickRecord>& l ) {
-    int modulo = Settings::Resolver::modulo;
-    //cvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), "\nmodulo " + modulo);
-    int difangles = GetDifferentLBYs( l );
-    int inc = modulo * difangles;
-    for ( auto var : l ) {
-        for ( int lasttick = var.tickcount; lasttick < globalVars->tickcount; lasttick += inc ) {
-            if ( lasttick == globalVars->tickcount )
-                return var.m_flLowerBodyYawTarget;
-        }
-    }
-    return 0.f;
-}
-
-float Resolver::GetDeltaByComparingTicks( const std::deque<CTickRecord>& l ) {
-    int modulo = Settings::Resolver::modulo;
-    int difangles = GetDifferentDeltas( l );
-    int inc = modulo * difangles;
-    for ( auto var : l ) {
-        for ( int lasttick = var.tickcount; lasttick < globalVars->tickcount; lasttick += inc ) {
-            if ( lasttick == globalVars->tickcount )
-                return LBYDelta( var );
-        }
-    }
-    return 0.f;
-}
-
-void Resolver::FireGameEvent( IGameEvent* event ) {
-    if ( !event )
-        return;
-
-    C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );                
-
-    if ( !localplayer || !localplayer->GetAlive() )
-        return;
-
-    if ( strcmp( event->GetName(), XORSTR( "player_hurt" ) ) == 0 ) {
-        int hurt_player_id = event->GetInt( XORSTR( "userid" ) );
-        int attacker_id = event->GetInt( XORSTR( "attacker" ) );
-
-        if ( engine->GetPlayerForUserID( hurt_player_id ) == engine->GetLocalPlayer() )
-            return;
-
-        if ( engine->GetPlayerForUserID( attacker_id ) != engine->GetLocalPlayer() )
-            return;
-
-        C_BasePlayer* hurt_player = ( C_BasePlayer* ) entityList->GetClientEntity(
-                engine->GetPlayerForUserID( hurt_player_id ) );
-        if ( !hurt_player )
-            return;
-
-        shotATT = false;
-
-        IEngineClient::player_info_t localPlayerInfo;
-        engine->GetPlayerInfo( localplayer->GetIndex(), &localPlayerInfo );
-
-        IEngineClient::player_info_t hurtPlayerInfo;
-        engine->GetPlayerInfo( hurt_player->GetIndex(), &hurtPlayerInfo );
-
-        didDmg = true;
-
-        Shotsmissed = 0;
-
-        Resolver::shotsMiss[Aimbot::targetAimbot] = 0;
-    } else {
-        C_BaseCombatWeapon* activeWeapon = ( C_BaseCombatWeapon* ) entityList->GetClientEntityFromHandle(
-            localplayer->GetActiveWeapon() );
-        
-        int ammo = activeWeapon->GetAmmo();        
-        static int ammoSave = ammo;
-
-        if ( ammoSave != ammo ) {
-            Resolver::shotsMiss[Aimbot::targetAimbot]++;
-            ammoSave = ammo;
-        }
-    }
-
-    if ( strcmp( event->GetName(), "player_connect_full" ) != 0 &&
-         strcmp( event->GetName(), "cs_game_disconnected" ) != 0 )
-        return;
-
-    if ( event->GetInt( "userid" ) &&
-         engine->GetPlayerForUserID( event->GetInt( "userid" ) ) != engine->GetLocalPlayer() )
-        return;
-
-    Resolver::playerAngleLogs.clear();
+    // Nothing in here needed, I guess
 }
 
 void Resolver::CreateMove( CUserCmd* cmd ) {
-    for ( int x = 1; x < engine->GetMaxClients(); ++x ) {
-        C_BasePlayer* target = ( C_BasePlayer* ) entityList->GetClientEntity( x );
+    // I guess nothing in here too
+}
 
-        if ( !target
-             || target == entityList->GetClientEntity( engine->GetLocalPlayer() )
-             || target->GetDormant()
-             || !target->GetAlive()
-             || target->GetImmune()
-             || target->GetTeam() == entityList->GetClientEntity( engine->GetLocalPlayer() )->GetTeam() )
-            continue;
-
-        Resolver::StoreVars( target );
-
-        if ( Settings::Resolver::LagComp )
-            StartLagComp( target, cmd );
-
-    }
+void Resolver::Paint() {
+    // I guess we dont need to draw anything, because we have Resolver Info Window
+    // We should draw everything there!
 }

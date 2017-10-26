@@ -135,7 +135,7 @@ void PlayerList::RenderWindow() {
                                 std::find( Aimbot::friends.begin(), Aimbot::friends.end(), entityInformation.xuid ) );
                 }
 
-                bool shouldResolve = std::find( Resolver::playerAngleLogs.begin(), Resolver::playerAngleLogs.end(),
+                /*bool shouldResolve = std::find( Resolver::playerAngleLogs.begin(), Resolver::playerAngleLogs.end(),
                                                 entityInformation.xuid ) != Resolver::playerAngleLogs.end();
                 if ( ImGui::Checkbox( XORSTR( "Resolver" ), &shouldResolve ) ) {
                     if ( shouldResolve )
@@ -144,7 +144,7 @@ void PlayerList::RenderWindow() {
                         Resolver::playerAngleLogs.erase(
                                 std::find( Resolver::playerAngleLogs.begin(), Resolver::playerAngleLogs.end(),
                                            entityInformation.xuid ) );
-                }
+                }TODO: Fix this if you want to, but i dont think its that useful.. never used this lmao*/
             }
             ImGui::NextColumn();
             {
