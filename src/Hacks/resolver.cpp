@@ -186,7 +186,7 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
             break;
         case 1:
             angle.y = lby + 180.0f;
-            Resolver::angForce[target->GetIndex()] = lby + 90.0f;
+            Resolver::angForce[target->GetIndex()] = lby + 180.0f;
             Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
             break;
         case 2:
@@ -196,7 +196,7 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
             break;
         case 3:
             angle.y = lby + 90.0f;
-            Resolver::angForce[target->GetIndex()] = lby + 180.0f;
+            Resolver::angForce[target->GetIndex()] = lby + 90.0f;
             Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
             break;
     }
@@ -257,7 +257,7 @@ void Resolver::FireGameEvent( IGameEvent* event ) {
         }
 
         if ( lastAmmo != ammo ) {
-            shotsMissed[Resolver::resolvingId]++;
+            shotsMissed[Aimbot::targetAimbot]++;
             lastAmmo = ammo;
         }
     }
