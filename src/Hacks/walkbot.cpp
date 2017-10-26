@@ -5,9 +5,9 @@ bool WalkBot::shouldForceReset = false;
 
 unsigned int rally = 0;
 static bool reachedEnd = false;
-static bool hasAutoBought = false;
+// not used static bool hasAutoBought = false;
 static bool hasDied = false;
-static bool slowLastTick = false;
+// not used static bool slowLastTick = false;
 
 void WalkBot::CreateMove( CUserCmd* cmd ) {
 

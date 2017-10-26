@@ -14,6 +14,13 @@
 #define TICKS_TO_TIME( t )  ( globalVars->interval_per_tick * ( t ) )
 #define ACT_CSGO_IDLE_TURN_BALANCEADJUST 979
 
+enum Angle {
+    LBY = 0,
+    LBY180,
+    LBYP90,
+    LBYM90
+};
+
 namespace Resolver {
 
     void Hug( C_BasePlayer* target );
@@ -45,6 +52,8 @@ namespace Resolver {
     extern std::map<int, const char*> angForceTxt;
 
     extern std::map<int, int> shotsMissedSave;
+
+    extern std::map<int, Angle> lastForceAng;
 
     // Hooks
 

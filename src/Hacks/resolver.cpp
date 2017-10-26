@@ -22,25 +22,28 @@ bool Resolver::lbyUpdated = false;
 bool Resolver::baimNextShot = false;
 int Resolver::resolvingId = -1;
 std::map<int, float> Resolver::lby = {
-        { -1, 0.0f }
+    { -1, 0.0f }
 };
 std::map<int, bool> Resolver::hasFakeWalk = {
     { -1, false }
 };
 std::map<int, float> Resolver::lastHitAng = {
-        { -1, 0.0f }
+    { -1, 0.0f }
 };
 std::map<int, const char*> Resolver::lastHitAngTxt = {
     { -1, "None" }
 };
 std::map<int, float> Resolver::angForce = {
-        { -1, 0.0f }
+    { -1, 0.0f }
 };
 std::map<int, const char*> Resolver::angForceTxt = {
-        { -1, "None" }
+    { -1, "None" }
 };
 std::map<int, int> Resolver::shotsMissedSave = {
-        { -1, 0 }
+    { -1, 0 }
+};
+std::map<int, Angle> Resolver::lastForceAng = {
+    { -1, LBY }
 };
 
 void Resolver::Hug( C_BasePlayer* target ) {
@@ -86,38 +89,67 @@ void Resolver::Hug( C_BasePlayer* target ) {
     if ( Resolver::lbyUpdated )
         lastLbyUpdate = serverTime;
 
-    if ( Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
-        angle.y = lby;
-        Resolver::angForce[target->GetIndex()] = lby;
-        Resolver::angForceTxt[target->GetIndex()] = "LBY";
-        if ( velocity < 100.0f && onGround ) {
-            if ( shotsMissed[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
-                switch ( shotsMissed[target->GetIndex()] % 3 ) {
-                    case 0:
-                        angle.y = lby + 90;
-                        Resolver::angForce[target->GetIndex()] = lby + 90;
-                        Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
-                        break;
-                    case 1:
-                        angle.y = lby - 90;
-                        Resolver::angForce[target->GetIndex()] = lby - 90;
-                        Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
-                        break;
-                    case 2:
-                        angle.y = lby + 180;
-                        Resolver::angForce[target->GetIndex()] = lby + 180;
-                        Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
-                    break;
-                }
-            } else if ( shotsMissed[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] )
-                Resolver::hasFakeWalk[target->GetIndex()] = true;
+    if ( Settings::AngleFlip::enabled && inputSystem->IsButtonDown( Settings::AngleFlip::key ) ) {
+        switch ( Resolver::lastForceAng[target->GetIndex()] ) {
+            case Angle::LBY:
+                angle.y = lby + 180;
+                Resolver::angForce[target->GetIndex()] = lby + 180;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+                break;
+            case Angle::LBY180:
+                angle.y = lby;
+                Resolver::angForce[target->GetIndex()] = lby;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY";
+                break;
+            case Angle::LBYP90:
+                angle.y = lby - 90;
+                Resolver::angForce[target->GetIndex()] = lby - 90;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+                break;
+            case Angle::LBYM90:
+                angle.y = lby + 90;
+                Resolver::angForce[target->GetIndex()] = lby + 90;
+                Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+                break;
         }
     } else {
-        // Call the pCode here
-        // Call HugBrute(), etc. so we have clean code and not messy like before
-        // For example
-        //angle.y = HugLby(target);
-        angle.y = HugBrute( target );
+        if ( Resolver::lbyUpdated || Backtracking::backtrackingLby ) {
+            angle.y = lby;
+            Resolver::angForce[target->GetIndex()] = lby;
+            Resolver::angForceTxt[target->GetIndex()] = "LBY";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
+            if ( velocity < 100.0f && onGround ) {
+                if ( shotsMissed[target->GetIndex()] > 1 && Resolver::hasFakeWalk[target->GetIndex()] ) {
+                    switch ( shotsMissed[target->GetIndex()] % 3 ) {
+                        case 0:
+                            angle.y = lby + 90;
+                            Resolver::angForce[target->GetIndex()] = lby + 90;
+                            Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYP90;
+                            break;
+                        case 1:
+                            angle.y = lby - 90;
+                            Resolver::angForce[target->GetIndex()] = lby - 90;
+                            Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYM90;
+                            break;
+                        case 2:
+                            angle.y = lby + 180;
+                            Resolver::angForce[target->GetIndex()] = lby + 180;
+                            Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+                            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
+                        break;
+                    }
+                } else if ( shotsMissed[target->GetIndex()] > 2 && !Resolver::hasFakeWalk[target->GetIndex()] )
+                    Resolver::hasFakeWalk[target->GetIndex()] = true;
+            }
+        } else {
+            // Call the pCode here
+            // Call HugBrute(), etc. so we have clean code and not messy like before
+            // For example
+            //angle.y = HugLby(target);
+            angle.y = HugBrute( target );
+        }
     }
 
     if ( Settings::Resolver::resolvePitch ) {
@@ -165,10 +197,12 @@ float Resolver::HugLby( C_BasePlayer* target ) { //TODO: Fix crashing of this
         angle.y = lby + 180;
         Resolver::angForce[target->GetIndex()] = lby + 180;
         Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+        Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
     } else {
         angle.y = lby;
         Resolver::angForce[target->GetIndex()] = lby;
         Resolver::angForceTxt[target->GetIndex()] = "LBY";
+        Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
     }
 
     return angle.y;
@@ -183,21 +217,25 @@ float Resolver::HugBrute( C_BasePlayer* target ) {
             angle.y = lby; // Nice Fuzion resolver you got there
             Resolver::angForce[target->GetIndex()] = lby;
             Resolver::angForceTxt[target->GetIndex()] = "LBY";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY;
             break;
         case 1:
             angle.y = lby + 180.0f;
             Resolver::angForce[target->GetIndex()] = lby + 180.0f;
             Resolver::angForceTxt[target->GetIndex()] = "LBY + 180";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBY180;
             break;
         case 2:
             angle.y = lby - 90.0f;
             Resolver::angForce[target->GetIndex()] = lby - 90.0f;
             Resolver::angForceTxt[target->GetIndex()] = "LBY - 90";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYM90;
             break;
         case 3:
             angle.y = lby + 90.0f;
             Resolver::angForce[target->GetIndex()] = lby + 90.0f;
             Resolver::angForceTxt[target->GetIndex()] = "LBY + 90";
+            Resolver::lastForceAng[target->GetIndex()] = Angle::LBYP90;
             break;
     }
 
@@ -212,9 +250,9 @@ float Resolver::HugPitch( C_BasePlayer* target ) {
     return angle.x;
 }
 
-////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\
-///                   HOOKS                   \\\
-////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\
+/*
+    hooks
+*/
 
 void Resolver::FireGameEvent( IGameEvent* event ) {
     if ( !Settings::Resolver::enabled || !event ) {

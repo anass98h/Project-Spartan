@@ -32,7 +32,7 @@ void ResolverInfo::RenderWindow() {
             ImGui::Text( XORSTR( "%s [%s]" ), name, guid );
             ImGui::Text( XORSTR( "Trying Angle - %s [%f]" ), angForceTxt, angForce );
             ImGui::Text( XORSTR( "Last Hit - %s [%f]" ), lastHitTxt, lastHit );
-            ImGui::Text( XORSTR( "Shots missed - %f" ), shotsMissed );
+            ImGui::Text( XORSTR( "Shots missed - %i" ), shotsMissed );
             ImGui::Text( XORSTR( "LBY - %f" ), lby );
         }
         
