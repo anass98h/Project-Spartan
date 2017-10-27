@@ -238,7 +238,19 @@ enum class FakeLagType : int {
     REACTIVE,
     NUCLEAR,
 };
+enum class Sound : int {
 
+    NONE,
+    METALDOOR2,
+    DOORSTOP,
+    METAL,
+    DONTLEAVE,
+    THUNDER,
+    BEEP,
+    BASS,
+
+
+};
 struct AimbotWeapon_t {
     bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
     int engageLockTTR, hitChanceRays;
@@ -909,6 +921,10 @@ namespace Settings {
 
             namespace Damage {
                 extern bool enabled;
+            }
+            namespace Sounds {
+                extern bool enabled;
+                extern Sound sound;
             }
         }
 

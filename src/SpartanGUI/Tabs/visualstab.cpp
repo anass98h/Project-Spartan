@@ -11,7 +11,7 @@ void Visuals::RenderTab() {
                                  "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" ,"Animated", "Blink", "Glow", "Guerilla"  };
     const char* ArmsTypes[] = { "Default", "Glass", "Crystal", "BlueCrystal", "Gold", "Velvet", "Tree", "SpeechInfo",
                                 "FishNet", "Letters", "Gloss", "Wireframe", "None" };
-
+    const char* Sounds[] = { "None", "kickmetaldoor2", "default_doorstop", "metal", "dont_leave!", "thunder", "beep", "bass"};
     const char* SkyBoxes[] = {
             "cs_baggage_skybox_", // 0
             "cs_tibet",
@@ -442,6 +442,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Enemies##HITMARKERS" ), &Settings::ESP::Hitmarker::enemies );
                 ImGui::Checkbox( XORSTR( "Allies##HITMARKERS" ), &Settings::ESP::Hitmarker::allies );
                 ImGui::Checkbox( XORSTR( "Damage##HITMARKERS" ), &Settings::ESP::Hitmarker::Damage::enabled );
+                ImGui::Checkbox( XORSTR( "Sounds##HITMARKERS"), &Settings::ESP::Hitmarker::Sounds::enabled);
             }
             ImGui::NextColumn();
             {
@@ -452,6 +453,7 @@ void Visuals::RenderTab() {
                                   XORSTR( "Size: %0.f" ) );
                 ImGui::SliderInt( XORSTR( "##HITMARKERGAP" ), &Settings::ESP::Hitmarker::innerGap, 1, 16,
                                   XORSTR( "Gap: %0.f" ) );
+                ImGui::Combo( XORSTR ("Sounds"), (int*)&Settings::ESP::Hitmarker::Sounds::sound, Sounds , IM_ARRAYSIZE(Sounds));
                 ImGui::PopItemWidth();
             }
             ImGui::Columns( 1 );

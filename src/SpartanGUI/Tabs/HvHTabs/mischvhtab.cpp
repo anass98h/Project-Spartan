@@ -12,7 +12,7 @@ void MiscHvHTab::RenderTab() {
                 {
                     ImGui::Separator();
 
-                    ImGui::Columns( 2, NULL, true );
+                   /* ImGui::Columns( 2, NULL, true );
                     {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text( XORSTR( "Ticks" ) );
@@ -31,6 +31,7 @@ void MiscHvHTab::RenderTab() {
                                             XORSTR( "%.1f" ) );
                         ImGui::PopItemWidth();
                     }
+                    */   // this isnt used why have it in menu ?
                     ImGui::Columns( 1 );
 
                     ImGui::Columns( 2, NULL, true );

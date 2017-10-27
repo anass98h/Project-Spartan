@@ -360,7 +360,9 @@ void Misc::RenderTab() {
 
                     if ( Settings::ClanTagChanger::preset == valueType::CUSTOM ) {
                         if ( ImGui::InputText( XORSTR( "##CLANTAG" ), Settings::ClanTagChanger::value, 30 ) ) {
+                            if(Settings::ClanTagChanger::value[1] != 0 )
                             ClanTagChanger::UpdateClanTagCallback();
+
                         }
                     }
                     ImGui::PopItemWidth();

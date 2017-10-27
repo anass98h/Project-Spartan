@@ -39,7 +39,6 @@ static void ppp() {
 
         ImGui::EndPopup();
     }
-    ImGui::PopStyleVar();
 }
 */
 void SetupMainMenuBar() {
@@ -84,7 +83,6 @@ void SetupMainMenuBar() {
 
 
         ImGui::Columns( 1 );
-        ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 440, 170 ) );
 
 
         if ( ImGui::BeginPopupModal( XORSTR( "Project Spartan" ), NULL, ImGuiWindowFlags_NoResize ) ) {
@@ -123,7 +121,6 @@ void SetupMainMenuBar() {
             ImGui::EndPopup();
         }
 
-        ImGui::PopStyleVar();
 
         if ( ImGui::Button( XORSTR( "Logout  " ),
                             ImVec2( ImGui::CalcTextSize( XORSTR( "Logout  " ), NULL, true ).x, 0.0f ) ) ) {
@@ -264,21 +261,20 @@ void UI::SetupWindows() {
     if ( UI::isVisible ) {
         SetupMainMenuBar();
 
-        ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 1080, 700 ) );
+
         Main::RenderWindow();
-        ImGui::PopStyleVar();
+
 
 
         if ( ModSupport::current_mod != ModType::CSCO ) {
-            ImGui::PushStyleVar( ImGuiStyleVar_WindowMinSize, ImVec2( 1050, 645 ) );
             SkinModelChanger::RenderWindow();
-            ImGui::PopStyleVar();
+
         }
 
         Configs::RenderWindow();
         Colors::RenderWindow();
         PlayerList::RenderWindow();
-        //         Fonts::RenderWindow();
+        //Fonts::RenderWindow();
     }
 
     ShowSpectators::RenderWindow();
