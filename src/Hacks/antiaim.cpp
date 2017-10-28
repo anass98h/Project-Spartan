@@ -879,16 +879,33 @@ yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                     }
                 break;
                 case AntiAimType_Y::RASP2:  // get your own dank names :feelsmocked:
-                    angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                            engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
-                   
-                    if( NextLBYUpdate() ){
-                        angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget();
+                    static bool firstBreak;
+                static float oldCurtime;
+                static float offset = 160;
+                    if(!(pLocal->GetFlags() & FL_ONGROUND))
+                    {
+                        firstBreak = false;
                     }
-                    else
-                        angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
-                                engine->GetLocalPlayer() ) )->GetLowerBodyYawTarget() + 180;
+                    else if (pLocal->GetVelocity().Length2D() > 1)
+                    {
+                        oldCurtime = globalVars->curtime;
+                        firstBreak = false;
+                        if(std::fabs(*pLocal->GetLowerBodyYawTarget() - AntiAim::lastRealYaw) <= 35)
+                            angle.y = *pLocal->GetLowerBodyYawTarget() + offset;
+                    }
+                if (pLocal->GetVelocity().Length2D() < 1 && globalVars->curtime - oldCurtime > 0.22 && !firstBreak)
+                {
+                    firstBreak = true;
+                    angle.y = AntiAim::lastRealYaw + offset;
+                    oldCurtime = globalVars->curtime;
+                    angle.y = AntiAim::lastRealYaw + offset;
+                }
+                else if (pLocal->GetVelocity().Length2D() < 1 && globalVars->curtime - oldCurtime > 1.1)
+                {
+                    angle.y = AntiAim::lastRealYaw + offset;
+                    oldCurtime = globalVars->curtime;
+                    angle.y = AntiAim::lastRealYaw + offset;
+                }
                  break;
                 case AntiAimType_Y::FEETWIGGLE: {
                     float Diff;

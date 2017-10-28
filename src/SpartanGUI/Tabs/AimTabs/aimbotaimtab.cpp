@@ -56,6 +56,8 @@ static bool autoCockRevolver = false;
 static bool velocityCheck = false;
 static bool backtrack = false;
 static bool legitMode = false;
+static bool smooth = false;
+static float smoothvalue = 1.0f;
 
 
 void UI::ReloadWeaponSettings() {
@@ -112,6 +114,8 @@ void UI::ReloadWeaponSettings() {
     autoCockRevolver = Settings::Aimbot::weapons.at( index ).autoCockRevolver;
     velocityCheck = Settings::Aimbot::weapons.at( index ).velocityCheck;
     legitMode = Settings::Aimbot::weapons.at( index ).legitMode;
+    smooth = Settings::Aimbot::weapons.at ( index ).smooth;
+    smoothvalue = Settings::Aimbot::weapons.at ( index ).smoothvalue;
 
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
         desiredBones[bone] = Settings::Aimbot::weapons.at( index ).desiredBones[bone];
@@ -131,7 +135,7 @@ void UI::UpdateWeaponSettings() {
             noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, spreadLimitEnabled,
             spreadLimit, autoWallEnabled, autoWallValue, autoAimRealDistance, autoSlow,
             predEnabled, moveMouse, hitChanceEnabled, hitChanceRays, hitChanceValue,
-            autoCockRevolver, velocityCheck, backtrack, legitMode
+            autoCockRevolver, velocityCheck, backtrack, legitMode, smooth, smoothvalue
     };
 
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -369,6 +373,11 @@ void AimbotAimTab::RenderTab() {
                         UI::UpdateWeaponSettings();
                     if ( ImGui::SliderFloat( XORSTR( "##RCSY" ), &rcsAmountY, 0, 2, XORSTR( "Y: %0.3f" ) ) )
                         UI::UpdateWeaponSettings();
+                    if ( ImGui::Checkbox( XORSTR( "Smooth RCS" ), &smooth ) )
+                        UI::UpdateWeaponSettings();
+                    if ( ImGui::SliderFloat( XORSTR( "##SMOOTH" ), &smoothvalue, 0, 150, XORSTR( "Smooth: %0.1f" ) ) )
+                        UI::UpdateWeaponSettings();
+
                     ImGui::PopItemWidth();
 
                     ImGui::EndPopup();
