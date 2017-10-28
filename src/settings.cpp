@@ -824,8 +824,8 @@ void Settings::LoadConfig( std::string path ) {
                 weaponSetting[XORSTR( "velocityCheck" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "backtrack" )].asBool(),
                 weaponSetting[XORSTR( "legitMode" )].asBool(),
-                weaponSetting[XORSTR( "smooth" )].asBool(),
-                weaponSetting[XORSTR( "smoothvalue" )].asFloat()
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smooth" )].asBool(),
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smoothvalue" )].asFloat()
 
         };
 
