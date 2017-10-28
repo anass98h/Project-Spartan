@@ -251,6 +251,16 @@ enum class Sound : int {
 
 
 };
+
+enum class ThirdPersonMode : int {
+    FAKE,
+    REAL,
+    LBY,
+    GHOST,
+
+    NUMBER_OF_TYPES // Leave at bottom
+};
+
 struct AimbotWeapon_t {
     bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
     int engageLockTTR, hitChanceRays;
@@ -1186,7 +1196,7 @@ namespace Settings {
 
     namespace ThirdPerson {
         extern bool enabled;
-        extern bool realAngles;
+        extern ThirdPersonMode mode;
         extern float distance;
         extern ButtonCode_t key;
     }

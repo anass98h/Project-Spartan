@@ -678,7 +678,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "NameStealer" )][XORSTR( "team" )] = Settings::NameStealer::team;
 
     settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )] = Settings::ThirdPerson::enabled;
-    settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )] = Settings::ThirdPerson::realAngles;
+    settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )] = (int) Settings::ThirdPerson::mode;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )] = Settings::ThirdPerson::distance;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )] = Settings::ThirdPerson::key;
 
@@ -1394,7 +1394,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
-    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )], &Settings::ThirdPerson::realAngles );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], (int*) &Settings::ThirdPerson::mode );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 

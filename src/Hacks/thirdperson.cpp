@@ -1,7 +1,7 @@
 #include "thirdperson.h"
 
 bool Settings::ThirdPerson::enabled = false;
-bool Settings::ThirdPerson::realAngles = false;
+ThirdPersonMode Settings::ThirdPerson::mode = ThirdPersonMode::FAKE;
 float Settings::ThirdPerson::distance = 30.f;
 ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_DELETE;
 long millisSinceLastPress = 0;
@@ -44,21 +44,69 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
         return;
 
     input->m_fCameraInThirdPerson = Settings::ThirdPerson::enabled && pLocal->GetAlive();
-    input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.f;
+    input->m_vecCameraOffset.z = Settings::ThirdPerson::enabled ? Settings::ThirdPerson::distance : 150.0f;
 
     QAngle angles = QAngle(0, 0, 0);
 
-    if ( Settings::ThirdPerson::realAngles & ((AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled) ||
-    (AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled) ||
-    (AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled)) ) {
-        if ( AntiAim::fakeTp )
-            angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.f);
-        else
-            angles = QAngle(pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.f);
-    } else {
-        angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.f);
+    switch(Settings::ThirdPerson::mode) {
+        case ThirdPersonMode::FAKE: {
+            angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+            break;
+        }
+        case ThirdPersonMode::REAL: {
+            if ( ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled ) ||
+                 ( AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled ) ||
+                 ( AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled ) ) {
+                if(AntiAim::fakeTp) {
+                    angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+                } else {
+                    angles = QAngle(pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.0f);
+                }
+            } else {
+                angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+            }
+            break;
+        }
+        case ThirdPersonMode::LBY: {
+            float* lby = pLocal->GetLowerBodyYawTarget();
+
+            angles = QAngle(pLocal->GetEyeAngles()->x, *(float*) &lby, 0.0f);
+            break;
+        }
+        case ThirdPersonMode::GHOST: {
+            // TODO: #250 (https://www.unknowncheats.me/forum/counterstrike-global-offensive/238768-fake-angle-src-friendly.html)
+
+            IMaterial* material = Chams::chamsMaterial;
+            if(material) {
+                Vector originAngle;
+                Math::AngleVectors(*pLocal->GetEyeAngles(), originAngle);
+                //pLocal->SetAngle2(Vector(0, AntiAim::lastFakeYaw, 0)); - Need sig
+                material->ColorModulate(Color(255, 255, 255));
+                material->AlphaModulate(255);
+                modelRender->ForcedMaterialOverride(material);
+                //pLocal->DrawModel(0x1, 255); - Need sig aswell
+                modelRender->ForcedMaterialOverride(nullptr);
+                //pLocal->SetAngle2(originAngle); - Need sig again
+            }
+
+            if ( ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled ) ||
+                 ( AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled ) ||
+                 ( AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled ) ) {
+                if(AntiAim::fakeTp) {
+                    angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+                } else {
+                    angles = QAngle(pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.0f);
+                }
+            } else {
+                angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+            }
+
+            break;
+        }
+        case ThirdPersonMode::NUMBER_OF_TYPES: {
+            break;
+        }
     }
-    
 
     if ( Settings::ThirdPerson::enabled ) {
         *pLocal->GetVAngles() = angles;

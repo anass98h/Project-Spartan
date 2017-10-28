@@ -5,8 +5,11 @@
 #include "../SDK/SDK.h"
 
 namespace ThirdPerson {
-    //Hooks
+
+    // Hooks
+
     void BeginFrame();
 
     void FrameStageNotify( ClientFrameStage_t stage );
+
 }
