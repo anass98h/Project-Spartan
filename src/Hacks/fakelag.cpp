@@ -1,5 +1,4 @@
 #include "fakelag.h"
-
 FakeLagType Settings::FakeLag::type = FakeLagType::OFF;
 int Settings::FakeLag::value = 9;
 bool FakeLag::bFlipping = false;
@@ -106,8 +105,19 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
         case FakeLagType::OFF:
             // If this gets called something very weird has happened that shouldn't happen
             // *( int* ) 0 = 0;
-
+            // What the fuck is this
             // It's not possible to get to this point.
+            break;
+        case FakeLagType::LUNICO:
+            bool packetsToChoke;
+            if(localplayer->GetVelocity().Length2D() < 0.1f)
+                CreateMove::sendPacket = 16; // I have no idea if this is the proper way of choking packets, but it seems to be working
+            else {
+                packetsToChoke = (int) ((64.f / globalVars->interval_per_tick) / localplayer->GetVelocity().Length2D());
+                if(packetsToChoke > 16)
+                    packetsToChoke = 16;
+                CreateMove::sendPacket = packetsToChoke;
+            }
             break;
     }
 
