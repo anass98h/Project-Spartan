@@ -25,7 +25,6 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
         return;
     }
 
-
     switch ( Settings::FakeLag::type ) {
         case FakeLagType::TUX:
             if ( cmdCounter >= 16 && FakeLag::bFlipping ) {
@@ -102,24 +101,32 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
                 }
             }
             break;
-        case FakeLagType::OFF:
-            // If this gets called something very weird has happened that shouldn't happen
-            // *( int* ) 0 = 0;
-            // What the fuck is this
-            // It's not possible to get to this point.
-            break;
         case FakeLagType::LUNICO:
-            bool packetsToChoke;
-            if(localplayer->GetVelocity().Length2D() < 0.1f)
-                CreateMove::sendPacket = 16; // I have no idea if this is the proper way of choking packets, but it seems to be working
-            else {
-                packetsToChoke = (int) ((64.f / globalVars->interval_per_tick) / localplayer->GetVelocity().Length2D());
-                if(packetsToChoke > 16)
-                    packetsToChoke = 16;
-                CreateMove::sendPacket = packetsToChoke;
+            static int chokeAmount;
+
+            if ( localplayer->GetVelocity().Length2D() > 0.1f ) {
+                chokeAmount = static_cast<int>(( 64.0f / globalVars->interval_per_tick ) /
+                                               localplayer->GetVelocity().Length2D());
+            } else {
+                chokeAmount = 16;
+            }
+
+            if ( chokeAmount > 16 ) {
+                chokeAmount = 16;
+            }
+
+            cmdCounter++;
+
+            if ( cmdCounter >= chokeAmount ) {
+                CreateMove::sendPacket = true;
+                cmdCounter = 0;
+            } else {
+                CreateMove::sendPacket = false;
             }
             break;
+        case FakeLagType::OFF:
+            // It's not possible to get to this point.
+            break;
     }
-
 
 }
