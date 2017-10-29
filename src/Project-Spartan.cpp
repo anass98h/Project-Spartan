@@ -98,7 +98,7 @@ int __attribute__ ((constructor)) Startup() {
                                       });
 
     if ( ModSupport::current_mod != ModType::CSCO &&
-         Hooker::HookRecvProp( "CBaseViewModel", "m_nSequence", SkinChanger::sequenceHook ) )
+         Hooker::HookRecvProp( XORSTR("CBaseViewModel"), XORSTR("m_nSequence"), SkinChanger::sequenceHook ) )
         SkinChanger::sequenceHook->SetProxyFunction( ( RecvVarProxyFn ) SkinChanger::SetViewModelSequence );
 
     //NetVarManager::DumpNetvars();
@@ -111,7 +111,7 @@ int __attribute__ ((constructor)) Startup() {
     srand( time( NULL ) ); // Seed random # Generator so we can call rand() later
 
 
-    engine->ExecuteClientCmd( "clear;" );
+    engine->ExecuteClientCmd( XORSTR("clear;") );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
                               XORSTR( " )\\ )                      )              \n" ) );
@@ -130,7 +130,7 @@ int __attribute__ ((constructor)) Startup() {
 
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),
-                              XORSTR( "Project Spartan has been successfully injected using the GNU Debugger. \n" ) );
+                              XORSTR( "Project Spartan has been successfully injected. \n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "\n\n" ) );
 
     Image::InitImages();

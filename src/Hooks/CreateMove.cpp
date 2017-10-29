@@ -18,6 +18,7 @@ bool Hooks::CreateMove( void* thisptr, float flInputSampleTime, CUserCmd* cmd ) 
         AutoDefuse::CreateMove( cmd );
         JumpThrow::CreateMove( cmd );
         GrenadeHelper::CreateMove( cmd );
+        GrenadePrediction::CreateMove( cmd );
         EdgeJump::PrePredictionCreateMove( cmd );
 
         PredictionSystem::StartPrediction( cmd );

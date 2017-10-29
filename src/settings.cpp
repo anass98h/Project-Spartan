@@ -680,7 +680,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "NameStealer" )][XORSTR( "team" )] = Settings::NameStealer::team;
 
     settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )] = Settings::ThirdPerson::enabled;
-    settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )] = Settings::ThirdPerson::realAngles;
+    settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )] = (int) Settings::ThirdPerson::mode;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )] = Settings::ThirdPerson::distance;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )] = Settings::ThirdPerson::key;
 
@@ -705,6 +705,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoSmoke" )], Settings::GrenadeHelper::infoSmoke );
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoMolotov" )], Settings::GrenadeHelper::infoMolotov );
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoFlash" )], Settings::GrenadeHelper::infoFlash );
+
+    settings[XORSTR( "GrenadePrediction" )][XORSTR( "enabled" )] = Settings::GrenadePrediction::enabled;
+    LoadColor( settings[XORSTR( "GrenadePrediction" )][XORSTR( "color" )], Settings::GrenadePrediction::color );
+
     settings[XORSTR( "AutoKnife" )][XORSTR( "enabled" )] = Settings::AutoKnife::enabled;
     settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "enemies" )] = Settings::AutoKnife::Filters::enemies;
     settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "allies" )] = Settings::AutoKnife::Filters::allies;
@@ -1398,7 +1402,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
-    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )], &Settings::ThirdPerson::realAngles );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], (int*) &Settings::ThirdPerson::mode );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 
@@ -1422,6 +1426,10 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoSmoke" )], &Settings::GrenadeHelper::infoSmoke );
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoFlash" )], &Settings::GrenadeHelper::infoFlash );
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoMolotov" )], &Settings::GrenadeHelper::infoMolotov );
+
+    GetVal( settings[XORSTR( "GrenadePrediction" )][XORSTR( "enabled" )], &Settings::GrenadePrediction::enabled );
+    GetVal( settings[XORSTR( "GrenadePrediction" )][XORSTR( "color" )], &Settings::GrenadePrediction::color );
+
     GetVal( settings[XORSTR( "AutoKnife" )][XORSTR( "enabled" )], &Settings::AutoKnife::enabled );
     GetVal( settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "enemies" )],
             &Settings::AutoKnife::Filters::enemies );

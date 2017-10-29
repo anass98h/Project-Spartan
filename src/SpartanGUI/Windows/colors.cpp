@@ -76,6 +76,7 @@ void Colors::RenderWindow() {
             { "Grenade Helper - Smoke Info",   &Settings::GrenadeHelper::infoSmoke },
             { "Grenade Helper - Molotov Info", &Settings::GrenadeHelper::infoMolotov },
             { "Grenade Helper - Flash Info",   &Settings::GrenadeHelper::infoFlash },
+            { "Grenade Prediction - Aim Line", &Settings::GrenadePrediction::color },
             { "Radar - Enemy",                 &Settings::Radar::enemyColor },
             { "Radar - Team",                  &Settings::Radar::allyColor },
             { "Radar - Enemy Visible",         &Settings::Radar::enemyVisibleColor },

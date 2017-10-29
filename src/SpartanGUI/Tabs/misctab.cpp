@@ -12,6 +12,7 @@ void Misc::RenderTab() {
     const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear", "Lunico" };
     const char* grenadeTypes[] = { "Flashbang", "Smoke Grenade", "Molotov", "HE Grenade" };
     const char* throwTypes[] = { "Standing", "Running", "Jumping", "Walk" };
+    const char* tpModes[] = { "Fake", "Real", "Lower Body Yaw", "Ghost" };
 
     ImGui::Columns( 2, NULL, true );
     {
@@ -190,7 +191,38 @@ void Misc::RenderTab() {
                 }
                 ImGui::Columns( 1 );
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Third Person" ) );
+
+                ImGui::Checkbox(XORSTR("Third Person"), &Settings::ThirdPerson::enabled);
+                {
+                    ImGui::Separator();
+
+                    ImGui::Columns(2, NULL, true);
+                    {
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Mode"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Camera Offset"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Key"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    }
+                    ImGui::NextColumn();
+                    {
+                        ImGui::PushItemWidth(-3);
+                        ImGui::Combo(XORSTR("##TPMODE"), (int*) &Settings::ThirdPerson::mode,
+                                     tpModes, (int) ThirdPersonMode::NUMBER_OF_TYPES);
+                        ImGui::PopItemWidth();
+                        ImGui::PushItemWidth(-1);
+                        ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.0f, 500.0f);
+                        ImGui::PopItemWidth();
+                        UI::KeyBindButton(&Settings::ThirdPerson::key);
+                    }
+                    ImGui::Columns(1);
+                }
+
+
+
+                /*ImGui::Text( XORSTR( "Third Person" ) );
                 ImGui::Separator();
                 ImGui::Columns( 2, NULL, true );
                 {
@@ -206,7 +238,7 @@ void Misc::RenderTab() {
                     ImGui::PopItemWidth();
                     UI::KeyBindButton( &Settings::ThirdPerson::key );
                 }
-                ImGui::Columns( 1 );
+                ImGui::Columns( 1 );*/
                 ImGui::Separator();
                 ImGui::Text( XORSTR( "Grenade Helper" ) );
                 ImGui::Separator();

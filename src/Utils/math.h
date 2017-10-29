@@ -45,5 +45,7 @@ namespace Math {
 
     void AngleVectors2( Vector& qAngles, Vector& vecForward );
 
+    void AngleVectors( const Vector& angles, Vector* forward, Vector* right, Vector* up );
+
     float ClampYaw( float val );
 }
