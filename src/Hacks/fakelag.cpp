@@ -17,7 +17,7 @@ void FakeLag::CreateMove( CUserCmd* cmd ) {
     }
 
     if ( Settings::BHop::enabled && ( cmd->buttons & IN_JUMP ) ) {
-        *bSendPacket = true;
+        CreateMove::sendPacket = true;
     }
 
     if ( ( cmd->buttons & IN_ATTACK ) && !Settings::Aimbot::pSilent ) {
