@@ -42,8 +42,6 @@ bool Settings::Aimbot::RCS::enabled = false;
 bool Settings::Aimbot::RCS::always_on = false;
 float Settings::Aimbot::RCS::valueX = 2.0f;
 float Settings::Aimbot::RCS::valueY = 2.0f;
-bool Settings::Aimbot::RCS::smooth;
-float Settings::Aimbot::RCS::smoothvalue;
 bool Settings::Aimbot::AutoCrouch::enabled = false;
 bool Settings::Aimbot::NoShoot::enabled = false;
 bool Settings::Aimbot::IgnoreJump::enabled = false;
@@ -64,6 +62,8 @@ bool Settings::Aimbot::AutoCockRevolver::enabled = false;
 bool Settings::Aimbot::velocityCheck::enabled = false;
 bool Settings::Aimbot::backtrack = false;
 bool Settings::Aimbot::legitMode = false;
+bool Settings::Aimbot::RCS::smooth = false;
+float Settings::Aimbot::RCS::smoothvalue = 1.0f;
 
 
 bool Aimbot::aimStepInProgress = false;
