@@ -4,6 +4,7 @@ void Hooks::DrawModelExecute( void* thisptr, void* context, void* state, const M
                               matrix3x4_t* pCustomBoneToWorld ) {
     if ( !Settings::ScreenshotCleaner::enabled || !engine->IsTakingScreenshot() ) {
         Chams::DrawModelExecute( thisptr, context, state, pInfo, pCustomBoneToWorld );
+        ThirdPerson::DrawModelExecute( thisptr, context, state, pInfo, pCustomBoneToWorld );
     }
 
     modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo, pCustomBoneToWorld );
