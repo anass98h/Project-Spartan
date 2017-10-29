@@ -144,7 +144,6 @@ void ThirdPerson::DrawModelExecute( void* thisptr, void* context, void* state, c
 
     if ( modelName.find( XORSTR( "models/player" ) ) != std::string::npos ) {
         DrawScopedPlayer( thisptr, context, state, pInfo, pCustomBoneToWorld );
-        cvar->ConsoleColorPrintf( ColorRGBA( 255, 255, 255 ), XORSTR( "Model: %s Group: %s" ) );
     }
 
 }
@@ -153,7 +152,7 @@ void ThirdPerson::DrawModelExecute( void* thisptr, void* context, void* state, c
 static void DrawScopedPlayer( void* thisptr, void* context, void* state, const ModelRenderInfo_t& pInfo,
                               matrix3x4_t* pCustomBoneToWorld ) {
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
-    if ( !localplayer )
+    if ( !localplayer || !localplayer->GetAlive() )
         return;
 
     C_BasePlayer* entity = ( C_BasePlayer* ) entityList->GetClientEntity( pInfo.entity_index );

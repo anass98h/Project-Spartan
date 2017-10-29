@@ -498,6 +498,7 @@ void Misc::RenderTab() {
                     ImGui::Checkbox( XORSTR( "Auto Defuse" ), &Settings::AutoDefuse::enabled );
                     ImGui::Checkbox( XORSTR( "Sniper Crosshair" ), &Settings::SniperCrosshair::enabled );
                     ImGui::Checkbox( XORSTR( "Disable post-processing" ), &Settings::DisablePostProcessing::enabled );
+                    ImGui::Checkbox( XORSTR( "In-Game Watermark" ), &Settings::UI::Watermark::displayIngame );
                 }
                 ImGui::NextColumn();
                 {

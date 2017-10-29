@@ -453,8 +453,8 @@ namespace Settings {
         extern bool Pie;
         extern bool middle;
         extern bool right;
-        namespace Fonts {
 
+        namespace Fonts {
 
             extern cFont font;
             extern float fontsize;
@@ -465,7 +465,14 @@ namespace Settings {
                 extern int flags;
                 extern bool Autowall;
             }
+
         }
+
+        namespace Watermark {
+            extern ColorVar color;
+            extern bool displayIngame;
+        }
+
     }
 
     namespace Aimbot {
