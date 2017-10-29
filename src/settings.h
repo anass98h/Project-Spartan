@@ -237,6 +237,7 @@ enum class FakeLagType : int {
     STEP,
     REACTIVE,
     NUCLEAR,
+    LUNICO,
 };
 enum class Sound : int {
 
