@@ -50,7 +50,8 @@ void EventLogger::PaintImGui() {
         if ( events[i].color.Value.w < 0.5f )
             return;
 
-        float height = i * ImGui::GetFontSize() + 4.0f;
+        float height = i * ImGui::GetFontSize() + ( Settings::UI::Watermark::displayIngame ?
+                                                    ImGui::GetFontSize() : 4.0f );
 
         Draw::ImText(
                 ImVec2( 4.0f, 4.0f + height ), events[i].color, events[i].text.c_str(), NULL, 0.0f, NULL,
@@ -70,10 +71,20 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         C_BasePlayer* hurt = ( C_BasePlayer* ) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
+        if ( !hurt )
+            return;
+
         C_BasePlayer* attacker = ( C_BasePlayer* ) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "attacker" ) ) )
         );
+        if ( event->GetInt( XORSTR( "attacker" ) ) != 0 ) {
+            if ( !attacker )
+                return;
+        }
+
         int damage = event->GetInt( XORSTR( "dmg_health" ) );
+        if ( !damage )
+            return;
 
         IEngineClient::player_info_t hurtPlayerInfo;
         engine->GetPlayerInfo( hurt->GetIndex(), &hurtPlayerInfo );
@@ -143,6 +154,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
 
+        if ( !user )
+            return;
+
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
 
@@ -156,6 +170,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
         int site = event->GetInt( XORSTR( "site" ) );
+
+        if ( !user )
+            return;
 
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
@@ -171,6 +188,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         );
         bool defuser = event->GetBool( XORSTR( "haskit" ) );
 
+        if ( !user )
+            return;
+
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
 
@@ -183,6 +203,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
+
+        if ( !user )
+            return;
 
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
@@ -197,6 +220,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
         C_BasePlayer* user = ( C_BasePlayer* ) entityList->GetClientEntity(
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
+
+        if ( !user )
+            return;
 
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );
@@ -219,6 +245,9 @@ void EventLogger::FireGameEvent( IGameEvent* event ) {
                 engine->GetPlayerForUserID( event->GetInt( XORSTR( "userid" ) ) )
         );
         bool bomb = event->GetBool( XORSTR( "hasbomb" ) );
+
+        if ( !user )
+            return;
 
         IEngineClient::player_info_t entityInfo;
         engine->GetPlayerInfo( user->GetIndex(), &entityInfo );

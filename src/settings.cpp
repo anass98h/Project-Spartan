@@ -129,7 +129,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "UI" )][XORSTR( "Fonts" )][XORSTR( "fontsize" )] = Settings::UI::Fonts::fontsize;
     settings[XORSTR( "UI" )][XORSTR( "middle" )] = Settings::UI::middle;
     settings[XORSTR( "UI" )][XORSTR( "right" )] = Settings::UI::right;
-
+    LoadColor( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "color" )], Settings::UI::Watermark::color );
+    settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "displayIngame" )] = Settings::UI::Watermark::displayIngame;
 
     for ( auto i : Settings::Aimbot::weapons ) {
         // TODO this is kind of a hack and i'm too tired to find a better way to do this
@@ -740,6 +741,10 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "UI" )][XORSTR( "Fonts" )][XORSTR( "fontsize" )], &Settings::UI::Fonts::fontsize );
     GetVal( settings[XORSTR( "UI" )][XORSTR( "middle" )], &Settings::UI::middle );
     GetVal( settings[XORSTR( "UI" )][XORSTR( "right" )], &Settings::UI::right );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "color" )], &Settings::UI::Watermark::color );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "displayIngame" )],
+            &Settings::UI::Watermark::displayIngame );
 
     Fonts::SetupFonts();
 
