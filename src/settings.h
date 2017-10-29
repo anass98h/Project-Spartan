@@ -259,8 +259,8 @@ struct AimbotWeapon_t {
     SmoothType smoothType;
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
-    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode;
+    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue, smoothvalue;
+    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode, smooth;
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone,
                     bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey,
@@ -271,7 +271,7 @@ struct AimbotWeapon_t {
                     bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck, bool spreadLimitEnabled,
                     float spreadLimit, bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode ) {
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode, bool smooth, float smoothvalue ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -320,6 +320,8 @@ struct AimbotWeapon_t {
         this->autoCockRevolver = autoCockRevolver;
         this->velocityCheck = velocityCheck;
         this->legitMode = legitMode;
+        this->smooth = smooth;
+        this->smoothvalue = smoothvalue;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -385,7 +387,9 @@ struct AimbotWeapon_t {
                this->hitChanceValue == another.hitChanceValue &&
                this->autoCockRevolver == another.autoCockRevolver &&
                this->velocityCheck == another.velocityCheck &&
-               this->legitMode == another.legitMode;
+               this->legitMode == another.legitMode &&
+               this->smooth == another.smooth &&
+               this->smoothvalue == another.smoothvalue;
     }
 };
 
@@ -510,6 +514,8 @@ namespace Settings {
             extern bool always_on;
             extern float valueX;
             extern float valueY;
+            extern bool smooth;
+            extern float smoothvalue;
         }
 
         namespace AutoPistol {

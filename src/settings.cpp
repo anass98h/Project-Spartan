@@ -179,6 +179,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
         weaponSetting[XORSTR( "Prediction" )][XORSTR( "enabled" )] = i.second.predEnabled;
         weaponSetting[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )] = Settings::Aimbot::velocityCheck::enabled;
         weaponSetting[XORSTR( "legitMode" )] = i.second.legitMode;
+        weaponSetting[XORSTR( "RCS" )][XORSTR( "smooth" )] = i.second.smooth;
+        weaponSetting[XORSTR( "RCS" )][XORSTR( "smoothvalue" )] = i.second.smoothvalue;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -749,7 +751,7 @@ void Settings::LoadConfig( std::string path ) {
                                               false, false, false, false, false,
                                               0.1f, false, 10.0f, false, false,
                                               false, false, false, 100, 0.5f,
-                                              false, false, false, false
+                                              false, false, false, false, false, 1.0f
                                             }
             },
     };
@@ -821,7 +823,9 @@ void Settings::LoadConfig( std::string path ) {
                 weaponSetting[XORSTR( "AutoCockRevolver" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "velocityCheck" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "backtrack" )].asBool(),
-                weaponSetting[XORSTR( "legitMode" )].asBool()
+                weaponSetting[XORSTR( "legitMode" )].asBool(),
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smooth" )].asBool(),
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smoothvalue" )].asFloat()
 
         };
 
