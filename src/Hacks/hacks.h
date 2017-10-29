@@ -23,6 +23,7 @@
 #include "fakewalk.h"
 #include "fovchanger.h"
 #include "grenadehelper.h"
+#include "grenadeprediction.h"
 #include "hitmarkers.h"
 #include "jumpthrow.h"
 #include "lbyindicator.h"

@@ -1227,6 +1227,11 @@ namespace Settings {
         extern pstring actMapName;
     }
 
+    namespace GrenadePrediction {
+        extern bool enabled;
+        extern ColorVar color;
+    }
+
     namespace TracerEffects {
         extern bool enabled;
         extern bool serverSide;
