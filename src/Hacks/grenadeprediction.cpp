@@ -1,7 +1,7 @@
 #include "grenadeprediction.h"
 
 bool Settings::GrenadePrediction::enabled = false;
-ColorVar Settings::GrenadePrediction::color = ImColor( 139, 0, 139, 255 );
+ColorVar Settings::GrenadePrediction::color = ImColor( 26, 104, 173, 255 );
 
 std::vector<Vector> grenadePath;
 int grenadeType = 0;
