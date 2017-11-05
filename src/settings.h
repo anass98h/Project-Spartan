@@ -248,7 +248,7 @@ enum class Sound : int {
     THUNDER,
     BEEP,
     BASS,
-
+    SK00TER,
 
 };
 struct AimbotWeapon_t {

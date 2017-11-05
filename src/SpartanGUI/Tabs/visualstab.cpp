@@ -11,7 +11,7 @@ void Visuals::RenderTab() {
                                  "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" ,"Animated", "Blink", "Glow", "Guerilla"  };
     const char* ArmsTypes[] = { "Default", "Glass", "Crystal", "BlueCrystal", "Gold", "Velvet", "Tree", "SpeechInfo",
                                 "FishNet", "Letters", "Gloss", "Wireframe", "None" };
-    const char* Sounds[] = { "None", "kickmetaldoor2", "default_doorstop", "metal", "dont_leave!", "thunder", "beep", "bass"};
+    const char* Sounds[] = { "None", "kickmetaldoor2", "default_doorstop", "metal", "dont_leave!", "thunder", "beep", "bass", "Sk00ter"};
     const char* SkyBoxes[] = {
             "cs_baggage_skybox_", // 0
             "cs_tibet",
