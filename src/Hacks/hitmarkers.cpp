@@ -147,6 +147,8 @@ void Hitmarkers::FireGameEvent( IGameEvent* event ) {
             case Sound::BASS:
                 engine->ClientCmd_Unrestricted("play common\\bass");
                 break;
+            case Sound::SK00TER:
+                engine->ClientCmd_Unrestricted("play buttons\\arena_switch_press_02");
         }
 
     }
