@@ -22,6 +22,56 @@ ImVec2 center = { 100, 100 };
 
 ColorVar Settings::UI::Watermark::color = ImColor( 26, 104, 173, 255 );
 bool Settings::UI::Watermark::displayIngame = true;
+/* Window Position/Size Defaults */
+int Settings::UI::Windows::Colors::sizeX = 540;
+int Settings::UI::Windows::Colors::sizeY = 325;
+int Settings::UI::Windows::Colors::posX = 540;
+int Settings::UI::Windows::Colors::posY = 325;
+
+int Settings::UI::Windows::Config::sizeX = 185;
+int Settings::UI::Windows::Config::sizeY = 250;
+int Settings::UI::Windows::Config::posX = 185;
+int Settings::UI::Windows::Config::posY = 250;
+
+int Settings::UI::Windows::Main::sizeX = 960;
+int Settings::UI::Windows::Main::sizeY = 645;
+int Settings::UI::Windows::Main::posX = 20;
+int Settings::UI::Windows::Main::posY = 20;
+
+int Settings::UI::Windows::Playerlist::sizeX = 700;
+int Settings::UI::Windows::Playerlist::sizeY = 500;
+int Settings::UI::Windows::Playerlist::posX = 700;
+int Settings::UI::Windows::Playerlist::posY = 500;
+
+int Settings::UI::Windows::Skinmodel::sizeX = 1050;
+int Settings::UI::Windows::Skinmodel::sizeY = 645;
+int Settings::UI::Windows::Skinmodel::posX = 1050;
+int Settings::UI::Windows::Skinmodel::posY = 645;
+
+int Settings::UI::Windows::Spectators::sizeX = 50;
+int Settings::UI::Windows::Spectators::sizeY = 100;
+int Settings::UI::Windows::Spectators::posX = 50;
+int Settings::UI::Windows::Spectators::posY = 100;
+
+int Settings::UI::Windows::ResolverInf::sizeX = 280;
+int Settings::UI::Windows::ResolverInf::sizeY = 110;
+int Settings::UI::Windows::ResolverInf::posX = 220;
+int Settings::UI::Windows::ResolverInf::posY = 220;
+
+bool Settings::UI::Windows::Main::open = false;
+bool Settings::UI::Windows::Colors::open = false;
+bool Settings::UI::Windows::Config::open = false;
+bool Settings::UI::Windows::Playerlist::open = false;
+bool Settings::UI::Windows::Skinmodel::open = false;
+bool Settings::UI::Windows::ResolverInf::open = false;
+
+bool Settings::UI::Windows::Main::reload = false;
+bool Settings::UI::Windows::Colors::reload = false;
+bool Settings::UI::Windows::Config::reload = false;
+bool Settings::UI::Windows::Playerlist::reload = false;
+bool Settings::UI::Windows::Skinmodel::reload = false;
+bool Settings::UI::Windows::Spectators::reload = false;
+bool Settings::UI::Windows::ResolverInf::reload = false;
 
 /* Unused function
 static void ccc() {
@@ -152,7 +202,8 @@ void SetupMainMenuBar() {
         if ( ImGui::Checkbox( "Middle click ", &Settings::UI::middle ) )
             Settings::UI::right = false;
 
-           const char* items[] = { ICON_BEANER, ICON_CONFIGS, ICON_COLORS, ICON_SKINCHANGER, ICON_PLAYERLIST, ICON_SPECTATORS, ICON_WALKBOT };
+        const char* items[] = { ICON_BEANER, ICON_CONFIGS, ICON_COLORS, ICON_SKINCHANGER, ICON_PLAYERLIST,
+                                ICON_SPECTATORS, ICON_WALKBOT };
 
         int items_count = sizeof( items ) / sizeof( *items );
 
@@ -170,7 +221,8 @@ void SetupMainMenuBar() {
             center = ImGui::GetIO().MouseClickedPos[1];
         }
 
-        int n = ImGui::PiePopupSelectMenu( center, "##piepopup", items, items_count ,Settings::UI::mainColor.Color() , Settings::UI::accentColor.Color() , Settings::UI::fontColor.Color() );
+        int n = ImGui::PiePopupSelectMenu( center, "##piepopup", items, items_count, Settings::UI::mainColor.Color(),
+                                           Settings::UI::accentColor.Color(), Settings::UI::fontColor.Color() );
         switch ( n ) { // a switch for my love Myrrib
 
 
@@ -272,7 +324,6 @@ void UI::SetupWindows() {
 
 
         Main::RenderWindow();
-
 
 
         if ( ModSupport::current_mod != ModType::CSCO ) {

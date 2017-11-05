@@ -80,7 +80,7 @@ enum class AntiAimType_Y : int {
     richieap,
     MYRRIB,
     LBYONGROUND,*/
-    NOAA,
+            NOAA,
     FORWARDS,
     BACKWARDS,
     SPIN,
@@ -274,14 +274,20 @@ struct AimbotWeapon_t {
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone,
                     bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey,
-                    bool aimkeyOnly, bool smoothEnabled, float smoothValue, SmoothType smoothType, bool smoothSaltEnabled,
-                    float smoothSaltMultiplier, bool errorMarginEnabled, float errorMarginValue, bool autoAimEnabled, float autoAimValue,
+                    bool aimkeyOnly, bool smoothEnabled, float smoothValue, SmoothType smoothType,
+                    bool smoothSaltEnabled,
+                    float smoothSaltMultiplier, bool errorMarginEnabled, float errorMarginValue, bool autoAimEnabled,
+                    float autoAimValue,
                     bool aimStepEnabled, float aimStepMin, float aimStepMax, bool rcsEnabled, bool rcsAlwaysOn,
-                    float rcsAmountX, float rcsAmountY, bool autoPistolEnabled, bool autoShootEnabled, bool autoScopeEnabled,
-                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck, bool spreadLimitEnabled,
-                    float spreadLimit, bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
+                    float rcsAmountX, float rcsAmountY, bool autoPistolEnabled, bool autoShootEnabled,
+                    bool autoScopeEnabled,
+                    bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck,
+                    bool spreadLimitEnabled,
+                    float spreadLimit, bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance,
+                    bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode, bool smooth, float smoothvalue ) {
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode, bool smooth,
+                    float smoothvalue ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -454,6 +460,64 @@ namespace Settings {
         extern bool middle;
         extern bool right;
 
+        namespace Windows {
+            namespace Colors {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace Config {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace Main {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace Playerlist {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace Skinmodel {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace Spectators {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+            namespace ResolverInf {
+                extern int posX;
+                extern int posY;
+                extern int sizeX;
+                extern int sizeY;
+                extern bool open;
+                extern bool reload; // True on config load, used to change Window Position.
+            }
+        }
+
         namespace Fonts {
 
             extern cFont font;
@@ -514,7 +578,7 @@ namespace Settings {
             extern bool engageLockTR;
             extern int engageLockTTR;
         }
-        
+
         namespace AutoWall {
             extern bool enabled;
             extern float value;

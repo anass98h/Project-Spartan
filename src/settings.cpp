@@ -201,14 +201,14 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     //settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )][XORSTR( "enabled" )] = Settings::Aimbot::legitMode::enabled;
     //settings[XORSTR("Aimbot")][XORSTR("AutoShoot")][XORSTR("velocityCheck")] = Settings::Aimbot::AutoShoot::velocityCheck;
     settings[XORSTR( "LBYIndicator" )][XORSTR( "enabled" )] = Settings::lbyindicator::enabled;
-    settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] =  Settings::Resolver::enabled;
+    settings[XORSTR( "Resolver" )][XORSTR( "enabled" )] = Settings::Resolver::enabled;
     settings[XORSTR( "Resolver" )][XORSTR( "ticks" )] = Settings::Resolver::ticks;
     settings[XORSTR( "Resolver" )][XORSTR( "modulo" )] = Settings::Resolver::modulo;
-    settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] =  Settings::Resolver::pitch;
-    settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] =  Settings::Resolver::LagComp;
+    settings[XORSTR( "Resolver" )][XORSTR( "pitch" )] = Settings::Resolver::pitch;
+    settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )] = Settings::Resolver::LagComp;
     settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )] = Settings::Resolver::angleFlipEnabled;
     settings[XORSTR( "Resolver" )][XORSTR( "angleFlip" )] = Util::GetButtonName( Settings::Resolver::angleFlip );
-    settings[XORSTR( "Resolver" )][XORSTR( "baimAfter" )] =  Settings::Resolver::baimAfter;
+    settings[XORSTR( "Resolver" )][XORSTR( "baimAfter" )] = Settings::Resolver::baimAfter;
     settings[XORSTR( "Resolver" )][XORSTR( "lbyOnly" )] = Settings::Resolver::lbyOnly;
     settings[XORSTR( "Triggerbot" )][XORSTR( "enabled" )] = Settings::Triggerbot::enabled;
     settings[XORSTR( "Triggerbot" )][XORSTR( "key" )] = Util::GetButtonName( Settings::Triggerbot::key );
@@ -492,7 +492,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Sounds" )][XORSTR(
             "enabled" )] = Settings::ESP::Hitmarker::Sounds::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Sounds" )][XORSTR(
-            "sound" )] = (int) Settings::ESP::Hitmarker::Sounds::sound;
+            "sound" )] = ( int ) Settings::ESP::Hitmarker::Sounds::sound;
     settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "enabled" )] = Settings::ESP::HeadDot::enabled;
     settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "size" )] = Settings::ESP::HeadDot::size;
     settings[XORSTR( "ESP" )][XORSTR( "Spread" )][XORSTR( "enabled" )] = Settings::ESP::Spread::enabled;
@@ -630,7 +630,82 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "SmartAim" )][XORSTR( "enabled" )] = Settings::SmartAim::enabled;
 
     settings[XORSTR( "ShowSpectators" )][XORSTR( "enabled" )] = Settings::ShowSpectators::enabled;
-    
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Colors::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Colors::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Colors::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Colors::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR(
+            "open" )] = Settings::UI::Windows::Colors::open;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Config::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Config::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Config::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Config::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR(
+            "open" )] = Settings::UI::Windows::Config::open;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Main::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Main::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Main::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Main::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR(
+            "open" )] = Settings::UI::Windows::Main::open;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Playerlist::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Playerlist::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Playerlist::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Playerlist::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR(
+            "open" )] = Settings::UI::Windows::Playerlist::open;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Skinmodel::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Skinmodel::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Skinmodel::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Skinmodel::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR(
+            "open" )] = Settings::UI::Windows::Skinmodel::open;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::Spectators::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::Spectators::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::Spectators::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::Spectators::sizeY;
+
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR(
+            "posX" )] = Settings::UI::Windows::ResolverInf::posX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR(
+            "posY" )] = Settings::UI::Windows::ResolverInf::posY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR(
+            "sizeX" )] = Settings::UI::Windows::ResolverInf::sizeX;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR(
+            "sizeY" )] = Settings::UI::Windows::ResolverInf::sizeY;
+    settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR(
+            "open" )] = Settings::UI::Windows::ResolverInf::open;
+
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "preset" )] = ( int ) Settings::ClanTagChanger::preset;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "value" )] = Settings::ClanTagChanger::value;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "enabled" )] = Settings::ClanTagChanger::enabled;
@@ -682,7 +757,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "NameStealer" )][XORSTR( "team" )] = Settings::NameStealer::team;
 
     settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )] = Settings::ThirdPerson::enabled;
-    settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )] = (int) Settings::ThirdPerson::mode;
+    settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )] = ( int ) Settings::ThirdPerson::mode;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )] = Settings::ThirdPerson::distance;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )] = Settings::ThirdPerson::key;
 
@@ -753,15 +828,15 @@ void Settings::LoadConfig( std::string path ) {
 
     Settings::Aimbot::weapons = {
             { ItemDefinitionIndex::INVALID, { false, false, false, false, false,
-                                              false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE,
-                                              false, false, 1.0f, SmoothType::SLOW_END, false,
-                                              0.0f, false, 0.0f, true, 180.0f,
-                                              false, 25.0f, 35.0f, false, false,
-                                              2.0f, 2.0f, false, false, false,
-                                              false, false, false, false, false,
-                                              0.1f, false, 10.0f, false, false,
-                                              false, false, false, 100, 0.5f,
-                                              false, false, false, false, false, 1.0f
+                                                    false, false, 700, Bone::BONE_HEAD, ButtonCode_t::MOUSE_MIDDLE,
+                                                    false, false, 1.0f, SmoothType::SLOW_END, false,
+                                                    0.0f, false, 0.0f, true, 180.0f,
+                                                    false, 25.0f, 35.0f, false, false,
+                                                    2.0f, 2.0f, false, false, false,
+                                                    false, false, false, false, false,
+                                                    0.1f, false, 10.0f, false, false,
+                                                    false, false, false, 100, 0.5f,
+                                                    false, false, false, false, false, 1.0f
                                             }
             },
     };
@@ -846,19 +921,19 @@ void Settings::LoadConfig( std::string path ) {
 
     GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "AutoCrouch" )][XORSTR( "enabled" )],
             &Settings::Aimbot::AutoCrouch::enabled );
-   // GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )][XORSTR( "enabled" )],
-     //       &Settings::Aimbot::legitMode::enabled );
+    // GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "legitMode" )][XORSTR( "enabled" )],
+    //       &Settings::Aimbot::legitMode::enabled );
     GetVal( settings[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )], &Settings::Aimbot::velocityCheck::enabled );
 
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )],  &Settings::Resolver::enabled );
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "enabled" )], &Settings::Resolver::enabled );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "ticks" )], &Settings::Resolver::ticks );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "modulo" )], &Settings::Resolver::modulo );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "pitch" )],  &Settings::Resolver::pitch );
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "pitch" )], &Settings::Resolver::pitch );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "LagComp" )], &Settings::Resolver::LagComp );
     GetVal( settings[XORSTR( "Resolver" )][XORSTR( "angleFlipEnabled" )], &Settings::Resolver::angleFlipEnabled );
     GetButtonCode( settings[XORSTR( "Resolver" )][XORSTR( "angleFlip" )], &Settings::Resolver::angleFlip );
-    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "baimAfter" )],  &Settings::Resolver::baimAfter );
-    GetVal( settings[XORSTR( "Resolver")][ "lbyOnly" ], &Settings::Resolver::lbyOnly);
+    GetVal( settings[XORSTR( "Resolver" )][XORSTR( "baimAfter" )], &Settings::Resolver::baimAfter );
+    GetVal( settings[XORSTR( "Resolver" )]["lbyOnly"], &Settings::Resolver::lbyOnly );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "enabled" )], &Settings::AngleIndicator::enabled );
     GetVal( settings[XORSTR( "AngleIndicator" )][XORSTR( "Veloc" )], &Settings::AngleIndicator::Veloc );
     GetVal( settings[XORSTR( "EventLogger" )][XORSTR( "enabled" )], &Settings::EventLogger::enabled );
@@ -1161,7 +1236,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Sounds" )][XORSTR( "enabled" )],
             &Settings::ESP::Hitmarker::Sounds::enabled );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Hitmarker" )][XORSTR( "Sounds" )][XORSTR( "sound" )],
-            (int*)  &Settings::ESP::Hitmarker::Sounds::sound );
+            ( int* ) &Settings::ESP::Hitmarker::Sounds::sound );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "enabled" )], &Settings::ESP::HeadDot::enabled );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "HeadDot" )][XORSTR( "size" )], &Settings::ESP::HeadDot::size );
     GetVal( settings[XORSTR( "ESP" )][XORSTR( "Spread" )][XORSTR( "enabled" )], &Settings::ESP::Spread::enabled );
@@ -1356,6 +1431,90 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "SmartAim" )][XORSTR( "enabled" )], &Settings::SmartAim::enabled );
 
     GetVal( settings[XORSTR( "ShowSpectators" )][XORSTR( "enabled" )], &Settings::ShowSpectators::enabled );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Colors::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Colors::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Colors::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Colors::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Colors" )][XORSTR( "open" )],
+            &Settings::UI::Windows::Colors::open );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Config::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Config::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Config::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Config::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Config" )][XORSTR( "open" )],
+            &Settings::UI::Windows::Config::open );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Main::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Main::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Main::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Main::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Main" )][XORSTR( "open" )],
+            &Settings::UI::Windows::Main::open );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Playerlist::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Playerlist::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Playerlist::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Playerlist::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Playerlist" )][XORSTR( "open" )],
+            &Settings::UI::Windows::Playerlist::open );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Skinmodel::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Skinmodel::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Skinmodel::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Skinmodel::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Skinmodel" )][XORSTR( "open" )],
+            &Settings::UI::Windows::Skinmodel::open );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::Spectators::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::Spectators::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::Spectators::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "Spectators" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::Spectators::sizeY );
+
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR( "posX" )],
+            &Settings::UI::Windows::ResolverInf::posX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR( "posY" )],
+            &Settings::UI::Windows::ResolverInf::posY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR( "sizeX" )],
+            &Settings::UI::Windows::ResolverInf::sizeX );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR( "sizeY" )],
+            &Settings::UI::Windows::ResolverInf::sizeY );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Windows" )][XORSTR( "ResolverInf" )][XORSTR( "open" )],
+            &Settings::UI::Windows::ResolverInf::open );
+
+    Settings::UI::Windows::Main::reload = true;
+    Settings::UI::Windows::Colors::reload = true;
+    Settings::UI::Windows::Config::reload = true;
+    Settings::UI::Windows::Playerlist::reload = true;
+    Settings::UI::Windows::Skinmodel::reload = true;
+    Settings::UI::Windows::Spectators::reload = true;
+    Settings::UI::Windows::ResolverInf::reload = true;
+
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "preset" )], ( int* ) &Settings::ClanTagChanger::preset );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "value" )], ( char* ) &Settings::ClanTagChanger::value );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "enabled" )], &Settings::ClanTagChanger::enabled );
@@ -1376,7 +1535,7 @@ void Settings::LoadConfig( std::string path ) {
 
     GetVal( settings[XORSTR( "AutoAccept" )][XORSTR( "enabled" )], &Settings::AutoAccept::enabled );
 
-    GetVal( settings[XORSTR( "NoFog" )][XORSTR( "enabled" )], &Settings::NoFog::enabled);
+    GetVal( settings[XORSTR( "NoFog" )][XORSTR( "enabled" )], &Settings::NoFog::enabled );
 
     GetVal( settings[XORSTR( "NoSky" )][XORSTR( "enabled" )], &Settings::NoSky::enabled );
     GetVal( settings[XORSTR( "NoSky" )][XORSTR( "color" )], &Settings::NoSky::color );
@@ -1408,7 +1567,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
-    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], (int*) &Settings::ThirdPerson::mode );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], ( int* ) &Settings::ThirdPerson::mode );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 
