@@ -119,6 +119,7 @@ void Resolver::Hug( C_BasePlayer* player ) {
             lbyDeltaMove[player->GetIndex()] = fabsf ( lby - player->GetEyeAngles()->y );
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;
+			angle.y = lby;
         } else if ( curTime == lastUpdate[player->GetIndex()] + lbyUpdateTime ) {
             Resolver::lbyUpdated = true;
             lastUpdate[player->GetIndex()] = curTime;

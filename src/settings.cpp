@@ -630,7 +630,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "SmartAim" )][XORSTR( "enabled" )] = Settings::SmartAim::enabled;
 
     settings[XORSTR( "ShowSpectators" )][XORSTR( "enabled" )] = Settings::ShowSpectators::enabled;
-
+    
+    settings[XORSTR( "ClanTagChanger" )][XORSTR( "preset" )] = ( int ) Settings::ClanTagChanger::preset;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "value" )] = Settings::ClanTagChanger::value;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "enabled" )] = Settings::ClanTagChanger::enabled;
     settings[XORSTR( "ClanTagChanger" )][XORSTR( "animation" )] = Settings::ClanTagChanger::animation;
@@ -1355,7 +1356,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "SmartAim" )][XORSTR( "enabled" )], &Settings::SmartAim::enabled );
 
     GetVal( settings[XORSTR( "ShowSpectators" )][XORSTR( "enabled" )], &Settings::ShowSpectators::enabled );
-
+    GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "preset" )], ( int* ) &Settings::ClanTagChanger::preset );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "value" )], ( char* ) &Settings::ClanTagChanger::value );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "enabled" )], &Settings::ClanTagChanger::enabled );
     GetVal( settings[XORSTR( "ClanTagChanger" )][XORSTR( "animation" )], &Settings::ClanTagChanger::animation );
