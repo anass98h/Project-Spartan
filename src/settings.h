@@ -237,6 +237,7 @@ enum class FakeLagType : int {
     STEP,
     REACTIVE,
     NUCLEAR,
+    LUNICO,
 };
 enum class Sound : int {
 
@@ -251,6 +252,16 @@ enum class Sound : int {
     SK00TER,
 
 };
+
+enum class ThirdPersonMode : int {
+    FAKE,
+    REAL,
+    LBY,
+    GHOST,
+
+    NUMBER_OF_TYPES // Leave at bottom
+};
+
 struct AimbotWeapon_t {
     bool enabled, silent, pSilent, backtrack, friendly, closestBone, desiredBones[31], engageLock, engageLockTR;
     int engageLockTTR, hitChanceRays;
@@ -258,8 +269,8 @@ struct AimbotWeapon_t {
     SmoothType smoothType;
     ButtonCode_t aimkey;
     bool aimkeyOnly, smoothEnabled, smoothSaltEnabled, errorMarginEnabled, autoAimEnabled, aimStepEnabled, rcsEnabled, rcsAlwaysOn, spreadLimitEnabled;
-    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue;
-    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode;
+    float smoothAmount, smoothSaltMultiplier, errorMarginValue, autoAimFov, aimStepMin, aimStepMax, rcsAmountX, rcsAmountY, autoWallValue, spreadLimit, hitChanceValue, smoothvalue;
+    bool autoPistolEnabled, autoShootEnabled, autoScopeEnabled, noShootEnabled, ignoreJumpEnabled, smokeCheck, flashCheck, autoWallEnabled, autoAimRealDistance, autoSlow, predEnabled, moveMouse, hitChanceEnabled, autoCockRevolver, velocityCheck, legitMode, smooth;
 
     AimbotWeapon_t( bool enabled, bool silent, bool pSilent, bool friendly, bool closestBone,
                     bool engageLock, bool engageLockTR, int engageLockTTR, Bone bone, ButtonCode_t aimkey,
@@ -270,7 +281,7 @@ struct AimbotWeapon_t {
                     bool noShootEnabled, bool ignoreJumpEnabled, bool smokeCheck, bool flashCheck, bool spreadLimitEnabled,
                     float spreadLimit, bool autoWallEnabled, float autoWallValue, bool autoAimRealDistance, bool autoSlow,
                     bool predEnabled, bool moveMouse, bool hitChanceEnabled, int hitChanceRays, float hitChanceValue,
-                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode ) {
+                    bool autoCockRevolver, bool velocityCheck, bool backtrack, bool legitMode, bool smooth, float smoothvalue ) {
         this->enabled = enabled;
         this->silent = silent;
         this->pSilent = pSilent;
@@ -319,6 +330,8 @@ struct AimbotWeapon_t {
         this->autoCockRevolver = autoCockRevolver;
         this->velocityCheck = velocityCheck;
         this->legitMode = legitMode;
+        this->smooth = smooth;
+        this->smoothvalue = smoothvalue;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -384,7 +397,9 @@ struct AimbotWeapon_t {
                this->hitChanceValue == another.hitChanceValue &&
                this->autoCockRevolver == another.autoCockRevolver &&
                this->velocityCheck == another.velocityCheck &&
-               this->legitMode == another.legitMode;
+               this->legitMode == another.legitMode &&
+               this->smooth == another.smooth &&
+               this->smoothvalue == another.smoothvalue;
     }
 };
 
@@ -438,8 +453,8 @@ namespace Settings {
         extern bool Pie;
         extern bool middle;
         extern bool right;
-        namespace Fonts {
 
+        namespace Fonts {
 
             extern cFont font;
             extern float fontsize;
@@ -450,7 +465,14 @@ namespace Settings {
                 extern int flags;
                 extern bool Autowall;
             }
+
         }
+
+        namespace Watermark {
+            extern ColorVar color;
+            extern bool displayIngame;
+        }
+
     }
 
     namespace Aimbot {
@@ -509,6 +531,8 @@ namespace Settings {
             extern bool always_on;
             extern float valueX;
             extern float valueY;
+            extern bool smooth;
+            extern float smoothvalue;
         }
 
         namespace AutoPistol {
@@ -1186,7 +1210,7 @@ namespace Settings {
 
     namespace ThirdPerson {
         extern bool enabled;
-        extern bool realAngles;
+        extern ThirdPersonMode mode;
         extern float distance;
         extern ButtonCode_t key;
     }
@@ -1215,6 +1239,11 @@ namespace Settings {
         extern ColorVar infoFlash;
         extern ColorVar infoMolotov;
         extern pstring actMapName;
+    }
+
+    namespace GrenadePrediction {
+        extern bool enabled;
+        extern ColorVar color;
     }
 
     namespace TracerEffects {

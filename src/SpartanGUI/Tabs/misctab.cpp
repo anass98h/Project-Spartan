@@ -9,9 +9,10 @@ void Misc::RenderTab() {
     const char* teams[] = { "Allies", "Enemies", "Both" };
     const char* presetTypes[] = { "Project-Spartan", "cantvac.me", "tuxcheats.com", "realnigga.club",
                                   "void MarcIsAWeeb", "Custom" };
-    const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear" };
+    const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear", "Lunico" };
     const char* grenadeTypes[] = { "Flashbang", "Smoke Grenade", "Molotov", "HE Grenade" };
     const char* throwTypes[] = { "Standing", "Running", "Jumping", "Walk" };
+    const char* tpModes[] = { "Fake", "Real", "Lower Body Yaw", "Ghost" };
 
     ImGui::Columns( 2, NULL, true );
     {
@@ -190,7 +191,38 @@ void Misc::RenderTab() {
                 }
                 ImGui::Columns( 1 );
                 ImGui::Separator();
-                ImGui::Text( XORSTR( "Third Person" ) );
+
+                ImGui::Checkbox(XORSTR("Third Person"), &Settings::ThirdPerson::enabled);
+                {
+                    ImGui::Separator();
+
+                    ImGui::Columns(2, NULL, true);
+                    {
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Mode"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Camera Offset"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text(XORSTR("Key"));
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    }
+                    ImGui::NextColumn();
+                    {
+                        ImGui::PushItemWidth(-3);
+                        ImGui::Combo(XORSTR("##TPMODE"), (int*) &Settings::ThirdPerson::mode,
+                                     tpModes, (int) ThirdPersonMode::NUMBER_OF_TYPES);
+                        ImGui::PopItemWidth();
+                        ImGui::PushItemWidth(-1);
+                        ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.0f, 500.0f);
+                        ImGui::PopItemWidth();
+                        UI::KeyBindButton(&Settings::ThirdPerson::key);
+                    }
+                    ImGui::Columns(1);
+                }
+
+
+
+                /*ImGui::Text( XORSTR( "Third Person" ) );
                 ImGui::Separator();
                 ImGui::Columns( 2, NULL, true );
                 {
@@ -206,7 +238,7 @@ void Misc::RenderTab() {
                     ImGui::PopItemWidth();
                     UI::KeyBindButton( &Settings::ThirdPerson::key );
                 }
-                ImGui::Columns( 1 );
+                ImGui::Columns( 1 );*/
                 ImGui::Separator();
                 ImGui::Text( XORSTR( "Grenade Helper" ) );
                 ImGui::Separator();
@@ -397,7 +429,7 @@ void Misc::RenderTab() {
                 }
 
                 ImGui::SameLine();
-                if ( ImGui::Button( XORSTR( "Inf Name Spam" ) ) )
+                if ( ImGui::Button( XORSTR( "Infinite Name Spam" ) ) )
                     NameChanger::InitColorChange( NameChanger::NC_Type::NC_RAINBOW );
 
                 ImGui::SameLine();
@@ -434,6 +466,7 @@ void Misc::RenderTab() {
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     ImGui::Text( XORSTR( "Type" ) );
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                    if(Settings::FakeLag::type != FakeLagType::LUNICO)
                     ImGui::Text( XORSTR( "Choke Amount" ) );
                     ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                 }
@@ -444,8 +477,10 @@ void Misc::RenderTab() {
                                   lagTypes, IM_ARRAYSIZE( lagTypes ) );
                     ImGui::PopItemWidth();
                     ImGui::PushItemWidth( -1 );
-                    ImGui::SliderInt( XORSTR( "##FAKELAGAMOUNT" ), &Settings::FakeLag::value, 0, 16,
-                                      XORSTR( "Amount: %0.f" ) );
+                    if(Settings::FakeLag::type != FakeLagType::LUNICO) {
+                        ImGui::SliderInt(XORSTR("##FAKELAGAMOUNT"), &Settings::FakeLag::value, 0, 16,
+                                         XORSTR("Amount: %0.f"));
+                    }
                     ImGui::PopItemWidth();
                 }
                 ImGui::EndColumns();
@@ -463,6 +498,7 @@ void Misc::RenderTab() {
                     ImGui::Checkbox( XORSTR( "Auto Defuse" ), &Settings::AutoDefuse::enabled );
                     ImGui::Checkbox( XORSTR( "Sniper Crosshair" ), &Settings::SniperCrosshair::enabled );
                     ImGui::Checkbox( XORSTR( "Disable post-processing" ), &Settings::DisablePostProcessing::enabled );
+                    ImGui::Checkbox( XORSTR( "In-Game Watermark" ), &Settings::UI::Watermark::displayIngame );
                 }
                 ImGui::NextColumn();
                 {

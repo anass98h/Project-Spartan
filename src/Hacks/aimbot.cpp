@@ -62,6 +62,8 @@ bool Settings::Aimbot::AutoCockRevolver::enabled = false;
 bool Settings::Aimbot::velocityCheck::enabled = false;
 bool Settings::Aimbot::backtrack = false;
 bool Settings::Aimbot::legitMode = false;
+bool Settings::Aimbot::RCS::smooth = false;
+float Settings::Aimbot::RCS::smoothvalue = 1.0f;
 
 
 bool Aimbot::aimStepInProgress = false;
@@ -95,7 +97,7 @@ std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefini
                                           false, false, false, false, false,
                                           0.1f, false, 10.0f, false, false,
                                           false, false, false, 100, 0.5f,
-                                          false, false, false, false
+                                          false, false, false, false, false, 1.0f
                                          }
         },
 };
@@ -593,9 +595,14 @@ static void RCS( QAngle& angle, C_BasePlayer* player, CUserCmd* cmd ) {
         angle.y -= CurrentPunch.y * Settings::Aimbot::RCS::valueY;
     } else if ( localplayer->GetShotsFired() > 1 ) {
         QAngle NewPunch = { CurrentPunch.x - RCSLastPunch.x, CurrentPunch.y - RCSLastPunch.y, 0 };
-
-        angle.x -= NewPunch.x * Settings::Aimbot::RCS::valueX;
-        angle.y -= NewPunch.y * Settings::Aimbot::RCS::valueY;
+        float smooth = Settings::Aimbot::RCS::smoothvalue;
+        if( Settings::Aimbot::RCS::smooth ) {
+            angle.x -= NewPunch.x / smooth * Settings::Aimbot::RCS::valueX;
+            angle.y -= NewPunch.y / smooth * Settings::Aimbot::RCS::valueY;
+        } else{
+            angle.x -= NewPunch.x * Settings::Aimbot::RCS::valueX;
+            angle.y -= NewPunch.y * Settings::Aimbot::RCS::valueY;
+        }
     }
 
     RCSLastPunch = CurrentPunch;
@@ -1193,6 +1200,8 @@ void Aimbot::UpdateValues() {
     Settings::Aimbot::AutoCockRevolver::enabled = currentWeaponSetting.autoCockRevolver;
     Settings::Aimbot::velocityCheck::enabled = currentWeaponSetting.velocityCheck;
     Settings::Aimbot::legitMode = currentWeaponSetting.legitMode;
+    Settings::Aimbot::RCS::smooth = currentWeaponSetting.smooth;
+    Settings::Aimbot::RCS::smoothvalue = currentWeaponSetting.smoothvalue;
     for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
         Settings::Aimbot::AutoAim::desiredBones[bone] = currentWeaponSetting.desiredBones[bone];
 

@@ -19,6 +19,10 @@ std::string contents;
 bool Settings::UI::middle = true;
 bool Settings::UI::right = false;
 ImVec2 center = { 100, 100 };
+
+ColorVar Settings::UI::Watermark::color = ImColor( 26, 104, 173, 255 );
+bool Settings::UI::Watermark::displayIngame = true;
+
 /* Unused function
 static void ccc() {
     ImGui::CloseCurrentPopup();
@@ -211,8 +215,13 @@ void SetupMainMenuBar() {
 #define IM_ARRAYSIZE( _ARR )  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 void UI::SwapWindow() {
-    if ( UI::isVisible || ( engine->IsInGame() && ( Settings::EventLogger::enabled /*&& EventLogger::events.size() > 0*/ ) ) )
+    if ( UI::isVisible ) {
         return;
+    }
+
+    if ( engine->IsInGame() && !Settings::UI::Watermark::displayIngame ) {
+        return;
+    }
 
     // We're only going to calculate the current time when we're not drawing a menu bar over the watermark.
     // I have enabled the drawing of the watermark even when In-Game
@@ -230,7 +239,7 @@ void UI::SwapWindow() {
     std::string watermark( XORSTR( "Project Spartan | " ) );
     watermark.append( time );
 
-    Draw::ImText( ImVec2( 4.f, 4.f ), ImColor( 26, 104, 173 ), watermark.c_str(), NULL, 0.0f, NULL,
+    Draw::ImText( ImVec2( 4.0f, 4.0f ), Settings::UI::Watermark::color.Color(), watermark.c_str(), NULL, 0.0f, NULL,
                   ImFontFlags_Shadow );
 }
 

@@ -400,6 +400,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Autowall Debug" ), &Settings::Debug::AutoWall::drawDamage );
                 ImGui::Checkbox( XORSTR( "BoneMap Debug" ), &Settings::Debug::BoneMap::drawIDs );
                 ImGui::Checkbox( XORSTR( "Backtrack Indicator" ), &Settings::ESP::Backtracking::enabled );
+                ImGui::Checkbox( XORSTR( "Grenade Prediction" ), &Settings::GrenadePrediction::enabled );
             }
             ImGui::Columns( 1 );
             ImGui::Separator();

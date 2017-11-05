@@ -129,7 +129,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "UI" )][XORSTR( "Fonts" )][XORSTR( "fontsize" )] = Settings::UI::Fonts::fontsize;
     settings[XORSTR( "UI" )][XORSTR( "middle" )] = Settings::UI::middle;
     settings[XORSTR( "UI" )][XORSTR( "right" )] = Settings::UI::right;
-
+    LoadColor( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "color" )], Settings::UI::Watermark::color );
+    settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "displayIngame" )] = Settings::UI::Watermark::displayIngame;
 
     for ( auto i : Settings::Aimbot::weapons ) {
         // TODO this is kind of a hack and i'm too tired to find a better way to do this
@@ -179,6 +180,8 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
         weaponSetting[XORSTR( "Prediction" )][XORSTR( "enabled" )] = i.second.predEnabled;
         weaponSetting[XORSTR( "Aimbot" )][XORSTR( "velocityCheck" )] = Settings::Aimbot::velocityCheck::enabled;
         weaponSetting[XORSTR( "legitMode" )] = i.second.legitMode;
+        weaponSetting[XORSTR( "RCS" )][XORSTR( "smooth" )] = i.second.smooth;
+        weaponSetting[XORSTR( "RCS" )][XORSTR( "smoothvalue" )] = i.second.smoothvalue;
 
 
         for ( int bone = ( int ) DesiredBones::BONE_PELVIS; bone <= ( int ) DesiredBones::BONE_RIGHT_SOLE; bone++ )
@@ -678,7 +681,7 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     settings[XORSTR( "NameStealer" )][XORSTR( "team" )] = Settings::NameStealer::team;
 
     settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )] = Settings::ThirdPerson::enabled;
-    settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )] = Settings::ThirdPerson::realAngles;
+    settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )] = (int) Settings::ThirdPerson::mode;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )] = Settings::ThirdPerson::distance;
     settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )] = Settings::ThirdPerson::key;
 
@@ -703,6 +706,10 @@ void Settings::LoadDefaultsOrSave( std::string path ) {
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoSmoke" )], Settings::GrenadeHelper::infoSmoke );
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoMolotov" )], Settings::GrenadeHelper::infoMolotov );
     LoadColor( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoFlash" )], Settings::GrenadeHelper::infoFlash );
+
+    settings[XORSTR( "GrenadePrediction" )][XORSTR( "enabled" )] = Settings::GrenadePrediction::enabled;
+    LoadColor( settings[XORSTR( "GrenadePrediction" )][XORSTR( "color" )], Settings::GrenadePrediction::color );
+
     settings[XORSTR( "AutoKnife" )][XORSTR( "enabled" )] = Settings::AutoKnife::enabled;
     settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "enemies" )] = Settings::AutoKnife::Filters::enemies;
     settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "allies" )] = Settings::AutoKnife::Filters::allies;
@@ -737,6 +744,10 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "UI" )][XORSTR( "middle" )], &Settings::UI::middle );
     GetVal( settings[XORSTR( "UI" )][XORSTR( "right" )], &Settings::UI::right );
 
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "color" )], &Settings::UI::Watermark::color );
+    GetVal( settings[XORSTR( "UI" )][XORSTR( "Watermark" )][XORSTR( "displayIngame" )],
+            &Settings::UI::Watermark::displayIngame );
+
     Fonts::SetupFonts();
 
     Settings::Aimbot::weapons = {
@@ -749,7 +760,7 @@ void Settings::LoadConfig( std::string path ) {
                                               false, false, false, false, false,
                                               0.1f, false, 10.0f, false, false,
                                               false, false, false, 100, 0.5f,
-                                              false, false, false, false
+                                              false, false, false, false, false, 1.0f
                                             }
             },
     };
@@ -821,7 +832,9 @@ void Settings::LoadConfig( std::string path ) {
                 weaponSetting[XORSTR( "AutoCockRevolver" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "velocityCheck" )][XORSTR( "enabled" )].asBool(),
                 weaponSetting[XORSTR( "backtrack" )].asBool(),
-                weaponSetting[XORSTR( "legitMode" )].asBool()
+                weaponSetting[XORSTR( "legitMode" )].asBool(),
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smooth" )].asBool(),
+                weaponSetting[XORSTR( "RCS" )][XORSTR( "smoothvalue" )].asFloat()
 
         };
 
@@ -1394,7 +1407,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "NameStealer" )][XORSTR( "team" )], &Settings::NameStealer::team );
 
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "enabled" )], &Settings::ThirdPerson::enabled );
-    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "realAngles" )], &Settings::ThirdPerson::realAngles );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], (int*) &Settings::ThirdPerson::mode );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
 
@@ -1418,6 +1431,10 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoSmoke" )], &Settings::GrenadeHelper::infoSmoke );
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoFlash" )], &Settings::GrenadeHelper::infoFlash );
     GetVal( settings[XORSTR( "GrenadeHelper" )][XORSTR( "infoMolotov" )], &Settings::GrenadeHelper::infoMolotov );
+
+    GetVal( settings[XORSTR( "GrenadePrediction" )][XORSTR( "enabled" )], &Settings::GrenadePrediction::enabled );
+    GetVal( settings[XORSTR( "GrenadePrediction" )][XORSTR( "color" )], &Settings::GrenadePrediction::color );
+
     GetVal( settings[XORSTR( "AutoKnife" )][XORSTR( "enabled" )], &Settings::AutoKnife::enabled );
     GetVal( settings[XORSTR( "AutoKnife" )][XORSTR( "Filters" )][XORSTR( "enemies" )],
             &Settings::AutoKnife::Filters::enemies );

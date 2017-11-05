@@ -13,6 +13,9 @@ ColorVar Settings::ESP::Chams::Arms::color = ImColor( 255, 255, 255, 255 );
 ColorVar Settings::ESP::Chams::Weapon::color = ImColor( 255, 255, 255, 255 );
 ChamsType Settings::ESP::Chams::type = ChamsType::CHAMS;
 
+IMaterial* Chams::chamsMaterial = nullptr;
+IMaterial* Chams::ignoredChamsMaterial = nullptr;
+
 IMaterial* materialChams;
 IMaterial* materialChamsIgnorez;
 IMaterial* materialChamsFlat;
@@ -317,6 +320,9 @@ void Chams::DrawModelExecute( void* thisptr, void* context, void* state, const M
         materialChamsGuerilla = material->FindMaterial( "models/player/t_guerilla/t_guerilla" , TEXTURE_GROUP_OTHER );
 
         materialsCreated = true;
+
+        Chams::chamsMaterial = materialChams;
+        Chams::ignoredChamsMaterial = materialChamsIgnorez;
     }
 
     std::string modelName = modelInfo->GetModelName( pInfo.pModel );
