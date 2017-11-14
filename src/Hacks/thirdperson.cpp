@@ -4,9 +4,10 @@ bool Settings::ThirdPerson::enabled = false;
 ThirdPersonMode Settings::ThirdPerson::mode = ThirdPersonMode::FAKE;
 float Settings::ThirdPerson::distance = 30.f;
 ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_DELETE;
+      float Settings::ThirdPerson::transparency = 0.3f;
 long millisSinceLastPress = 0;
 
-IMaterial* seeThoughtChams = NULL;
+IMaterial* seeThroughPlayer = NULL;
 
 // Predeclare
 static void DrawScopedPlayer( void* thisptr, void* context, void* state, const ModelRenderInfo_t& pInfo,
@@ -141,14 +142,17 @@ void ThirdPerson::DrawModelExecute( void* thisptr, void* context, void* state, c
         return;
 
     std::string modelName = modelInfo->GetModelName( pInfo.pModel );
-
+    if((!Settings::ESP::Chams::enabled || !Settings::ESP::Filters::localplayer) && localplayer->IsScoped() ){
     if ( modelName.find( XORSTR( "models/player" ) ) != std::string::npos ) {
         DrawScopedPlayer( thisptr, context, state, pInfo, pCustomBoneToWorld );
     }
-
+    }
+    else
+        if( seeThroughPlayer != NULL)
+            seeThroughPlayer->AlphaModulate(1.0f);
 }
 
-// Make the player a bit see thought to make thirdperson while scoped less cancerous
+// Make the player a bit transparent to make thirdperson while scoped less cancerous
 static void DrawScopedPlayer( void* thisptr, void* context, void* state, const ModelRenderInfo_t& pInfo,
                               matrix3x4_t* pCustomBoneToWorld ) {
     C_BasePlayer* localplayer = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
@@ -159,18 +163,20 @@ static void DrawScopedPlayer( void* thisptr, void* context, void* state, const M
     if ( !entity || entity->GetDormant() || !entity->GetAlive() )
         return;
 
-    if ( localplayer == entity && localplayer->IsScoped() ) {
-        if ( seeThoughtChams == NULL ) {
-            seeThoughtChams = Util::CreateMaterial( XORSTR( "VertexLitGeneric" ), XORSTR( "VGUI/white_additive" ),
-                                                    false,
-                                                    true, true, true, true );
-        }
+    if(entity != localplayer)
+        return;
 
-        seeThoughtChams->ColorModulate( Color::FromImColor( Settings::ESP::Chams::localplayerColor.Color( entity ) ) );
-        seeThoughtChams->AlphaModulate( 0.5f );
+                  if ( seeThroughPlayer == NULL ) {
+                             IMaterial* through[32]; // aka MAXSTUDIOSKINS
+           modelInfo->GetModelMaterials(localplayer->GetModel(),modelInfo->GetStudioModel(localplayer->GetModel())->numtextures, through);
+                      seeThroughPlayer = through[16]; // me no care so shhhhhh { might change that someday }
+                   }
 
-        modelRender->ForcedMaterialOverride( seeThoughtChams );
-        modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo,
-                                                                     pCustomBoneToWorld );
-    }
+
+                seeThroughPlayer->AlphaModulate( Settings::ThirdPerson::transparency );
+
+
+       modelRender->ForcedMaterialOverride( seeThroughPlayer );
+    modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo,
+                                                                 pCustomBoneToWorld );
 }

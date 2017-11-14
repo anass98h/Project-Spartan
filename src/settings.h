@@ -1277,6 +1277,7 @@ namespace Settings {
         extern ThirdPersonMode mode;
         extern float distance;
         extern ButtonCode_t key;
+        extern float transparency;
     }
 
     namespace JumpThrow {
