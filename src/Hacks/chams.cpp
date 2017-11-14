@@ -170,7 +170,10 @@ static void DrawPlayer( void* thisptr, void* context, void* state, const ModelRe
         modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo,
                                                                      pCustomBoneToWorld );
     }
-
+    if (Settings::ThirdPerson::enabled && entity == localplayer && localplayer->IsScoped() )
+    {
+        visible_material->AlphaModulate(Settings::ThirdPerson::transparency);
+    }
     modelRender->ForcedMaterialOverride( visible_material );
     modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo, pCustomBoneToWorld );
 }

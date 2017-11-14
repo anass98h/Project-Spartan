@@ -1570,6 +1570,7 @@ void Settings::LoadConfig( std::string path ) {
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "mode" )], ( int* ) &Settings::ThirdPerson::mode );
     GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "distance" )], &Settings::ThirdPerson::distance );
     GetButtonCode( settings[XORSTR( "ThirdPerson" )][XORSTR( "key" )], &Settings::ThirdPerson::key );
+    GetVal( settings[XORSTR( "ThirdPerson" )][XORSTR( "transparency" )], &Settings::ThirdPerson::transparency );
 
     GetVal( settings[XORSTR( "JumpThrow" )][XORSTR( "enabled" )], &Settings::JumpThrow::enabled );
     GetButtonCode( settings[XORSTR( "JumpThrow" )][XORSTR( "key" )], &Settings::JumpThrow::key );
