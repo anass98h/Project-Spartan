@@ -169,7 +169,7 @@ static void DrawScopedPlayer( void* thisptr, void* context, void* state, const M
                   if ( seeThroughPlayer == NULL ) {
                              IMaterial* through[32]; // aka MAXSTUDIOSKINS
            modelInfo->GetModelMaterials(localplayer->GetModel(),modelInfo->GetStudioModel(localplayer->GetModel())->numtextures, through);
-                      seeThroughPlayer = *through; // me no care so shhhhhh { might change that someday }
+                      seeThroughPlayer = through[16]; // me no care so shhhhhh { might change that someday }
                    }
 
 
