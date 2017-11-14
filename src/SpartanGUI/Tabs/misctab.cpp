@@ -216,10 +216,10 @@ void Misc::RenderTab() {
                         ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.0f, 500.0f);
                         ImGui::PopItemWidth();
                         UI::KeyBindButton(&Settings::ThirdPerson::key);
-                        ImGui::Text("transparency (Scoped)");
+                        ImGui::Text("Transparency (Scoped)");
                         ImGui::PushItemWidth(-1);
                         ImGui::SliderFloat(XORSTR("##TRANSPARENCY"), &Settings::ThirdPerson::transparency, 0.1f , 0.6f ,
-                        XORSTR("Amount %0.1f"));
+                        XORSTR("%0.1f"));
                         ImGui::PopItemWidth();
                     }
                     ImGui::Columns(1);
