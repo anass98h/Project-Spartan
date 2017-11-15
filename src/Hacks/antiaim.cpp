@@ -952,6 +952,71 @@ yFlip ? angle.y = *( ( C_BasePlayer* ) entityList->GetClientEntity(
                     }
                 }
                 break;
+
+                case AntiAimType_Y::ICHICREAM1: {
+                    static int ChokedPackets = 1;
+                    static int jittertimer = 0;
+                    static int temp = 0;
+
+                    ChokedPackets++;
+                    if (ChokedPackets < 1)
+                    {
+                        CreateMove::sendPacket = false;
+                        angle.y = -180.0f;
+                    }
+                    if (CreateMove::sendPacket)
+                    {
+                        CreateMove::sendPacket = true;
+                        temp = 89;
+                        if (jittertimer == 1)
+                            temp = -89;
+                        if (CreateMove::sendPacket)
+                        {
+                            if (jittertimer >= 1)
+                                jittertimer = -1;
+                            jittertimer++;
+                        }
+                        angle.y += temp;
+                        ChokedPackets = 1;
+                    }
+                    break;
+                }
+                case AntiAimType_Y::ICHICREAM2: {
+                    static int ChokedPackets = 1;
+                    static int jittertimer = 0;
+                    static int temp = 0;
+
+                    ChokedPackets++;
+                    if (ChokedPackets < 2)
+                    {
+                        CreateMove::sendPacket = false;
+                        angle.y = -180.0f;
+                    }
+                    if (CreateMove::sendPacket)
+                    {
+                        CreateMove::sendPacket = true;
+                        temp = 65;
+                        if (jittertimer == 4)
+                            temp = -65;
+                        if (CreateMove::sendPacket)
+                        {
+                            if (jittertimer >= 3)
+                                jittertimer = -2;
+                            jittertimer++;
+                        }
+                        angle.y += temp;
+                        ChokedPackets = 1;
+                    }
+                    break;
+                }
+                case AntiAimType_Y::ICHICREAM3: {
+                    if (CreateMove::sendPacket) {
+                        yFlip ? angle.y += 90.0f : angle.y -= 90.0f;
+                    } else {
+                        angle.y += 180;
+                    }
+                    break;
+                }
                 case AntiAimType_Y::MASTERLOOSER: {
                     int value = rand() % 361;
                     float clamped = Math::ClampYaw( *pLocal->GetLowerBodyYawTarget() + value );

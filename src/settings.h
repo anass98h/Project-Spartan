@@ -106,6 +106,9 @@ enum class AntiAimType_Y : int {
     RASP,
     RASP2,
     FEETWIGGLE,
+    ICHICREAM1,
+    ICHICREAM2,
+    ICHICREAM3,
     LEGITTROLLING,
     LEGITTROLLING2,
     CUSTOM,
@@ -1318,6 +1321,7 @@ namespace Settings {
         extern int frequency;
 
     }
+
     namespace AutoKnife {
         extern bool enabled;
         extern bool onKey;
@@ -1327,6 +1331,33 @@ namespace Settings {
             extern bool allies;
         }
     }
+
+    namespace WalkBot {
+        extern bool enabled;
+
+        extern bool autoReload;
+        extern bool autoStop;
+        extern bool autoDefuse;
+
+        extern bool forceReset;
+
+        namespace Manual {
+            extern bool onlyOnKey;
+            extern ButtonCode_t key;
+        }
+
+        namespace AutoBuy {
+            extern bool enabled;
+            extern int cash;
+            extern const char* preferedWeapon;
+        }
+
+        namespace EditMode {
+            extern bool enabled;
+            extern ButtonCode_t addNodeKey;
+        }
+    }
+
     namespace Debug {
         namespace AutoWall {
             extern bool drawDamage;
@@ -1348,4 +1379,8 @@ namespace Settings {
     void SaveGrenadeInfo( std::string path );
 
     void LoadGrenadeInfo( std::string path );
+
+    void SaveWalkbotInfo(std::string path);
+
+    void LoadWalkbotInfo(std::string path);
 }
