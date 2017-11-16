@@ -1532,7 +1532,7 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
             DoAntiAimY( angle, cmd->command_number, bFlip, shouldClamp );
             Math::NormalizeAngles( angle );
         }
-        if ( Settings::FakeLag::type != FakeLagType::OFF )
+        if ( Settings::FakeLag::type == FakeLagType::OFF )
             CreateMove::sendPacket = bFlip;
         /*if ( ( IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
                IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
@@ -1567,7 +1567,6 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
         if ( CanEdge() ) {
             float angleYEdge = GetBestHeadEdgeAngle();
 
-            static bool bFlip = false;
 
             static float fakeAdd = 0.f;
             static float realAdd = 0.f;
@@ -1583,7 +1582,7 @@ void AntiAim::CreateMove( CUserCmd* cmd ) {
                 realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
             }
 
-            bFlip = !bFlip;
+
             if ( !bFlip ) {
                 CreateMove::sendPacket = false;
                 angle.y = Math::ClampYaw( angleYEdge + realAdd );
@@ -1643,7 +1642,7 @@ bool AntiAim::IsMoving() {
     if ( !pLocal || !pLocal->GetAlive() )
         return false;
 
-    return pLocal->GetVelocity().x != 0;
+    return pLocal->GetVelocity().Length2D() > 0.2f;
 }
 
 bool AntiAim::IsAirborne() {
