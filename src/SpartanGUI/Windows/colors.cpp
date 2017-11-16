@@ -56,6 +56,7 @@ void Colors::RenderWindow() {
             { "UI Watermark",                  &Settings::UI::Watermark::color },
             { "UI Accent",                     &Settings::UI::accentColor },
             { "FOV Circle",                    &Settings::ESP::FOVCrosshair::color },
+            { "Sniper Crosshair",              &Settings::SniperCrosshair::color },
             { "Spread",                        &Settings::ESP::Spread::color },
             { "SpreadLimit",                   &Settings::ESP::Spread::spreadLimitColor },
             { "Hitmarker",                     &Settings::ESP::Hitmarker::color },
