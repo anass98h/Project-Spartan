@@ -192,59 +192,41 @@ void Misc::RenderTab() {
                 ImGui::Columns( 1 );
                 ImGui::Separator();
 
-                ImGui::Checkbox(XORSTR("Third Person"), &Settings::ThirdPerson::enabled);
+                ImGui::Checkbox( XORSTR( "Third Person" ), &Settings::ThirdPerson::enabled );
                 {
                     ImGui::Separator();
 
-                    ImGui::Columns(2, NULL, true);
+                    ImGui::Columns( 2, NULL, true );
                     {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text(XORSTR("Mode"));
+                        ImGui::Text( XORSTR( "Mode" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text(XORSTR("Camera Offset"));
+                        ImGui::Text( XORSTR( "Camera Offset" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text(XORSTR("Key"));
+                        ImGui::Text( XORSTR( "Key" ) );
+                        ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text( XORSTR( "Transparency (Scoped)" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                     }
                     ImGui::NextColumn();
                     {
-                        ImGui::PushItemWidth(-3);
-                        ImGui::Combo(XORSTR("##TPMODE"), (int*) &Settings::ThirdPerson::mode,
-                                     tpModes, (int) ThirdPersonMode::NUMBER_OF_TYPES);
+                        ImGui::PushItemWidth( -3 );
+                        ImGui::Combo( XORSTR( "##TPMODE" ), ( int* ) &Settings::ThirdPerson::mode,
+                                      tpModes, ( int ) ThirdPersonMode::NUMBER_OF_TYPES );
                         ImGui::PopItemWidth();
-                        ImGui::PushItemWidth(-1);
-                        ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.0f, 500.0f);
+                        ImGui::PushItemWidth( -1 );
+                        ImGui::SliderFloat( XORSTR( "##TPCAMOFFSET" ), &Settings::ThirdPerson::distance, 0.0f, 500.0f );
                         ImGui::PopItemWidth();
-                        UI::KeyBindButton(&Settings::ThirdPerson::key);
-                        ImGui::Text("Transparency (Scoped)");
-                        ImGui::PushItemWidth(-1);
-                        ImGui::SliderFloat(XORSTR("##TRANSPARENCY"), &Settings::ThirdPerson::transparency, 0.1f , 0.6f ,
-                        XORSTR("%0.1f"));
+                        UI::KeyBindButton( &Settings::ThirdPerson::key );
+                        ImGui::PushItemWidth( -1 );
+                        ImGui::SliderFloat( XORSTR( "##TRANSPARENCY" ), &Settings::ThirdPerson::transparency, 0.1f,
+                                            0.6f, XORSTR( "%0.1f" ) );
                         ImGui::PopItemWidth();
                     }
-                    ImGui::Columns(1);
+                    ImGui::Columns( 1 );
                 }
-
-
-
-                /*ImGui::Text( XORSTR( "Third Person" ) );
                 ImGui::Separator();
-                ImGui::Columns( 2, NULL, true );
-                {
-                    ImGui::Checkbox( XORSTR( "Enabled" ), &Settings::ThirdPerson::enabled );
-                    ImGui::Text( XORSTR( "Key" ) );
-                    ImGui::Checkbox( XORSTR( "Show Real Angles" ), &Settings::ThirdPerson::realAngles );
-                }
-                ImGui::NextColumn();
-                {
-                    ImGui::PushItemWidth( -1 );
-                    ImGui::SliderFloat( XORSTR( "##TPCAMOFFSET" ), &Settings::ThirdPerson::distance, 0.f, 500.f,
-                                        XORSTR( "Camera Offset: %0.f" ) );
-                    ImGui::PopItemWidth();
-                    UI::KeyBindButton( &Settings::ThirdPerson::key );
-                }
-                ImGui::Columns( 1 );*/
-                ImGui::Separator();
+
                 ImGui::Text( XORSTR( "Grenade Helper" ) );
                 ImGui::Separator();
                 ImGui::Columns( 2, NULL, true );

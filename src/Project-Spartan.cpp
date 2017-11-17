@@ -33,7 +33,6 @@ int __attribute__ ((constructor)) Startup() {
     Hooker::FindLoadFromBuffer();
     //Hooker::FindVstdlibFunctions();
     Hooker::FindOverridePostProcessingDisable();
-    Hooker::FindCamThinkSvCheatsCheck();
     Hooker::HookSwapWindow();
     Hooker::HookPollEvent();
     TracerEffect::RestoreTracers();
@@ -163,19 +162,15 @@ void __attribute__ ((destructor)) Shutdown() {
     viewRenderVMT->ReleaseVMT();
 
     input->m_fCameraInThirdPerson = false;
-    input->m_vecCameraOffset.z = 150.f;
+    input->m_vecCameraOffset.z = 150.0f;
     GetLocalClient( -1 )->m_nDeltaTick = -1;
 
     delete eventListener;
 
     *bSendPacket = true;
     *s_bOverridePostProcessingDisable = false;
-    *CamThinkSvCheatsCheck = 0x74;
-    *( CamThinkSvCheatsCheck + 0x1 ) = 0x64;
 
     Util::ProtectAddr( bSendPacket, PROT_READ | PROT_EXEC );
-    for ( ptrdiff_t off = 0; off < 0x2; off++ )
-        Util::ProtectAddr( CamThinkSvCheatsCheck + off, PROT_READ | PROT_EXEC );
 
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ), XORSTR( "(                                        \n" ) );
     cvar->ConsoleColorPrintf( ColorRGBA( 244, 66, 83, 255 ),

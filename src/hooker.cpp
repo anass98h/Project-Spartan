@@ -4,7 +4,6 @@ bool* bSendPacket = nullptr;
 int* nPredictionRandomSeed = nullptr;
 CMoveData* g_MoveData = nullptr;
 bool* s_bOverridePostProcessingDisable = nullptr;
-uint8_t* CamThinkSvCheatsCheck = nullptr;
 
 VMT* panelVMT = nullptr;
 VMT* clientVMT = nullptr;
@@ -304,18 +303,6 @@ void Hooker::FindOverridePostProcessingDisable() {
     bool_address = GetAbsoluteAddress( bool_address, 2, 7 );
 
     s_bOverridePostProcessingDisable = reinterpret_cast<bool*> (bool_address);
-}
-
-void Hooker::FindCamThinkSvCheatsCheck() {
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
-                                                                 ( unsigned char* ) XORSTR(
-                                                                         "\x74\x00\x49\x83\x00\x00\x00\x00\x00\x00\x00\x0F\x84\x00\x00\x00\x00\x49\x8B" ),
-                                                                 XORSTR( "x?xx??????xxx????xx" ) );
-
-    CamThinkSvCheatsCheck = reinterpret_cast<uint8_t*> (byte_address);
-
-    for ( ptrdiff_t off = 0; off < 0x2; off++ )
-        Util::ProtectAddr( CamThinkSvCheatsCheck + off, PROT_READ | PROT_WRITE | PROT_EXEC );
 }
 
 void Hooker::HookSwapWindow() {
