@@ -4,8 +4,6 @@ bool* bSendPacket = nullptr;
 int* nPredictionRandomSeed = nullptr;
 CMoveData* g_MoveData = nullptr;
 bool* s_bOverridePostProcessingDisable = nullptr;
-uint8_t* CrosshairWeaponTypeCheck = nullptr;
-uint8_t* CamThinkSvCheatsCheck = nullptr;
 
 VMT* panelVMT = nullptr;
 VMT* clientVMT = nullptr;
@@ -305,43 +303,6 @@ void Hooker::FindOverridePostProcessingDisable() {
     bool_address = GetAbsoluteAddress( bool_address, 2, 7 );
 
     s_bOverridePostProcessingDisable = reinterpret_cast<bool*> (bool_address);
-}
-
-void Hooker::FindCrosshairWeaponTypeCheck() {
-    /*
-     * 48 8B 02                          mov     rax, [rdx]
-     * 48 89 D7                          mov     rdi, rdx
-	 * FF 90 E0 0F 00 00                 call    qword ptr [rax+0FE0h]
- 	 * 83 F8 05                          cmp     eax, 5      <--- We want to change eax here.
- 	 * 0F 84 54 0D 00 00                 jz      loc_D7A5DA
-	 */
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
-                                                                 ( unsigned char* ) XORSTR(
-                                                                         "\x00\x8B\x00" // mov r/m into r
-                                                                                 "\x00\x89\x00" // mov r into r/m
-                                                                                 "\xFF\x90\xE0\x0F\x00\x00" // call based on rax ( ff 90 ), 4-byte rax offset( hasn't changed in a long time )
-                                                                                 "\x83\xF8\x05" // cmp eax, 5
-                                                                                 "\x0F\x84\x00\x00\x00\x00" ), // jz ( 4-byte address )
-                                                                 XORSTR( "?x?"
-                                                                                 "?x?"
-                                                                                 "xxxxxx"
-                                                                                 "xxx"
-                                                                                 "xx????" ) );
-
-    CrosshairWeaponTypeCheck = reinterpret_cast<uint8_t*>(byte_address + 14);
-    Util::ProtectAddr( CrosshairWeaponTypeCheck, PROT_READ | PROT_WRITE | PROT_EXEC );
-}
-
-void Hooker::FindCamThinkSvCheatsCheck() {
-    uintptr_t byte_address = PatternFinder::FindPatternInModule( XORSTR( "client_client.so" ),
-                                                                 ( unsigned char* ) XORSTR(
-                                                                         "\x74\x00\x49\x83\x00\x00\x00\x00\x00\x00\x00\x0F\x84\x00\x00\x00\x00\x49\x8B" ),
-                                                                 XORSTR( "x?xx??????xxx????xx" ) );
-
-    CamThinkSvCheatsCheck = reinterpret_cast<uint8_t*> (byte_address);
-
-    for ( ptrdiff_t off = 0; off < 0x2; off++ )
-        Util::ProtectAddr( CamThinkSvCheatsCheck + off, PROT_READ | PROT_WRITE | PROT_EXEC );
 }
 
 void Hooker::HookSwapWindow() {

@@ -23,6 +23,8 @@ namespace Math {
 
     float DotProduct( Vector& v1, const float* v2 );
 
+    void AngleMatrix( const QAngle& angles, matrix3x4_t& matrix );
+
     void VectorAngles( const Vector& forward, QAngle& angles );
 
     void VectorTransform( Vector& in1, const matrix3x4_t& in2, Vector& out );

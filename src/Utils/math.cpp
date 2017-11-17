@@ -167,6 +167,34 @@ float Math::DotProduct( Vector& v1, const float* v2 ) {
     return v1.x * v2[0] + v1.y * v2[1] + v1.z * v2[2];
 }
 
+void Math::AngleMatrix( const QAngle& angles, matrix3x4_t& matrix ) {
+    float sr, sp, sy, cr, cp, cy;
+    Math::SinCos( DEG2RAD( angles[PITCH] ), &sp, &cp );
+    Math::SinCos( DEG2RAD( angles[YAW] ), &sy, &cy );
+    Math::SinCos( DEG2RAD( angles[ROLL] ), &sr, &cr );
+
+    // matrix = (YAW * PITCH) * ROLL
+    matrix[0][0] = cp * cy;
+    matrix[1][0] = cp * sy;
+    matrix[2][0] = -sp;
+
+    float crcy = cr * cy;
+    float crsy = cr * sy;
+    float srcy = sr * cy;
+    float srsy = sr * sy;
+    matrix[0][1] = sp * srcy - crsy;
+    matrix[1][1] = sp * srsy + crcy;
+    matrix[2][1] = sr * cp;
+
+    matrix[0][2] = ( sp * crcy + srsy );
+    matrix[1][2] = ( sp * crsy - srcy );
+    matrix[2][2] = cr * cp;
+
+    matrix[0][3] = 0.0f;
+    matrix[1][3] = 0.0f;
+    matrix[2][3] = 0.0f;
+}
+
 void Math::VectorTransform( Vector& in1, const matrix3x4_t& in2, Vector& out ) {
     out.x = DotProduct( in1, in2[0] ) + in2[0][3];
     out.y = DotProduct( in1, in2[1] ) + in2[1][3];

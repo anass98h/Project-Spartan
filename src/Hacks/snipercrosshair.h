@@ -4,6 +4,8 @@
 #include "../settings.h"
 
 namespace SniperCrosshair {
-    //Hooks
-    void BeginFrame();
-};
+
+    // Hooks
+    void Paint();
+
+}

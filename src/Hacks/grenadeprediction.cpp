@@ -219,12 +219,17 @@ void GrenadePrediction::TraceHull( Vector& src, Vector& end, trace_t& tr ) {
     if ( !Settings::GrenadePrediction::enabled )
         return;
 
+    C_BasePlayer* pLocal = ( C_BasePlayer* ) entityList->GetClientEntity( engine->GetLocalPlayer() );
+    if ( !pLocal || !pLocal->GetAlive() )
+        return;
+
     Ray_t ray;
     ray.Init( src, end, Vector( -2.0f, -2.0f, -2.0f ), Vector( 2.0f, 2.0f, 2.0f ) );
 
-    CTraceFilterWorldOnly filter;
+    CTraceFilter filter;
+    filter.pSkip = pLocal;
 
-    trace->TraceRay( ray, 0x200400B, &filter, &tr );
+    trace->TraceRay( ray, MASK_SHOT_HULL, &filter, &tr );
 }
 
 void GrenadePrediction::AddGravityMove( Vector& move, Vector& vel, float frametime, bool onground ) {

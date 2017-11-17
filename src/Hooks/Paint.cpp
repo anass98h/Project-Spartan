@@ -15,6 +15,7 @@ void Hooks::Paint( void* thisptr, PaintMode_t mode ) {
         ESP::Paint();
         GrenadeHelper::Paint();
         GrenadePrediction::Paint();
+        SniperCrosshair::Paint();
         Recoilcrosshair::Paint();
         Hitmarkers::Paint();
 
