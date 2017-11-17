@@ -207,7 +207,6 @@ void Misc::RenderTab() {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text( XORSTR( "Transparency (Scoped)" ) );
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
-                        ImGui::Text("Transparency (Scoped)");
                     }
                     ImGui::NextColumn();
                     {

@@ -7,7 +7,6 @@ static EventListener* eventListener = nullptr;
 
 /* Entrypoint to the Library. Called when loading */
 int __attribute__ ((constructor)) Startup() {
-
     Interfaces::FindInterfaces();
     //Interfaces::DumpInterfaces();
 
@@ -137,7 +136,6 @@ int __attribute__ ((constructor)) Startup() {
 
 /* Called when un-injecting the library */
 void __attribute__ ((destructor)) Shutdown() {
-
     cvar->FindVar( XORSTR( "cl_mouseenable" ) )->SetValue( 1 );
     Backtracking::ToggleRequiredCVars( false );
 
