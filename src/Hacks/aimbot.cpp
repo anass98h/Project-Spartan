@@ -974,6 +974,9 @@ void Aimbot::CreateMove( CUserCmd* cmd ) {
         if ( Settings::Aimbot::FlashCheck::enabled && localplayer->GetFlashBangTime() - globalVars->curtime > 2.0f )
             skipPlayer = true;
 
+        if ( activeWeapon->GetAmmo() <= 0 )
+            skipPlayer = true;
+
         if ( skipPlayer )
             player = nullptr;
 
