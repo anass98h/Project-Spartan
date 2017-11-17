@@ -205,6 +205,7 @@ void Misc::RenderTab() {
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
                         ImGui::Text(XORSTR("Key"));
                         ImGui::ItemSize( ImVec2( 0.0f, 0.0f ), 0.0f );
+                        ImGui::Text("Transparency (Scoped)");
                     }
                     ImGui::NextColumn();
                     {
@@ -216,7 +217,6 @@ void Misc::RenderTab() {
                         ImGui::SliderFloat(XORSTR("##TPCAMOFFSET"), &Settings::ThirdPerson::distance, 0.0f, 500.0f);
                         ImGui::PopItemWidth();
                         UI::KeyBindButton(&Settings::ThirdPerson::key);
-                        ImGui::Text("Transparency (Scoped)");
                         ImGui::PushItemWidth(-1);
                         ImGui::SliderFloat(XORSTR("##TRANSPARENCY"), &Settings::ThirdPerson::transparency, 0.1f , 0.6f ,
                         XORSTR("%0.1f"));

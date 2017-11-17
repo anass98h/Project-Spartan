@@ -57,7 +57,8 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
 
     switch(Settings::ThirdPerson::mode) {
         case ThirdPersonMode::FAKE: {
-            angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+            angles =  QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+
             break;
         }
         case ThirdPersonMode::REAL: {
@@ -70,7 +71,8 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
                     angles = QAngle(pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.0f);
                 }
             } else {
-                angles = QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+                angles =  QAngle(pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f);
+
             }
             break;
         }
@@ -116,7 +118,10 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
     }
 
     if ( Settings::ThirdPerson::enabled ) {
+        if(AntiAim::isAntiAiming)
         *pLocal->GetVAngles() = angles;
+        else
+            *pLocal->GetVAngles() = CreateMove::lastTickViewAngles;
     }
 }
 
@@ -169,7 +174,7 @@ static void DrawScopedPlayer( void* thisptr, void* context, void* state, const M
                   if ( seeThroughPlayer == NULL ) {
                              IMaterial* through[32]; // aka MAXSTUDIOSKINS
            modelInfo->GetModelMaterials(localplayer->GetModel(),modelInfo->GetStudioModel(localplayer->GetModel())->numtextures, through);
-                      seeThroughPlayer = through[16]; // me no care so shhhhhh { might change that someday }
+                      seeThroughPlayer = *through; // me no care so shhhhhh { might change that someday }
                    }
 
 
