@@ -54,11 +54,10 @@ void ResolverInfo::RenderWindow() {
             float lby = Math::ResNormalizeYaw( Resolver::lby[playerId] );
 
             ImGui::Text( XORSTR( "%s [%s]\n" ), name, guid );
-            ImGui::Text( XORSTR( "Last hit - %.1f\n" ), lastHit );
-            ImGui::Text( XORSTR( "Trying Angle - %s [%.1f]\n" ), angForceTxt, angForce );
-            ImGui::Text( XORSTR( "Last Hit - %.1f\n" ), lastHit );
-            ImGui::Text( XORSTR( "Shots missed - %d\n" ), shotsMissed );
-            ImGui::Text( XORSTR( "LBY - %.1f\n" ), lby );
+            ImGui::Text( XORSTR( "Trying Angle : %s [%.1f]\n" ), angForceTxt, angForce );
+            ImGui::Text( XORSTR( "Last Hit : %.1f\n" ), lastHit );
+            ImGui::Text( XORSTR( "Shots missed : %d\n" ), shotsMissed );
+            ImGui::Text( XORSTR( "LBY : %.1f\n" ), lby );
         }
 
         ImGui::End();
