@@ -120,35 +120,43 @@ void Hitmarkers::FireGameEvent( IGameEvent* event ) {
     long now = Util::GetEpochTime();
     lastHitmarkerTimestamp = now;
     damages.insert( damages.begin(), std::pair<int, long>( event->GetInt( XORSTR( "dmg_health" ) ), now ) );
-    if (Settings::ESP::Hitmarker::Sounds::enabled)
-    {
-        switch (Settings::ESP::Hitmarker::Sounds::sound)
-        {
+    if ( Settings::ESP::Hitmarker::Sounds::enabled ) {
+        switch ( Settings::ESP::Hitmarker::Sounds::sound ) {
             case Sound::NONE:
                 break;
             case Sound::METALDOOR2:
-                engine->ClientCmd_Unrestricted("play doors\\hit_kickmetaldoor2");
+                engine->ClientCmd_Unrestricted( "play doors\\hit_kickmetaldoor2" );
                 break;
             case Sound::DOORSTOP:
-                engine->ClientCmd_Unrestricted("play doors\\default_stop");
+                engine->ClientCmd_Unrestricted( "play doors\\default_stop" );
                 break;
             case Sound::METAL:
-                engine->ClientCmd_Unrestricted("play physics\\metal\\metal_box_impact_bullet1");
+                engine->ClientCmd_Unrestricted( "play physics\\metal\\metal_box_impact_bullet1" );
                 break;
             case Sound::DONTLEAVE:
-                engine->ClientCmd_Unrestricted("play hostage\\hunuse\\dontleaveme");
+                engine->ClientCmd_Unrestricted( "play hostage\\hunuse\\dontleaveme" );
                 break;
             case Sound::THUNDER:
-                engine->ClientCmd_Unrestricted("play ambient\\playonce\\weather\\thunder4");
+                engine->ClientCmd_Unrestricted( "play ambient\\playonce\\weather\\thunder4" );
                 break;
             case Sound::BEEP:
-                engine->ClientCmd_Unrestricted("play common\\beep");
+                engine->ClientCmd_Unrestricted( "play common\\beep" );
                 break;
             case Sound::BASS:
-                engine->ClientCmd_Unrestricted("play common\\bass");
+                engine->ClientCmd_Unrestricted( "play common\\bass" );
                 break;
             case Sound::SK00TER:
-                engine->ClientCmd_Unrestricted("play buttons\\arena_switch_press_02");
+                engine->ClientCmd_Unrestricted( "play buttons\\arena_switch_press_02" );
+                break;
+            case Sound::ACCEPT:
+                engine->ClientCmd_Unrestricted( "play ui\\menu_accept" );
+                break;
+            case Sound::ALERT:
+                engine->ClientCmd_Unrestricted( "play ui\\beep22" );
+                break;
+            case Sound::NICESHOT:
+                engine->ClientCmd_Unrestricted( "play player\\vo\\sas\\niceshot01" );
+                break;
         }
 
     }

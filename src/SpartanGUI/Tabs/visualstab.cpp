@@ -8,10 +8,12 @@ void Visuals::RenderTab() {
     const char* ArmorBarTypes[] = { "Vertical Left", "Vertical Right", "Horizontal Below", "Horizontal Above" };
     const char* TeamColorTypes[] = { "Absolute", "Relative" };
     const char* ChamsTypes[] = { "Normal", "Normal - XQZ", "Flat", "Flat - XQZ", "Glass", "Crystal", "BlueCrystal",
-                                 "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss" ,"Animated", "Blink", "Glow", "Guerilla"  };
+                                 "Gold", "Velvet", "Tree", "SpeechInfo", "FishNet", "Letters", "Gloss", "Animated",
+                                 "Blink", "Glow", "Guerilla" };
     const char* ArmsTypes[] = { "Default", "Glass", "Crystal", "BlueCrystal", "Gold", "Velvet", "Tree", "SpeechInfo",
                                 "FishNet", "Letters", "Gloss", "Wireframe", "None" };
-    const char* Sounds[] = { "None", "kickmetaldoor2", "default_doorstop", "metal", "dont_leave!", "thunder", "beep", "bass", "Sk00ter"};
+    const char* Sounds[] = { "None", "kickmetaldoor2", "default_doorstop", "metal", "dont_leave!", "thunder", "beep",
+                             "bass", "Sk00ter", "b_accept", "alert", "niceshot" };
     const char* SkyBoxes[] = {
             "cs_baggage_skybox_", // 0
             "cs_tibet",
@@ -265,57 +267,85 @@ void Visuals::RenderTab() {
             ImGui::SetNextWindowSize( ImVec2( 320, 640 ), ImGuiSetCond_Always );
             if ( ImGui::BeginPopup( XORSTR( "##MaterialConfigWindow" ) ) ) {
                 ImGui::PushItemWidth( -1 );
-                if( ImGui::Button( XORSTR( "Reset Changes") ) ){
+                if ( ImGui::Button( XORSTR( "Reset Changes" ) ) ) {
                     Settings::MaterialConfig::config = MaterialConfig::backupConfig;
                 }
                 ImGui::Checkbox( XORSTR( "Changes Enabled?" ), &Settings::MaterialConfig::enabled );
-                SetTooltip( XORSTR( "Expect a Short delay when changing these settings."  ) );
-                ImGui::SliderFloat( XORSTR( "##MONITORGAMMA" ), &Settings::MaterialConfig::config.m_fMonitorGamma, 0.1f, 12.0f, XORSTR( "Gamma: %.3f" ) );
-                ImGui::SliderFloat( XORSTR( "##GAMMATVRANGEMIN" ), &Settings::MaterialConfig::config.m_fGammaTVRangeMin, 0.1f, std::min(300.0f, Settings::MaterialConfig::config.m_fGammaTVRangeMax), XORSTR( "TVRangeMin: %.3f" ) );
-                ImGui::SliderFloat( XORSTR( "##GAMMATVRANGEMAX" ), &Settings::MaterialConfig::config.m_fGammaTVRangeMax, Settings::MaterialConfig::config.m_fGammaTVRangeMin, 300.0f, XORSTR( "TVRangeMax: %.3f" ) );
-                ImGui::SliderFloat( XORSTR( "##GAMMATVEXPONENT" ), &Settings::MaterialConfig::config.m_fGammaTVExponent, 0.1f, 3.0f, XORSTR( "TV Exponent: %.3f" ) );
+                SetTooltip( XORSTR( "Expect a Short delay when changing these settings." ) );
+                ImGui::SliderFloat( XORSTR( "##MONITORGAMMA" ), &Settings::MaterialConfig::config.m_fMonitorGamma, 0.1f,
+                                    12.0f, XORSTR( "Gamma: %.3f" ) );
+                ImGui::SliderFloat( XORSTR( "##GAMMATVRANGEMIN" ), &Settings::MaterialConfig::config.m_fGammaTVRangeMin,
+                                    0.1f, std::min( 300.0f, Settings::MaterialConfig::config.m_fGammaTVRangeMax ),
+                                    XORSTR( "TVRangeMin: %.3f" ) );
+                ImGui::SliderFloat( XORSTR( "##GAMMATVRANGEMAX" ), &Settings::MaterialConfig::config.m_fGammaTVRangeMax,
+                                    Settings::MaterialConfig::config.m_fGammaTVRangeMin, 300.0f,
+                                    XORSTR( "TVRangeMax: %.3f" ) );
+                ImGui::SliderFloat( XORSTR( "##GAMMATVEXPONENT" ), &Settings::MaterialConfig::config.m_fGammaTVExponent,
+                                    0.1f, 3.0f, XORSTR( "TV Exponent: %.3f" ) );
                 ImGui::Checkbox( XORSTR( "GammaTVEnabled" ), &Settings::MaterialConfig::config.m_bGammaTVEnabled );
-                ImGui::Text( XORSTR("Width:") );
+                ImGui::Text( XORSTR( "Width:" ) );
                 ImGui::SameLine();
-                ImGui::InputInt( XORSTR( "##GAMEWIDTH" ),&Settings::MaterialConfig::config.m_VideoMode.m_Width );
+                ImGui::InputInt( XORSTR( "##GAMEWIDTH" ), &Settings::MaterialConfig::config.m_VideoMode.m_Width );
 
-                ImGui::Text( XORSTR("Height:") );
+                ImGui::Text( XORSTR( "Height:" ) );
                 ImGui::SameLine();
-                ImGui::InputInt( XORSTR( "##GAMEHEIGHT" ),&Settings::MaterialConfig::config.m_VideoMode.m_Height );
+                ImGui::InputInt( XORSTR( "##GAMEHEIGHT" ), &Settings::MaterialConfig::config.m_VideoMode.m_Height );
 
-                ImGui::Text( XORSTR("Refresh Rate:" ));
+                ImGui::Text( XORSTR( "Refresh Rate:" ) );
                 ImGui::SameLine();
-                ImGui::InputInt( XORSTR( "##GAMEREFRESHRATE" ),&Settings::MaterialConfig::config.m_VideoMode.m_RefreshRate );
+                ImGui::InputInt( XORSTR( "##GAMEREFRESHRATE" ),
+                                 &Settings::MaterialConfig::config.m_VideoMode.m_RefreshRate );
 
                 ImGui::Checkbox( XORSTR( "TripleBuffered" ), &Settings::MaterialConfig::config.m_bTripleBuffered );
-                ImGui::SliderInt( XORSTR( "##AASAMPLES" ), &Settings::MaterialConfig::config.m_nAASamples, 0, 16, XORSTR( "AA Samples: %1.f" ) );
-                ImGui::SliderInt( XORSTR( "##FORCEANISOTROPICLEVEL" ), &Settings::MaterialConfig::config.m_nForceAnisotropicLevel, 0, 8, XORSTR( "Anisotropic Level: %1.f" ) );
-                ImGui::SliderInt( XORSTR( "##SKIPMIPLEVELS" ), &Settings::MaterialConfig::config.skipMipLevels, 1, 16, XORSTR( "SkipMipLevels: %1.f" ) );
+                ImGui::SliderInt( XORSTR( "##AASAMPLES" ), &Settings::MaterialConfig::config.m_nAASamples, 0, 16,
+                                  XORSTR( "AA Samples: %1.f" ) );
+                ImGui::SliderInt( XORSTR( "##FORCEANISOTROPICLEVEL" ),
+                                  &Settings::MaterialConfig::config.m_nForceAnisotropicLevel, 0, 8,
+                                  XORSTR( "Anisotropic Level: %1.f" ) );
+                ImGui::SliderInt( XORSTR( "##SKIPMIPLEVELS" ), &Settings::MaterialConfig::config.skipMipLevels, 1, 16,
+                                  XORSTR( "SkipMipLevels: %1.f" ) );
                 if ( ImGui::Button( XORSTR( "Flags" ), ImVec2( -1, 0 ) ) )
                     ImGui::OpenPopup( XORSTR( "##MaterialConfigFlags" ) );
                 ImGui::SetNextWindowSize( ImVec2( 320, 240 ), ImGuiSetCond_Always );
                 if ( ImGui::BeginPopup( XORSTR( "##MaterialConfigFlags" ) ) ) {
-                    ImGui::PushItemWidth(-1);
+                    ImGui::PushItemWidth( -1 );
 
                     static bool localFlags[] = {
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_WINDOWED) != 0, // ( 1 << 0 )
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_RESIZING) != 0, // ( 1 << 1 )
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_WINDOWED ) != 0, // ( 1 << 0 )
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_RESIZING ) != 0, // ( 1 << 1 )
                             false, // ( 1 << 2 ) is not used.
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_NO_WAIT_FOR_VSYNC) != 0, // ( 1 << 3 )
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_STENCIL) != 0, // ...
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_FORCE_TRILINEAR) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_FORCE_HWSYNC) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_SPECULAR) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_BUMPMAP) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_ENABLE_PARALLAX_MAPPING) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_USE_Z_PREFILL) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_REDUCE_FILLRATE) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_ENABLE_HDR) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_LIMIT_WINDOWED_SIZE) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_SCALE_TO_OUTPUT_RESOLUTION) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_USING_MULTIPLE_WINDOWS) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_PHONG) != 0,
-                            (Settings::MaterialConfig::config.m_Flags & MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_VR_MODE) != 0
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_NO_WAIT_FOR_VSYNC ) != 0, // ( 1 << 3 )
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_STENCIL ) != 0, // ...
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_FORCE_TRILINEAR ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_FORCE_HWSYNC ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_SPECULAR ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_BUMPMAP ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_ENABLE_PARALLAX_MAPPING ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_USE_Z_PREFILL ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_REDUCE_FILLRATE ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_ENABLE_HDR ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_LIMIT_WINDOWED_SIZE ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_SCALE_TO_OUTPUT_RESOLUTION ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_USING_MULTIPLE_WINDOWS ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_DISABLE_PHONG ) != 0,
+                            ( Settings::MaterialConfig::config.m_Flags &
+                              MaterialSystem_Config_Flags_t::MATSYS_VIDCFG_FLAGS_VR_MODE ) != 0
                     };
 
                     ImGui::Checkbox( XORSTR( "Windowed" ), &localFlags[0] );
@@ -336,11 +366,11 @@ void Visuals::RenderTab() {
                     ImGui::Checkbox( XORSTR( "Using Multiple Windows" ), &localFlags[15] );
                     ImGui::Checkbox( XORSTR( "VR-Mode" ), &localFlags[17] );
 
-                    if( ImGui::Button( XORSTR( "Apply " ) ) ){
-                        for( unsigned short i = 0; i < 18; i++ ){
-                            if( i == 2 ) // ( 1 << 2 ) not used.
+                    if ( ImGui::Button( XORSTR( "Apply " ) ) ) {
+                        for ( unsigned short i = 0; i < 18; i++ ) {
+                            if ( i == 2 ) // ( 1 << 2 ) not used.
                                 continue;
-                            Settings::MaterialConfig::config.SetFlag( (unsigned int)(1 << i), localFlags[i] );
+                            Settings::MaterialConfig::config.SetFlag( ( unsigned int ) ( 1 << i ), localFlags[i] );
                         }
                     }
 
@@ -350,31 +380,40 @@ void Visuals::RenderTab() {
                 //m_flags
                 ImGui::Checkbox( XORSTR( "EditMode" ), &Settings::MaterialConfig::config.bEditMode );
                 //proxiesTestMode
-                ImGui::Checkbox( XORSTR ( "Compressed Textures" ), &Settings::MaterialConfig::config.bCompressedTextures );
+                ImGui::Checkbox( XORSTR ( "Compressed Textures" ),
+                                 &Settings::MaterialConfig::config.bCompressedTextures );
                 ImGui::Checkbox( XORSTR( "Filter Lightmaps" ), &Settings::MaterialConfig::config.bFilterLightmaps );
                 ImGui::Checkbox( XORSTR( "Filter Textures" ), &Settings::MaterialConfig::config.bFilterTextures );
                 ImGui::Checkbox( XORSTR( "Reverse Depth" ), &Settings::MaterialConfig::config.bReverseDepth );
                 ImGui::Checkbox( XORSTR( "Buffer Primitives" ), &Settings::MaterialConfig::config.bBufferPrimitives );
                 ImGui::Checkbox( XORSTR( "Draw Flat" ), &Settings::MaterialConfig::config.bDrawFlat );
                 ImGui::Checkbox( XORSTR( "Measure Fill-Rate" ), &Settings::MaterialConfig::config.bMeasureFillRate );
-                ImGui::Checkbox( XORSTR( "Visualize Fill-Rate" ), &Settings::MaterialConfig::config.bVisualizeFillRate );
+                ImGui::Checkbox( XORSTR( "Visualize Fill-Rate" ),
+                                 &Settings::MaterialConfig::config.bVisualizeFillRate );
                 ImGui::Checkbox( XORSTR( "No Transparency" ), &Settings::MaterialConfig::config.bNoTransparency );
-                ImGui::Checkbox( XORSTR( "Software Lighting" ), &Settings::MaterialConfig::config.bSoftwareLighting ); // Crashes game
+                ImGui::Checkbox( XORSTR( "Software Lighting" ),
+                                 &Settings::MaterialConfig::config.bSoftwareLighting ); // Crashes game
                 //AllowCheats ?
-                ImGui::SliderInt( XORSTR( "##MIPLEVELS" ), (int*)&Settings::MaterialConfig::config.nShowMipLevels, 0, 127, XORSTR( "ShowMipLevels: %1.f" ) );
+                ImGui::SliderInt( XORSTR( "##MIPLEVELS" ), ( int* ) &Settings::MaterialConfig::config.nShowMipLevels, 0,
+                                  127, XORSTR( "ShowMipLevels: %1.f" ) );
                 ImGui::Checkbox( XORSTR( "Show Low-Res Image" ), &Settings::MaterialConfig::config.bShowLowResImage );
                 ImGui::Checkbox( XORSTR( "Show Normal Map" ), &Settings::MaterialConfig::config.bShowNormalMap );
                 ImGui::Checkbox( XORSTR( "MipMap Textures" ), &Settings::MaterialConfig::config.bMipMapTextures );
-                ImGui::SliderInt( XORSTR( "##NFULLBRIGHT" ), (int*)&Settings::MaterialConfig::config.nFullbright, 0, 127, XORSTR( "nFullBright: %1.f" ) );
+                ImGui::SliderInt( XORSTR( "##NFULLBRIGHT" ), ( int* ) &Settings::MaterialConfig::config.nFullbright, 0,
+                                  127, XORSTR( "nFullBright: %1.f" ) );
                 ImGui::Checkbox( XORSTR( "Fast NoBump" ), &Settings::MaterialConfig::config.m_bFastNoBump );
-                ImGui::Checkbox( XORSTR( "Suppress Rendering" ), &Settings::MaterialConfig::config.m_bSuppressRendering );
+                ImGui::Checkbox( XORSTR( "Suppress Rendering" ),
+                                 &Settings::MaterialConfig::config.m_bSuppressRendering );
                 ImGui::Checkbox( XORSTR( "Draw Gray" ), &Settings::MaterialConfig::config.m_bDrawGray );
                 ImGui::Checkbox( XORSTR( "Show Specular" ), &Settings::MaterialConfig::config.bShowSpecular );
                 ImGui::Checkbox( XORSTR( "Show Defuse" ), &Settings::MaterialConfig::config.bShowDiffuse );
-                ImGui::SliderInt( XORSTR( "##AAQUALITY" ), &Settings::MaterialConfig::config.m_nAAQuality, 0, 16, XORSTR( "AAQuality: %1.f" ) );
-                ImGui::Checkbox( XORSTR( "Shadow Depth Texture" ), &Settings::MaterialConfig::config.m_bShadowDepthTexture );
+                ImGui::SliderInt( XORSTR( "##AAQUALITY" ), &Settings::MaterialConfig::config.m_nAAQuality, 0, 16,
+                                  XORSTR( "AAQuality: %1.f" ) );
+                ImGui::Checkbox( XORSTR( "Shadow Depth Texture" ),
+                                 &Settings::MaterialConfig::config.m_bShadowDepthTexture );
                 ImGui::Checkbox( XORSTR( "Motion Blur" ), &Settings::MaterialConfig::config.m_bMotionBlur );
-                ImGui::Checkbox( XORSTR( "Support Flashlight" ), &Settings::MaterialConfig::config.m_bSupportFlashlight );
+                ImGui::Checkbox( XORSTR( "Support Flashlight" ),
+                                 &Settings::MaterialConfig::config.m_bSupportFlashlight );
                 ImGui::Checkbox( XORSTR( "Paint Enabled" ), &Settings::MaterialConfig::config.m_bPaintEnabled );
                 // VRMode Adapter?
                 ImGui::PopItemWidth();
@@ -443,7 +482,7 @@ void Visuals::RenderTab() {
                 ImGui::Checkbox( XORSTR( "Enemies##HITMARKERS" ), &Settings::ESP::Hitmarker::enemies );
                 ImGui::Checkbox( XORSTR( "Allies##HITMARKERS" ), &Settings::ESP::Hitmarker::allies );
                 ImGui::Checkbox( XORSTR( "Damage##HITMARKERS" ), &Settings::ESP::Hitmarker::Damage::enabled );
-                ImGui::Checkbox( XORSTR( "Sounds##HITMARKERS"), &Settings::ESP::Hitmarker::Sounds::enabled);
+                ImGui::Checkbox( XORSTR( "Sounds##HITMARKERS" ), &Settings::ESP::Hitmarker::Sounds::enabled );
             }
             ImGui::NextColumn();
             {
@@ -454,7 +493,8 @@ void Visuals::RenderTab() {
                                   XORSTR( "Size: %0.f" ) );
                 ImGui::SliderInt( XORSTR( "##HITMARKERGAP" ), &Settings::ESP::Hitmarker::innerGap, 1, 16,
                                   XORSTR( "Gap: %0.f" ) );
-                ImGui::Combo( XORSTR ("Sounds"), (int*)&Settings::ESP::Hitmarker::Sounds::sound, Sounds , IM_ARRAYSIZE(Sounds));
+                ImGui::Combo( XORSTR ( "Sounds" ), ( int* ) &Settings::ESP::Hitmarker::Sounds::sound, Sounds,
+                              IM_ARRAYSIZE( Sounds ) );
                 ImGui::PopItemWidth();
             }
             ImGui::Columns( 1 );

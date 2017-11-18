@@ -250,6 +250,9 @@ enum class Sound : int {
     BEEP,
     BASS,
     SK00TER,
+    ACCEPT,
+    ALERT,
+    NICESHOT,
 
 };
 
