@@ -6,8 +6,10 @@ float Settings::ThirdPerson::distance = 30.0f;
 ButtonCode_t Settings::ThirdPerson::key = ButtonCode_t::KEY_DELETE;
 float Settings::ThirdPerson::transparency = 0.3f;
 
-IMaterial* transparentPlayerMaterial = nullptr;
+IMaterial* helper = nullptr;
 long millisSinceLastPress = 0;
+IMaterial* studioSkins[32];
+int xn;
 
 // Credit to LWSS for making the initial non-bytepatching TP in Fuzion
 // I just fixed it so it can be disabled and that it shows fake angles
@@ -94,13 +96,12 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
             if ( ( AntiAim::IsAirborne() && Settings::AntiAim::Airborne::Yaw::enabled ) ||
                  ( AntiAim::IsMoving() && Settings::AntiAim::Moving::Yaw::enabled ) ||
                  ( AntiAim::IsStanding() && Settings::AntiAim::Standing::Yaw::enabled ) ) {
-                if ( AntiAim::fakeTp ) {
-                    view = QAngle( pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f );
-                } else {
-                    view = QAngle( pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw, 0.0f );
+                {
+                    view = QAngle( pLocal->GetEyeAngles()->x, AntiAim::lastRealYaw,
+                                   0.0f ); // just always use lastRealYaw
                 }
             } else {
-                view = QAngle( pLocal->GetEyeAngles()->x, pLocal->GetEyeAngles()->y, 0.0f );
+                view = CreateMove::lastTickViewAngles; // og
             }
             break;
         }
@@ -119,6 +120,8 @@ void ThirdPerson::FrameStageNotify( ClientFrameStage_t stage ) {
             break;
         }
     }
+    if ( !AntiAim::isAntiAiming )
+        view = CreateMove::lastTickViewAngles; // save some setts
 
     *pLocal->GetVAngles() = view;
 }
@@ -143,27 +146,41 @@ void ThirdPerson::DrawModelExecute( void* thisptr, void* context, void* state, c
         return;
 
     std::string modelName = modelInfo->GetModelName( pInfo.pModel );
-    if ( ( !Settings::ESP::Chams::enabled || !Settings::ESP::Filters::localplayer ) && pLocal->IsScoped() ) {
+    if ( ( !Settings::ESP::Chams::enabled || !Settings::ESP::Filters::localplayer ) ) {
         if ( modelName.find( XORSTR( "models/player" ) ) != std::string::npos ) {
-            if ( transparentPlayerMaterial == nullptr ) {
-                IMaterial* studioSkins[32];
+
+            if ( studioSkins[1] == NULL ) {
                 modelInfo->GetModelMaterials( pLocal->GetModel(),
                                               modelInfo->GetStudioModel( pLocal->GetModel() )->numtextures,
                                               studioSkins );
-                transparentPlayerMaterial = *studioSkins;
+                xn = modelInfo->GetStudioModel( pLocal->GetModel() )->numtextures;
             }
+            if ( helper == nullptr && pLocal->IsScoped() ) {
 
-            transparentPlayerMaterial->AlphaModulate( Settings::ThirdPerson::transparency );
 
+                for ( auto i = 0; i < xn; i++ ) {
+                    helper = studioSkins[i];
+                    if ( !helper ) {
+                        continue;
+                    }
+                    helper->AlphaModulate( Settings::ThirdPerson::transparency );
+                }
 
-            modelRender->ForcedMaterialOverride( transparentPlayerMaterial );
-            modelRenderVMT->GetOriginalMethod<DrawModelExecuteFn>( 21 )( thisptr, context, state, pInfo,
-                                                                         pCustomBoneToWorld );
-        }
-    } else {
-        if ( transparentPlayerMaterial != nullptr ) {
-            transparentPlayerMaterial->AlphaModulate( 1.0f );
+                helper = studioSkins[1];
+
+            } else if ( helper != nullptr && !pLocal->IsScoped() ) {
+
+                for ( auto i = 0; i < xn; i++ ) {
+                    helper = studioSkins[i];
+                    if ( !helper ) {
+                        continue;
+                    }
+                    helper->AlphaModulate( 1.0f );
+                }
+                helper = nullptr;
+
+                //saving fps is important tho ._.
+            }
         }
     }
 }
-
